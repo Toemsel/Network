@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Network</RootNamespace>
+    <AssemblyName>Network</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>network.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ConsoleTables.Core, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ConsoleTables.1.1.2\lib\net40\ConsoleTables.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
+      <HintPath>packages\32feet.NET.3.5.0.0\lib\net\InTheHand.Net.Personal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Async\AsyncReceiver.cs" />
+    <Compile Include="Attributes\PacketIgnorePropertyAttribute.cs" />
+    <Compile Include="Attributes\PacketRequestAttribute.cs" />
+    <Compile Include="Attributes\PacketTypeAttribute.cs" />
+    <Compile Include="BiDictionary.cs" />
+    <Compile Include="BluetoothConnection.cs" />
+    <Compile Include="Bluetooth\DeviceInfo.cs" />
+    <Compile Include="ClientConnectionContainer.cs" />
+    <Compile Include="ConnectionAddons.cs" />
+    <Compile Include="ConnectionContainer.cs" />
+    <Compile Include="ConnectionFactory.cs" />
+    <Compile Include="Converter\IPacketConverter.cs" />
+    <Compile Include="Converter\ObjectState.cs" />
+    <Compile Include="Enums\CloseReason.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="Enums\LogLevel.cs" />
+    <Compile Include="Enums\PacketState.cs" />
+    <Compile Include="Extensions\ConnectionExtension.cs" />
+    <Compile Include="Extensions\EnumeratorExtension.cs" />
+    <Compile Include="Converter\PacketConverter.cs" />
+    <Compile Include="Extensions\RawDataExtension.cs" />
+    <Compile Include="Extensions\ThreadExtension.cs" />
+    <Compile Include="Extensions\WaitHandleExtensions.cs" />
+    <Compile Include="Interfaces\IPacketHandler.cs" />
+    <Compile Include="Logging\NetworkLog.cs" />
+    <Compile Include="ObjectMap.cs" />
+    <Compile Include="Packet.cs" />
+    <Compile Include="Packets\AddPacketTypeRequest.cs" />
+    <Compile Include="Packets\AddPacketTypeResponse.cs" />
+    <Compile Include="Packets\CloseRequest.cs" />
+    <Compile Include="Packets\DisableWriteLock.cs" />
+    <Compile Include="Packets\EstablishUdpRequest.cs" />
+    <Compile Include="Packets\EstablishUdpResponseACK.cs" />
+    <Compile Include="Packets\EstablishUdpResponse.cs" />
+    <Compile Include="Packets\PingRequest.cs" />
+    <Compile Include="Packets\PingResponse.cs" />
+    <Compile Include="Packets\RawData.cs" />
+    <Compile Include="Packets\RequestPacket.cs" />
+    <Compile Include="Packets\ResponsePacket.cs" />
+    <Compile Include="Packets\UDPPingRequest.cs" />
+    <Compile Include="Packets\UDPPingResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerConnectionContainer.cs" />
+    <Compile Include="TcpConnection.cs" />
+    <Compile Include="UdpConnection.cs" />
+    <Compile Include="UID\Generator.cs" />
+    <Compile Include="Converter\RawDataConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Diagrams\ClassDiagra3.cd" />
+    <None Include="Diagrams\ClassDiagram2.cd" />
+    <None Include="Diagrams\ClassDiagram1.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="network.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

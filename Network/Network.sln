@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network.csproj", "{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestClient", "..\NetworkTestClient\NetworkTestClient.csproj", "{B1C6802F-573F-4976-95BA-9CD163170DC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerClientPackets", "..\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestServer", "..\NetworkTestServer\NetworkTestServer.csproj", "{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C6802F-573F-4976-95BA-9CD163170DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C6802F-573F-4976-95BA-9CD163170DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C6802F-573F-4976-95BA-9CD163170DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1C6802F-573F-4976-95BA-9CD163170DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://thomaschristof.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Network.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\NetworkTestClient\\NetworkTestClient.csproj
+		SccProjectName2 = ../NetworkTestClient
+		SccLocalPath2 = ..\\NetworkTestClient
+		SccProjectUniqueName3 = ..\\TestServerClientPackets\\TestServerClientPackets.csproj
+		SccProjectName3 = ../TestServerClientPackets
+		SccLocalPath3 = ..\\TestServerClientPackets
+		SccProjectUniqueName4 = ..\\NetworkTestServer\\NetworkTestServer.csproj
+		SccProjectName4 = ../NetworkTestServer
+		SccLocalPath4 = ..\\NetworkTestServer
+	EndGlobalSection
+EndGlobal

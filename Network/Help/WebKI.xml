@@ -1,0 +1,1197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="AbortSave method" Url="html/737215164.htm" />
+  <HelpKINode Title="AcknowledgePending property" Url="html/1161116356.htm" />
+  <HelpKINode Title="Add method" Url="html/1560600498.htm" />
+  <HelpKINode Title="AddElement method" Url="html/342407165.htm" />
+  <HelpKINode Title="AddExternalPackets method" Url="html/2036703954.htm" />
+  <HelpKINode Title="AddKnownTypes method" Url="html/1260395409.htm" />
+  <HelpKINode Title="AddPacketTypeRequest class">
+    <HelpKINode Title="AddPacketTypeRequest Class" Url="html/1315620228.htm" />
+    <HelpKINode Title="AddPacketTypeRequest Members" Url="html/1262594665.htm" />
+    <HelpKINode Title="about AddPacketTypeRequest class" Url="html/1315620228.htm" />
+    <HelpKINode Title="all members" Url="html/1262594665.htm" />
+    <HelpKINode Title="constructor" Url="html/993697628.htm" />
+    <HelpKINode Title="methods" Url="html/233346923.htm" />
+    <HelpKINode Title="properties" Url="html/551968872.htm" />
+  </HelpKINode>
+  <HelpKINode Title="AddPacketTypeRequest.AddPacketTypeRequest constructor" Url="html/993697628.htm" />
+  <HelpKINode Title="AddPacketTypeRequest.AssemblyName property" Url="html/625178356.htm" />
+  <HelpKINode Title="AddPacketTypeResponse class">
+    <HelpKINode Title="AddPacketTypeResponse Class" Url="html/806442894.htm" />
+    <HelpKINode Title="AddPacketTypeResponse Members" Url="html/788262538.htm" />
+    <HelpKINode Title="about AddPacketTypeResponse class" Url="html/806442894.htm" />
+    <HelpKINode Title="all members" Url="html/788262538.htm" />
+    <HelpKINode Title="constructor" Url="html/927373142.htm" />
+    <HelpKINode Title="methods" Url="html/877152809.htm" />
+    <HelpKINode Title="properties" Url="html/932715599.htm" />
+  </HelpKINode>
+  <HelpKINode Title="AddPacketTypeResponse.AddPacketTypeResponse constructor" Url="html/927373142.htm" />
+  <HelpKINode Title="AddPacketTypeResponse.LocalDict property" Url="html/152566841.htm" />
+  <HelpKINode Title="AElements property" Url="html/191383599.htm" />
+  <HelpKINode Title="AllowUDPConnections property" Url="html/903665129.htm" />
+  <HelpKINode Title="AssemblyDoesNotExist enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="AssemblyDoesNotExist field" Url="html/1944747112.htm" />
+  <HelpKINode Title="AssemblyName property" Url="html/625178356.htm" />
+  <HelpKINode Title="AsTask method" Url="html/281221041.htm" />
+  <HelpKINode Title="AsyncReceiver class">
+    <HelpKINode Title="AsyncReceiver Class" Url="html/1078856760.htm" />
+    <HelpKINode Title="AsyncReceiver Members" Url="html/233828401.htm" />
+    <HelpKINode Title="about AsyncReceiver class" Url="html/1078856760.htm" />
+    <HelpKINode Title="all members" Url="html/233828401.htm" />
+    <HelpKINode Title="fields" Url="html/49415472.htm" />
+    <HelpKINode Title="methods" Url="html/656764826.htm" />
+  </HelpKINode>
+  <HelpKINode Title="AsyncReceiver.Dispose method" Url="html/1644720727.htm" />
+  <HelpKINode Title="AsyncReceiver.packetReceivedEvent field" Url="html/2073297708.htm" />
+  <HelpKINode Title="AsyncReceiver.receivedAsyncPacket field" Url="html/945903066.htm" />
+  <HelpKINode Title="AsyncReceiver.Send(Of T) method" Url="html/1271483355.htm" />
+  <HelpKINode Title="AsyncReceiver.Send&lt;T&gt; method" Url="html/1271483355.htm" />
+  <HelpKINode Title="AutoReconnect property" Url="html/286359642.htm" />
+  <HelpKINode Title="BeforeReceive method" Url="html/66909175.htm" />
+  <HelpKINode Title="BeforeSend method" Url="html/989562779.htm" />
+  <HelpKINode Title="BElements property" Url="html/22591441.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U) class">
+    <HelpKINode Title="BiDictionary(T, U) Class" Url="html/654999615.htm" />
+    <HelpKINode Title="BiDictionary(T, U) Members" Url="html/862449856.htm" />
+    <HelpKINode Title="about BiDictionary(Of T, U) class" Url="html/654999615.htm" />
+    <HelpKINode Title="all members" Url="html/862449856.htm" />
+    <HelpKINode Title="fields" Url="html/1407044133.htm" />
+    <HelpKINode Title="methods" Url="html/1981535054.htm" />
+    <HelpKINode Title="properties" Url="html/1629884309.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BiDictionary(Of T, U).Add method" Url="html/1560600498.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).AddElement method" Url="html/342407165.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).AElements property" Url="html/191383599.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).BElements property" Url="html/22591441.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).ContainsKeyA method" Url="html/1226436375.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).ContainsKeyB method" Url="html/729878728.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).ContainsValueA method" Url="html/1551675909.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).ContainsValueB method" Url="html/558789524.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).Count property" Url="html/1029416956.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).dictOne field" Url="html/1249056996.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).dictTwo field" Url="html/1820858201.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).GetElement method" Url="html/815587236.htm" />
+  <HelpKINode Title="BiDictionary(Of T, U).Item property">
+    <HelpKINode Title="Item Property " Url="html/1738461928.htm" />
+    <HelpKINode Title="Item Property " Url="html/600190232.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BiDictionary(Of T, U).RemoveElement method" Url="html/1887999241.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt; class">
+    <HelpKINode Title="BiDictionary(T, U) Class" Url="html/654999615.htm" />
+    <HelpKINode Title="BiDictionary(T, U) Members" Url="html/862449856.htm" />
+    <HelpKINode Title="about BiDictionary&lt;T, U&gt; class" Url="html/654999615.htm" />
+    <HelpKINode Title="all members" Url="html/862449856.htm" />
+    <HelpKINode Title="fields" Url="html/1407044133.htm" />
+    <HelpKINode Title="methods" Url="html/1981535054.htm" />
+    <HelpKINode Title="properties" Url="html/1629884309.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.Add method" Url="html/1560600498.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.AddElement method" Url="html/342407165.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.AElements property" Url="html/191383599.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.BElements property" Url="html/22591441.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.ContainsKeyA method" Url="html/1226436375.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.ContainsKeyB method" Url="html/729878728.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.ContainsValueA method" Url="html/1551675909.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.ContainsValueB method" Url="html/558789524.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.Count property" Url="html/1029416956.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.dictOne field" Url="html/1249056996.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.dictTwo field" Url="html/1820858201.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.GetElement method" Url="html/815587236.htm" />
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.Item property">
+    <HelpKINode Title="Item Property " Url="html/600190232.htm" />
+    <HelpKINode Title="Item Property " Url="html/1738461928.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BiDictionary&lt;T, U&gt;.RemoveElement method" Url="html/1887999241.htm" />
+  <HelpKINode Title="client field">
+    <HelpKINode Title="client Field" Url="html/2021977467.htm" />
+    <HelpKINode Title="client Field" Url="html/100716949.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ClientClosed enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="ClientClosed field" Url="html/515420551.htm" />
+  <HelpKINode Title="ClientConnectionContainer class">
+    <HelpKINode Title="ClientConnectionContainer Class" Url="html/855127906.htm" />
+    <HelpKINode Title="ClientConnectionContainer Members" Url="html/1955752747.htm" />
+    <HelpKINode Title="about ClientConnectionContainer class" Url="html/855127906.htm" />
+    <HelpKINode Title="all members" Url="html/1955752747.htm" />
+    <HelpKINode Title="constructor" Url="html/1712076435.htm" />
+    <HelpKINode Title="events" Url="html/491967388.htm" />
+    <HelpKINode Title="fields" Url="html/1408761738.htm" />
+    <HelpKINode Title="methods" Url="html/796365952.htm" />
+    <HelpKINode Title="properties" Url="html/1052992288.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ClientConnectionContainer.AutoReconnect property" Url="html/286359642.htm" />
+  <HelpKINode Title="ClientConnectionContainer.ClientConnectionContainer constructor" Url="html/1712076435.htm" />
+  <HelpKINode Title="ClientConnectionContainer.connectionEstablished event" Url="html/34263747.htm" />
+  <HelpKINode Title="ClientConnectionContainer.ConnectionEstablished event" Url="html/927455139.htm" />
+  <HelpKINode Title="ClientConnectionContainer.ConnectionLost event" Url="html/236974347.htm" />
+  <HelpKINode Title="ClientConnectionContainer.connectionLost event" Url="html/235959531.htm" />
+  <HelpKINode Title="ClientConnectionContainer.Dispose method" Url="html/1644509485.htm" />
+  <HelpKINode Title="ClientConnectionContainer.Initialize method" Url="html/1288352045.htm" />
+  <HelpKINode Title="ClientConnectionContainer.IsAlive property" Url="html/1082105028.htm" />
+  <HelpKINode Title="ClientConnectionContainer.IsAlive_TCP property" Url="html/2064481022.htm" />
+  <HelpKINode Title="ClientConnectionContainer.IsAlive_UDP property" Url="html/2064284415.htm" />
+  <HelpKINode Title="ClientConnectionContainer.OpenNewTCPConnection method" Url="html/160177598.htm" />
+  <HelpKINode Title="ClientConnectionContainer.OpenNewUDPConnection method" Url="html/938397123.htm" />
+  <HelpKINode Title="ClientConnectionContainer.Reconnect method" Url="html/216457582.htm" />
+  <HelpKINode Title="ClientConnectionContainer.ReconnectInterval property" Url="html/1986671517.htm" />
+  <HelpKINode Title="ClientConnectionContainer.reconnectTimer field" Url="html/1528875246.htm" />
+  <HelpKINode Title="ClientConnectionContainer.RegisterPacketHandler(Of T) method" Url="html/1804707552.htm" />
+  <HelpKINode Title="ClientConnectionContainer.RegisterPacketHandler&lt;T&gt; method" Url="html/1804707552.htm" />
+  <HelpKINode Title="ClientConnectionContainer.RegisterStaticPacketHandler(Of T) method" Url="html/117285263.htm" />
+  <HelpKINode Title="ClientConnectionContainer.RegisterStaticPacketHandler&lt;T&gt; method" Url="html/117285263.htm" />
+  <HelpKINode Title="ClientConnectionContainer.Send method" Url="html/1154122340.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendAsync method" Url="html/1225680049.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendFast method" Url="html/1009272397.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendFastAsync(Of T) method" Url="html/1997226284.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendFastAsync&lt;T&gt; method" Url="html/1997226284.htm" />
+  <HelpKINode Title="ClientConnectionContainer.sendFastBuffer field" Url="html/1367583895.htm" />
+  <HelpKINode Title="ClientConnectionContainer.sendFastObjectBuffer field" Url="html/1605886016.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendPing method" Url="html/912041427.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendSlow method" Url="html/2080613411.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendSlowAsync(Of T) method" Url="html/342037770.htm" />
+  <HelpKINode Title="ClientConnectionContainer.SendSlowAsync&lt;T&gt; method" Url="html/342037770.htm" />
+  <HelpKINode Title="ClientConnectionContainer.sendSlowBuffer field" Url="html/1146856106.htm" />
+  <HelpKINode Title="ClientConnectionContainer.sendSlowObjectBuffer field" Url="html/1163449540.htm" />
+  <HelpKINode Title="ClientConnectionContainer.Shutdown method" Url="html/1334967876.htm" />
+  <HelpKINode Title="ClientConnectionContainer.tcpConnection field" Url="html/195120486.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TcpConnection property" Url="html/1690668749.htm" />
+  <HelpKINode Title="ClientConnectionContainer.tcpPacketHandlerBackup field" Url="html/82831747.htm" />
+  <HelpKINode Title="ClientConnectionContainer.tcpPacketHandlerBuffer field" Url="html/174230466.htm" />
+  <HelpKINode Title="ClientConnectionContainer.tcpUnPacketHandlerBuffer field" Url="html/1348415595.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_RegisterPacketHandler(Of T) method" Url="html/512544598.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_RegisterPacketHandler&lt;T&gt; method" Url="html/512544598.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_RegisterStaticPacketHandler(Of T) method" Url="html/1492756856.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_RegisterStaticPacketHandler&lt;T&gt; method" Url="html/1492756856.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_UnRegisterPacketHandler(Of T) method" Url="html/348432034.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_UnRegisterPacketHandler&lt;T&gt; method" Url="html/348432034.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_UnRegisterStaticPacketHandler(Of T) method" Url="html/1752120383.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TCP_UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1752120383.htm" />
+  <HelpKINode Title="ClientConnectionContainer.ToString method" Url="html/1245640017.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TryConnect method" Url="html/98678577.htm" />
+  <HelpKINode Title="ClientConnectionContainer.TryToConnect method" Url="html/619163213.htm" />
+  <HelpKINode Title="ClientConnectionContainer.udpConnection field" Url="html/19156730.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UdpConnection property" Url="html/435631825.htm" />
+  <HelpKINode Title="ClientConnectionContainer.udpPacketHandlerBackup field" Url="html/1314453763.htm" />
+  <HelpKINode Title="ClientConnectionContainer.udpPacketHandlerBuffer field" Url="html/1420794690.htm" />
+  <HelpKINode Title="ClientConnectionContainer.udpUnPacketHandlerBuffer field" Url="html/251454677.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_RegisterPacketHandler(Of T) method" Url="html/1054410773.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_RegisterPacketHandler&lt;T&gt; method" Url="html/1054410773.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_RegisterStaticPacketHandler(Of T) method" Url="html/777037650.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_RegisterStaticPacketHandler&lt;T&gt; method" Url="html/777037650.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_UnRegisterPacketHandler(Of T) method" Url="html/571341038.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_UnRegisterPacketHandler&lt;T&gt; method" Url="html/571341038.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_UnRegisterStaticPacketHandler(Of T) method" Url="html/1913688358.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UDP_UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1913688358.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UnRegisterPacketHandler(Of T) method" Url="html/1413842237.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UnRegisterPacketHandler&lt;T&gt; method" Url="html/1413842237.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UnRegisterStaticPacketHandler(Of T) method" Url="html/1288985959.htm" />
+  <HelpKINode Title="ClientConnectionContainer.UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1288985959.htm" />
+  <HelpKINode Title="Close method" Url="html/411601168.htm" />
+  <HelpKINode Title="CloseConnections method" Url="html/43021429.htm" />
+  <HelpKINode Title="CloseHandler method">
+    <HelpKINode Title="CloseHandler Method " Url="html/453985269.htm" />
+    <HelpKINode Title="CloseHandler Method " Url="html/1822760098.htm" />
+    <HelpKINode Title="CloseHandler Method " Url="html/1155705288.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CloseReason enumeration" Url="html/333965756.htm" />
+  <HelpKINode Title="CloseReason property" Url="html/1306488075.htm" />
+  <HelpKINode Title="CloseReason.AssemblyDoesNotExist field" Url="html/1944747112.htm" />
+  <HelpKINode Title="CloseReason.ClientClosed field" Url="html/515420551.htm" />
+  <HelpKINode Title="CloseReason.DifferentVersion field" Url="html/2122073175.htm" />
+  <HelpKINode Title="CloseReason.InternalException field" Url="html/1589893599.htm" />
+  <HelpKINode Title="CloseReason.InvalidUdpRequest field" Url="html/1769458933.htm" />
+  <HelpKINode Title="CloseReason.InvokePacketThreadException field" Url="html/1516500532.htm" />
+  <HelpKINode Title="CloseReason.NetworkError field" Url="html/584629151.htm" />
+  <HelpKINode Title="CloseReason.ReadPacketThreadException field" Url="html/1694367280.htm" />
+  <HelpKINode Title="CloseReason.ServerClosed field" Url="html/307567163.htm" />
+  <HelpKINode Title="CloseReason.Timeout field" Url="html/1787330148.htm" />
+  <HelpKINode Title="CloseReason.UdpLimitExceeded field" Url="html/895560599.htm" />
+  <HelpKINode Title="CloseReason.UnknownPacket field" Url="html/259802487.htm" />
+  <HelpKINode Title="CloseReason.WritePacketThreadException field" Url="html/1305925818.htm" />
+  <HelpKINode Title="CloseRequest class">
+    <HelpKINode Title="CloseRequest Class" Url="html/545608149.htm" />
+    <HelpKINode Title="CloseRequest Members" Url="html/1555133604.htm" />
+    <HelpKINode Title="about CloseRequest class" Url="html/545608149.htm" />
+    <HelpKINode Title="all members" Url="html/1555133604.htm" />
+    <HelpKINode Title="constructor" Url="html/1785035253.htm" />
+    <HelpKINode Title="methods" Url="html/1836214683.htm" />
+    <HelpKINode Title="properties" Url="html/342169200.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CloseRequest.CloseReason property" Url="html/1306488075.htm" />
+  <HelpKINode Title="CloseRequest.CloseRequest constructor" Url="html/1785035253.htm" />
+  <HelpKINode Title="CloseSocket method">
+    <HelpKINode Title="CloseSocket Method " Url="html/177435209.htm" />
+    <HelpKINode Title="CloseSocket Method " Url="html/2073653926.htm" />
+    <HelpKINode Title="CloseSocket Method " Url="html/1904366818.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CloseTCPConnections method" Url="html/1708587700.htm" />
+  <HelpKINode Title="CloseUDPConnections method" Url="html/210475469.htm" />
+  <HelpKINode Title="ConfigPing method" Url="html/994949961.htm" />
+  <HelpKINode Title="Connected enumeration member" Url="html/1114549727.htm" />
+  <HelpKINode Title="Connected field" Url="html/1187381061.htm" />
+  <HelpKINode Title="Connection class">
+    <HelpKINode Title="Connection Class" Url="html/341087091.htm" />
+    <HelpKINode Title="Connection Members" Url="html/1147375807.htm" />
+    <HelpKINode Title="about Connection class" Url="html/341087091.htm" />
+    <HelpKINode Title="all members" Url="html/1147375807.htm" />
+    <HelpKINode Title="constructor" Url="html/1046607492.htm" />
+    <HelpKINode Title="events" Url="html/1387867907.htm" />
+    <HelpKINode Title="fields" Url="html/929243559.htm" />
+    <HelpKINode Title="methods" Url="html/73431238.htm" />
+    <HelpKINode Title="properties" Url="html/1593957932.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Connection.AddExternalPackets method" Url="html/2036703954.htm" />
+  <HelpKINode Title="Connection.Close method" Url="html/411601168.htm" />
+  <HelpKINode Title="Connection.CloseHandler method" Url="html/1822760098.htm" />
+  <HelpKINode Title="Connection.CloseSocket method" Url="html/2073653926.htm" />
+  <HelpKINode Title="Connection.ConfigPing method" Url="html/994949961.htm" />
+  <HelpKINode Title="Connection.Connection constructor" Url="html/1046607492.htm" />
+  <HelpKINode Title="Connection.connectionClosed event" Url="html/1403795150.htm" />
+  <HelpKINode Title="Connection.ConnectionClosed event" Url="html/1401686258.htm" />
+  <HelpKINode Title="Connection.ConnectionEstablished event" Url="html/1357520771.htm" />
+  <HelpKINode Title="Connection.connectionEstablished event" Url="html/1422682425.htm" />
+  <HelpKINode Title="Connection.CPU_SAVE field" Url="html/686344783.htm" />
+  <HelpKINode Title="Connection.currentPingStopWatch field" Url="html/1861068197.htm" />
+  <HelpKINode Title="Connection.DualMode property" Url="html/624338582.htm" />
+  <HelpKINode Title="Connection.ExternalClose method" Url="html/957508106.htm" />
+  <HelpKINode Title="Connection.ForceFlush property" Url="html/1722662430.htm" />
+  <HelpKINode Title="Connection.Fragment property" Url="html/564469069.htm" />
+  <HelpKINode Title="Connection.GetFreePort method" Url="html/1161392490.htm" />
+  <HelpKINode Title="Connection.GetHashCode method" Url="html/1377058999.htm" />
+  <HelpKINode Title="Connection.HandleDefaultPackets method" Url="html/910780159.htm" />
+  <HelpKINode Title="Connection.hashCode field" Url="html/2087312901.htm" />
+  <HelpKINode Title="Connection.HopLimit property" Url="html/1976087377.htm" />
+  <HelpKINode Title="Connection.Init method" Url="html/2132011879.htm" />
+  <HelpKINode Title="Connection.invokePacketThread field" Url="html/1013720413.htm" />
+  <HelpKINode Title="Connection.InvokeWork method" Url="html/1539609332.htm" />
+  <HelpKINode Title="Connection.IPLocalEndPoint property" Url="html/118359957.htm" />
+  <HelpKINode Title="Connection.IPRemoteEndPoint property" Url="html/583805358.htm" />
+  <HelpKINode Title="Connection.IsAlive property" Url="html/130149723.htm" />
+  <HelpKINode Title="Connection.IsRoutingEnabled property" Url="html/1388041385.htm" />
+  <HelpKINode Title="Connection.keepAlive field" Url="html/922380541.htm" />
+  <HelpKINode Title="Connection.KeepAlive property" Url="html/1054256080.htm" />
+  <HelpKINode Title="Connection.nextPingStopWatch field" Url="html/343600329.htm" />
+  <HelpKINode Title="Connection.NoDelay property" Url="html/1634552793.htm" />
+  <HelpKINode Title="Connection.objectMap field" Url="html/585473486.htm" />
+  <HelpKINode Title="Connection.ObjectMapper property" Url="html/1777196469.htm" />
+  <HelpKINode Title="Connection.packetConverter field" Url="html/1934769634.htm" />
+  <HelpKINode Title="Connection.pendingUDPConnections field" Url="html/275530108.htm" />
+  <HelpKINode Title="Connection.pendingUnknownPackets field" Url="html/2082943562.htm" />
+  <HelpKINode Title="Connection.Ping property" Url="html/1527947390.htm" />
+  <HelpKINode Title="Connection.PING_INTERVALL field" Url="html/759500673.htm" />
+  <HelpKINode Title="Connection.ReadBytes method" Url="html/478915378.htm" />
+  <HelpKINode Title="Connection.readStreamThread field" Url="html/1553325775.htm" />
+  <HelpKINode Title="Connection.ReadWork method" Url="html/2011171345.htm" />
+  <HelpKINode Title="Connection.receivedPackets field" Url="html/2089528080.htm" />
+  <HelpKINode Title="Connection.RegisterPacketHandler method" Url="html/25845430.htm" />
+  <HelpKINode Title="Connection.RegisterStaticPacketHandler(Of T) method" Url="html/1929125123.htm" />
+  <HelpKINode Title="Connection.RegisterStaticPacketHandler&lt;T&gt; method" Url="html/1929125123.htm" />
+  <HelpKINode Title="Connection.requestResponseMap field" Url="html/1658203504.htm" />
+  <HelpKINode Title="Connection.RestorePacketHandler method" Url="html/1709857780.htm" />
+  <HelpKINode Title="Connection.RTT property" Url="html/119854514.htm" />
+  <HelpKINode Title="Connection.Send method" Url="html/1399510053.htm" />
+  <HelpKINode Title="Connection.SendAsync(Of T) method" Url="html/1850012396.htm" />
+  <HelpKINode Title="Connection.SendAsync&lt;T&gt; method" Url="html/1850012396.htm" />
+  <HelpKINode Title="Connection.sendPackets field" Url="html/1226774837.htm" />
+  <HelpKINode Title="Connection.SendPing method" Url="html/1667250761.htm" />
+  <HelpKINode Title="Connection.TIMEOUT property" Url="html/339958091.htm" />
+  <HelpKINode Title="Connection.TTL property" Url="html/1409624654.htm" />
+  <HelpKINode Title="Connection.typeByte field" Url="html/2079758828.htm" />
+  <HelpKINode Title="Connection.UnlockLocalConnection method" Url="html/1737614585.htm" />
+  <HelpKINode Title="Connection.UnlockRemoteConnection method" Url="html/421449638.htm" />
+  <HelpKINode Title="Connection.UnRegisterPacketHandler(Of T) method" Url="html/1880641404.htm" />
+  <HelpKINode Title="Connection.UnRegisterPacketHandler&lt;T&gt; method" Url="html/1880641404.htm" />
+  <HelpKINode Title="Connection.UnRegisterStaticPacketHandler(Of T) method" Url="html/1602414000.htm" />
+  <HelpKINode Title="Connection.UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1602414000.htm" />
+  <HelpKINode Title="Connection.UseLoopback property" Url="html/416065110.htm" />
+  <HelpKINode Title="Connection.WriteBytes method" Url="html/1051542380.htm" />
+  <HelpKINode Title="Connection.writeLock field" Url="html/286173177.htm" />
+  <HelpKINode Title="Connection.WriteLock property" Url="html/12862296.htm" />
+  <HelpKINode Title="Connection.writeLockBuffer field" Url="html/1663828898.htm" />
+  <HelpKINode Title="Connection.writeStreamThread field" Url="html/2002075544.htm" />
+  <HelpKINode Title="Connection.WriteSubWork method" Url="html/611328644.htm" />
+  <HelpKINode Title="Connection.WriteWork method" Url="html/887089563.htm" />
+  <HelpKINode Title="ConnectionClosed event" Url="html/1401686258.htm" />
+  <HelpKINode Title="connectionClosed event" Url="html/1403795150.htm" />
+  <HelpKINode Title="ConnectionContainer class">
+    <HelpKINode Title="ConnectionContainer Class" Url="html/1033133284.htm" />
+    <HelpKINode Title="ConnectionContainer Members" Url="html/1171567300.htm" />
+    <HelpKINode Title="about ConnectionContainer class" Url="html/1033133284.htm" />
+    <HelpKINode Title="all members" Url="html/1171567300.htm" />
+    <HelpKINode Title="constructor" Url="html/170892066.htm" />
+    <HelpKINode Title="methods" Url="html/1491626427.htm" />
+    <HelpKINode Title="properties" Url="html/881348168.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ConnectionContainer.ConnectionContainer constructor" Url="html/170892066.htm" />
+  <HelpKINode Title="ConnectionContainer.IPAddress property" Url="html/49488280.htm" />
+  <HelpKINode Title="ConnectionContainer.Port property" Url="html/769902724.htm" />
+  <HelpKINode Title="ConnectionEstablished event">
+    <HelpKINode Title="ConnectionEstablished Event" Url="html/986475338.htm" />
+    <HelpKINode Title="ConnectionEstablished Event" Url="html/927455139.htm" />
+    <HelpKINode Title="ConnectionEstablished Event" Url="html/1357520771.htm" />
+  </HelpKINode>
+  <HelpKINode Title="connectionEstablished event">
+    <HelpKINode Title="connectionEstablished Event" Url="html/196663677.htm" />
+    <HelpKINode Title="connectionEstablished Event" Url="html/1422682425.htm" />
+    <HelpKINode Title="connectionEstablished Event" Url="html/34263747.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ConnectionExtension class">
+    <HelpKINode Title="ConnectionExtension Class" Url="html/1749513503.htm" />
+    <HelpKINode Title="ConnectionExtension Members" Url="html/899032871.htm" />
+    <HelpKINode Title="about ConnectionExtension class" Url="html/1749513503.htm" />
+    <HelpKINode Title="all members" Url="html/899032871.htm" />
+    <HelpKINode Title="fields" Url="html/524037116.htm" />
+    <HelpKINode Title="methods" Url="html/1704050531.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ConnectionExtension.counter field" Url="html/825553874.htm" />
+  <HelpKINode Title="ConnectionExtension.GenerateUniqueHashCode method" Url="html/310901882.htm" />
+  <HelpKINode Title="ConnectionExtension.slimSemaphore field" Url="html/2094689561.htm" />
+  <HelpKINode Title="ConnectionFactory class">
+    <HelpKINode Title="ConnectionFactory Class" Url="html/1477416759.htm" />
+    <HelpKINode Title="ConnectionFactory Members" Url="html/772217361.htm" />
+    <HelpKINode Title="about ConnectionFactory class" Url="html/1477416759.htm" />
+    <HelpKINode Title="all members" Url="html/772217361.htm" />
+    <HelpKINode Title="fields" Url="html/171015536.htm" />
+    <HelpKINode Title="methods" Url="html/1738763766.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ConnectionFactory.AddKnownTypes method" Url="html/1260395409.htm" />
+  <HelpKINode Title="ConnectionFactory.CONNECTION_TIMEOUT field" Url="html/782590593.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateClientConnectionContainer method" Url="html/1421396741.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateServerConnectionContainer method" Url="html/61637268.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateTcpConnection method" Url="html/644160774.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateTcpConnectionAsync method" Url="html/2143640806.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateUdpConnection method" Url="html/460751971.htm" />
+  <HelpKINode Title="ConnectionFactory.CreateUdpConnectionAsync method" Url="html/246740846.htm" />
+  <HelpKINode Title="ConnectionLost event">
+    <HelpKINode Title="ConnectionLost Event" Url="html/236974347.htm" />
+    <HelpKINode Title="ConnectionLost Event" Url="html/356411619.htm" />
+  </HelpKINode>
+  <HelpKINode Title="connectionLost event">
+    <HelpKINode Title="connectionLost Event" Url="html/357426179.htm" />
+    <HelpKINode Title="connectionLost Event" Url="html/235959531.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ConnectionNotAlive enumeration member" Url="html/1137178920.htm" />
+  <HelpKINode Title="ConnectionNotAlive field" Url="html/1607172166.htm" />
+  <HelpKINode Title="ConnectionResult enumeration" Url="html/1114549727.htm" />
+  <HelpKINode Title="ConnectionResult.Connected field" Url="html/1187381061.htm" />
+  <HelpKINode Title="ConnectionResult.TCPConnectionNotAlive field" Url="html/1200682001.htm" />
+  <HelpKINode Title="ConnectionResult.Timeout field" Url="html/948630381.htm" />
+  <HelpKINode Title="connections field" Url="html/1273792259.htm" />
+  <HelpKINode Title="ConnectionType enumeration" Url="html/1493601306.htm" />
+  <HelpKINode Title="ConnectionType.TCP field" Url="html/1458973623.htm" />
+  <HelpKINode Title="ConnectionType.UDP field" Url="html/497341514.htm" />
+  <HelpKINode Title="CONNECTION_TIMEOUT field" Url="html/782590593.htm" />
+  <HelpKINode Title="ContainsKeyA method" Url="html/1226436375.htm" />
+  <HelpKINode Title="ContainsKeyB method" Url="html/729878728.htm" />
+  <HelpKINode Title="ContainsValueA method" Url="html/1551675909.htm" />
+  <HelpKINode Title="ContainsValueB method" Url="html/558789524.htm" />
+  <HelpKINode Title="Count property">
+    <HelpKINode Title="Count Property " Url="html/1173936176.htm" />
+    <HelpKINode Title="Count Property " Url="html/1029416956.htm" />
+  </HelpKINode>
+  <HelpKINode Title="counter field" Url="html/825553874.htm" />
+  <HelpKINode Title="CPU_SAVE field" Url="html/686344783.htm" />
+  <HelpKINode Title="CreateClientConnectionContainer method" Url="html/1421396741.htm" />
+  <HelpKINode Title="CreateServerConnectionContainer method" Url="html/61637268.htm" />
+  <HelpKINode Title="CreateTcpConnection method" Url="html/644160774.htm" />
+  <HelpKINode Title="CreateTcpConnectionAsync method" Url="html/2143640806.htm" />
+  <HelpKINode Title="CreateUdpConnection method" Url="html/460751971.htm" />
+  <HelpKINode Title="CreateUdpConnectionAsync method" Url="html/246740846.htm" />
+  <HelpKINode Title="currentPingStopWatch field" Url="html/1861068197.htm" />
+  <HelpKINode Title="dictOne field" Url="html/1249056996.htm" />
+  <HelpKINode Title="dictTwo field" Url="html/1820858201.htm" />
+  <HelpKINode Title="DifferentVersion enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="DifferentVersion field" Url="html/2122073175.htm" />
+  <HelpKINode Title="DisableWriteLock class">
+    <HelpKINode Title="DisableWriteLock Class" Url="html/619277359.htm" />
+    <HelpKINode Title="DisableWriteLock Members" Url="html/868709198.htm" />
+    <HelpKINode Title="about DisableWriteLock class" Url="html/619277359.htm" />
+    <HelpKINode Title="all members" Url="html/868709198.htm" />
+    <HelpKINode Title="methods" Url="html/737900357.htm" />
+    <HelpKINode Title="properties" Url="html/185495364.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Dispose method">
+    <HelpKINode Title="Dispose Method " Url="html/1644509485.htm" />
+    <HelpKINode Title="Dispose Method " Url="html/1644720727.htm" />
+  </HelpKINode>
+  <HelpKINode Title="DualMode property">
+    <HelpKINode Title="DualMode Property " Url="html/1616563775.htm" />
+    <HelpKINode Title="DualMode Property " Url="html/1194685306.htm" />
+    <HelpKINode Title="DualMode Property " Url="html/624338582.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnumeratorExtension class">
+    <HelpKINode Title="EnumeratorExtension Class" Url="html/1997586611.htm" />
+    <HelpKINode Title="EnumeratorExtension Members" Url="html/1610431209.htm" />
+    <HelpKINode Title="about EnumeratorExtension class" Url="html/1997586611.htm" />
+    <HelpKINode Title="all members" Url="html/1610431209.htm" />
+    <HelpKINode Title="methods" Url="html/1064048320.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnumeratorExtension.ToList(Of T) method" Url="html/1458221869.htm" />
+  <HelpKINode Title="EnumeratorExtension.ToList&lt;T&gt; method" Url="html/1458221869.htm" />
+  <HelpKINode Title="EstablishUdpConnection method" Url="html/1359567710.htm" />
+  <HelpKINode Title="EstablishUdpRequest class">
+    <HelpKINode Title="EstablishUdpRequest Class" Url="html/1855861709.htm" />
+    <HelpKINode Title="EstablishUdpRequest Members" Url="html/1419372363.htm" />
+    <HelpKINode Title="about EstablishUdpRequest class" Url="html/1855861709.htm" />
+    <HelpKINode Title="all members" Url="html/1419372363.htm" />
+    <HelpKINode Title="constructor" Url="html/1645099995.htm" />
+    <HelpKINode Title="methods" Url="html/136946593.htm" />
+    <HelpKINode Title="properties" Url="html/141154319.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EstablishUdpRequest.EstablishUdpRequest constructor" Url="html/1645099995.htm" />
+  <HelpKINode Title="EstablishUdpRequest.UdpPort property" Url="html/1235882944.htm" />
+  <HelpKINode Title="EstablishUdpResponse class">
+    <HelpKINode Title="EstablishUdpResponse Class" Url="html/1545381366.htm" />
+    <HelpKINode Title="EstablishUdpResponse Members" Url="html/1754044617.htm" />
+    <HelpKINode Title="about EstablishUdpResponse class" Url="html/1545381366.htm" />
+    <HelpKINode Title="all members" Url="html/1754044617.htm" />
+    <HelpKINode Title="constructor" Url="html/1440899047.htm" />
+    <HelpKINode Title="methods" Url="html/1998008814.htm" />
+    <HelpKINode Title="properties" Url="html/1133620342.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EstablishUdpResponse.EstablishUdpResponse constructor" Url="html/1440899047.htm" />
+  <HelpKINode Title="EstablishUdpResponse.UdpPort property" Url="html/2066227803.htm" />
+  <HelpKINode Title="EstablishUdpResponseACK class">
+    <HelpKINode Title="EstablishUdpResponseACK Class" Url="html/1764120369.htm" />
+    <HelpKINode Title="EstablishUdpResponseACK Members" Url="html/1521171487.htm" />
+    <HelpKINode Title="about EstablishUdpResponseACK class" Url="html/1764120369.htm" />
+    <HelpKINode Title="all members" Url="html/1521171487.htm" />
+    <HelpKINode Title="methods" Url="html/299713210.htm" />
+    <HelpKINode Title="properties" Url="html/65327977.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ExternalClose method" Url="html/957508106.htm" />
+  <HelpKINode Title="ForceFlush property" Url="html/1722662430.htm" />
+  <HelpKINode Title="Fragment property">
+    <HelpKINode Title="Fragment Property " Url="html/645869494.htm" />
+    <HelpKINode Title="Fragment Property " Url="html/564469069.htm" />
+    <HelpKINode Title="Fragment Property " Url="html/1825332455.htm" />
+  </HelpKINode>
+  <HelpKINode Title="GenerateUniqueHashCode method" Url="html/310901882.htm" />
+  <HelpKINode Title="Generator class">
+    <HelpKINode Title="Generator Class" Url="html/1205012647.htm" />
+    <HelpKINode Title="Generator Members" Url="html/267733908.htm" />
+    <HelpKINode Title="about Generator class" Url="html/1205012647.htm" />
+    <HelpKINode Title="all members" Url="html/267733908.htm" />
+    <HelpKINode Title="fields" Url="html/513396689.htm" />
+    <HelpKINode Title="methods" Url="html/1333404349.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Generator.LastUniqueIdentifier(Of T) method" Url="html/1978203107.htm" />
+  <HelpKINode Title="Generator.LastUniqueIdentifier&lt;T&gt; method" Url="html/1978203107.htm" />
+  <HelpKINode Title="Generator.lockObject field" Url="html/178531578.htm" />
+  <HelpKINode Title="Generator.UniqueIdentifier(Of T) method" Url="html/394788944.htm" />
+  <HelpKINode Title="Generator.UniqueIdentifier&lt;T&gt; method" Url="html/394788944.htm" />
+  <HelpKINode Title="Generator.values field" Url="html/579892250.htm" />
+  <HelpKINode Title="GetBytes method" Url="html/220088853.htm" />
+  <HelpKINode Title="GetBytesFromArray method" Url="html/474413682.htm" />
+  <HelpKINode Title="GetBytesFromCustomObject method" Url="html/1880659763.htm" />
+  <HelpKINode Title="GetBytesFromList method" Url="html/2091756541.htm" />
+  <HelpKINode Title="GetElement method" Url="html/815587236.htm" />
+  <HelpKINode Title="GetFreePort method" Url="html/1161392490.htm" />
+  <HelpKINode Title="GetHashCode method" Url="html/1377058999.htm" />
+  <HelpKINode Title="GetPacketProperties method" Url="html/1154784859.htm" />
+  <HelpKINode Title="HandleDefaultPackets method" Url="html/910780159.htm" />
+  <HelpKINode Title="HasHandle method" Url="html/1601439176.htm" />
+  <HelpKINode Title="hashCode field" Url="html/2087312901.htm" />
+  <HelpKINode Title="HopLimit property">
+    <HelpKINode Title="HopLimit Property " Url="html/285592894.htm" />
+    <HelpKINode Title="HopLimit Property " Url="html/1771956697.htm" />
+    <HelpKINode Title="HopLimit Property " Url="html/1976087377.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ID property" Url="html/116476646.htm" />
+  <HelpKINode Title="Id property" Url="html/1094550488.htm" />
+  <HelpKINode Title="id_methodInfo_object field" Url="html/980100867.htm" />
+  <HelpKINode Title="Init method" Url="html/2132011879.htm" />
+  <HelpKINode Title="Initialize method" Url="html/1288352045.htm" />
+  <HelpKINode Title="InternalException enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="InternalException field" Url="html/1589893599.htm" />
+  <HelpKINode Title="InvalidUdpRequest enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="InvalidUdpRequest field" Url="html/1769458933.htm" />
+  <HelpKINode Title="invokePacketThread field" Url="html/1013720413.htm" />
+  <HelpKINode Title="InvokePacketThreadException enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="InvokePacketThreadException field" Url="html/1516500532.htm" />
+  <HelpKINode Title="InvokeWork method" Url="html/1539609332.htm" />
+  <HelpKINode Title="IPacketHandler interface">
+    <HelpKINode Title="IPacketHandler Interface" Url="html/1858495344.htm" />
+    <HelpKINode Title="IPacketHandler Members" Url="html/1286891060.htm" />
+    <HelpKINode Title="about IPacketHandler interface" Url="html/1858495344.htm" />
+    <HelpKINode Title="all members" Url="html/1286891060.htm" />
+    <HelpKINode Title="methods" Url="html/1813944045.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IPacketHandler.RegisterPacketHandler(Of T) method" Url="html/538160782.htm" />
+  <HelpKINode Title="IPacketHandler.RegisterPacketHandler&lt;T&gt; method" Url="html/538160782.htm" />
+  <HelpKINode Title="IPacketHandler.RegisterStaticPacketHandler(Of T) method" Url="html/1837869651.htm" />
+  <HelpKINode Title="IPacketHandler.RegisterStaticPacketHandler&lt;T&gt; method" Url="html/1837869651.htm" />
+  <HelpKINode Title="IPacketHandler.UnRegisterPacketHandler(Of T) method" Url="html/189468132.htm" />
+  <HelpKINode Title="IPacketHandler.UnRegisterPacketHandler&lt;T&gt; method" Url="html/189468132.htm" />
+  <HelpKINode Title="IPacketHandler.UnRegisterStaticPacketHandler(Of T) method" Url="html/563414922.htm" />
+  <HelpKINode Title="IPacketHandler.UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/563414922.htm" />
+  <HelpKINode Title="IPAddress property" Url="html/49488280.htm" />
+  <HelpKINode Title="ipEndPoint field" Url="html/851888723.htm" />
+  <HelpKINode Title="IPLocalEndPoint property">
+    <HelpKINode Title="IPLocalEndPoint Property " Url="html/1811296030.htm" />
+    <HelpKINode Title="IPLocalEndPoint Property " Url="html/1078757739.htm" />
+    <HelpKINode Title="IPLocalEndPoint Property " Url="html/118359957.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IPRemoteEndPoint property">
+    <HelpKINode Title="IPRemoteEndPoint Property " Url="html/723599823.htm" />
+    <HelpKINode Title="IPRemoteEndPoint Property " Url="html/583805358.htm" />
+    <HelpKINode Title="IPRemoteEndPoint Property " Url="html/1662824105.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsAlive property">
+    <HelpKINode Title="IsAlive Property " Url="html/1082105028.htm" />
+    <HelpKINode Title="IsAlive Property " Url="html/130149723.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsAlive_TCP property" Url="html/2064481022.htm" />
+  <HelpKINode Title="IsAlive_UDP property" Url="html/2064284415.htm" />
+  <HelpKINode Title="IsChecksumEnabled property" Url="html/1810471636.htm" />
+  <HelpKINode Title="IsOnline property" Url="html/968417409.htm" />
+  <HelpKINode Title="IsPrimitive method" Url="html/1747929193.htm" />
+  <HelpKINode Title="IsRoutingEnabled property">
+    <HelpKINode Title="IsRoutingEnabled Property " Url="html/443533550.htm" />
+    <HelpKINode Title="IsRoutingEnabled Property " Url="html/1388041385.htm" />
+    <HelpKINode Title="IsRoutingEnabled Property " Url="html/1641922042.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Item property">
+    <HelpKINode Title="Item Property " Url="html/1559445715.htm" />
+    <HelpKINode Title="Item Property " Url="html/600190232.htm" />
+    <HelpKINode Title="Item Property " Url="html/315441643.htm" />
+    <HelpKINode Title="Item Property " Url="html/302938371.htm" />
+    <HelpKINode Title="Item Property " Url="html/1817837473.htm" />
+    <HelpKINode Title="Item Property " Url="html/1738461928.htm" />
+    <HelpKINode Title="Item Property " Url="html/833746653.htm" />
+  </HelpKINode>
+  <HelpKINode Title="keepAlive field" Url="html/922380541.htm" />
+  <HelpKINode Title="KeepAlive property" Url="html/1054256080.htm" />
+  <HelpKINode Title="LastUniqueIdentifier(Of T) method" Url="html/1978203107.htm" />
+  <HelpKINode Title="LastUniqueIdentifier&lt;T&gt; method" Url="html/1978203107.htm" />
+  <HelpKINode Title="listener field" Url="html/1846302546.htm" />
+  <HelpKINode Title="LocalDict property" Url="html/152566841.htm" />
+  <HelpKINode Title="LocalEndPoint property" Url="html/311217224.htm" />
+  <HelpKINode Title="lockObject field" Url="html/178531578.htm" />
+  <HelpKINode Title="Network namespace" Url="html/648685155.htm" />
+  <HelpKINode Title="Network.Async namespace" Url="html/246737507.htm" />
+  <HelpKINode Title="Network.Async.AsyncReceiver class">
+    <HelpKINode Title="AsyncReceiver Class" Url="html/1078856760.htm" />
+    <HelpKINode Title="AsyncReceiver Members" Url="html/233828401.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Attributes namespace" Url="html/428954246.htm" />
+  <HelpKINode Title="Network.Attributes.PacketIgnorePropertyAttribute class">
+    <HelpKINode Title="PacketIgnorePropertyAttribute Class" Url="html/850387612.htm" />
+    <HelpKINode Title="PacketIgnorePropertyAttribute Members" Url="html/574628290.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Attributes.PacketRequestAttribute class">
+    <HelpKINode Title="PacketRequestAttribute Class" Url="html/502842411.htm" />
+    <HelpKINode Title="PacketRequestAttribute Members" Url="html/271900391.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Attributes.PacketTypeAttribute class">
+    <HelpKINode Title="PacketTypeAttribute Class" Url="html/1933256740.htm" />
+    <HelpKINode Title="PacketTypeAttribute Members" Url="html/227852320.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.BiDictionary(Of T, U) class">
+    <HelpKINode Title="BiDictionary(T, U) Class" Url="html/654999615.htm" />
+    <HelpKINode Title="BiDictionary(T, U) Members" Url="html/862449856.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.BiDictionary&lt;T, U&gt; class">
+    <HelpKINode Title="BiDictionary(T, U) Class" Url="html/654999615.htm" />
+    <HelpKINode Title="BiDictionary(T, U) Members" Url="html/862449856.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.ClientConnectionContainer class">
+    <HelpKINode Title="ClientConnectionContainer Class" Url="html/855127906.htm" />
+    <HelpKINode Title="ClientConnectionContainer Members" Url="html/1955752747.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Connection class">
+    <HelpKINode Title="Connection Class" Url="html/341087091.htm" />
+    <HelpKINode Title="Connection Members" Url="html/1147375807.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.ConnectionContainer class">
+    <HelpKINode Title="ConnectionContainer Class" Url="html/1033133284.htm" />
+    <HelpKINode Title="ConnectionContainer Members" Url="html/1171567300.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.ConnectionFactory class">
+    <HelpKINode Title="ConnectionFactory Class" Url="html/1477416759.htm" />
+    <HelpKINode Title="ConnectionFactory Members" Url="html/772217361.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.ConnectionResult enumeration" Url="html/1114549727.htm" />
+  <HelpKINode Title="Network.Converter namespace" Url="html/415299578.htm" />
+  <HelpKINode Title="Network.Converter.ObjectState enumeration" Url="html/639667593.htm" />
+  <HelpKINode Title="Network.Converter.PacketConverter class">
+    <HelpKINode Title="PacketConverter Class" Url="html/1991416971.htm" />
+    <HelpKINode Title="PacketConverter Members" Url="html/900379205.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Enums namespace" Url="html/394438547.htm" />
+  <HelpKINode Title="Network.Enums.CloseReason enumeration" Url="html/333965756.htm" />
+  <HelpKINode Title="Network.Enums.ConnectionType enumeration" Url="html/1493601306.htm" />
+  <HelpKINode Title="Network.Enums.PacketState enumeration" Url="html/1137178920.htm" />
+  <HelpKINode Title="Network.Extensions namespace" Url="html/1043403975.htm" />
+  <HelpKINode Title="Network.Extensions.ConnectionExtension class">
+    <HelpKINode Title="ConnectionExtension Class" Url="html/1749513503.htm" />
+    <HelpKINode Title="ConnectionExtension Members" Url="html/899032871.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Extensions.EnumeratorExtension class">
+    <HelpKINode Title="EnumeratorExtension Class" Url="html/1997586611.htm" />
+    <HelpKINode Title="EnumeratorExtension Members" Url="html/1610431209.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Extensions.ThreadExtension class">
+    <HelpKINode Title="ThreadExtension Class" Url="html/389351793.htm" />
+    <HelpKINode Title="ThreadExtension Members" Url="html/1174158283.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Extensions.WaitHandleExtensions class">
+    <HelpKINode Title="WaitHandleExtensions Class" Url="html/1018402018.htm" />
+    <HelpKINode Title="WaitHandleExtensions Members" Url="html/537471115.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Interfaces namespace" Url="html/1182645627.htm" />
+  <HelpKINode Title="Network.Interfaces.IPacketHandler interface">
+    <HelpKINode Title="IPacketHandler Interface" Url="html/1858495344.htm" />
+    <HelpKINode Title="IPacketHandler Members" Url="html/1286891060.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Interfaces.PacketReceivedHandler(Of T) delegate" Url="html/80332564.htm" />
+  <HelpKINode Title="Network.Interfaces.PacketReceivedHandler&lt;T&gt; delegate" Url="html/80332564.htm" />
+  <HelpKINode Title="Network.ObjectMap class">
+    <HelpKINode Title="ObjectMap Class" Url="html/119815437.htm" />
+    <HelpKINode Title="ObjectMap Members" Url="html/1717803077.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packet class">
+    <HelpKINode Title="Packet Class" Url="html/234734502.htm" />
+    <HelpKINode Title="Packet Members" Url="html/162151207.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets namespace" Url="html/933020207.htm" />
+  <HelpKINode Title="Network.Packets.AddPacketTypeRequest class">
+    <HelpKINode Title="AddPacketTypeRequest Class" Url="html/1315620228.htm" />
+    <HelpKINode Title="AddPacketTypeRequest Members" Url="html/1262594665.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.AddPacketTypeResponse class">
+    <HelpKINode Title="AddPacketTypeResponse Class" Url="html/806442894.htm" />
+    <HelpKINode Title="AddPacketTypeResponse Members" Url="html/788262538.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.CloseRequest class">
+    <HelpKINode Title="CloseRequest Class" Url="html/545608149.htm" />
+    <HelpKINode Title="CloseRequest Members" Url="html/1555133604.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.DisableWriteLock class">
+    <HelpKINode Title="DisableWriteLock Class" Url="html/619277359.htm" />
+    <HelpKINode Title="DisableWriteLock Members" Url="html/868709198.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.EstablishUdpRequest class">
+    <HelpKINode Title="EstablishUdpRequest Class" Url="html/1855861709.htm" />
+    <HelpKINode Title="EstablishUdpRequest Members" Url="html/1419372363.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.EstablishUdpResponse class">
+    <HelpKINode Title="EstablishUdpResponse Class" Url="html/1545381366.htm" />
+    <HelpKINode Title="EstablishUdpResponse Members" Url="html/1754044617.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.EstablishUdpResponseACK class">
+    <HelpKINode Title="EstablishUdpResponseACK Class" Url="html/1764120369.htm" />
+    <HelpKINode Title="EstablishUdpResponseACK Members" Url="html/1521171487.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.PingRequest class">
+    <HelpKINode Title="PingRequest Class" Url="html/1967488332.htm" />
+    <HelpKINode Title="PingRequest Members" Url="html/143820094.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.PingResponse class">
+    <HelpKINode Title="PingResponse Class" Url="html/1577697645.htm" />
+    <HelpKINode Title="PingResponse Members" Url="html/951578285.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.RequestPacket class">
+    <HelpKINode Title="RequestPacket Class" Url="html/2049741187.htm" />
+    <HelpKINode Title="RequestPacket Members" Url="html/1271914549.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.Packets.ResponsePacket class">
+    <HelpKINode Title="ResponsePacket Class" Url="html/903171219.htm" />
+    <HelpKINode Title="ResponsePacket Members" Url="html/158304137.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.ServerConnectionContainer class">
+    <HelpKINode Title="ServerConnectionContainer Class" Url="html/1999300433.htm" />
+    <HelpKINode Title="ServerConnectionContainer Members" Url="html/93520798.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.TcpConnection class">
+    <HelpKINode Title="TcpConnection Class" Url="html/376892751.htm" />
+    <HelpKINode Title="TcpConnection Members" Url="html/1745044112.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.UdpConnection class">
+    <HelpKINode Title="UdpConnection Class" Url="html/1089476074.htm" />
+    <HelpKINode Title="UdpConnection Members" Url="html/275658561.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Network.UID namespace" Url="html/1385271160.htm" />
+  <HelpKINode Title="Network.UID.Generator class">
+    <HelpKINode Title="Generator Class" Url="html/1205012647.htm" />
+    <HelpKINode Title="Generator Members" Url="html/267733908.htm" />
+  </HelpKINode>
+  <HelpKINode Title="NetworkError enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="NetworkError field" Url="html/584629151.htm" />
+  <HelpKINode Title="nextPingStopWatch field" Url="html/343600329.htm" />
+  <HelpKINode Title="NoDelay property">
+    <HelpKINode Title="NoDelay Property " Url="html/1588377130.htm" />
+    <HelpKINode Title="NoDelay Property " Url="html/1079556507.htm" />
+    <HelpKINode Title="NoDelay Property " Url="html/1634552793.htm" />
+  </HelpKINode>
+  <HelpKINode Title="NOT_NULL enumeration member" Url="html/639667593.htm" />
+  <HelpKINode Title="NOT_NULL field" Url="html/1613607378.htm" />
+  <HelpKINode Title="NULL enumeration member" Url="html/639667593.htm" />
+  <HelpKINode Title="NULL field" Url="html/348622247.htm" />
+  <HelpKINode Title="ObjectMap class">
+    <HelpKINode Title="ObjectMap Class" Url="html/119815437.htm" />
+    <HelpKINode Title="ObjectMap Members" Url="html/1717803077.htm" />
+    <HelpKINode Title="about ObjectMap class" Url="html/119815437.htm" />
+    <HelpKINode Title="all members" Url="html/1717803077.htm" />
+    <HelpKINode Title="fields" Url="html/1171102533.htm" />
+    <HelpKINode Title="methods" Url="html/334307264.htm" />
+    <HelpKINode Title="properties" Url="html/256741743.htm" />
+  </HelpKINode>
+  <HelpKINode Title="objectMap field" Url="html/585473486.htm" />
+  <HelpKINode Title="ObjectMap.HasHandle method" Url="html/1601439176.htm" />
+  <HelpKINode Title="ObjectMap.id_methodInfo_object field" Url="html/980100867.htm" />
+  <HelpKINode Title="ObjectMap.Item property">
+    <HelpKINode Title="Item Property " Url="html/833746653.htm" />
+    <HelpKINode Title="Item Property " Url="html/302938371.htm" />
+    <HelpKINode Title="Item Property " Url="html/315441643.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ObjectMap.RegisterPacketHandler method" Url="html/917400816.htm" />
+  <HelpKINode Title="ObjectMap.RegisterStaticPacketHandler(Of T) method" Url="html/544638511.htm" />
+  <HelpKINode Title="ObjectMap.RegisterStaticPacketHandler&lt;T&gt; method" Url="html/544638511.htm" />
+  <HelpKINode Title="ObjectMap.type_object_id field" Url="html/2039772860.htm" />
+  <HelpKINode Title="ObjectMap.UnRegisterPacketHandler(Of T) method" Url="html/1038006080.htm" />
+  <HelpKINode Title="ObjectMap.UnRegisterPacketHandler&lt;T&gt; method" Url="html/1038006080.htm" />
+  <HelpKINode Title="ObjectMap.UnRegisterStaticPacketHandler(Of T) method" Url="html/467251680.htm" />
+  <HelpKINode Title="ObjectMap.UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/467251680.htm" />
+  <HelpKINode Title="ObjectMapper property" Url="html/1777196469.htm" />
+  <HelpKINode Title="ObjectState enumeration" Url="html/639667593.htm" />
+  <HelpKINode Title="ObjectState.NOT_NULL field" Url="html/1613607378.htm" />
+  <HelpKINode Title="ObjectState.NULL field" Url="html/348622247.htm" />
+  <HelpKINode Title="OpenNewTCPConnection method" Url="html/160177598.htm" />
+  <HelpKINode Title="OpenNewUDPConnection method" Url="html/938397123.htm" />
+  <HelpKINode Title="Packet class">
+    <HelpKINode Title="Packet Class" Url="html/234734502.htm" />
+    <HelpKINode Title="Packet Members" Url="html/162151207.htm" />
+    <HelpKINode Title="about Packet class" Url="html/234734502.htm" />
+    <HelpKINode Title="all members" Url="html/162151207.htm" />
+    <HelpKINode Title="methods" Url="html/127546259.htm" />
+    <HelpKINode Title="properties" Url="html/561980944.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Packet.BeforeReceive method" Url="html/66909175.htm" />
+  <HelpKINode Title="Packet.BeforeSend method" Url="html/989562779.htm" />
+  <HelpKINode Title="Packet.ID property" Url="html/116476646.htm" />
+  <HelpKINode Title="Packet.ReceiveTime property" Url="html/896740885.htm" />
+  <HelpKINode Title="Packet.Size property" Url="html/1367808302.htm" />
+  <HelpKINode Title="Packet.State property" Url="html/982622172.htm" />
+  <HelpKINode Title="PacketConverter class">
+    <HelpKINode Title="PacketConverter Class" Url="html/1991416971.htm" />
+    <HelpKINode Title="PacketConverter Members" Url="html/900379205.htm" />
+    <HelpKINode Title="about PacketConverter class" Url="html/1991416971.htm" />
+    <HelpKINode Title="all members" Url="html/900379205.htm" />
+    <HelpKINode Title="fields" Url="html/1827770622.htm" />
+    <HelpKINode Title="methods" Url="html/110720672.htm" />
+  </HelpKINode>
+  <HelpKINode Title="packetConverter field" Url="html/1934769634.htm" />
+  <HelpKINode Title="PacketConverter.GetBytes method" Url="html/220088853.htm" />
+  <HelpKINode Title="PacketConverter.GetBytesFromArray method" Url="html/474413682.htm" />
+  <HelpKINode Title="PacketConverter.GetBytesFromCustomObject method" Url="html/1880659763.htm" />
+  <HelpKINode Title="PacketConverter.GetBytesFromList method" Url="html/2091756541.htm" />
+  <HelpKINode Title="PacketConverter.GetPacketProperties method" Url="html/1154784859.htm" />
+  <HelpKINode Title="PacketConverter.IsPrimitive method" Url="html/1747929193.htm" />
+  <HelpKINode Title="PacketConverter.packetProperties field" Url="html/1556380875.htm" />
+  <HelpKINode Title="PacketConverter.ReadArrayFromStream method" Url="html/2101282669.htm" />
+  <HelpKINode Title="PacketConverter.ReadListFromStream method" Url="html/333820225.htm" />
+  <HelpKINode Title="PacketConverter.ReadObjectFromStream method" Url="html/1958002691.htm" />
+  <HelpKINode Title="PacketConverter.ReadPrimitiveFromStream method" Url="html/761627210.htm" />
+  <HelpKINode Title="PacketConverter.SetProperties method" Url="html/551156679.htm" />
+  <HelpKINode Title="PacketIgnorePropertyAttribute class">
+    <HelpKINode Title="PacketIgnorePropertyAttribute Class" Url="html/850387612.htm" />
+    <HelpKINode Title="PacketIgnorePropertyAttribute Members" Url="html/574628290.htm" />
+    <HelpKINode Title="about PacketIgnorePropertyAttribute class" Url="html/850387612.htm" />
+    <HelpKINode Title="all members" Url="html/574628290.htm" />
+    <HelpKINode Title="methods" Url="html/664832636.htm" />
+    <HelpKINode Title="properties" Url="html/394215887.htm" />
+  </HelpKINode>
+  <HelpKINode Title="packetProperties field" Url="html/1556380875.htm" />
+  <HelpKINode Title="packetReceivedEvent field" Url="html/2073297708.htm" />
+  <HelpKINode Title="PacketReceivedHandler(Of T) delegate" Url="html/80332564.htm" />
+  <HelpKINode Title="PacketReceivedHandler&lt;T&gt; delegate" Url="html/80332564.htm" />
+  <HelpKINode Title="PacketRequestAttribute class">
+    <HelpKINode Title="PacketRequestAttribute Class" Url="html/502842411.htm" />
+    <HelpKINode Title="PacketRequestAttribute Members" Url="html/271900391.htm" />
+    <HelpKINode Title="about PacketRequestAttribute class" Url="html/502842411.htm" />
+    <HelpKINode Title="all members" Url="html/271900391.htm" />
+    <HelpKINode Title="constructor" Url="html/1186182520.htm" />
+    <HelpKINode Title="methods" Url="html/401658997.htm" />
+    <HelpKINode Title="properties" Url="html/395551313.htm" />
+  </HelpKINode>
+  <HelpKINode Title="PacketRequestAttribute.PacketRequestAttribute constructor" Url="html/1186182520.htm" />
+  <HelpKINode Title="PacketRequestAttribute.RequestType property" Url="html/1010596976.htm" />
+  <HelpKINode Title="PacketState enumeration" Url="html/1137178920.htm" />
+  <HelpKINode Title="PacketState.ConnectionNotAlive field" Url="html/1607172166.htm" />
+  <HelpKINode Title="PacketState.Success field" Url="html/916880558.htm" />
+  <HelpKINode Title="PacketState.Timeout field" Url="html/31470208.htm" />
+  <HelpKINode Title="PacketTypeAttribute class">
+    <HelpKINode Title="PacketTypeAttribute Class" Url="html/1933256740.htm" />
+    <HelpKINode Title="PacketTypeAttribute Members" Url="html/227852320.htm" />
+    <HelpKINode Title="about PacketTypeAttribute class" Url="html/1933256740.htm" />
+    <HelpKINode Title="all members" Url="html/227852320.htm" />
+    <HelpKINode Title="constructor" Url="html/1271874181.htm" />
+    <HelpKINode Title="methods" Url="html/1403617108.htm" />
+    <HelpKINode Title="properties" Url="html/1314302127.htm" />
+  </HelpKINode>
+  <HelpKINode Title="PacketTypeAttribute.Id property" Url="html/1094550488.htm" />
+  <HelpKINode Title="PacketTypeAttribute.PacketTypeAttribute constructor" Url="html/1271874181.htm" />
+  <HelpKINode Title="pendingUDPConnections field" Url="html/275530108.htm" />
+  <HelpKINode Title="pendingUnknownPackets field" Url="html/2082943562.htm" />
+  <HelpKINode Title="Ping property" Url="html/1527947390.htm" />
+  <HelpKINode Title="PingRequest class">
+    <HelpKINode Title="PingRequest Class" Url="html/1967488332.htm" />
+    <HelpKINode Title="PingRequest Members" Url="html/143820094.htm" />
+    <HelpKINode Title="about PingRequest class" Url="html/1967488332.htm" />
+    <HelpKINode Title="all members" Url="html/143820094.htm" />
+    <HelpKINode Title="methods" Url="html/936341363.htm" />
+    <HelpKINode Title="properties" Url="html/1249126276.htm" />
+  </HelpKINode>
+  <HelpKINode Title="PingResponse class">
+    <HelpKINode Title="PingResponse Class" Url="html/1577697645.htm" />
+    <HelpKINode Title="PingResponse Members" Url="html/951578285.htm" />
+    <HelpKINode Title="about PingResponse class" Url="html/1577697645.htm" />
+    <HelpKINode Title="all members" Url="html/951578285.htm" />
+    <HelpKINode Title="methods" Url="html/1444205990.htm" />
+    <HelpKINode Title="properties" Url="html/2050122246.htm" />
+  </HelpKINode>
+  <HelpKINode Title="PING_INTERVALL field" Url="html/759500673.htm" />
+  <HelpKINode Title="Port property" Url="html/769902724.htm" />
+  <HelpKINode Title="ReadArrayFromStream method" Url="html/2101282669.htm" />
+  <HelpKINode Title="ReadBytes method">
+    <HelpKINode Title="ReadBytes Method " Url="html/195555831.htm" />
+    <HelpKINode Title="ReadBytes Method " Url="html/478915378.htm" />
+    <HelpKINode Title="ReadBytes Method " Url="html/1097240713.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ReadListFromStream method" Url="html/333820225.htm" />
+  <HelpKINode Title="ReadObjectFromStream method" Url="html/1958002691.htm" />
+  <HelpKINode Title="ReadPacketThreadException enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="ReadPacketThreadException field" Url="html/1694367280.htm" />
+  <HelpKINode Title="ReadPrimitiveFromStream method" Url="html/761627210.htm" />
+  <HelpKINode Title="readStreamThread field" Url="html/1553325775.htm" />
+  <HelpKINode Title="ReadWork method" Url="html/2011171345.htm" />
+  <HelpKINode Title="receivedAsyncPacket field" Url="html/945903066.htm" />
+  <HelpKINode Title="receivedBytes field" Url="html/1812063524.htm" />
+  <HelpKINode Title="receivedPackets field" Url="html/2089528080.htm" />
+  <HelpKINode Title="ReceiveTime property" Url="html/896740885.htm" />
+  <HelpKINode Title="Reconnect method" Url="html/216457582.htm" />
+  <HelpKINode Title="ReconnectInterval property" Url="html/1986671517.htm" />
+  <HelpKINode Title="reconnectTimer field" Url="html/1528875246.htm" />
+  <HelpKINode Title="RegisterPacketHandler method">
+    <HelpKINode Title="RegisterPacketHandler Method " Url="html/25845430.htm" />
+    <HelpKINode Title="RegisterPacketHandler Method " Url="html/917400816.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RegisterPacketHandler(Of T) method">
+    <HelpKINode Title="RegisterPacketHandler(T) Method " Url="html/1804707552.htm" />
+    <HelpKINode Title="RegisterPacketHandler(T) Method " Url="html/538160782.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RegisterPacketHandler&lt;T&gt; method">
+    <HelpKINode Title="RegisterPacketHandler(T) Method " Url="html/1804707552.htm" />
+    <HelpKINode Title="RegisterPacketHandler(T) Method " Url="html/538160782.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RegisterStaticPacketHandler(Of T) method">
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/544638511.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/1929125123.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/117285263.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/1837869651.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RegisterStaticPacketHandler&lt;T&gt; method">
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/544638511.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/1837869651.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/117285263.htm" />
+    <HelpKINode Title="RegisterStaticPacketHandler(T) Method " Url="html/1929125123.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RemoteEndPoint property" Url="html/1428778735.htm" />
+  <HelpKINode Title="RemoveElement method" Url="html/1887999241.htm" />
+  <HelpKINode Title="RequestPacket class">
+    <HelpKINode Title="RequestPacket Class" Url="html/2049741187.htm" />
+    <HelpKINode Title="RequestPacket Members" Url="html/1271914549.htm" />
+    <HelpKINode Title="about RequestPacket class" Url="html/2049741187.htm" />
+    <HelpKINode Title="all members" Url="html/1271914549.htm" />
+    <HelpKINode Title="methods" Url="html/1385265600.htm" />
+    <HelpKINode Title="properties" Url="html/6498214.htm" />
+  </HelpKINode>
+  <HelpKINode Title="requestResponseMap field" Url="html/1658203504.htm" />
+  <HelpKINode Title="RequestType property" Url="html/1010596976.htm" />
+  <HelpKINode Title="ResponsePacket class">
+    <HelpKINode Title="ResponsePacket Class" Url="html/903171219.htm" />
+    <HelpKINode Title="ResponsePacket Members" Url="html/158304137.htm" />
+    <HelpKINode Title="about ResponsePacket class" Url="html/903171219.htm" />
+    <HelpKINode Title="all members" Url="html/158304137.htm" />
+    <HelpKINode Title="constructor" Url="html/2084147295.htm" />
+    <HelpKINode Title="methods" Url="html/1961113997.htm" />
+    <HelpKINode Title="properties" Url="html/1737082508.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ResponsePacket.ResponsePacket constructor" Url="html/2084147295.htm" />
+  <HelpKINode Title="RestorePacketHandler method" Url="html/1709857780.htm" />
+  <HelpKINode Title="RTT property" Url="html/119854514.htm" />
+  <HelpKINode Title="Send method">
+    <HelpKINode Title="Send Method " Url="html/1399510053.htm" />
+    <HelpKINode Title="Send Method " Url="html/1154122340.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Send(Of T) method" Url="html/1271483355.htm" />
+  <HelpKINode Title="Send&lt;T&gt; method" Url="html/1271483355.htm" />
+  <HelpKINode Title="SendAsync method" Url="html/1225680049.htm" />
+  <HelpKINode Title="SendAsync(Of T) method" Url="html/1850012396.htm" />
+  <HelpKINode Title="SendAsync&lt;T&gt; method" Url="html/1850012396.htm" />
+  <HelpKINode Title="SendFast method" Url="html/1009272397.htm" />
+  <HelpKINode Title="SendFastAsync(Of T) method" Url="html/1997226284.htm" />
+  <HelpKINode Title="SendFastAsync&lt;T&gt; method" Url="html/1997226284.htm" />
+  <HelpKINode Title="sendFastBuffer field" Url="html/1367583895.htm" />
+  <HelpKINode Title="sendFastObjectBuffer field" Url="html/1605886016.htm" />
+  <HelpKINode Title="sendPackets field" Url="html/1226774837.htm" />
+  <HelpKINode Title="SendPing method">
+    <HelpKINode Title="SendPing Method " Url="html/1667250761.htm" />
+    <HelpKINode Title="SendPing Method " Url="html/912041427.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SendSlow method" Url="html/2080613411.htm" />
+  <HelpKINode Title="SendSlowAsync(Of T) method" Url="html/342037770.htm" />
+  <HelpKINode Title="SendSlowAsync&lt;T&gt; method" Url="html/342037770.htm" />
+  <HelpKINode Title="sendSlowBuffer field" Url="html/1146856106.htm" />
+  <HelpKINode Title="sendSlowObjectBuffer field" Url="html/1163449540.htm" />
+  <HelpKINode Title="ServerClosed enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="ServerClosed field" Url="html/307567163.htm" />
+  <HelpKINode Title="ServerConnectionContainer class">
+    <HelpKINode Title="ServerConnectionContainer Class" Url="html/1999300433.htm" />
+    <HelpKINode Title="ServerConnectionContainer Members" Url="html/93520798.htm" />
+    <HelpKINode Title="about ServerConnectionContainer class" Url="html/1999300433.htm" />
+    <HelpKINode Title="all members" Url="html/93520798.htm" />
+    <HelpKINode Title="constructor" Url="html/1281110947.htm" />
+    <HelpKINode Title="events" Url="html/642374985.htm" />
+    <HelpKINode Title="fields" Url="html/1500165379.htm" />
+    <HelpKINode Title="methods" Url="html/1240602436.htm" />
+    <HelpKINode Title="properties" Url="html/1238347847.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ServerConnectionContainer.AllowUDPConnections property" Url="html/903665129.htm" />
+  <HelpKINode Title="ServerConnectionContainer.CloseConnections method" Url="html/43021429.htm" />
+  <HelpKINode Title="ServerConnectionContainer.CloseTCPConnections method" Url="html/1708587700.htm" />
+  <HelpKINode Title="ServerConnectionContainer.CloseUDPConnections method" Url="html/210475469.htm" />
+  <HelpKINode Title="ServerConnectionContainer.ConnectionEstablished event" Url="html/986475338.htm" />
+  <HelpKINode Title="ServerConnectionContainer.connectionEstablished event" Url="html/196663677.htm" />
+  <HelpKINode Title="ServerConnectionContainer.ConnectionLost event" Url="html/356411619.htm" />
+  <HelpKINode Title="ServerConnectionContainer.connectionLost event" Url="html/357426179.htm" />
+  <HelpKINode Title="ServerConnectionContainer.connections field" Url="html/1273792259.htm" />
+  <HelpKINode Title="ServerConnectionContainer.Count property" Url="html/1173936176.htm" />
+  <HelpKINode Title="ServerConnectionContainer.IsOnline property" Url="html/968417409.htm" />
+  <HelpKINode Title="ServerConnectionContainer.Item property">
+    <HelpKINode Title="Item Property " Url="html/1559445715.htm" />
+    <HelpKINode Title="Item Property " Url="html/1817837473.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ServerConnectionContainer.listener field" Url="html/1846302546.htm" />
+  <HelpKINode Title="ServerConnectionContainer.ServerConnectionContainer constructor" Url="html/1281110947.htm" />
+  <HelpKINode Title="ServerConnectionContainer.Start method" Url="html/1498229697.htm" />
+  <HelpKINode Title="ServerConnectionContainer.Stop method" Url="html/1641293012.htm" />
+  <HelpKINode Title="ServerConnectionContainer.tcpOrUdpConnectionClosed method" Url="html/76575917.htm" />
+  <HelpKINode Title="ServerConnectionContainer.TCP_BroadCast method" Url="html/259191041.htm" />
+  <HelpKINode Title="ServerConnectionContainer.ToString method" Url="html/345969403.htm" />
+  <HelpKINode Title="ServerConnectionContainer.UDPConnectionLimit property" Url="html/1889156395.htm" />
+  <HelpKINode Title="ServerConnectionContainer.udpConnectionReceived method" Url="html/578481639.htm" />
+  <HelpKINode Title="ServerConnectionContainer.UDP_BroadCast method" Url="html/1156170667.htm" />
+  <HelpKINode Title="SetProperties method" Url="html/551156679.htm" />
+  <HelpKINode Title="Shutdown method" Url="html/1334967876.htm" />
+  <HelpKINode Title="Size property" Url="html/1367808302.htm" />
+  <HelpKINode Title="slimSemaphore field" Url="html/2094689561.htm" />
+  <HelpKINode Title="socket field">
+    <HelpKINode Title="socket Field" Url="html/1006954482.htm" />
+    <HelpKINode Title="socket Field" Url="html/1165318398.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Start method" Url="html/1498229697.htm" />
+  <HelpKINode Title="State property" Url="html/982622172.htm" />
+  <HelpKINode Title="Stop method" Url="html/1641293012.htm" />
+  <HelpKINode Title="stream field" Url="html/2084825267.htm" />
+  <HelpKINode Title="Success enumeration member" Url="html/1137178920.htm" />
+  <HelpKINode Title="Success field" Url="html/916880558.htm" />
+  <HelpKINode Title="TCP enumeration member" Url="html/1493601306.htm" />
+  <HelpKINode Title="TCP field" Url="html/1458973623.htm" />
+  <HelpKINode Title="TcpConnection class">
+    <HelpKINode Title="TcpConnection Class" Url="html/376892751.htm" />
+    <HelpKINode Title="TcpConnection Members" Url="html/1745044112.htm" />
+    <HelpKINode Title="about TcpConnection class" Url="html/376892751.htm" />
+    <HelpKINode Title="all members" Url="html/1745044112.htm" />
+    <HelpKINode Title="constructor" Url="html/129696913.htm" />
+    <HelpKINode Title="events" Url="html/387597146.htm" />
+    <HelpKINode Title="fields" Url="html/2075139525.htm" />
+    <HelpKINode Title="methods" Url="html/1792128025.htm" />
+    <HelpKINode Title="properties" Url="html/1862286321.htm" />
+  </HelpKINode>
+  <HelpKINode Title="tcpConnection field" Url="html/195120486.htm" />
+  <HelpKINode Title="TcpConnection property" Url="html/1690668749.htm" />
+  <HelpKINode Title="TcpConnection.client field" Url="html/2021977467.htm" />
+  <HelpKINode Title="TcpConnection.CloseHandler method" Url="html/1155705288.htm" />
+  <HelpKINode Title="TcpConnection.CloseSocket method" Url="html/177435209.htm" />
+  <HelpKINode Title="TcpConnection.DualMode property" Url="html/1616563775.htm" />
+  <HelpKINode Title="TcpConnection.EstablishUdpConnection method" Url="html/1359567710.htm" />
+  <HelpKINode Title="TcpConnection.Fragment property" Url="html/1825332455.htm" />
+  <HelpKINode Title="TcpConnection.HopLimit property" Url="html/1771956697.htm" />
+  <HelpKINode Title="TcpConnection.IPLocalEndPoint property" Url="html/1078757739.htm" />
+  <HelpKINode Title="TcpConnection.IPRemoteEndPoint property" Url="html/1662824105.htm" />
+  <HelpKINode Title="TcpConnection.IsRoutingEnabled property" Url="html/1641922042.htm" />
+  <HelpKINode Title="TcpConnection.LocalEndPoint property" Url="html/311217224.htm" />
+  <HelpKINode Title="TcpConnection.NoDelay property" Url="html/1588377130.htm" />
+  <HelpKINode Title="TcpConnection.ReadBytes method" Url="html/195555831.htm" />
+  <HelpKINode Title="TcpConnection.RemoteEndPoint property" Url="html/1428778735.htm" />
+  <HelpKINode Title="TcpConnection.socket field" Url="html/1165318398.htm" />
+  <HelpKINode Title="TcpConnection.stream field" Url="html/2084825267.htm" />
+  <HelpKINode Title="TcpConnection.TcpConnection constructor" Url="html/129696913.htm" />
+  <HelpKINode Title="TcpConnection.TTL property" Url="html/1761895245.htm" />
+  <HelpKINode Title="TcpConnection.UseLoopback property" Url="html/1263734639.htm" />
+  <HelpKINode Title="TcpConnection.WriteBytes method" Url="html/1440551167.htm" />
+  <HelpKINode Title="TCPConnectionNotAlive enumeration member" Url="html/1114549727.htm" />
+  <HelpKINode Title="TCPConnectionNotAlive field" Url="html/1200682001.htm" />
+  <HelpKINode Title="tcpOrUdpConnectionClosed method" Url="html/76575917.htm" />
+  <HelpKINode Title="tcpPacketHandlerBackup field" Url="html/82831747.htm" />
+  <HelpKINode Title="tcpPacketHandlerBuffer field" Url="html/174230466.htm" />
+  <HelpKINode Title="tcpUnPacketHandlerBuffer field" Url="html/1348415595.htm" />
+  <HelpKINode Title="TCP_BroadCast method" Url="html/259191041.htm" />
+  <HelpKINode Title="TCP_RegisterPacketHandler(Of T) method" Url="html/512544598.htm" />
+  <HelpKINode Title="TCP_RegisterPacketHandler&lt;T&gt; method" Url="html/512544598.htm" />
+  <HelpKINode Title="TCP_RegisterStaticPacketHandler(Of T) method" Url="html/1492756856.htm" />
+  <HelpKINode Title="TCP_RegisterStaticPacketHandler&lt;T&gt; method" Url="html/1492756856.htm" />
+  <HelpKINode Title="TCP_UnRegisterPacketHandler(Of T) method" Url="html/348432034.htm" />
+  <HelpKINode Title="TCP_UnRegisterPacketHandler&lt;T&gt; method" Url="html/348432034.htm" />
+  <HelpKINode Title="TCP_UnRegisterStaticPacketHandler(Of T) method" Url="html/1752120383.htm" />
+  <HelpKINode Title="TCP_UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1752120383.htm" />
+  <HelpKINode Title="ThreadExtension class">
+    <HelpKINode Title="ThreadExtension Class" Url="html/389351793.htm" />
+    <HelpKINode Title="ThreadExtension Members" Url="html/1174158283.htm" />
+    <HelpKINode Title="about ThreadExtension class" Url="html/389351793.htm" />
+    <HelpKINode Title="all members" Url="html/1174158283.htm" />
+    <HelpKINode Title="methods" Url="html/786705102.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ThreadExtension.AbortSave method" Url="html/737215164.htm" />
+  <HelpKINode Title="Timeout enumeration member">
+    <HelpKINode Title="CloseReason Enumeration" Url="html/333965756.htm" />
+    <HelpKINode Title="ConnectionResult Enumeration" Url="html/1114549727.htm" />
+    <HelpKINode Title="PacketState Enumeration" Url="html/1137178920.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Timeout field">
+    <HelpKINode Title="Timeout Field" Url="html/948630381.htm" />
+    <HelpKINode Title="Timeout Field" Url="html/31470208.htm" />
+    <HelpKINode Title="Timeout Field" Url="html/1787330148.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TIMEOUT property" Url="html/339958091.htm" />
+  <HelpKINode Title="ToList(Of T) method" Url="html/1458221869.htm" />
+  <HelpKINode Title="ToList&lt;T&gt; method" Url="html/1458221869.htm" />
+  <HelpKINode Title="ToString method">
+    <HelpKINode Title="ToString Method " Url="html/345969403.htm" />
+    <HelpKINode Title="ToString Method " Url="html/1245640017.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TryConnect method" Url="html/98678577.htm" />
+  <HelpKINode Title="TryToConnect method" Url="html/619163213.htm" />
+  <HelpKINode Title="TTL property">
+    <HelpKINode Title="TTL Property " Url="html/1761895245.htm" />
+    <HelpKINode Title="TTL Property " Url="html/1409624654.htm" />
+    <HelpKINode Title="TTL Property " Url="html/533267555.htm" />
+  </HelpKINode>
+  <HelpKINode Title="typeByte field" Url="html/2079758828.htm" />
+  <HelpKINode Title="type_object_id field" Url="html/2039772860.htm" />
+  <HelpKINode Title="UDP enumeration member" Url="html/1493601306.htm" />
+  <HelpKINode Title="UDP field" Url="html/497341514.htm" />
+  <HelpKINode Title="UdpConnection class">
+    <HelpKINode Title="UdpConnection Class" Url="html/1089476074.htm" />
+    <HelpKINode Title="UdpConnection Members" Url="html/275658561.htm" />
+    <HelpKINode Title="about UdpConnection class" Url="html/1089476074.htm" />
+    <HelpKINode Title="all members" Url="html/275658561.htm" />
+    <HelpKINode Title="constructor" Url="html/2087875064.htm" />
+    <HelpKINode Title="events" Url="html/2089794219.htm" />
+    <HelpKINode Title="fields" Url="html/471443583.htm" />
+    <HelpKINode Title="methods" Url="html/1029118151.htm" />
+    <HelpKINode Title="properties" Url="html/289742686.htm" />
+  </HelpKINode>
+  <HelpKINode Title="udpConnection field" Url="html/19156730.htm" />
+  <HelpKINode Title="UdpConnection property" Url="html/435631825.htm" />
+  <HelpKINode Title="UdpConnection.AcknowledgePending property" Url="html/1161116356.htm" />
+  <HelpKINode Title="UdpConnection.client field" Url="html/100716949.htm" />
+  <HelpKINode Title="UdpConnection.CloseHandler method" Url="html/453985269.htm" />
+  <HelpKINode Title="UdpConnection.CloseSocket method" Url="html/1904366818.htm" />
+  <HelpKINode Title="UdpConnection.DualMode property" Url="html/1194685306.htm" />
+  <HelpKINode Title="UdpConnection.Fragment property" Url="html/645869494.htm" />
+  <HelpKINode Title="UdpConnection.HopLimit property" Url="html/285592894.htm" />
+  <HelpKINode Title="UdpConnection.ipEndPoint field" Url="html/851888723.htm" />
+  <HelpKINode Title="UdpConnection.IPLocalEndPoint property" Url="html/1811296030.htm" />
+  <HelpKINode Title="UdpConnection.IPRemoteEndPoint property" Url="html/723599823.htm" />
+  <HelpKINode Title="UdpConnection.IsChecksumEnabled property" Url="html/1810471636.htm" />
+  <HelpKINode Title="UdpConnection.IsRoutingEnabled property" Url="html/443533550.htm" />
+  <HelpKINode Title="UdpConnection.NoDelay property" Url="html/1079556507.htm" />
+  <HelpKINode Title="UdpConnection.ReadBytes method" Url="html/1097240713.htm" />
+  <HelpKINode Title="UdpConnection.receivedBytes field" Url="html/1812063524.htm" />
+  <HelpKINode Title="UdpConnection.socket field" Url="html/1006954482.htm" />
+  <HelpKINode Title="UdpConnection.TTL property" Url="html/533267555.htm" />
+  <HelpKINode Title="UdpConnection.UdpConnection constructor" Url="html/2087875064.htm" />
+  <HelpKINode Title="UdpConnection.UseLoopback property" Url="html/1139658465.htm" />
+  <HelpKINode Title="UdpConnection.WriteBytes method" Url="html/218982241.htm" />
+  <HelpKINode Title="UDPConnectionLimit property" Url="html/1889156395.htm" />
+  <HelpKINode Title="udpConnectionReceived method" Url="html/578481639.htm" />
+  <HelpKINode Title="UdpLimitExceeded enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="UdpLimitExceeded field" Url="html/895560599.htm" />
+  <HelpKINode Title="udpPacketHandlerBackup field" Url="html/1314453763.htm" />
+  <HelpKINode Title="udpPacketHandlerBuffer field" Url="html/1420794690.htm" />
+  <HelpKINode Title="UdpPort property">
+    <HelpKINode Title="UdpPort Property " Url="html/2066227803.htm" />
+    <HelpKINode Title="UdpPort Property " Url="html/1235882944.htm" />
+  </HelpKINode>
+  <HelpKINode Title="udpUnPacketHandlerBuffer field" Url="html/251454677.htm" />
+  <HelpKINode Title="UDP_BroadCast method" Url="html/1156170667.htm" />
+  <HelpKINode Title="UDP_RegisterPacketHandler(Of T) method" Url="html/1054410773.htm" />
+  <HelpKINode Title="UDP_RegisterPacketHandler&lt;T&gt; method" Url="html/1054410773.htm" />
+  <HelpKINode Title="UDP_RegisterStaticPacketHandler(Of T) method" Url="html/777037650.htm" />
+  <HelpKINode Title="UDP_RegisterStaticPacketHandler&lt;T&gt; method" Url="html/777037650.htm" />
+  <HelpKINode Title="UDP_UnRegisterPacketHandler(Of T) method" Url="html/571341038.htm" />
+  <HelpKINode Title="UDP_UnRegisterPacketHandler&lt;T&gt; method" Url="html/571341038.htm" />
+  <HelpKINode Title="UDP_UnRegisterStaticPacketHandler(Of T) method" Url="html/1913688358.htm" />
+  <HelpKINode Title="UDP_UnRegisterStaticPacketHandler&lt;T&gt; method" Url="html/1913688358.htm" />
+  <HelpKINode Title="UniqueIdentifier(Of T) method" Url="html/394788944.htm" />
+  <HelpKINode Title="UniqueIdentifier&lt;T&gt; method" Url="html/394788944.htm" />
+  <HelpKINode Title="UnknownPacket enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="UnknownPacket field" Url="html/259802487.htm" />
+  <HelpKINode Title="UnlockLocalConnection method" Url="html/1737614585.htm" />
+  <HelpKINode Title="UnlockRemoteConnection method" Url="html/421449638.htm" />
+  <HelpKINode Title="UnRegisterPacketHandler(Of T) method">
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1038006080.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1413842237.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/189468132.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1880641404.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UnRegisterPacketHandler&lt;T&gt; method">
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1413842237.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1038006080.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/189468132.htm" />
+    <HelpKINode Title="UnRegisterPacketHandler(T) Method " Url="html/1880641404.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UnRegisterStaticPacketHandler(Of T) method">
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/1288985959.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/1602414000.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/467251680.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/563414922.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UnRegisterStaticPacketHandler&lt;T&gt; method">
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/1288985959.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/563414922.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/1602414000.htm" />
+    <HelpKINode Title="UnRegisterStaticPacketHandler(T) Method " Url="html/467251680.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UseLoopback property">
+    <HelpKINode Title="UseLoopback Property " Url="html/416065110.htm" />
+    <HelpKINode Title="UseLoopback Property " Url="html/1139658465.htm" />
+    <HelpKINode Title="UseLoopback Property " Url="html/1263734639.htm" />
+  </HelpKINode>
+  <HelpKINode Title="values field" Url="html/579892250.htm" />
+  <HelpKINode Title="WaitHandleExtensions class">
+    <HelpKINode Title="WaitHandleExtensions Class" Url="html/1018402018.htm" />
+    <HelpKINode Title="WaitHandleExtensions Members" Url="html/537471115.htm" />
+    <HelpKINode Title="about WaitHandleExtensions class" Url="html/1018402018.htm" />
+    <HelpKINode Title="all members" Url="html/537471115.htm" />
+    <HelpKINode Title="methods" Url="html/2070493395.htm" />
+  </HelpKINode>
+  <HelpKINode Title="WaitHandleExtensions.AsTask method" Url="html/281221041.htm" />
+  <HelpKINode Title="WriteBytes method">
+    <HelpKINode Title="WriteBytes Method " Url="html/1051542380.htm" />
+    <HelpKINode Title="WriteBytes Method " Url="html/1440551167.htm" />
+    <HelpKINode Title="WriteBytes Method " Url="html/218982241.htm" />
+  </HelpKINode>
+  <HelpKINode Title="writeLock field" Url="html/286173177.htm" />
+  <HelpKINode Title="WriteLock property" Url="html/12862296.htm" />
+  <HelpKINode Title="writeLockBuffer field" Url="html/1663828898.htm" />
+  <HelpKINode Title="WritePacketThreadException enumeration member" Url="html/333965756.htm" />
+  <HelpKINode Title="WritePacketThreadException field" Url="html/1305925818.htm" />
+  <HelpKINode Title="writeStreamThread field" Url="html/2002075544.htm" />
+  <HelpKINode Title="WriteSubWork method" Url="html/611328644.htm" />
+  <HelpKINode Title="WriteWork method" Url="html/887089563.htm" />
+</HelpKI>

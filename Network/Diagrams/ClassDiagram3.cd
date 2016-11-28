@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Network.Async.AsyncReceiver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAEACAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Async\AsyncReceiver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Network.Attributes.PacketIgnorePropertyAttribute" Collapsed="true">
+    <Position X="21.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes\PacketIgnorePropertyAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Attributes.PacketRequestAttribute" Collapsed="true">
+    <Position X="23.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes\PacketRequestAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Attributes.PacketTypeAttribute" Collapsed="true">
+    <Position X="25.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes\PacketTypeAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.BiDictionary&lt;T, U&gt;" Collapsed="true">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAABAAAAFAICACAAAAAYAEAACAAAAAAAAAAAIAAQ=</HashCode>
+      <FileName>BiDictionary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.ClientConnectionContainer">
+    <Position X="0.5" Y="5.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>DwHSAAIJgiAAAUIFAMgAASKIgEYAkAkICADAImAABEA=</HashCode>
+      <FileName>ClientConnectionContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Network.Connection">
+    <Position X="7.25" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AUtSiIIBCeAAgAYAIGCABGAAQIIIDNgLCARiQiCQkMQ=</HashCode>
+      <FileName>Connection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Network.ConnectionContainer" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>ConnectionContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.ConnectionFactory" Collapsed="true">
+    <Position X="27" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAACIAAAAgAAAAAAAAAAAAAgAAAQIAAAAAAA=</HashCode>
+      <FileName>ConnectionFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.ObjectMap" Collapsed="true">
+    <Position X="25.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAAAAAAAQACAAAQAAAAAAAAAAACABAAgAAAAA=</HashCode>
+      <FileName>ObjectMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packet" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAQAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Packet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.ServerConnectionContainer">
+    <Position X="3.75" Y="5.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ABGAAAABgDAAKAAECAAARAQAAICAAAAAIAQAAAAAAAA=</HashCode>
+      <FileName>ServerConnectionContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.TcpConnection">
+    <Position X="9.25" Y="12" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAIEAQAAAAAAAAAAAGAQQAAIAEAJCAEgBAAQAAQ=</HashCode>
+      <FileName>TcpConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.UdpConnection">
+    <Position X="3.75" Y="12" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAIAAQAAAAAAAIAABGAAQAAICEAJAAEgBEAQAAQ=</HashCode>
+      <FileName>UdpConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Converter.PacketConverter" Collapsed="true">
+    <Position X="27" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYCAAIAAgAAAAAAACSAEAAAAAAAAABACAAAgAAAAAAA=</HashCode>
+      <FileName>Converter\PacketConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Extensions.ConnectionExtension" Collapsed="true">
+    <Position X="25.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAIAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\ConnectionExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Extensions.EnumeratorExtension" Collapsed="true">
+    <Position X="21.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Extensions\EnumeratorExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Extensions.ThreadExtension" Collapsed="true">
+    <Position X="27" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Extensions\ThreadExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Extensions.WaitHandleExtensions" Collapsed="true">
+    <Position X="21.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\WaitHandleExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.AddPacketTypeRequest" Collapsed="true">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\AddPacketTypeRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.AddPacketTypeResponse" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Packets\AddPacketTypeResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.CloseRequest" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\CloseRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.DisableWriteLock" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\DisableWriteLock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.EstablishUdpRequest" Collapsed="true">
+    <Position X="3.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\EstablishUdpRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.EstablishUdpResponse" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\EstablishUdpResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.EstablishUdpResponseACK" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\EstablishUdpResponseACK.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.PingRequest" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\PingRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.PingResponse" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\PingResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.RequestPacket" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\RequestPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.Packets.ResponsePacket" Collapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Packets\ResponsePacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network.UID.Generator" Collapsed="true">
+    <Position X="23.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAQAAAgAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>UID\Generator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Network.Interfaces.IPacketHandler" Collapsed="true">
+    <Position X="21.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAACABAAgAAAAA=</HashCode>
+      <FileName>Interfaces\IPacketHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Network.ConnectionResult" Collapsed="true">
+    <Position X="23.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAQAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ConnectionFactory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Network.Converter.ObjectState" Collapsed="true">
+    <Position X="27" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converter\PacketConverter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Network.Enums.CloseReason" Collapsed="true">
+    <Position X="21.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAEIAEBAAAAABUAAAAAAAAIAIAIAAAAEAAAQAAA=</HashCode>
+      <FileName>Enums\CloseReason.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Network.Enums.ConnectionType" Collapsed="true">
+    <Position X="25.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\ConnectionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Network.Enums.PacketState" Collapsed="true">
+    <Position X="21.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAEAAA=</HashCode>
+      <FileName>Enums\PacketState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Network.Interfaces.PacketReceivedHandler&lt;T&gt;" Collapsed="true">
+    <Position X="21.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPacketHandler.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

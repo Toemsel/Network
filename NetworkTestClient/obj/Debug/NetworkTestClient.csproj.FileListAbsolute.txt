@@ -1,0 +1,2 @@
+C:\Users\Thomas\Documents\Visual Studio 2015\Projects\Network\NetworkTestClient\bin\Debug\NetworkTestClient.exe.config
+C:\Users\Thomas\Source\Repos\Network\NetworkTestClient\bin\Debug\NetworkTestClient.exe.config
