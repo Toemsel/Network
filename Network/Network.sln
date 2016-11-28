@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network.csproj", "{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerClientPackets", "..\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestServer", "..\NetworkTestServer\NetworkTestServer.csproj", "{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkChatClient", "..\NetworkChatClient\NetworkChatClient.csproj", "{DC4FA414-B52D-4514-9D56-A08FBDFAEF0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,25 +35,12 @@ Global
 		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC4FA414-B52D-4514-9D56-A08FBDFAEF0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4FA414-B52D-4514-9D56-A08FBDFAEF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4FA414-B52D-4514-9D56-A08FBDFAEF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4FA414-B52D-4514-9D56-A08FBDFAEF0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://thomaschristof.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Network.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\NetworkTestClient\\NetworkTestClient.csproj
-		SccProjectName2 = ../NetworkTestClient
-		SccLocalPath2 = ..\\NetworkTestClient
-		SccProjectUniqueName3 = ..\\TestServerClientPackets\\TestServerClientPackets.csproj
-		SccProjectName3 = ../TestServerClientPackets
-		SccLocalPath3 = ..\\TestServerClientPackets
-		SccProjectUniqueName4 = ..\\NetworkTestServer\\NetworkTestServer.csproj
-		SccProjectName4 = ../NetworkTestServer
-		SccLocalPath4 = ..\\NetworkTestServer
 	EndGlobalSection
 EndGlobal

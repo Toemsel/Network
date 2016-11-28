@@ -14,7 +14,7 @@ namespace NetworkTestClient
     /// </summary>
     public class RawDataExample
     {
-        public async void Demo()
+        public void Demo()
         {
             ConnectionResult connectionResult = ConnectionResult.TCPConnectionNotAlive;
             //1. Establish a connection to the server.
