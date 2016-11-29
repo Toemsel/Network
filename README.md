@@ -66,6 +66,8 @@ Documentation http://www.indie-dev.at/?page_id=476 <br />
         }
 ```
 
+<img src="http://www.indie-dev.at/wp-content/uploads/2016/11/Demo.gif" />
+
 # Async Exmple
 ```c#
         public async void Demo()
