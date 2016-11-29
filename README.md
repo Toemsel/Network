@@ -147,3 +147,7 @@ Documentation http://www.indie-dev.at/?page_id=476 <br />
             bluetoothConnection.Item2.Send(new CalculationRequest(10, 10), this);
         }
    ```
+
+# Logging
+
+<img src="http://www.indie-dev.at/wp-content/uploads/2016/11/Logging.gif" />
