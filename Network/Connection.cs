@@ -770,7 +770,7 @@ namespace Network
         /// <summary>
         /// Unlocks the remote connection so that he is able to send packets.
         /// </summary>
-        internal void UnlockRemoteConnection()
+        public void UnlockRemoteConnection()
         {
             Send(new DisableWriteLock(), null, true);
         }
@@ -897,7 +897,7 @@ namespace Network
         /// <returns>Overall data about the connection.</returns>
         public override string ToString()
         {
-            return $"Local: {IPLocalEndPoint?.ToString()} Remove: {IPRemoteEndPoint?.ToString()}";
+            return $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
         }
     }
 }

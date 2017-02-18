@@ -16,6 +16,12 @@ namespace NetworkTestClient
     {
         public async void Demo()
         {
+            if(!BluetoothConnection.IsBluetoothSupported)
+            {
+                Console.WriteLine("Bluetooth is not supported on this Device");
+                return;
+            }
+
             //1. Get the clients in range.
             DeviceInfo[] devicesInRange = await ConnectionFactory.GetBluetoothDevicesAsync();
             if(devicesInRange.Length <= 0) return; //We need at least one bluetooth connection to deal with :)

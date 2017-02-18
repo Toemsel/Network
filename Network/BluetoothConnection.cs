@@ -111,6 +111,26 @@ namespace Network
         /// </summary>
         public int SignalStrength { get { return DeviceInfo.Rssi; } }
 
+        /// <summary>
+        /// Gets if Bluetooth is supported by the current device.
+        /// [True] if Bluetooth is supported. [False] if not.
+        /// </summary>
+        public static bool IsBluetoothSupported
+        {
+            get
+            {
+                try
+                {
+                    new BluetoothClient();
+                }
+                catch(PlatformNotSupportedException)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
         public override bool DualMode
         {
             get
