@@ -1,3 +1,9 @@
+# Build Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/j0x4d9ykbgomx8ta?svg=true)](https://ci.appveyor.com/project/Toemsel/network)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/j0x4d9ykbgomx8ta/branch/master?svg=true)](https://ci.appveyor.com/project/Toemsel/network/branch/master)
+
 # C# Network Library
 
 Tutorials http://www.indie-dev.at/?cat=86 <br />
