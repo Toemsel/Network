@@ -1,8 +1,12 @@
-# Build Status
+# Build Status AppVeyor
 
 [![Build status](https://ci.appveyor.com/api/projects/status/j0x4d9ykbgomx8ta?svg=true)](https://ci.appveyor.com/project/Toemsel/network)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/j0x4d9ykbgomx8ta/branch/master?svg=true)](https://ci.appveyor.com/project/Toemsel/network/branch/master)
+
+# Build Status Team Foundation Server
+
+[![Build status](https://thomaschristof.visualstudio.com/_apis/public/build/definitions/14e90972-5137-427d-837d-c428de2731d6/4/badge)](https://thomaschristof.visualstudio.com/_apis/public/build/definitions/14e90972-5137-427d-837d-c428de2731d6/4/badge)
 
 # C# Network Library
 
