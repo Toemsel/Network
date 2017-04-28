@@ -137,6 +137,9 @@ namespace Network.Logging
 
         private void LogPacket(byte[] packet, Packet packetObj, string direction)
         {
+            if (!EnableLogging)
+                return;
+
             var tableOutPut = BuildConsoleTable(packet, packetObj, direction);
             Log(tableOutPut.ToStringAlternative());
         }
