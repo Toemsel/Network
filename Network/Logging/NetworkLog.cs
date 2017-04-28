@@ -32,8 +32,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using ConsoleTables.Core;
 using Network.Enums;
+using ConsoleTables;
 
 namespace Network.Logging
 {
@@ -134,14 +134,38 @@ namespace Network.Logging
 
         private void LogPacket(byte[] packet, Packet packetObj, string direction)
         {
-            ConsoleTable tableOutPut = new ConsoleTable("Direction", "Type", "Local", "ASCII", "Packet");
-            tableOutPut.AddRow(direction,
-                connection.GetType().Name,
-                connection.IPLocalEndPoint?.ToString(),
-                Encoding.ASCII.GetString(packet).Replace("\0", "").
-                Replace("\n", "").Replace("\r", ""),
-                packetObj.GetType().Name.ToString());
+            var tableOutPut = BuildConsoleTable(packet, packetObj, direction);
             Log(tableOutPut.ToStringAlternative());
+        }
+
+        /// <summary>
+        /// Builds the console table.
+        /// </summary>
+        /// <param name="packet">The packet.</param>
+        /// <param name="packetObj">The packet object.</param>
+        /// <param name="direction">The direction.</param>
+        /// <returns>ConsoleTable.</returns>
+        private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, string direction)
+        {
+            var type = connection.GetType().Name;
+            var local = connection.IPLocalEndPoint?.ToString();
+            var ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
+            var packetName = packetObj.GetType().Name.ToString();
+
+            ConsoleTable tableOutPut = null;
+
+            if (string.IsNullOrWhiteSpace(ascii))
+            {
+                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "Packet");
+                tableOutPut.AddRow(direction, type, local, packetName);
+            }
+            else
+            {
+                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "ASCII", "Packet");
+                tableOutPut.AddRow(direction, type, local, ascii, packetName);
+            }
+
+            return tableOutPut;
         }
 
         /// <summary>

@@ -64,7 +64,6 @@ namespace Network
         /// Constants.
         /// </summary>
         protected const int PING_INTERVALL = 10000;
-        protected const int CPU_SAVE = 5;
 
         /// <summary>
         /// True if this instance should send in a specific interval a keep alive packet, to ensure
@@ -103,6 +102,12 @@ namespace Network
         private ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
         private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
         private ConcurrentQueue<Tuple<Packet, object>> writeLockBuffer = new ConcurrentQueue<Tuple<Packet, object>>();
+
+        /// <summary>
+        /// Events to save CPU time.
+        /// </summary>
+        private AutoResetEvent dataAvailableEvent = new AutoResetEvent(false);
+        private AutoResetEvent packetAvailableEvent = new AutoResetEvent(false);
 
         #region Threads
         private Thread readStreamThread;
@@ -235,6 +240,19 @@ namespace Network
         /// </summary>
         /// <value>Force to flush or not.</value>
         public bool ForceFlush { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the performance of the network lib.
+        /// The higher the sleep intervals, the slower the connection.
+        /// </summary>
+        /// <value>The performance.</value>
+        public Performance Performance { get; set; } = Performance.Default;
+
+        /// <summary>
+        /// Gets the performance as an integer.
+        /// </summary>
+        /// <value>The int performance.</value>
+        public int IntPerformance { get { return (int)Performance; } }
 
         /// <summary>
         /// Use your own packetConverter to serialize/deserialze objects.
@@ -461,7 +479,7 @@ namespace Network
         internal void Send(Packet packet, object instance, bool ignoreWriteLock)
         {
             //Ensure that everyone is aware of that packetType.
-            if(!typeByte.ContainsKeyA(packet.GetType()) || pendingUnknownPackets.Any(p => p.Item1.GetType().Assembly.Equals(packet.GetType().Assembly)))
+            if (!typeByte.ContainsKeyA(packet.GetType()) || pendingUnknownPackets.Any(p => p.Item1.GetType().Assembly.Equals(packet.GetType().Assembly)))
             {
                 AddExternalPackets(packet.GetType().Assembly);
                 pendingUnknownPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
@@ -469,10 +487,17 @@ namespace Network
                 return; //Wait till we receive green light.
             }
 
-            if (WriteLock && !ignoreWriteLock) writeLockBuffer.Enqueue(new Tuple<Packet, object>(packet, instance));
-            else sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
+            if (WriteLock && !ignoreWriteLock)
+            {
+                writeLockBuffer.Enqueue(new Tuple<Packet, object>(packet, instance));
+            }
+            else
+            {
+                sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
+                dataAvailableEvent.Set();
+            }
+            #endregion Sending
         }
-        #endregion Sending
 
         #region Threads
         /// <summary>
@@ -500,6 +525,7 @@ namespace Network
                     Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;
+                    packetAvailableEvent.Set();
 
                     logger.LogInComingPacket(packetData, receivedPacket);
                 }
@@ -522,6 +548,9 @@ namespace Network
             {
                 while (true)
                 {
+                    //Wait till we have something to send.
+                    dataAvailableEvent.WaitOne();
+
                     WriteSubWork();
 
                     //Check if the client is still alive.
@@ -536,8 +565,6 @@ namespace Network
                         currentPingStopWatch.Reset();
                         CloseHandler(CloseReason.Timeout);
                     }
-
-                    Thread.Sleep(CPU_SAVE);
                 }
             }
             catch (ThreadAbortException) { return; }
@@ -559,6 +586,9 @@ namespace Network
             {
                 while (true)
                 {
+                    //Wait till we receive a packet.
+                    packetAvailableEvent.WaitOne();
+
                     while (receivedPackets.Count > 0)
                     {
                         Packet toDelegate = null;
@@ -568,8 +598,6 @@ namespace Network
                         toDelegate.BeforeReceive();
                         HandleDefaultPackets(toDelegate);
                     }
-
-                    Thread.Sleep(CPU_SAVE);
                 }
             }
             catch (ThreadAbortException) { return; }
@@ -660,7 +688,7 @@ namespace Network
             {
                 UdpConnection udpConnection = null;
                 while (!pendingUDPConnections.TryDequeue(out udpConnection))
-                    Thread.Sleep(CPU_SAVE);
+                    Thread.Sleep(IntPerformance);
                 udpConnection.AcknowledgePending = false;
                 return;
             }
@@ -686,13 +714,13 @@ namespace Network
                 {
                     Tuple<Packet, object> toSend = null;
                     while (!pendingUnknownPackets.TryPeek(out toSend) && pendingUnknownPackets.Count > 0)
-                        Thread.Sleep(CPU_SAVE); //Wait till we got a result.
+                        Thread.Sleep(IntPerformance); //Wait till we got a result.
 
                     //If the other connection contains that packet, send it.
                     if (toSend != null && addPacketTypeResponse.LocalDict.Contains(typeByte[toSend.Item1.GetType()]))
                     {
                         while (!pendingUnknownPackets.TryDequeue(out toSend))
-                            Thread.Sleep(CPU_SAVE); //Wait till we got a result.
+                            Thread.Sleep(IntPerformance); //Wait till we got a result.
                         internalSendQueue.Add(new Tuple<Packet, object>(toSend.Item1, toSend.Item2));
                         continue;
                     }

@@ -166,7 +166,7 @@ namespace Network
             while (receivedIndex < amount)
             {
                 while (client.Available == 0)
-                    Thread.Sleep(CPU_SAVE);
+                    Thread.Sleep(IntPerformance);
 
                 int readAmount = (amount - receivedIndex >= client.Available) ? client.Available : amount - receivedIndex;
                 stream.Read(requestedBytes, receivedIndex, readAmount);

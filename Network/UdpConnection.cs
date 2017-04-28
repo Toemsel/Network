@@ -194,7 +194,7 @@ namespace Network
             while (receivedBytes.Count < amount)
             {
                 receivedBytes.AddRange(client.Receive(ref localEndPoint).GetEnumerator().ToList<byte>());
-                Thread.Sleep(CPU_SAVE);
+                Thread.Sleep(IntPerformance);
             }
 
             byte[] data = new byte[amount];
@@ -211,7 +211,7 @@ namespace Network
         protected override void WriteBytes(byte[] bytes)
         {
             while (AcknowledgePending && IsAlive)
-                Thread.Sleep(CPU_SAVE * 2);
+                Thread.Sleep(IntPerformance);
             client.Send(bytes, bytes.Length);
         }
 

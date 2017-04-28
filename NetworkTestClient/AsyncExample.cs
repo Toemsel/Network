@@ -50,6 +50,7 @@ namespace NetworkTestClient
             //2. Register what happens if we get a connection
             container.ConnectionEstablished += async (connection, type) =>
             {
+                connection.EnableLogging = true;
                 Console.WriteLine($"{type.ToString()} Connection established");
                 //3. Send a request packet async and directly receive an answer.
                 CalculationResponse response = await connection.SendAsync<CalculationResponse>(new CalculationRequest(10, 10));

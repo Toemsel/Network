@@ -31,6 +31,8 @@
 using InTheHand.Net.Sockets;
 using Network.Bluetooth;
 using System;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
@@ -80,6 +82,35 @@ namespace Network
         static ConnectionFactory()
         {
             GUID = Assembly.GetAssembly(typeof(Connection)).GetType().GUID;
+            LoadExternalDLLs();
+        }
+
+        /// <summary>
+        /// Loads the external dlls.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private static void LoadExternalDLLs()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                Assembly thisAssembly = Assembly.GetExecutingAssembly();
+                var name = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
+
+                //Load form Embedded Resources - This Function is not called if the Assembly is in the Application Folder
+                var resources = thisAssembly.GetManifestResourceNames().Where(s => s.EndsWith(name));
+                if (resources.Count() > 0)
+                {
+                    var resourceName = resources.First();
+                    using (Stream stream = thisAssembly.GetManifestResourceStream(resourceName))
+                    {
+                        if (stream == null) return null;
+                        var block = new byte[stream.Length];
+                        stream.Read(block, 0, block.Length);
+                        return Assembly.Load(block);
+                    }
+                }
+                return null;
+            };
         }
 
         /// <summary>
