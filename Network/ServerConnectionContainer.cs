@@ -224,7 +224,7 @@ namespace Network
         /// </summary>
         public async void StartBluetoothListener()
         {
-            if (IsBluetoothOnline || !AllowBluetoothConnections) return;
+            if (IsBluetoothOnline || !AllowBluetoothConnections || !BluetoothConnection.IsBluetoothSupported) return;
 
             bluetoothListener = new BluetoothListener(ConnectionFactory.GUID);
             bluetoothListener.Start();
