@@ -5,3 +5,6 @@
 /Network/bin/Debug
 /NetworkTestClient/bin/Debug
 /NetworkTestClient/bin/Debug
+/Examples/NetworkTestClient/obj/Debug
+/Examples/NetworkTestServer/obj/Debug
+/Examples/TestServerClientPackets/obj/Debug
