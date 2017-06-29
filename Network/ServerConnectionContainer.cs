@@ -346,6 +346,10 @@ namespace Network
         {
             CloseTCPConnections(reason);
             CloseUDPConnections(reason);
+            CloseBluetoothConnections(reason);
+
+            //Clear or reassign the connection containers.
+            bluetoothConnections = new ConcurrentBag<BluetoothConnection>();
             connections.Clear();
         }
 
@@ -365,6 +369,15 @@ namespace Network
         public void CloseUDPConnections(CloseReason reason)
         {
             connections.Values.ToList().ForEach(c => c.ForEach(b => b.Close(reason)));
+        }
+
+        /// <summary>
+        /// Closes all the bluetooth connections.
+        /// </summary>
+        /// <param name="reason">The reason.</param>
+        public void CloseBluetoothConnections(CloseReason reason)
+        {
+            bluetoothConnections.ToList().ForEach(b => b.Close(reason));
         }
 
         /// <summary>

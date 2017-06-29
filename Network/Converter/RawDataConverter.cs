@@ -36,24 +36,49 @@ namespace Network.Converter
 {
     public static class RawDataConverter
     {
+        public static RawData FromUInt16(string key, UInt16 value)
+        {
+            return new RawData(key, GetBytes(value));
+        }
+
         public static RawData FromInt16(string key, short value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromInt32(string key, int value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
+        }
+
+        public static RawData FromUInt32(string key, UInt32 value)
+        {
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromInt64(string key, long value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
+        }
+
+        public static RawData FromUInt64(string key, UInt64 value)
+        {
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromUTF32String(string key, string value)
         {
             return new RawData(key, Encoding.UTF32.GetBytes(value));
+        }
+
+        public static RawData FromUTF16_BigEndian_String(string key, string value)
+        {
+            return new RawData(key, Encoding.BigEndianUnicode.GetBytes(value));
+        }
+
+        public static RawData FromUTF16_LittleEndian_String(string key, string value)
+        {
+            return new RawData(key, Encoding.Unicode.GetBytes(value));
         }
 
         public static RawData FromUTF8String(string key, string value)
@@ -78,22 +103,27 @@ namespace Network.Converter
 
         public static RawData FromSingle(string key, float value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromDouble(string key, double value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromChar(string key, char value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
         }
 
         public static RawData FromBoolean(string key, bool value)
         {
-            return new RawData(key, BitConverter.GetBytes(value));
+            return new RawData(key, GetBytes(value));
+        }
+
+        public static byte[] GetBytes(dynamic value)
+        {
+            return BitConverter.GetBytes(value);
         }
     }
 }

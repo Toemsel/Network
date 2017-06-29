@@ -44,9 +44,19 @@ namespace Network.Extensions
             return BitConverter.ToInt16(rawData.Data, 0);
         }
 
+        public static ushort ToUInt16(this RawData rawData)
+        {
+            return BitConverter.ToUInt16(rawData.Data, 0);
+        }
+
         public static int ToInt32(this RawData rawData)
         {
             return BitConverter.ToInt32(rawData.Data, 0);
+        }
+
+        public static UInt32 ToUInt32(this RawData rawData)
+        {
+            return BitConverter.ToUInt32(rawData.Data, 0);
         }
 
         public static long ToInt64(this RawData rawData)
@@ -54,9 +64,24 @@ namespace Network.Extensions
             return BitConverter.ToInt64(rawData.Data, 0);
         }
 
+        public static UInt64 ToUInt64(this RawData rawData)
+        {
+            return BitConverter.ToUInt64(rawData.Data, 0);
+        }
+
         public static string ToUTF32String(this RawData rawData)
         {
             return Encoding.UTF32.GetString(rawData.Data);
+        }
+
+        public static string ToUTF16_BigEndian_String(this RawData rawData)
+        {
+            return Encoding.BigEndianUnicode.GetString(rawData.Data);
+        }
+
+        public static string ToUTF16_LittleEndian_String(this RawData rawData)
+        {
+            return ToUnicodeString(rawData);
         }
 
         public static string ToUTF8String(this RawData rawData)
