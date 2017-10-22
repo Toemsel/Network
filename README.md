@@ -9,6 +9,9 @@ Documentation http://www.indie-dev.at/?page_id=476 <br />
 # Supported Frameworks
 
 - .NET Framework          >= 4.5
+
+# Supported Frameworks (No Bluetooth support)
+
 - .NET Core               >= 2.0
 - Mono                    >= 5.4
 - Xamarin.iOS             >= 10.14
