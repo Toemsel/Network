@@ -8,3 +8,14 @@
 /Examples/NetworkTestClient/obj/Debug
 /Examples/NetworkTestServer/obj/Debug
 /Examples/TestServerClientPackets/obj/Debug
+/Network/obj
+/Network/bin/Release
+/Network/.vs/Network/v15/Server/sqlite3
+/NetworkStandard/bin
+/NetworkStandard/obj
+/Examples/TestServerClientPackets/obj/Release
+/Examples/TestServerClientPackets/bin
+/Examples/NetworkTestServer/obj/Release
+/Examples/NetworkTestServer/bin
+/Examples/NetworkTestClient/obj/Release
+/Examples/NetworkTestClient/bin

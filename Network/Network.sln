@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network.csproj", "{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestServer", "..\Examples\NetworkTestServer\NetworkTestServer.csproj", "{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerClientPackets", "..\Examples\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStandard", "..\NetworkStandard\NetworkStandard.csproj", "{7BF2C8F4-76E3-4F3A-BBDF-AB8D29A59E05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{53832142-B075-4828-A922-BDE5EC842277}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF2C8F4-76E3-4F3A-BBDF-AB8D29A59E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF2C8F4-76E3-4F3A-BBDF-AB8D29A59E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF2C8F4-76E3-4F3A-BBDF-AB8D29A59E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF2C8F4-76E3-4F3A-BBDF-AB8D29A59E05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C938DF79-14BE-4C56-B48F-8C581BDC0A64}
 	EndGlobalSection
 EndGlobal
