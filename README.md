@@ -16,6 +16,16 @@ Licence http://www.indie-dev.at/?page_id=525 <br />
 Forum http://www.indie-dev.at/?forum=c-network-library <br />
 Documentation http://www.indie-dev.at/?page_id=476 <br />
 
+# Supported Frameworks
+
+- .NET Framework          >= 4.5
+- .NET Core               >= 2.0
+- Mono                    >= 5.4
+- Xamarin.iOS             >= 10.14
+- Xamarin.MAC             >= 3.8
+- Xamarin.Android         >= 8.0
+- UWP                     >= 10.0.16299
+
 # Example Client
 ```c#
         public void Demo()
