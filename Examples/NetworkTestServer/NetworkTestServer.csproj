@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Network, Version=4.4.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Network\packages\Network.4.4.0.4\lib\net45\Network.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,12 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Network\Network.csproj">
-      <Project>{793945c4-2e9b-4b9e-a3d6-2d49f1e6da38}</Project>
-      <Name>Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TestServerClientPackets\TestServerClientPackets.csproj">
       <Project>{53832142-b075-4828-a922-bde5ec842277}</Project>
       <Name>TestServerClientPackets</Name>

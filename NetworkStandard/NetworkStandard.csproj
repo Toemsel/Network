@@ -5,7 +5,7 @@
     <RootNamespace>Network</RootNamespace>
     <AssemblyName>Network</AssemblyName>
     <ApplicationIcon>network.ico</ApplicationIcon>
-    <Version>3.4.0.4</Version>
+    <Version>4.4.0.5</Version>
     <Company>Indie-Dev</Company>
     <Authors>Thomas Christof</Authors>
     <Copyright>Indie-Dev</Copyright>
