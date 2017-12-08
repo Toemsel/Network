@@ -147,11 +147,17 @@ namespace Network.Converter
                 ObjectState objectState = (ObjectState)binaryReader.ReadByte();
                 if (objectState == ObjectState.NOT_NULL)
                 {
-                    AddReactiveObject packet = (AddReactiveObject)obj;
-                    var actualReactiveObjectType = GetTypeFromString(packet.AssemblyName, packet.ReactiveObjectType);
-                    if (actualReactiveObjectType != null)
-                        return ReadObjectFromStream(reactive, actualReactiveObjectType.CreateInstance(), binaryReader);
+                    if(obj.GetType() == typeof(AddReactiveObject))
+                    {
+                        AddReactiveObject packet = (AddReactiveObject)obj;
+                        var actualReactiveObjectType = GetTypeFromString(packet.AssemblyName, packet.ReactiveObjectType);
+                        if (actualReactiveObjectType != null)
+                            return ReadObjectFromStream(reactive, actualReactiveObjectType.CreateInstance(), binaryReader);
+                    }
+
+                    return ReadObjectFromStream(reactive, propertyInfo.PropertyType.CreateInstance(), binaryReader);
                 }
+
                 return null; //The object we received is null. So return nothing.
             }
             else if (propertyInfo.PropertyType == typeof(object))

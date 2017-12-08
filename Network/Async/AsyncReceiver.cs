@@ -29,12 +29,11 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 
+using Network.Extensions;
+using Network.Packets;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Network.Extensions;
-using Network.Interfaces;
-using Network.Packets;
 
 namespace Network.Async
 {

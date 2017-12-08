@@ -306,7 +306,7 @@ namespace Network.Converter
         /// <returns>Is Primitive or not.</returns>
         private bool IsPrimitive(Type type)
         {
-            return type.Namespace.Equals("System");
+            return type.Namespace.Equals("System") && type.Name != "Object";
         }
 
         /// <summary>

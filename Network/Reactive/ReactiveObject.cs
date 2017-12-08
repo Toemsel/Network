@@ -160,7 +160,7 @@ namespace Network.Reactive
              *  happens if the user passes a wrong name for the property.
             **/
 
-            if (ReactiveContainer.Singleton[GetType(), callerName]?.PropertyType != val.GetType())
+            if (ReactiveContainer.Singleton[GetType(), callerName]?.PropertyType != val?.GetType())
                 return true;
 
             IsAllowedToSync(callerName).ContinueWith(isAllowedToSync =>

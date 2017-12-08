@@ -8,5 +8,6 @@
         <TextBlock Text="{Binding ElementName=slider, Path=Value}" />
         <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox IsChecked="{Binding Checked}" Content="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+        <Button Command="{Binding AddStudent}" Content="Add Student" />
     </StackPanel>
 </Window>

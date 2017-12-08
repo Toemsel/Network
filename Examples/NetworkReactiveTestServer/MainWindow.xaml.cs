@@ -38,7 +38,7 @@ namespace NetworkReactiveTestServer
 
             if (DataContext == null)
             {
-                RandomViewModel randomViewModel = new RandomViewModel(1);
+                RandomViewModel randomViewModel = new RandomViewModel();
                 randomViewModel.SyncDirection = SyncDirection.OneWay;
                 randomViewModel.AddSyncConnection(connection);
                 DataContext = randomViewModel;
