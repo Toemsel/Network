@@ -36,120 +36,33 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using Network.Extensions;
+using Network.Packets;
 
 namespace Network.Converter
 {
     /// <summary>
     /// Provides extension methods for packets to handle their read and write behaviors.
     /// </summary>
-    internal class PacketConverter : IPacketConverter
+    internal class ReactiveConverter
     {
         /// <summary>
         /// Remember a types propertyInfo to save cpu time.
         /// </summary>
         private Dictionary<Type, PropertyInfo[]> packetProperties = new Dictionary<Type, PropertyInfo[]>();
-
-        /// <summary>
-        /// Converts a given packet to a byte array.
-        /// </summary>
-        /// <param name="packet">The packet to convert.</param>
-        /// <returns>System.Byte[].</returns>
-        public byte[] GetBytes(Packet packet)
-        {
-            MemoryStream memoryStream = new MemoryStream();
-            BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
-            GetBytesFromCustomObject(packet, binaryWriter);
-            return memoryStream.ToArray();
-        }
+        private Dictionary<string, Type> assemblyTypes = new Dictionary<string, Type>();
 
         /// <summary>
         /// Applies the byte array to the packets properties.
         /// </summary>
         /// <param name="packetType">The type of the final packet.</param>
         /// <param name="data">The data which should be applied.</param>
-        public Packet GetPacket(Type packetType, byte[] data)
+        public Packet GetPacket(Reactive.Reactive reactive, Type packetType, byte[] data)
         {
             Packet packet = ((Packet)Activator.CreateInstance(packetType));
             MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
-            ReadObjectFromStream(packet, binaryReader);
+            ReadObjectFromStream(reactive, packet, binaryReader);
             return packet;
-        }
-
-        /// <summary>
-        /// Writes the length of the given array onto the given stream.
-        /// Reads the array out of the property and calls the <see cref="GetBytesFromCustomObject"/> to write the object data.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryWriter">The binary writer.</param>
-        /// <returns>System.Byte[].</returns>
-        private void GetBytesFromArray(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
-        {
-            Type arrayType = propertyInfo.PropertyType.GetElementType();
-            Array propertyData = (Array)propertyInfo.GetValue(obj);
-            binaryWriter.Write(propertyData?.Length ?? 0);
-
-            if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.GetEnumerator().ToList<object>().ForEach(p => GetBytesFromCustomObject(p, binaryWriter));
-            else propertyData.GetEnumerator().ToList<object>().ForEach(p => { dynamic targetType = p; binaryWriter.Write(targetType); });
-        }
-
-        /// <summary>
-        /// Writes the length of the given list onto the given stream.
-        /// Reads the list out of the property and calls the <see cref="GetBytesFromCustomObject"/> to write the object data.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryWriter">The binary writer.</param>
-        /// <returns>System.Byte[].</returns>
-        private void GetBytesFromList(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
-        {
-            Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
-            ((IEnumerable)propertyInfo.GetValue(obj))?.GetEnumerator().ToList<object>().ForEach(o => list.Add(o));
-            binaryWriter.Write(list.Count);
-
-            if (listType.IsClass && !IsPrimitive(listType)) list.GetEnumerator().ToList<object>().ForEach(o => GetBytesFromCustomObject(o, binaryWriter));
-            else list.GetEnumerator().ToList<object>().ForEach(o => { dynamic targetType = o; binaryWriter.Write(targetType); });
-        }
-
-        /// <summary>
-        /// Gets the bytes from custom object. It searches for all propertyInfos and calls the next method.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="binaryWriter">The binary writer.</param>
-        private void GetBytesFromCustomObject(object obj, BinaryWriter binaryWriter)
-        {
-            GetPacketProperties(obj).ToList().ForEach(p => GetBytesFromCustomObject(obj, p, binaryWriter));
-        }
-
-        /// <summary>
-        /// Writes the data of all the properties in place on the given binary stream.
-        /// </summary>
-        /// <param name="packet">The packet.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryWriter">The binary writer.</param>
-        /// <returns>System.Byte[].</returns>
-        private void GetBytesFromCustomObject(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
-        {
-            dynamic propertyValue = propertyInfo.GetValue(obj);
-            if (propertyInfo.PropertyType.IsEnum) //Enums are an exception.
-                binaryWriter.Write((int)propertyValue);
-            else if (propertyInfo.PropertyType.IsArray)
-                GetBytesFromArray(obj, propertyInfo, binaryWriter);
-            else if (propertyInfo.PropertyType.IsGenericType &&
-                propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(List<>)))
-                GetBytesFromList(obj, propertyInfo, binaryWriter);
-            else if (!IsPrimitive(propertyInfo) && propertyValue != null) //Primitive or object
-            {
-                binaryWriter.Write((byte)ObjectState.NOT_NULL); //Mark it as a NOT NULL object.
-                GetBytesFromCustomObject(propertyValue, binaryWriter);
-            }
-            else if (!IsPrimitive(propertyInfo) && propertyValue == null)
-                binaryWriter.Write((byte)ObjectState.NULL); //Mark it as a NULL object.
-            else if (propertyInfo.PropertyType == typeof(string) && propertyValue == null)
-                binaryWriter.Write(string.Empty);
-            else binaryWriter.Write(propertyValue);
         }
 
         /// <summary>
@@ -160,14 +73,14 @@ namespace Network.Converter
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="binaryReader">The binary reader.</param>
         /// <returns>System.Array.</returns>
-        private Array ReadArrayFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        private Array ReadArrayFromStream(Reactive.Reactive reactive, object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
             int arraySize = binaryReader.ReadInt32();
             Type arrayType = propertyInfo.PropertyType.GetElementType();
             Array propertyData = Array.CreateInstance(arrayType, arraySize);
             for (int i = 0; i < arraySize; i++)
             {
-                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(Activator.CreateInstance(arrayType), binaryReader), i);
+                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(reactive, Activator.CreateInstance(arrayType), binaryReader), i);
                 else propertyData.SetValue(ReadPrimitiveFromStream(arrayType, binaryReader), i);
             }
 
@@ -182,14 +95,14 @@ namespace Network.Converter
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="binaryReader">The binary reader.</param>
         /// <returns>System.Collections.IList.</returns>
-        private IList ReadListFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        private IList ReadListFromStream(Reactive.Reactive reactive, object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
             int listSize = binaryReader.ReadInt32();
             Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
             IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
             for (int i = 0; i < listSize; i++)
             {
-                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(Activator.CreateInstance(listType), binaryReader));
+                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(reactive, Activator.CreateInstance(listType), binaryReader));
                 else list.Add(ReadPrimitiveFromStream(listType, binaryReader));
             }
 
@@ -202,9 +115,9 @@ namespace Network.Converter
         /// <param name="obj">The object.</param>
         /// <param name="binaryReader">The binary reader.</param>
         /// <returns>System.Object.</returns>
-        private object ReadObjectFromStream(object obj, BinaryReader binaryReader)
+        private object ReadObjectFromStream(Reactive.Reactive reactive, object obj, BinaryReader binaryReader)
         {
-            GetPacketProperties(obj).ToList().ForEach(p => p.SetValue(obj, ReadObjectFromStream(obj, p, binaryReader)));
+            GetPacketProperties(obj).ToList().ForEach(p => p.SetValue(obj, ReadObjectFromStream(reactive, obj, p, binaryReader)));
             return obj; //All properties set with in place.
         }
 
@@ -219,19 +132,32 @@ namespace Network.Converter
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="binaryReader">The binary reader.</param>
         /// <returns>System.Object.</returns>
-        private object ReadObjectFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        private object ReadObjectFromStream(Reactive.Reactive reactive, object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
             if (propertyInfo.PropertyType.IsArray)
-                return ReadArrayFromStream(obj, propertyInfo, binaryReader);
+                return ReadArrayFromStream(reactive, obj, propertyInfo, binaryReader);
             else if (propertyInfo.PropertyType.IsGenericType &&
                 propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(List<>)))
-                return ReadListFromStream(obj, propertyInfo, binaryReader);
+                return ReadListFromStream(reactive, obj, propertyInfo, binaryReader);
+            else if (propertyInfo.PropertyType.IsEnum)
+                return ReadPrimitiveFromStream(propertyInfo, binaryReader);
             else if (!IsPrimitive(propertyInfo))
             {
                 ObjectState objectState = (ObjectState)binaryReader.ReadByte();
                 if (objectState == ObjectState.NOT_NULL)
-                    return ReadObjectFromStream(Activator.CreateInstance(propertyInfo.PropertyType), binaryReader);
+                {
+                    AddReactiveObject packet = (AddReactiveObject)obj;
+                    var actualReactiveObjectType = GetTypeFromString(packet.AssemblyName, packet.ReactiveObjectType);
+                    if (actualReactiveObjectType != null)
+                        return ReadObjectFromStream(reactive, Activator.CreateInstance(actualReactiveObjectType), binaryReader);
+                }
                 return null; //The object we received is null. So return nothing.
+            }
+            else if (propertyInfo.PropertyType == typeof(object))
+            {
+                ReactiveSync reactiveSync = (ReactiveSync)obj;
+                var reactiveObjectType = reactive[reactiveSync.ReactiveObjectId];
+                return ReadObjectFromStream(reactive, obj, reactiveObjectType.GetProperty(reactiveSync.PropertyName), binaryReader);
             }
             else return ReadPrimitiveFromStream(propertyInfo, binaryReader);
         }
@@ -322,6 +248,27 @@ namespace Network.Converter
                 PropertyInfo[] propInfos = packet.GetType().GetProperties().ToList().Where(p => p.GetCustomAttribute(typeof(PacketIgnorePropertyAttribute)) == null).ToArray();
                 packetProperties.Add(packet.GetType(), propInfos);
                 return GetPacketProperties(packet);
+            }
+        }
+
+        /// <summary>
+        /// Searches for a type with the given parameters.
+        /// </summary>
+        /// <param name="assemblyName">The assembly to search within.</param>
+        /// <param name="className">The className</param>
+        /// <returns></returns>
+        private Type GetTypeFromString(string assemblyName, string className)
+        {
+            lock (assemblyTypes)
+            {
+                string assemblyClass = assemblyName + className;
+                if (assemblyTypes.ContainsKey(assemblyClass))
+                    return assemblyTypes[assemblyClass];
+
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == assemblyName).SingleOrDefault();
+                var classType = assembly?.GetTypes().SingleOrDefault(t => t.FullName == className);
+                assemblyTypes.Add(assemblyClass, classType);
+                return GetTypeFromString(assemblyName, className);
             }
         }
     }

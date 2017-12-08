@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
-// Assembly         : Network
+// Assembly         : NetworkTestClient
 // Author           : Thomas Christof
-// Created          : 28-11-2016
+// Created          : 02-11-2016
 //
 // Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified On : 10-10-2015
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -28,35 +28,35 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-using Network.Attributes;
+using System;
+using Network;
+using TestServerClientPackets;
 
-namespace Network.Packets
+namespace NetworkTestClient
 {
     /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
+    /// Simple example>
+    /// 1. Establish a connection
+    /// 2. Subscribe connectionEstablished event
+    /// 3. Send a request packet
+    /// 4. Receive a request packet
     /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    public class ReactiveObjectExample
     {
-        public RawData(string key, byte[] data)
+
+
+        public void Demo()
         {
-            Key = key;
-            Data = data;
+            //1. Establish a connection to the server.
+            ClientConnectionContainer container = ConnectionFactory.CreateClientConnectionContainer("127.0.0.1", 1234);
+            //2. Register what happens if we get a connection
+            container.ConnectionEstablished += (connection, type) =>
+            {
+                connection.EnableLogging = true;
+                Console.WriteLine($"{type.ToString()} Connection established");
+            };
+
+
         }
-
-        public RawData()
-        {
-
-        }
-
-        /// <summary>
-        /// The key both connections are able to register methods to.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The raw data.
-        /// </summary>
-        public byte[] Data { get; set; }
     }
 }

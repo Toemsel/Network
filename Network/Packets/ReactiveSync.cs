@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
+// Author           : Thomas
+// Created          : 12-03-2017
 //
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified By : Thomas
+// Last Modified On : 12-03-2017
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -32,31 +32,15 @@ using Network.Attributes;
 
 namespace Network.Packets
 {
-    /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
-    /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    [PacketType(14)]
+    internal class ReactiveSync : ReactivePacket
     {
-        public RawData(string key, byte[] data)
-        {
-            Key = key;
-            Data = data;
-        }
+        public ReactiveSync() { }
 
-        public RawData()
-        {
+        public byte[] ReactiveObjectId { get; set; }
 
-        }
+        public string PropertyName { get; set; }
 
-        /// <summary>
-        /// The key both connections are able to register methods to.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The raw data.
-        /// </summary>
-        public byte[] Data { get; set; }
+        public object PropertyValue { get; set; }
     }
 }

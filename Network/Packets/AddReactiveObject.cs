@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
+// Author           : Thomas
+// Created          : 12-03-2017
 //
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified By : Thomas
+// Last Modified On : 12-03-2017
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -29,34 +29,31 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using Network.Attributes;
+using Network.Enums;
+using Network.Reactive;
 
 namespace Network.Packets
 {
-    /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
-    /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    [PacketType(12)]
+    internal sealed class AddReactiveObject : ReactivePacket
     {
-        public RawData(string key, byte[] data)
+        public AddReactiveObject() { }
+
+        public AddReactiveObject(ReactiveObject reactiveObject)
         {
-            Key = key;
-            Data = data;
+            ReactiveObject = reactiveObject;
         }
 
-        public RawData()
+        public string ReactiveObjectType { get; set; }
+
+        public string AssemblyName { get; set; }
+
+        public ReactiveObject ReactiveObject { get; set; }
+
+        public override void BeforeSend()
         {
-
+            AssemblyName = ReactiveObject.GetType().Assembly.FullName;
+            ReactiveObjectType = ReactiveObject.GetType().FullName;
         }
-
-        /// <summary>
-        /// The key both connections are able to register methods to.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The raw data.
-        /// </summary>
-        public byte[] Data { get; set; }
     }
 }

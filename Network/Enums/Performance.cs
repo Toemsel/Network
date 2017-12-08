@@ -3,7 +3,7 @@
     /// <summary>
     /// The higher the value, the faster the network library.
     /// A faster connection results in more CPU consumption.
-    /// Sofrt_Realtime > Default > Fast > Normal > Slow > Energy_Saving.
+    /// Soft_Realtime > Default > Fast > Normal > Slow > Energy_Saving.
     /// </summary>
     public enum Performance : int
     {

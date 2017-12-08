@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
+// Author           : Thomas
+// Created          : 12-03-2017
 //
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified By : Thomas
+// Last Modified On : 12-03-2017
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -28,35 +28,34 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-using Network.Attributes;
+using System.Collections.Generic;
+using System.Reflection;
 
-namespace Network.Packets
+namespace Network.Extensions
 {
-    /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
-    /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    public static class PacketExtension
     {
-        public RawData(string key, byte[] data)
+        public static List<KeyValuePair<string, string>> GetPacketValues(this Packet packet)
         {
-            Key = key;
-            Data = data;
+            List<KeyValuePair<string, string>> packetValues = new List<KeyValuePair<string, string>>();
+
+            try
+            {
+
+                foreach (PropertyInfo currentPropertyInfo in packet.GetType().GetProperties())
+                {
+                    if (!currentPropertyInfo.CanRead)
+                        continue;
+
+                    string propertyName = currentPropertyInfo.Name;
+                    string propertyValue = currentPropertyInfo.GetValue(packet)?.ToString();
+
+                    packetValues.Add(new KeyValuePair<string, string>(propertyName, propertyValue));
+                }
+            }
+            catch { }
+
+            return packetValues;
         }
-
-        public RawData()
-        {
-
-        }
-
-        /// <summary>
-        /// The key both connections are able to register methods to.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The raw data.
-        /// </summary>
-        public byte[] Data { get; set; }
     }
 }

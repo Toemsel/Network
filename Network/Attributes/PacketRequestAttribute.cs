@@ -37,6 +37,7 @@ namespace Network.Attributes
     /// between the request and response packets have to be set.
     /// E.g NameResponse -> NameRequest.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class PacketRequestAttribute : Attribute
     {
         /// <summary>

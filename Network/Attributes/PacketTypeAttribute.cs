@@ -49,6 +49,9 @@ namespace Network.Attributes
     /// - (9)   AddPacketTypeResponse
     /// - (10)  UDPPingRequest
     /// - (11)  UDPPingResponse
+    /// - (12)  AddReactiveObject
+    /// - (13)  RemoveReactiveObject
+    /// - (14)  ReactiveSync
     /// Knowledge about the ID isn't essential anymore. (Since version 2.0.0.0)
     /// Just do not overwrite the existing IDs above.
     /// </summary>

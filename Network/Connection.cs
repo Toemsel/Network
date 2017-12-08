@@ -45,6 +45,7 @@ using Network.Converter;
 using Network.Interfaces;
 using System.Threading.Tasks;
 using Network.Async;
+using Network.Reactive;
 
 namespace Network
 {
@@ -81,6 +82,7 @@ namespace Network
         /// Is able to convert a packet into a byte array and back.
         /// </summary>
         private IPacketConverter packetConverter = new PacketConverter();
+        private ReactiveConverter reactivePacketConverter = new ReactiveConverter();
 
         /// <summary>
         /// A handler which will be invoked if this connection is dead.
@@ -297,6 +299,11 @@ namespace Network
         internal ObjectMap ObjectMapper { get { return objectMap; } }
 
         /// <summary>
+        /// The reactive object to handle reactive relating actions.
+        /// </summary>
+        internal Reactive.Reactive Reactive { get; private set; } = new Reactive.Reactive();
+
+        /// <summary>
         /// Restores the packetHandler. Can only be called if the internal packetHandler is empty.
         /// </summary>
         /// <param name="objectMap">The object map to restore.</param>
@@ -510,6 +517,9 @@ namespace Network
                 while (true)
                 {
                     ushort packetType = BitConverter.ToUInt16(ReadBytes(2), 0);
+                    //For statistic reasons, we need to obtain the time before we continue.
+                    DateTime receiveTime = DateTime.Now;
+
                     int packetLength = BitConverter.ToInt32(ReadBytes(4), 0);
                     byte[] packetData = ReadBytes(packetLength);
 
@@ -522,7 +532,9 @@ namespace Network
                         HandleUnknownPacket();
                         continue;
                     }
-                    Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
+
+                    Packet receivedPacket = BytesToPacket(packetType, packetData);
+                    receivedPacket.ReceiveTime = DateTime.Now.DifInMS(receiveTime);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;
                     packetAvailableEvent.Set();
@@ -531,12 +543,25 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch (Exception exception)
-            {
-                logger.Log("Reading packet from stream", exception, LogLevel.Exception);
-            }
+            catch (Exception unknownException) { logger.Log("Reading packet from stream.", unknownException, LogLevel.Error); }
 
             CloseHandler(CloseReason.ReadPacketThreadException);
+        }
+
+        /// <summary>
+        /// Reactive packets and normal packets have not much in common.
+        /// The way they are serialized and deserialized is different.
+        /// (Reactive Packets are more powerful, since they support objects)
+        /// Thus, serializing and de-serializing is much different.
+        /// </summary>
+        /// <param name="packetType">The packetType to convert.</param>
+        /// <param name="packetData">The data to convert to a packet.</param>
+        /// <returns></returns>
+        private Packet BytesToPacket(ushort packetType, byte[] packetData)
+        {
+            if (typeByte[packetType].IsSubclassOf(typeof(ReactivePacket)))
+                return reactivePacketConverter.GetPacket(Reactive, typeByte[packetType], packetData);
+            return packetConverter.GetPacket(typeByte[packetType], packetData);
         }
 
         /// <summary>
@@ -568,10 +593,7 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch(Exception exception)
-            {
-                logger.Log("Write object on stream", exception, LogLevel.Exception);
-            }
+            catch (Exception unknownException) { logger.Log("Write packet to stream.", unknownException, LogLevel.Error); }
 
             CloseHandler(CloseReason.WritePacketThreadException);
         }
@@ -601,7 +623,7 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch(Exception) { }
+            catch (Exception unknownException) { logger.Log("Delegating the packet to the consumer.", unknownException, LogLevel.Error); }
 
             CloseHandler(CloseReason.InvokePacketThreadException);
         }
@@ -739,12 +761,25 @@ namespace Network
                 else objectMap[rawData.Key].DynamicInvoke(new object[] { packet, this });
                 return;
             }
+            else if (packet.GetType().Equals(typeof(AddReactiveObject)))
+            {
+                ReactiveObject reactiveObject = ((AddReactiveObject)packet).ReactiveObject;
+                Reactive.Add(this, reactiveObject);
+                packet = reactiveObject;
+            }
+            else if (packet.GetType().Equals(typeof(ReactiveSync)))
+            {
+                Reactive.ReactiveSyncRequestReceived((ReactiveSync)packet);
+                return;
+            }
 
             try
             {
                 if(packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
                     objectMap[packet.ID].DynamicInvoke(new object[] { packet, this });
                 else if(packet.GetType().IsSubclassOf(typeof(RequestPacket)) && objectMap[packet.GetType()] != null)
+                    objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
+                else if(packet.GetType().IsSubclassOf(typeof(ReactivePacket)) && objectMap[packet.GetType()] != null)
                     objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
                 else CloseHandler(CloseReason.UnknownPacket);
             }

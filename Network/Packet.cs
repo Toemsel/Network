@@ -53,7 +53,7 @@ namespace Network
         /// Do not change! It may lead to internal exceptions.
         /// </summary>
         /// <value>The identifier.</value>
-        public int ID { get; set; }
+        public int ID { get; internal set; }
 
         /// <summary>
         /// Gets the state of the packet.
@@ -73,9 +73,8 @@ namespace Network
         /// Gets the time [ms] how long it took to receive this packet.
         /// </summary>
         /// <value>The receive time.</value>
-        /// <exception cref="System.NotImplementedException"></exception>
         [PacketIgnoreProperty]
-        public int ReceiveTime { get { throw new NotImplementedException(); } internal set { throw new NotImplementedException(); } }
+        public int ReceiveTime { get; internal set; }
 
         /// <summary>
         /// Before we convert this packet into a byte array, this method will be called automatically.

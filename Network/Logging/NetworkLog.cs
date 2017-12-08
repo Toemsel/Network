@@ -34,6 +34,9 @@ using System.IO;
 using System.Text;
 using Network.Enums;
 using ConsoleTables;
+using System.Collections.Generic;
+using Network.Extensions;
+using System.Linq;
 
 namespace Network.Logging
 {
@@ -62,6 +65,8 @@ namespace Network.Logging
         /// Determins if we should enable logging or not.
         /// </summary>
         internal bool EnableLogging { get; set; } = false;
+
+        internal bool PrintObjectValues { get; set; } = false;
 
         /// <summary>
         /// The stream we are going to log into.
@@ -142,6 +147,12 @@ namespace Network.Logging
 
             var tableOutPut = BuildConsoleTable(packet, packetObj, direction);
             Log(tableOutPut.ToStringAlternative());
+
+            if(PrintObjectValues)
+            {
+                var objOutPut = BuildConsolePacket(packetObj);
+                Log(objOutPut.ToStringAlternative());
+            }
         }
 
         /// <summary>
@@ -155,23 +166,25 @@ namespace Network.Logging
         {
             var type = connection.GetType().Name;
             var local = connection.IPLocalEndPoint?.ToString();
-            var ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
             var packetName = packetObj.GetType().Name.ToString();
 
-            ConsoleTable tableOutPut = null;
-
-            if (string.IsNullOrWhiteSpace(ascii))
-            {
-                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "Packet");
-                tableOutPut.AddRow(direction, type, local, packetName);
-            }
-            else
-            {
-                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "ASCII", "Packet");
-                tableOutPut.AddRow(direction, type, local, ascii, packetName);
-            }
+            ConsoleTable tableOutPut = new ConsoleTable("Direction", "TimeStamp", "Type", "[ms]", "Local", "Packet");
+            tableOutPut.AddRow(direction, TimeStamp, type, packetObj.ReceiveTime, local, packetName);
 
             return tableOutPut;
+        }
+
+        /// <summary>
+        /// Builds a console table out of a packet. (Properties and their values)
+        /// </summary>
+        /// <param name="packetObj">The packet to print.</param>
+        /// <returns>ConsoleTable to print.</returns>
+        private ConsoleTable BuildConsolePacket(Packet packetObj)
+        {
+            var packetValues = packetObj.GetPacketValues();
+            ConsoleTable consoleTable = new ConsoleTable(packetValues.Select(p => p.Key).ToArray());
+            consoleTable.AddRow(packetValues.Select(p => p.Value).ToArray());
+            return consoleTable;
         }
 
         /// <summary>

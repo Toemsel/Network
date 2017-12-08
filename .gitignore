@@ -20,3 +20,11 @@
 /Examples/NetworkTestClient/obj/Release
 /Examples/NetworkTestClient/bin
 /Network/packages
+/Network/NetworkReactiveTestServer/bin/Debug
+/Network/NetworkReactiveTestServer/obj/Debug
+/NetworkReactiveTestClient/bin/Debug
+/NetworkReactiveTestClient/obj/Debug
+/Examples/NetworkReactiveTestClient/bin/Debug
+/Examples/NetworkReactiveTestClient/obj/Debug
+/Examples/NetworkReactiveTestServer/bin/Debug
+/Examples/NetworkReactiveTestServer/obj/Debug

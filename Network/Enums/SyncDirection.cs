@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
+// Author           : Thomas
+// Created          : 12-03-2017
 //
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified By : Thomas
+// Last Modified On : 12-03-2017
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -28,35 +28,20 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-using Network.Attributes;
-
-namespace Network.Packets
+namespace Network.Enums
 {
     /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
+    /// The sync direction of a property or reactiveObject.
     /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    public enum SyncDirection : int
     {
-        public RawData(string key, byte[] data)
-        {
-            Key = key;
-            Data = data;
-        }
-
-        public RawData()
-        {
-
-        }
-
         /// <summary>
-        /// The key both connections are able to register methods to.
+        /// The owner alone is allowed to sync properties.
         /// </summary>
-        public string Key { get; set; }
-
+        OneWay = 1,
         /// <summary>
-        /// The raw data.
+        /// The owner and the reactiveObject receiver(s) are allowed to sync properties.
         /// </summary>
-        public byte[] Data { get; set; }
+        TwoWay = 2
     }
 }

@@ -1,11 +1,11 @@
 ﻿#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
+// Author           : Thomas
+// Created          : 12-03-2017
 //
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2016
+// Last Modified By : Thomas
+// Last Modified On : 12-03-2017
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -32,31 +32,16 @@ using Network.Attributes;
 
 namespace Network.Packets
 {
-    /// <summary>
-    /// Represends raw data containing anything the programmer wants to send.
-    /// </summary>
-    [PacketType(16)]
-    public class RawData : Packet
+    public abstract class ReactivePacket : Packet
     {
-        public RawData(string key, byte[] data)
-        {
-            Key = key;
-            Data = data;
-        }
-
-        public RawData()
-        {
-
-        }
-
         /// <summary>
-        /// The key both connections are able to register methods to.
+        /// Gets or sets the ID of the packet.
+        /// This is essential to map objects directly to the response from the server.
+        /// Do not change! It may lead to internal exceptions.
+        /// ReactivePackets NEVER need an answer. Therefore -> No ID required.
         /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The raw data.
-        /// </summary>
-        public byte[] Data { get; set; }
+        /// <value>The identifier.</value>
+        [PacketIgnoreProperty]
+        public new int ID { get; internal set; }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using Network.Interfaces;
+﻿using Network.Interfaces;
 using Network.Logging;
 using Network.Packets;
+using System;
+using System.IO;
 
 namespace Network
 {
@@ -25,6 +24,11 @@ namespace Network
         private void InitAddons()
         {
             logger = new NetworkLog(this);
+
+#if DEBUG
+            EnableLogging = true;
+            PrintObjectValues = true;
+#endif
         }
 
         /// <summary>
@@ -46,6 +50,24 @@ namespace Network
         {
             get { return logger.EnableLogging; }
             set { logger.EnableLogging = value; }
+        }
+
+        /// <summary>
+        /// Indicates if the connection should automatically log.
+        /// If "EnableLogging" is set to [False] this property
+        /// will automatically toggle it to [True] if "PrintObjectValues"
+        /// is set to [True]. (Else logging won't be enabled)
+        /// </summary>
+        public bool PrintObjectValues
+        {
+            get => logger.PrintObjectValues;
+            set
+            {
+                logger.PrintObjectValues = value;
+
+                if (PrintObjectValues)
+                    EnableLogging = true;
+            }
         }
 
         /// <summary>

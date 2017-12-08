@@ -1,0 +1,12 @@
+﻿<Window x:Class="NetworkReactiveTestClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Client" Height="120" Width="240">
+    
+    <StackPanel>
+        <Slider x:Name="slider" HorizontalAlignment="Stretch" Minimum="0" Maximum="100" Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
+        <TextBlock Text="{Binding ElementName=slider, Path=Value}" />
+        <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox IsChecked="{Binding Checked}" Content="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+    </StackPanel>
+</Window>
