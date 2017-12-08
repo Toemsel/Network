@@ -139,7 +139,7 @@ namespace Network.Reactive
         public bool Sync<T>(ref T obj, T val, bool forceRefresh = false, [CallerMemberName] string callerName = "")
         {
             //No need to synchronize if the objects have the same reference.
-            if (val != null && obj.Equals(val) && !forceRefresh)
+            if (val != null && obj != null && obj.Equals(val) && !forceRefresh)
                 return false;
 
             obj = val;

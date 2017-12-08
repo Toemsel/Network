@@ -36,6 +36,7 @@ using System.Timers;
 using System.Threading.Tasks;
 using System.Reflection;
 using Network.Interfaces;
+using Network.Extensions;
 
 namespace Network
 {
@@ -550,7 +551,7 @@ namespace Network
         public async Task<T> SendSlowAsync<T>(Packet packet) where T : ResponsePacket
         {
             if (IsAlive_TCP) return await tcpConnection.SendAsync<T>(packet);
-            T response = Activator.CreateInstance<T>();
+            T response = typeof(T).CreateInstance<T>();
             response.State = PacketState.ConnectionNotAlive;
             return response;
         }
@@ -564,7 +565,7 @@ namespace Network
         public async Task<T> SendFastAsync<T>(Packet packet) where T : ResponsePacket
         {
             if (IsAlive_UDP) return await udpConnection.SendAsync<T>(packet);
-            T response = Activator.CreateInstance<T>();
+            T response = typeof(T).CreateInstance<T>();
             response.State = PacketState.ConnectionNotAlive;
             return response;
         }

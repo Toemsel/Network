@@ -37,6 +37,7 @@ using System.Reflection;
 using System.Collections;
 using Network.Extensions;
 using Network.Packets;
+using System.Runtime.Serialization;
 
 namespace Network.Converter
 {
@@ -58,7 +59,7 @@ namespace Network.Converter
         /// <param name="data">The data which should be applied.</param>
         public Packet GetPacket(Reactive.Reactive reactive, Type packetType, byte[] data)
         {
-            Packet packet = ((Packet)Activator.CreateInstance(packetType));
+            Packet packet = (Packet)packetType.CreateInstance();
             MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
             ReadObjectFromStream(reactive, packet, binaryReader);
@@ -80,7 +81,7 @@ namespace Network.Converter
             Array propertyData = Array.CreateInstance(arrayType, arraySize);
             for (int i = 0; i < arraySize; i++)
             {
-                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(reactive, Activator.CreateInstance(arrayType), binaryReader), i);
+                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(reactive, arrayType.CreateInstance(), binaryReader), i);
                 else propertyData.SetValue(ReadPrimitiveFromStream(arrayType, binaryReader), i);
             }
 
@@ -99,10 +100,10 @@ namespace Network.Converter
         {
             int listSize = binaryReader.ReadInt32();
             Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
+            IList list = (IList)typeof(List<>).MakeGenericType(listType).CreateInstance();
             for (int i = 0; i < listSize; i++)
             {
-                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(reactive, Activator.CreateInstance(listType), binaryReader));
+                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(reactive, listType.CreateInstance(), binaryReader));
                 else list.Add(ReadPrimitiveFromStream(listType, binaryReader));
             }
 
@@ -149,7 +150,7 @@ namespace Network.Converter
                     AddReactiveObject packet = (AddReactiveObject)obj;
                     var actualReactiveObjectType = GetTypeFromString(packet.AssemblyName, packet.ReactiveObjectType);
                     if (actualReactiveObjectType != null)
-                        return ReadObjectFromStream(reactive, Activator.CreateInstance(actualReactiveObjectType), binaryReader);
+                        return ReadObjectFromStream(reactive, actualReactiveObjectType.CreateInstance(), binaryReader);
                 }
                 return null; //The object we received is null. So return nothing.
             }

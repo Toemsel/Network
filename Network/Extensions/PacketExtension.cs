@@ -33,9 +33,9 @@ using System.Reflection;
 
 namespace Network.Extensions
 {
-    public static class PacketExtension
+    internal static class PacketExtension
     {
-        public static List<KeyValuePair<string, string>> GetPacketValues(this Packet packet)
+        internal static List<KeyValuePair<string, string>> GetPacketValues(this Packet packet)
         {
             List<KeyValuePair<string, string>> packetValues = new List<KeyValuePair<string, string>>();
 

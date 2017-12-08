@@ -40,7 +40,7 @@ namespace Network
         public void LogIntoStream(Stream stream)
         {
             logger.LogIntoStream(stream);
-        }        
+        }
 
         /// <summary>
         /// Indicates if the connection should automatically log.

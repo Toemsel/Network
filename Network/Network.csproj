@@ -102,6 +102,7 @@
     <Compile Include="Extensions\PacketExtension.cs" />
     <Compile Include="Extensions\RawDataExtension.cs" />
     <Compile Include="Extensions\ThreadExtension.cs" />
+    <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
     <Compile Include="Interfaces\IPacketHandler.cs" />
     <Compile Include="Logging\NetworkLog.cs" />

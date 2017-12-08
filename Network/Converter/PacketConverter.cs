@@ -36,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using Network.Extensions;
+using System.Runtime.Serialization;
 
 namespace Network.Converter
 {
@@ -69,7 +70,7 @@ namespace Network.Converter
         /// <param name="data">The data which should be applied.</param>
         public Packet GetPacket(Type packetType, byte[] data)
         {
-            Packet packet = ((Packet)Activator.CreateInstance(packetType));
+            Packet packet = (Packet)packetType.CreateInstance();
             MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
             ReadObjectFromStream(packet, binaryReader);
@@ -105,7 +106,7 @@ namespace Network.Converter
         private void GetBytesFromList(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
         {
             Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
+            IList list = (IList)typeof(List<>).MakeGenericType(listType).CreateInstance();
             ((IEnumerable)propertyInfo.GetValue(obj))?.GetEnumerator().ToList<object>().ForEach(o => list.Add(o));
             binaryWriter.Write(list.Count);
 
@@ -167,7 +168,7 @@ namespace Network.Converter
             Array propertyData = Array.CreateInstance(arrayType, arraySize);
             for (int i = 0; i < arraySize; i++)
             {
-                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(Activator.CreateInstance(arrayType), binaryReader), i);
+                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(ReadObjectFromStream(arrayType.CreateInstance(), binaryReader), i);
                 else propertyData.SetValue(ReadPrimitiveFromStream(arrayType, binaryReader), i);
             }
 
@@ -186,10 +187,10 @@ namespace Network.Converter
         {
             int listSize = binaryReader.ReadInt32();
             Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
+            IList list = (IList)typeof(List<>).MakeGenericType(listType).CreateInstance();
             for (int i = 0; i < listSize; i++)
             {
-                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(Activator.CreateInstance(listType), binaryReader));
+                if (listType.IsClass && !IsPrimitive(listType)) list.Add(ReadObjectFromStream(listType.CreateInstance(), binaryReader));
                 else list.Add(ReadPrimitiveFromStream(listType, binaryReader));
             }
 
@@ -230,7 +231,7 @@ namespace Network.Converter
             {
                 ObjectState objectState = (ObjectState)binaryReader.ReadByte();
                 if (objectState == ObjectState.NOT_NULL)
-                    return ReadObjectFromStream(Activator.CreateInstance(propertyInfo.PropertyType), binaryReader);
+                    return ReadObjectFromStream(propertyInfo.PropertyType.CreateInstance(), binaryReader);
                 return null; //The object we received is null. So return nothing.
             }
             else return ReadPrimitiveFromStream(propertyInfo, binaryReader);

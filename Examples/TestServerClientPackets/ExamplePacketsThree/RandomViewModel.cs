@@ -10,7 +10,7 @@ namespace TestServerClientPackets.ExamplePacketsThree
         private string text = string.Empty;
         private bool isChecked;
 
-        public RandomViewModel() : base() { }
+        public RandomViewModel(int bla) { }
 
         public int SliderValue
         {

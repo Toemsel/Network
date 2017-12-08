@@ -543,6 +543,7 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
+            catch (MissingMethodException) { throw; }
             catch (Exception unknownException) { logger.Log("Reading packet from stream.", unknownException, LogLevel.Error); }
 
             CloseHandler(CloseReason.ReadPacketThreadException);
@@ -593,6 +594,7 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
+            catch (MissingMethodException) { throw; }
             catch (Exception unknownException) { logger.Log("Write packet to stream.", unknownException, LogLevel.Error); }
 
             CloseHandler(CloseReason.WritePacketThreadException);
@@ -622,6 +624,7 @@ namespace Network
                     }
                 }
             }
+            catch (MissingMethodException) { throw; }
             catch (ThreadAbortException) { return; }
             catch (Exception unknownException) { logger.Log("Delegating the packet to the consumer.", unknownException, LogLevel.Error); }
 

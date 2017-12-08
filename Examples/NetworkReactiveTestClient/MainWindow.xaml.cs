@@ -19,12 +19,8 @@ namespace NetworkReactiveTestClient
         {
             var connectionResult = await ConnectionFactory.CreateTcpConnectionAsync("127.0.0.1", 1234);
             TcpConnection tcpConnection = connectionResult.Item1;
+            tcpConnection.ConnectionEstablished += (connection, type) => MessageBox.Show("Client is connected with the server");
             tcpConnection.UnlockRemoteConnection();
-            tcpConnection.ConnectionEstablished += (connection, type) =>
-            {
-                connection.EnableLogging = true;
-                MessageBox.Show("Client is connected with the server");
-            };
 
             tcpConnection.RegisterPacketHandler<RandomViewModel>((c, p) =>
             {

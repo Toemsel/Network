@@ -29,20 +29,35 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using System;
+using System.Runtime.Serialization;
 
 namespace Network.Extensions
 {
-    internal static class DateTimeExtension
+    internal static class TypeExtension
     {
         /// <summary>
-        /// Calculates the differents between two dateTimes.
+        /// Creates an instance of the given type.
         /// </summary>
-        /// <param name="current">The newer dateTime.</param>
-        /// <param name="last">The older dateTime.</param>
-        /// <returns>Difference in [ms]</returns>
-        public static int DifInMS(this DateTime current, DateTime last)
+        /// <param name="type">The type to create an instance.</param>
+        /// <returns>An instance.</returns>
+        internal static object CreateInstance(this Type type)
         {
-            return (int)(current - last).TotalMilliseconds;
+            var constructorInfo = type.GetConstructor(Type.EmptyTypes);
+            if(constructorInfo != null)
+                return Activator.CreateInstance(type, new object[] { });
+
+            throw new MissingMethodException($"{type.FullName} does not provide a default constructor!");
+        }
+
+        /// <summary>
+        /// Creates an instance of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of the returned object.</typeparam>
+        /// <param name="type">The type to create an instance.</param>
+        /// <returns>An instance.</returns>
+        internal static T CreateInstance<T>(this Type type)
+        {
+            return (T)CreateInstance(type);
         }
     }
 }
