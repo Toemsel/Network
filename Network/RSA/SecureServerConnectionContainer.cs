@@ -71,21 +71,6 @@ namespace Network.RSA
         }
 
         /// <summary>
-        /// The PublicKey of this instance.
-        /// </summary>
-        public string PublicKey { get; private set; }
-
-        /// <summary>
-        /// The PrivateKey of this instance.
-        /// </summary>
-        public string PrivateKey { get; private set; }
-
-        /// <summary>
-        /// The used KeySize of this instance.
-        /// </summary>
-        public int KeySize { get; private set; }
-
-        /// <summary>
         /// Instead of a normal TcpConnection, a secure server connection demands a secureTcpConnection.
         /// </summary>
         /// <param name="tcpClient">The tcpClient to be wrapped.</param>

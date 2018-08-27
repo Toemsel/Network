@@ -287,7 +287,7 @@ namespace Network
         /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
         /// <param name="keySize">The keySize.</param>
         /// <returns>The UdpConnection.</returns>
-        public static UdpConnection CreateSecureUdpConnection(TcpConnection tcpConnection, string publicKey, string privateKey, int keySize = 2048, out ConnectionResult connectionResult)
+        public static UdpConnection CreateSecureUdpConnection(TcpConnection tcpConnection, string publicKey, string privateKey, out ConnectionResult connectionResult, int keySize = 2048)
         {
             Tuple<UdpConnection, ConnectionResult> connectionRequest = CreateSecureUdpConnectionAsync(tcpConnection, publicKey, privateKey, keySize).Result;
             connectionResult = connectionRequest.Item2;
@@ -344,6 +344,15 @@ namespace Network
         public static ClientConnectionContainer CreateClientConnectionContainer(string ipAddress, int port) => new ClientConnectionContainer(ipAddress, port);
 
         /// <summary>
+        /// Creates a new instance of a secure-connection container. (RSA Encryption)
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// </summary>
+        /// <returns>ConnectionContainer.</returns>
+        public static ClientConnectionContainer CreateSecureClientConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048) => new SecureClientConnectionContainer(ipAddress, port, publicKey, privateKey, keySize);
+
+        /// <summary>
         /// Creates a new instance of a connection container.
         /// </summary>
         /// <param name="tcpConnection">The TCP connection.</param>
@@ -355,6 +364,23 @@ namespace Network
             if (tcpConnection == null ||!tcpConnection.IsAlive)
                 throw new ArgumentException("TCP connection must be connected to an endpoint.");
             return new ClientConnectionContainer(tcpConnection, udpConnection);
+        }
+
+        /// <summary>
+        /// Creates a new instance of a secure-connection container. (RSA Encryption)
+        /// </summary>
+        /// <param name="tcpConnection">The TCP connection.</param>
+        /// <param name="udpConnection">The UDP connection.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>ConnectionContainer.</returns>
+        /// <exception cref="System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
+        public static ClientConnectionContainer CreateSecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, string publicKey, string privateKey, int keySize = 2048)
+        {
+            if (tcpConnection == null || !tcpConnection.IsAlive)
+                throw new ArgumentException("TCP connection must be connected to an endpoint.");
+            return new SecureClientConnectionContainer(tcpConnection, udpConnection, publicKey, privateKey, keySize);
         }
 
         /// <summary>

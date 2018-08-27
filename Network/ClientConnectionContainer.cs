@@ -390,7 +390,7 @@ namespace Network
         /// </summary>
         private async Task OpenNewTCPConnection()
         {
-            Tuple<TcpConnection, ConnectionResult> result = await ConnectionFactory.CreateTcpConnectionAsync(IPAddress, Port);
+            Tuple<TcpConnection, ConnectionResult> result = await CreateTcpConnection();
             if (result.Item2 != ConnectionResult.Connected) { Reconnect(); return; }
             tcpConnection = result.Item1;
 
@@ -450,7 +450,7 @@ namespace Network
         /// </summary>
         private async Task OpenNewUDPConnection()
         {
-            Tuple<UdpConnection, ConnectionResult> result = await ConnectionFactory.CreateUdpConnectionAsync(tcpConnection);
+            Tuple<UdpConnection, ConnectionResult> result = await CreateUdpConnection();
             if (result.Item2 != ConnectionResult.Connected) { Reconnect(); return; }
             udpConnection = result.Item1;
             //Restore old state by adding old packets
@@ -676,6 +676,18 @@ namespace Network
             if (forceReconnect || AutoReconnect)
                 reconnectTimer.Start();
         }
+
+        /// <summary>
+        /// Creates a new TcpConnection.
+        /// </summary>
+        /// <returns>A TcpConnection.</returns>
+        protected virtual async Task<Tuple<TcpConnection, ConnectionResult>> CreateTcpConnection() => await ConnectionFactory.CreateTcpConnectionAsync(IPAddress, Port);
+
+        /// <summary>
+        /// Creates a new UdpConnection from the existing tcpConnection.
+        /// </summary>
+        /// <returns>A UdpConnection.</returns>
+        protected virtual async Task<Tuple<UdpConnection, ConnectionResult>> CreateUdpConnection() => await ConnectionFactory.CreateUdpConnectionAsync(tcpConnection);
 
         public override string ToString()
         {

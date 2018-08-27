@@ -4,8 +4,8 @@
 // Author           : Thomas
 // Created          : 07-23-2015
 //
-// Last Modified By : Thomas
-// Last Modified On : 08-05-2015
+// Last Modified By : Thomas Christof
+// Last Modified On : 27.08.2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev

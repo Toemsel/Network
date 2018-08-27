@@ -58,6 +58,21 @@ namespace Network
         /// <value>The port.</value>
         public int Port { get; protected set; }
 
+        /// <summary>
+        /// The PublicKey of this instance.
+        /// </summary>
+        public string PublicKey { get; protected set; }
+
+        /// <summary>
+        /// The PrivateKey of this instance.
+        /// </summary>
+        public string PrivateKey { get; protected set; }
+
+        /// <summary>
+        /// The used KeySize of this instance.
+        /// </summary>
+        public int KeySize { get; protected set; }
+
         protected List<Assembly> KnownTypes { get; private set; } = new List<Assembly>();
 
         /// <summary>
