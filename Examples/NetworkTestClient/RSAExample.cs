@@ -40,7 +40,9 @@ namespace NetworkTestClient
     /// 1. Retrieve public key
     /// 2. Retrieve private key
     /// 3. Establish a connection
-    /// 4. Send and receive a packet
+    /// 4. Register Connection-Received Handlers
+    /// 5. Register Packet-Handlers.
+    /// 6. Send and receive a packet
     /// </summary>
     public class RSAExample
     {
@@ -54,27 +56,15 @@ namespace NetworkTestClient
             string privateKey = File.ReadAllText("PrivateKey.xml");
             //3. Establish a connection.
             ClientConnectionContainer container = ConnectionFactory.CreateSecureClientConnectionContainer("127.0.0.1", 1234, publicKey, privateKey);
-            //2. Register what happens if we get a connection
+            //4. Register what happens if we get a connection
             container.ConnectionEstablished += (connection, type) =>
             {
                 Console.WriteLine($"{type.ToString()} Connection established");
-                //3. Register what happens if we receive a packet of type "CalculationResponse"
+                //5. Register what happens if we receive a packet of type "CalculationResponse"
                 connection.RegisterPacketHandler<CalculationResponse>((response, con) => Console.WriteLine($"Answer received {response.Result}"), this);
-                //4. Send a calculation request.
+                //6. Send a calculation request.
                 connection.Send(new CalculationRequest(10, 10), this);
             };
-
-            //TcpConnection secureTcpConnection = ConnectionFactory.CreateSecureTcpConnection("127.0.0.1", 1234, publicKey, privateKey, out ConnectionResult connectionResult);
-            //if (connectionResult != ConnectionResult.Connected)
-            //    return;
-
-            //secureTcpConnection.UnlockRemoteConnection();
-            //secureTcpConnection.EnableLogging = true;
-            //Console.WriteLine("Connection established");
-
-            ////3. Send a request packet async and directly receive an answer.
-            //CalculationResponse response = await secureTcpConnection.SendAsync<CalculationResponse>(new CalculationRequest(10, 10));
-            //Console.WriteLine($"Answer received {response.Result}");
         }
     }
 }
