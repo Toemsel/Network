@@ -679,7 +679,7 @@ namespace Network
                 EstablishUdpRequest establishUdpRequest = (EstablishUdpRequest)packet;
                 IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
                 Send(new EstablishUdpResponse(udpEndPoint.Port, establishUdpRequest));
-                UdpConnection udpConnection = new UdpConnection(new UdpClient(udpEndPoint),
+                UdpConnection udpConnection = CreateUdpConnection(udpEndPoint, 
                     new IPEndPoint(IPRemoteEndPoint.Address, establishUdpRequest.UdpPort), true);
                 pendingUDPConnections.Enqueue(udpConnection);
                 connectionEstablished?.Invoke((TcpConnection)this, udpConnection);
@@ -834,6 +834,15 @@ namespace Network
         /// The objectMap has been refreshed.
         /// </summary>
         public virtual void ObjectMapRefreshed() { }
+
+        /// <summary>
+        /// Creates a new UdpConnection.
+        /// </summary>
+        /// <param name="localEndPoint">The localEndPoint.</param>
+        /// <param name="removeEndPoint">The removeEndPoint.</param>
+        /// <param name="writeLock">The writeLock.</param>
+        /// <returns>A UdpConnection.</returns>
+        protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new UdpConnection(new UdpClient(localEndPoint), removeEndPoint, writeLock);
 
         /// <summary>
         /// Gets or sets the time to live for the tcp connection.

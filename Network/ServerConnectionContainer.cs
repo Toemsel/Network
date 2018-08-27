@@ -5,7 +5,7 @@
 // Created          : 02-03-2016
 //
 // Last Modified By : Thomas Christof
-// Last Modified On : 28.05.2016
+// Last Modified On : 27.08.2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -406,12 +406,14 @@ namespace Network
         {
             bluetoothConnections.ToList().ForEach(b => b.Send(packet));
         }
-
+        
+        /// <summary>
+        /// Creates a new TcpConnection instance.
+        /// </summary>
+        /// <param name="tcpClient">The TcpClient to connect to.</param>
+        /// <returns>A <see cref="TcpConnection" /> object.</returns>
         protected virtual TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateTcpConnection(tcpClient);
 
-        public override string ToString()
-        {
-            return $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. AllowBluetoothConnections {AllowBluetoothConnections}. Connected TCP connections {connections.Count}.";
-        }
+        public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. AllowBluetoothConnections {AllowBluetoothConnections}. Connected TCP connections {connections.Count}.";
     }
 }

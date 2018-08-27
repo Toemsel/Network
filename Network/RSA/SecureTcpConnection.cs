@@ -30,6 +30,7 @@
 #endregion Licence - LGPLv3
 using Network.Converter;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 
@@ -142,5 +143,15 @@ namespace Network.RSA
         /// <param name="data">The encrypted byte sequence.</param>
         /// <returns>A <see cref="Packet" /> object.</returns>
         public Packet GetPacket(Type packetType, byte[] data) => PacketConverter.GetPacket(packetType, Decryption(data));
+
+        /// <summary>
+        /// Instead of a normal UdpConnection, we create a secure-UdpConnection
+        /// based on the configuration of our secure-TcpConnection. (Sharing private/public key)
+        /// </summary>
+        /// <param name="localEndPoint">The localEndPoint.</param>
+        /// <param name="removeEndPoint">The removeEndPoint to connect to.</param>
+        /// <param name="writeLock">The writeLock.</param>
+        /// <returns>A Secure-UdpConnection.</returns>
+        protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, PublicKey, PrivateKey, KeySize, writeLock);
     }
 }
