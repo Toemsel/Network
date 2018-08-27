@@ -20,7 +20,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 - Xamarin.Android*         >= 8.0
 - UWP*                     >= 10.0.16299
 
-'*' No Bluetooth support
+'*' No Bluetooth and RSA support
 
 # Example Client
 ```c#
