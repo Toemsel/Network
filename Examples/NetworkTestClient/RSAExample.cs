@@ -2,10 +2,10 @@
 // ***********************************************************************
 // Assembly         : NetworkTestClient
 // Author           : Thomas Christof
-// Created          : 02-11-2016
+// Created          : 27-08-2018
 //
 // Last Modified By : Thomas Christof
-// Last Modified On : 10-10-2015
+// Last Modified On : 27-08-2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -29,34 +29,41 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using System;
+using System.IO;
 using Network;
 using TestServerClientPackets;
 
 namespace NetworkTestClient
 {
     /// <summary>
-    /// Simple example>
-    /// 1. Establish a connection
-    /// 2. Subscribe connectionEstablished event
-    /// 3. Send and receive a packet
+    /// RSA example>
+    /// 1. Retrieve public key
+    /// 2. Retrieve private key
+    /// 3. Establish a connection
+    /// 4. Send and receive a packet
     /// </summary>
-    public class AsyncExample
+    public class RSAExample
     {
 #pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         public async void Demo()
 #pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         {
-            //1. Establish a connection to the server.
-            ClientConnectionContainer container = ConnectionFactory.CreateClientConnectionContainer("127.0.0.1", 1234);
-            //2. Register what happens if we get a connection
-            container.ConnectionEstablished += async (connection, type) =>
-            {
-                connection.EnableLogging = true;
-                Console.WriteLine($"{type.ToString()} Connection established");
-                //3. Send a request packet async and directly receive an answer.
-                CalculationResponse response = await connection.SendAsync<CalculationResponse>(new CalculationRequest(10, 10));
-                Console.WriteLine($"Answer received {response.Result}");
-            };
+            //1. Retrieve public key
+            string publicKey = File.ReadAllText("PublicKey.xml");
+            //2. Retrieve private key
+            string privateKey = File.ReadAllText("PrivateKey.xml");
+            //3. Establish a connection.
+            TcpConnection secureTcpConnection = ConnectionFactory.CreateSecureTcpConnection("127.0.0.1", 1234, publicKey, privateKey, out ConnectionResult connectionResult);
+            if (connectionResult != ConnectionResult.Connected)
+                return;
+
+            secureTcpConnection.UnlockRemoteConnection();
+            secureTcpConnection.EnableLogging = true;
+            Console.WriteLine("Connection established");
+
+            //3. Send a request packet async and directly receive an answer.
+            CalculationResponse response = await secureTcpConnection.SendAsync<CalculationResponse>(new CalculationRequest(10, 10));
+            Console.WriteLine($"Answer received {response.Result}");
         }
     }
 }

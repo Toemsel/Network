@@ -5,7 +5,7 @@
 // Created          : 07-26-2015
 //
 // Last Modified By : Thomas
-// Last Modified On : 08-09-2015
+// Last Modified On : 27-08-2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -28,14 +28,14 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+using Network.Enums;
+using Network.Interfaces;
+using Network.Packets;
 using System;
 using System.Collections.Generic;
-using Network.Packets;
-using Network.Enums;
-using System.Timers;
-using System.Threading.Tasks;
 using System.Reflection;
-using Network.Interfaces;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace Network
 {

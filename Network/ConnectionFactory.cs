@@ -5,7 +5,7 @@
 // Created          : 07-24-2015
 //
 // Last Modified By : Thomas
-// Last Modified On : 07-27-2015
+// Last Modified On : 27-08-2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -30,6 +30,7 @@
 #endregion Licence - LGPLv3
 using InTheHand.Net.Sockets;
 using Network.Bluetooth;
+using Network.RSA;
 using System;
 using System.IO;
 using System.Linq;
@@ -177,6 +178,23 @@ namespace Network
         }
 
         /// <summary>
+        /// Creates a new tcp secure connection and tries to connect to the given endpoint.
+        /// </summary>
+        /// <param name="ipAddress">The ip address to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <param name="connectionResult">The connection result.</param>
+        /// <returns>A tcp connection object if the successfully connected. Else null.</returns>
+        public static TcpConnection CreateSecureTcpConnection(string ipAddress, int port, string publicKey, string privateKey, out ConnectionResult connectionResult, int keySize = 2048)
+        {
+            Tuple<TcpConnection, ConnectionResult> tcpConnection = CreateSecureTcpConnectionAsync(ipAddress, port, publicKey, privateKey, keySize).Result;
+            connectionResult = tcpConnection.Item2;
+            return tcpConnection.Item1;
+        }
+
+        /// <summary>
         /// Creates a new tcp connection and tries to connect to the given endpoint async.
         /// </summary>
         /// <param name="ipAddress">The ip address to connect to.</param>
@@ -197,6 +215,30 @@ namespace Network
             return new Tuple<TcpConnection, ConnectionResult>(null, ConnectionResult.Timeout);
         }
 
+        /// <summary>
+        /// Creates a new secure tcp connection and tries to connect to the given endpoint async.
+        /// </summary>
+        /// <param name="ipAddress">The ip address to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>A tcp connection object if the successfully connected. Else null.</returns>
+        public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateSecureTcpConnectionAsync(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048)
+        {
+            try
+            {
+                TcpClient tcpClient = new TcpClient();
+                Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
+                Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
+                if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
+                    return new Tuple<TcpConnection, ConnectionResult>(new SecureTcpConnection(publicKey, privateKey, tcpClient, keySize), ConnectionResult.Connected);
+            }
+            catch { }
+
+            return new Tuple<TcpConnection, ConnectionResult>(null, ConnectionResult.Timeout);
+        }
+
 
         /// <summary>
         /// Wraps the given tcpClient into the networks tcp connection.
@@ -211,6 +253,21 @@ namespace Network
         }
 
         /// <summary>
+        /// Wraps the given tcpClient into the networks tcp connection.
+        /// </summary>
+        /// <param name="tcpClient">The connected tcp client.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>The TcpConnection.</returns>
+        /// <exception cref="System.ArgumentException">Socket is not connected.</exception>
+        public static TcpConnection CreateSecureTcpConnection(TcpClient tcpClient, string publicKey, string privateKey, int keySize = 2048)
+        {
+            if (!tcpClient.Connected) throw new ArgumentException("Socket is not connected.");
+            return new SecureTcpConnection(publicKey, privateKey, tcpClient, keySize);
+        }
+
+        /// <summary>
         /// Creates a new instance of a udp connection.
         /// </summary>
         /// <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
@@ -218,6 +275,21 @@ namespace Network
         public static UdpConnection CreateUdpConnection(TcpConnection tcpConnection, out ConnectionResult connectionResult)
         {
             Tuple<UdpConnection, ConnectionResult> connectionRequest = CreateUdpConnectionAsync(tcpConnection).Result;
+            connectionResult = connectionRequest.Item2;
+            return connectionRequest.Item1;
+        }
+
+        /// <summary>
+        /// Creates a new instance of a secure udp connection.
+        /// </summary>
+        /// <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>The UdpConnection.</returns>
+        public static UdpConnection CreateSecureUdpConnection(TcpConnection tcpConnection, string publicKey, string privateKey, int keySize = 2048, out ConnectionResult connectionResult)
+        {
+            Tuple<UdpConnection, ConnectionResult> connectionRequest = CreateSecureUdpConnectionAsync(tcpConnection, publicKey, privateKey, keySize).Result;
             connectionResult = connectionRequest.Item2;
             return connectionRequest.Item1;
         }
@@ -243,13 +315,33 @@ namespace Network
         }
 
         /// <summary>
+        /// Creates a new instance of a udp connection async.
+        /// </summary>
+        /// <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>Task&lt;UdpConnection&gt;.</returns>
+        /// <exception cref="ArgumentException">TcpConnection is not connected to the endpoint.</exception>
+        public static async Task<Tuple<UdpConnection, ConnectionResult>> CreateSecureUdpConnectionAsync(TcpConnection tcpConnection, string publicKey, string privateKey, int keySize = 2048)
+        {
+            UdpConnection udpConnection = null;
+            ConnectionResult connectionResult = ConnectionResult.Connected;
+            CancellationTokenSource cancellationToken = new CancellationTokenSource();
+            cancellationToken.CancelAfter(CONNECTION_TIMEOUT);
+            if (tcpConnection == null || !tcpConnection.IsAlive)
+                return new Tuple<UdpConnection, ConnectionResult>(udpConnection, ConnectionResult.TCPConnectionNotAlive);
+            tcpConnection.EstablishUdpConnection((localEndPoint, RemoteEndPoint) => udpConnection = new SecureUdpConnection(new UdpClient(localEndPoint), RemoteEndPoint, publicKey, privateKey, keySize));
+            while (udpConnection == null && !cancellationToken.IsCancellationRequested) await Task.Delay(25);
+            if (udpConnection == null && cancellationToken.IsCancellationRequested) connectionResult = ConnectionResult.Timeout;
+            return new Tuple<UdpConnection, ConnectionResult>(udpConnection, connectionResult);
+        }
+
+        /// <summary>
         /// Creates a new instance of a connection container.
         /// </summary>
         /// <returns>ConnectionContainer.</returns>
-        public static ClientConnectionContainer CreateClientConnectionContainer(string ipAddress, int port)
-        {
-            return new ClientConnectionContainer(ipAddress, port);
-        }
+        public static ClientConnectionContainer CreateClientConnectionContainer(string ipAddress, int port) => new ClientConnectionContainer(ipAddress, port);
 
         /// <summary>
         /// Creates a new instance of a connection container.
@@ -271,10 +363,18 @@ namespace Network
         /// <param name="port">The port.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         /// <returns>ServerConnectionContainer.</returns>
-        public static ServerConnectionContainer CreateServerConnectionContainer(int port, bool start = true)
-        {
-            return new ServerConnectionContainer(port, start);
-        }
+        public static ServerConnectionContainer CreateServerConnectionContainer(int port, bool start = true) => new ServerConnectionContainer(port, start);
+
+        /// <summary>
+        /// Creates a secure server connection container.
+        /// </summary>
+        /// <param name="port">The port.</param>
+        /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>ServerConnectionContainer.</returns>
+        public static ServerConnectionContainer CreateSecureServerConnectionContainer(int port, string publicKey, string privateKey, int keySize = 2048, bool start = true) => new SecureServerConnectionContainer(port, publicKey, privateKey, keySize, start);
 
         /// <summary>
         /// Creates the server connection container.
@@ -283,9 +383,18 @@ namespace Network
         /// <param name="port">The port.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         /// <returns>ServerConnectionContainer.</returns>
-        public static ServerConnectionContainer CreateServerConnectionContainer(string ipAddress, int port, bool start = true)
-        {
-            return new ServerConnectionContainer(ipAddress, port, start);
-        }
+        public static ServerConnectionContainer CreateServerConnectionContainer(string ipAddress, int port, bool start = true) => new ServerConnectionContainer(ipAddress, port, start);
+
+        /// <summary>
+        /// Creates a secure server connection container.
+        /// </summary>
+        /// <param name="ipAddress">The ip address.</param>
+        /// <param name="port">The port.</param>
+        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
+        /// <returns>ServerConnectionContainer.</returns>
+        public static ServerConnectionContainer CreateSecureServerConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048, bool start = true) => new SecureServerConnectionContainer(ipAddress, port, publicKey, privateKey, keySize, start);
     }
 }

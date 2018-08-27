@@ -38,7 +38,7 @@ namespace NetworkTestClient
         {
             int input = 0;
 
-            while(input != 8)
+            while(input != 9)
             {
                 Console.WriteLine("<1> Async example");
                 Console.WriteLine("<2> Lambda example");
@@ -47,12 +47,13 @@ namespace NetworkTestClient
                 Console.WriteLine("<5> Object driven example");
                 Console.WriteLine("<6> TcpConnection only example");
                 Console.WriteLine("<7> RawData example");
-                Console.WriteLine("<8> Exit");
+                Console.WriteLine("<8> RSA example");
+                Console.WriteLine("<9> Exit");
                 Console.Write("> ");
 
 
                 input = 0;
-                while(!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 7)
+                while(!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 8)
                     Console.Write("> ");
 
                 switch(input)
@@ -77,6 +78,9 @@ namespace NetworkTestClient
                         break;
                     case 7:
                         new RawDataExample().Demo();
+                        break;
+                    case 8:
+                        new RSAExample().Demo();
                         break;
                     default:
                         throw new ArgumentException();

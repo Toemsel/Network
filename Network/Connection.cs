@@ -263,9 +263,10 @@ namespace Network
         /// The default packetConverter uses reflection to get and set data within objects.
         /// Using your own packetConverter could result in a higher throughput.
         /// </summary>
-        public IPacketConverter PacketConverter
+        public virtual IPacketConverter PacketConverter
         {
-            set { packetConverter = value; }
+            get => packetConverter;
+            set => packetConverter = value;
         }
 
         /// <summary>

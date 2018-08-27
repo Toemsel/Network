@@ -28,7 +28,6 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-
 using System.Collections.Generic;
 using System.Reflection;
 

@@ -96,6 +96,7 @@
     <Compile Include="Extensions\RawDataExtension.cs" />
     <Compile Include="Extensions\ThreadExtension.cs" />
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IPacketHandler.cs" />
     <Compile Include="Logging\NetworkLog.cs" />
     <Compile Include="ObjectMap.cs" />
@@ -115,6 +116,9 @@
     <Compile Include="Packets\UDPPingRequest.cs" />
     <Compile Include="Packets\UDPPingResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RSA\SecureServerConnectionContainer.cs" />
+    <Compile Include="RSA\SecureUdpConnection.cs" />
+    <Compile Include="RSA\SecureTcpConnection.cs" />
     <Compile Include="ServerConnectionContainer.cs" />
     <Compile Include="TcpConnection.cs" />
     <Compile Include="UdpConnection.cs" />

@@ -203,7 +203,7 @@ namespace Network
             while (IsTCPOnline)
             {
                 TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
-                TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection(tcpClient);
+                TcpConnection tcpConnection = CreateTcpConnection(tcpClient);
                 tcpConnection.ConnectionClosed += connectionClosed;
                 tcpConnection.ConnectionEstablished += udpConnectionReceived;
                 connections.GetOrAdd(tcpConnection, new List<UdpConnection>());
@@ -406,6 +406,8 @@ namespace Network
         {
             bluetoothConnections.ToList().ForEach(b => b.Send(packet));
         }
+
+        protected virtual TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateTcpConnection(tcpClient);
 
         public override string ToString()
         {
