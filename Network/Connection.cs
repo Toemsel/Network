@@ -30,6 +30,7 @@
 #endregion Licence - LGPLv3
 using Network.Attributes;
 using Network.Enums;
+using Network.RSA;
 using Network.Extensions;
 using Network.Packets;
 using System;
@@ -839,10 +840,10 @@ namespace Network
         /// Creates a new UdpConnection.
         /// </summary>
         /// <param name="localEndPoint">The localEndPoint.</param>
-        /// <param name="removeEndPoint">The removeEndPoint.</param>
+        /// <param name="remoteEndPoint">The removeEndPoint.</param>
         /// <param name="writeLock">The writeLock.</param>
         /// <returns>A UdpConnection.</returns>
-        protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new UdpConnection(new UdpClient(localEndPoint), removeEndPoint, writeLock);
+        protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock) => new UdpConnection(new UdpClient(localEndPoint), remoteEndPoint, writeLock);
 
         /// <summary>
         /// Gets or sets the time to live for the tcp connection.

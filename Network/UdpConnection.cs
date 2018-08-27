@@ -65,7 +65,7 @@ namespace Network
         /// </summary>
         /// <param name="udpClient">The UDP client.</param>
         /// <param name="endPoint">The endPoint where we want to receive the data.</param>
-        internal UdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, bool writeLock = false)
+        internal UdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, bool writeLock = false, bool skipInitializationProcess = false)
             : base()
         {
             client = udpClient;
@@ -73,7 +73,7 @@ namespace Network
             socket = client.Client;
             localEndPoint = (IPEndPoint)client.Client.LocalEndPoint;
             client.Connect(remoteEndPoint);
-            ObjectMapRefreshed();   
+            ObjectMapRefreshed();
 
             KeepAlive = false;
             socket.SendTimeout = 0;
@@ -85,7 +85,11 @@ namespace Network
             //The risk is too high to unlock the connection. If the packet gets lost, we
             //can never unlock the connection nor communicate with the endpoint.
 
-            Init();
+            //The initialization has to be done elsewhere.
+            //The caller of the constructor wants to apply
+            //additional settings before starting the network comm.
+            if(!skipInitializationProcess)
+                Init();
         }
 
         /// <summary>

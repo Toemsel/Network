@@ -47,7 +47,7 @@ namespace Network.RSA
         /// Encryption providers for encryption/decryption.
         /// </summary>
         private RSACryptoServiceProvider encryptionProvider;
-        private RSACryptoServiceProvider dencryptionProvider;
+        private RSACryptoServiceProvider decryptionProvider;
 
         /// <summary>
         /// The <see cref="SecureTcpConnection"/> is a <see cref="TcpConnection"/>.
@@ -73,8 +73,8 @@ namespace Network.RSA
             encryptionProvider = new RSACryptoServiceProvider(KeySize);
             encryptionProvider.FromXmlString(publicKey);
 
-            dencryptionProvider = new RSACryptoServiceProvider(KeySize);
-            dencryptionProvider.FromXmlString(privateKey);
+            decryptionProvider = new RSACryptoServiceProvider(KeySize);
+            decryptionProvider.FromXmlString(privateKey);
 
             externalPacketConverter = base.PacketConverter;
             base.PacketConverter = this;
@@ -127,7 +127,7 @@ namespace Network.RSA
         /// </summary>
         /// <param name="bytes">The bytes to decrypt.</param>
         /// <returns>The decrypted bytes.</returns>
-        private byte[] Decryption(byte[] bytes) => dencryptionProvider.Decrypt(bytes, XPOrHigher);
+        private byte[] Decryption(byte[] bytes) => decryptionProvider.Decrypt(bytes, XPOrHigher);
 
         /// <summary>
         /// Gets the encrypted bytes of a <see cref="Packet"/>
