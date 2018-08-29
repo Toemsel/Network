@@ -6,11 +6,10 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>5.1.0.4-rc</Version>
+     <Version>5.1.0.5</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
-
 
 - .NET 4.6
 - .NET Standard 2.0 (No Bluetooth support)
@@ -30,8 +29,8 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
      <PackageReleaseNotes>RSA support for .NET Standard 2.0</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>5.1.0.4</AssemblyVersion>
-     <FileVersion>5.1.0.4</FileVersion>
+     <AssemblyVersion>5.1.0.5</AssemblyVersion>
+     <FileVersion>5.1.0.5</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
