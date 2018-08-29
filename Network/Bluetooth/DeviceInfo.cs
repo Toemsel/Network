@@ -1,4 +1,5 @@
-﻿#region Licence - LGPLv3
+﻿#if NET46
+#region Licence - LGPLv3
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -100,3 +101,4 @@ namespace Network.Bluetooth
         internal BluetoothDeviceInfo BluetoothDeviceInfo { get; private set; }
     }
 }
+#endif

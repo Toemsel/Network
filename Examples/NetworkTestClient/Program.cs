@@ -43,7 +43,9 @@ namespace NetworkTestClient
                 Console.WriteLine("<1> Async example");
                 Console.WriteLine("<2> Lambda example");
                 Console.WriteLine("<3> Delegate example");
+#if NET46
                 Console.WriteLine("<4> Bluetooth example");
+#endif
                 Console.WriteLine("<5> Object driven example");
                 Console.WriteLine("<6> TcpConnection only example");
                 Console.WriteLine("<7> RawData example");
@@ -67,9 +69,11 @@ namespace NetworkTestClient
                     case 3:
                         new DelegateExample().Demo();
                         break;
+#if NET46
                     case 4:
                         new BluetoothExample().Demo();
                         break;
+#endif
                     case 5:
                         new ObjectExample().Demo();
                         break;

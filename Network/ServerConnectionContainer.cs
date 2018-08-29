@@ -28,6 +28,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+#if NET46
+using InTheHand.Net.Sockets;
+#endif
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,7 +38,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using Network.Enums;
-using InTheHand.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Network
@@ -48,11 +50,14 @@ namespace Network
     public class ServerConnectionContainer : ConnectionContainer
     {
         private TcpListener tcpListener;
-        private BluetoothListener bluetoothListener;
         private event Action<Connection, ConnectionType> connectionEstablished;
         private event Action<Connection, ConnectionType, CloseReason> connectionLost;
         private ConcurrentDictionary<TcpConnection, List<UdpConnection>> connections = new ConcurrentDictionary<TcpConnection, List<UdpConnection>>();
+
+#if NET46
+        private BluetoothListener bluetoothListener;
         private ConcurrentBag<BluetoothConnection> bluetoothConnections = new ConcurrentBag<BluetoothConnection>();
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerConnectionContainer" /> class.
@@ -110,11 +115,6 @@ namespace Network
         public bool IsTCPOnline { get; private set; } = false;
 
         /// <summary>
-        /// Gets a value indicating whether the bluetooth server is online or not.
-        /// </summary>
-        public bool IsBluetoothOnline { get; private set; } = false;
-
-        /// <summary>
         /// Gets or sets a value indicating whether [allow UDP connections].
         /// </summary>
         /// <value><c>true</c> if [allow UDP connections]; otherwise, <c>false</c>.</value>
@@ -125,6 +125,12 @@ namespace Network
         /// udp connection which exceeds this limit, the TCP connection and all the UDP connections will be closed.
         /// </summary>
         public int UDPConnectionLimit { get; set; } = 1;
+
+#if NET46
+        /// <summary>
+        /// Gets a value indicating whether the bluetooth server is online or not.
+        /// </summary>
+        public bool IsBluetoothOnline { get; private set; } = false;
 
         /// <summary>
         /// Gets or sets if the server is listening to bluetooth connections.
@@ -137,6 +143,7 @@ namespace Network
         /// The maximum amount of pending bluetooth connections.
         /// </summary>
         public int MaxBluetoothPendingQueue { get; set; } = 15;
+#endif
 
         /// <summary>
         /// Gets all the connected TCP connections.
@@ -150,15 +157,24 @@ namespace Network
         /// <value>The ud p_ connections.</value>
         public List<UdpConnection> UDP_Connections { get { return connections.Values.SelectMany(c => c).ToList(); } }
 
+#if NET46
         /// <summary>
         /// Gets all the connected BLUETOOTH connections.
         /// </summary>
         public List<BluetoothConnection> BLUETOOTH_Connections { get { return bluetoothConnections.ToList(); } }
+#endif
 
+#if NET46
         /// <summary>
         /// Gets the connection count. (Clients)
         /// </summary>
         public int Count { get { return connections.Count + bluetoothConnections.Count; } }
+#elif NETSTANDARD2_0
+        /// <summary>
+        /// Gets the connection count. (Clients)
+        /// </summary>
+        public int Count { get { return connections.Count; } }
+#endif
 
         /// <summary>
         /// Occurs when [connection closed]. This action will be called if a TCP or an UDP has been closed.
@@ -186,7 +202,10 @@ namespace Network
         public void Start()
         {
             StartTCPListener();
+
+#if NET46
             StartBluetoothListener();
+#endif
         }
 
         /// <summary>
@@ -219,6 +238,7 @@ namespace Network
             }
         }
 
+#if NET46
         /// <summary>
         /// Starts to listen to available bluetooth connections.
         /// </summary>
@@ -245,6 +265,7 @@ namespace Network
                 bluetoothConnection.UnlockRemoteConnection();
             }
         }
+#endif
 
         /// <summary>
         /// A UDP connection has been established.
@@ -293,11 +314,13 @@ namespace Network
                 //because the TCP connection is already dead.
                 connections[tcpConnection].Remove((UdpConnection)connection);
             }
+#if NET46
             else if (connection.GetType().Equals(typeof(BluetoothConnection)))
             {
                 //Remove the bluetooth connection from the bag.
                 bluetoothConnections = new ConcurrentBag<BluetoothConnection>(bluetoothConnections.Except(new[] { (BluetoothConnection)connection }));
             }
+#endif
 
             if (connectionLost != null &&
                 connectionLost.GetInvocationList().Length > 0 &&
@@ -307,11 +330,14 @@ namespace Network
                 connectionLost.GetInvocationList().Length > 0 &&
                 connection.GetType().Equals(typeof(UdpConnection)))
                 connectionLost(connection, ConnectionType.UDP, closeReason);
+#if NET46
             else if (connectionLost != null &&
                 connection.GetType().Equals(typeof(BluetoothConnection)))
                 connectionLost(connection, ConnectionType.Bluetooth, closeReason);
+#endif
         }
 
+#if NET46
         /// <summary>
         /// Stops the Bluetooth listener. No new bluetooth clients are able to connect to the server anymore.
         /// </summary>
@@ -320,6 +346,7 @@ namespace Network
             if (IsBluetoothOnline) bluetoothListener.Stop();
             IsBluetoothOnline = !IsBluetoothOnline;
         }
+#endif
 
         /// <summary>
         /// Stops the TCP listener. No new tcp clients are able to connect to the server anymore.
@@ -335,7 +362,9 @@ namespace Network
         /// </summary>
         public void Stop()
         {
+#if NET46
             StopBluetoothListener();
+#endif
             StopTCPListener();
         }
 
@@ -346,11 +375,13 @@ namespace Network
         {
             CloseTCPConnections(reason);
             CloseUDPConnections(reason);
-            CloseBluetoothConnections(reason);
 
+#if NET46
+            CloseBluetoothConnections(reason);
             //Clear or reassign the connection containers.
             bluetoothConnections = new ConcurrentBag<BluetoothConnection>();
             connections.Clear();
+#endif
         }
 
         /// <summary>
@@ -371,6 +402,7 @@ namespace Network
             connections.Values.ToList().ForEach(c => c.ForEach(b => b.Close(reason)));
         }
 
+#if NET46
         /// <summary>
         /// Closes all the bluetooth connections.
         /// </summary>
@@ -379,6 +411,7 @@ namespace Network
         {
             bluetoothConnections.ToList().ForEach(b => b.Close(reason));
         }
+#endif
 
         /// <summary>
         /// Sends a broadcast to all the connected tcp connections.
@@ -398,6 +431,7 @@ namespace Network
             connections.Values.ToList().ForEach(c => c.ForEach(b => b.Send(packet)));
         }
 
+#if NET46
         /// <summary>
         /// Sends a broadcast to all the connected bluetooth connections.
         /// </summary>
@@ -406,7 +440,8 @@ namespace Network
         {
             bluetoothConnections.ToList().ForEach(b => b.Send(packet));
         }
-        
+#endif
+
         /// <summary>
         /// Creates a new TcpConnection instance.
         /// </summary>
@@ -414,6 +449,10 @@ namespace Network
         /// <returns>A <see cref="TcpConnection" /> object.</returns>
         protected virtual TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateTcpConnection(tcpClient);
 
+#if NET46
         public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. AllowBluetoothConnections {AllowBluetoothConnections}. Connected TCP connections {connections.Count}.";
+#elif NETSTANDARD2_0
+        public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. Connected TCP connections {connections.Count}.";
+#endif
     }
 }

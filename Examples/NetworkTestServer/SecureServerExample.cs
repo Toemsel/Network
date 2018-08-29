@@ -65,7 +65,9 @@ namespace NetworkTestServer
             #region Optional settings
             secureServerConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{secureServerConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             secureServerConnectionContainer.ConnectionEstablished += connectionEstablished;
+#if NET46
             secureServerConnectionContainer.AllowBluetoothConnections = true;
+#endif
             secureServerConnectionContainer.AllowUDPConnections = true;
             secureServerConnectionContainer.UDPConnectionLimit = 2;
             #endregion Optional settings

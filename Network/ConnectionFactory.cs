@@ -28,8 +28,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+#if NET46
 using InTheHand.Net.Sockets;
 using Network.Bluetooth;
+#endif
 using Network.RSA;
 using System;
 using System.IO;
@@ -72,6 +74,7 @@ namespace Network
         /// </summary>
         public const int CONNECTION_TIMEOUT = 8000;
 
+#if NET46
         /// <summary>
         /// The GUID of this assembly, needed for bluetooth connections.
         /// </summary>
@@ -83,35 +86,6 @@ namespace Network
         static ConnectionFactory()
         {
             GUID = Assembly.GetAssembly(typeof(Connection)).GetType().GUID;
-            LoadExternalDLLs();
-        }
-
-        /// <summary>
-        /// Loads the external dlls.
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
-        private static void LoadExternalDLLs()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                Assembly thisAssembly = Assembly.GetExecutingAssembly();
-                var name = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
-
-                //Load form Embedded Resources - This Function is not called if the Assembly is in the Application Folder
-                var resources = thisAssembly.GetManifestResourceNames().Where(s => s.EndsWith(name));
-                if (resources.Count() > 0)
-                {
-                    var resourceName = resources.First();
-                    using (Stream stream = thisAssembly.GetManifestResourceStream(resourceName))
-                    {
-                        if (stream == null) return null;
-                        var block = new byte[stream.Length];
-                        stream.Read(block, 0, block.Length);
-                        return Assembly.Load(block);
-                    }
-                }
-                return null;
-            };
         }
 
         /// <summary>
@@ -162,6 +136,7 @@ namespace Network
         {
             return new BluetoothConnection(bluetoothClient);
         }
+#endif
 
         /// <summary>
         /// Creates a new tcp connection and tries to connect to the given endpoint.

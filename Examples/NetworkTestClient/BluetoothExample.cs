@@ -1,4 +1,5 @@
-﻿using Network;
+﻿#if NET46
+using Network;
 using Network.Bluetooth;
 using System;
 using TestServerClientPackets;
@@ -35,3 +36,4 @@ namespace NetworkTestClient
         }
     }
 }
+#endif
