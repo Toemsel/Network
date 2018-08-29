@@ -12,7 +12,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 # Supported Frameworks
 
-- .NET Framework          >= 4.5
+- .NET Framework          >= 4.6
 - .NET Core*               >= 2.0
 - Mono*                    >= 5.4
 - Xamarin.iOS*             >= 10.14
@@ -20,7 +20,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 - Xamarin.Android*         >= 8.0
 - UWP*                     >= 10.0.16299
 
-'*' No Bluetooth and RSA support
+'*' No Bluetooth support
 
 # Example Client
 ```c#
@@ -163,7 +163,33 @@ NuGet https://www.nuget.org/packages/Network/ <br />
             bluetoothConnection.Item2.Send(new CalculationRequest(10, 10), this);
         }
    ```
+   
+# RSA Example
+   ```c#
+        public async void Demo()
+        {
+            //1. Retrieve public key
+            string publicKey = File.ReadAllText("PublicKey.xml");
+            //2. Retrieve private key
+            string privateKey = File.ReadAllText("PrivateKey.xml");
+            //3. Establish a connection.
+            ClientConnectionContainer container = ConnectionFactory.CreateSecureClientConnectionContainer("127.0.0.1", 1234, publicKey, privateKey);
+            //4. Register what happens if we get a connection
+            container.ConnectionEstablished += (connection, type) =>
+            {
+                Console.WriteLine($"{type.ToString()} Connection established");
+                //5. Register what happens if we receive a packet of type "CalculationResponse"
+                connection.RegisterPacketHandler<CalculationResponse>((response, con) => Console.WriteLine($"Answer received {response.Result}"), this);
+                //6. Send a calculation request.
+                connection.Send(new CalculationRequest(10, 10), this);
+            };
+        }
+   ```
 
 # Logging
 
 <img src="http://www.indie-dev.at/wp-content/uploads/2016/11/Logging.gif" />
+
+# Logging with RSA
+
+<img src="https://www.indie-dev.at/wp-content/uploads/2018/08/RSA.gif" />
