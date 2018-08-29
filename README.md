@@ -165,7 +165,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
    ```
    
 # RSA Example
-   ```
+   ```c#
         public async void Demo()
         {
             //1. Retrieve public key
