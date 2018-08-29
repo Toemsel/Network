@@ -12,7 +12,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 # Supported Frameworks
 
-- .NET Framework          >= 4.5
+- .NET Framework          >= 4.6
 - .NET Core*               >= 2.0
 - Mono*                    >= 5.4
 - Xamarin.iOS*             >= 10.14
@@ -20,7 +20,7 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 - Xamarin.Android*         >= 8.0
 - UWP*                     >= 10.0.16299
 
-'*' No Bluetooth and RSA support
+'*' No Bluetooth support
 
 # Example Client
 ```c#
