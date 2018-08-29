@@ -59,6 +59,7 @@ namespace NetworkTestClient
             //4. Register what happens if we get a connection
             container.ConnectionEstablished += (connection, type) =>
             {
+                connection.EnableLogging = true;
                 Console.WriteLine($"{type.ToString()} Connection established");
                 //5. Register what happens if we receive a packet of type "CalculationResponse"
                 connection.RegisterPacketHandler<CalculationResponse>((response, con) => Console.WriteLine($"Answer received {response.Result}"), this);

@@ -20,3 +20,6 @@
 /Examples/NetworkTestClient/obj/Release
 /Examples/NetworkTestClient/bin
 /Network/packages
+/Examples/NetworkTestClient/obj
+/Examples/NetworkTestServer/obj
+/Examples/TestServerClientPackets/obj

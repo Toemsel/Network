@@ -32,6 +32,7 @@ using Network;
 using Network.Enums;
 using Network.Extensions;
 using System;
+using System.Diagnostics;
 using System.IO;
 using TestServerClientPackets;
 using TestServerClientPackets.ExamplePacketsOne;
@@ -69,7 +70,7 @@ namespace NetworkTestServer
             secureServerConnectionContainer.AllowBluetoothConnections = true;
 #endif
             secureServerConnectionContainer.AllowUDPConnections = true;
-            secureServerConnectionContainer.UDPConnectionLimit = 2;
+            secureServerConnectionContainer.UDPConnectionLimit = 2;            
             #endregion Optional settings
 
             //Call start here, because we had to enable the bluetooth property at first.
@@ -85,6 +86,7 @@ namespace NetworkTestServer
         /// <param name="connection">The connection we got. (TCP or UDP)</param>
         private void connectionEstablished(Connection connection, ConnectionType type)
         {
+            connection.EnableLogging = true;
             Console.WriteLine($"{secureServerConnectionContainer.Count} {connection.GetType()} connected on port {connection.IPRemoteEndPoint.Port}");
 
             //3. Register packet listeners.
