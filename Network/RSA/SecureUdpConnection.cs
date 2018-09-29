@@ -29,11 +29,9 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using Network.Converter;
-using Network.Interfaces;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 
 namespace Network.RSA
 {
@@ -42,16 +40,10 @@ namespace Network.RSA
     /// It provides convenient methods to send and receive objects with a minimal serialization header.
     /// Compared to the <see cref="UdpConnection"/> the <see cref="SecureUdpConnection"/> does encrypt/decrypt sent/received bytes.
     /// </summary>
-    public class SecureUdpConnection : UdpConnection, IPacketConverter, IRSACapability
+    public class SecureUdpConnection : UdpConnection
     {
         /// <summary>
-        /// Encryption providers for encryption/decryption.
-        /// </summary>
-        private RSACryptoServiceProvider encryptionProvider;
-        private RSACryptoServiceProvider decryptionProvider;
-
-        /// <summary>
-        /// The <see cref="SecureTcpConnection"/> is a <see cref="TcpConnection"/>.
+        /// The <see cref="SecureUdpConnection"/> is a <see cref="UdpConnection"/>.
         /// The only difference within the implementation:
         /// - A Packet will be converted with a different IPacketConverter.
         /// However, the packetConverter can still be set.
@@ -61,23 +53,12 @@ namespace Network.RSA
         internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
             : base(udpClient, remoteEndPoint, writeLock, skipInitializationProcess:true)
         {
-            RSAPair = rsaPair;
+            //Setup the RSAConnectionHelper object.
+            RSAConnection = new RSAConnection(this, rsaPair);
+            PacketConverter = base.PacketConverter;
+            base.PacketConverter = RSAConnection;
 
-            //Are we running on WinXP or higher?
-            OperatingSystem operatingSystem = Environment.OSVersion;
-            XPOrHigher = (operatingSystem.Platform == PlatformID.Win32NT) &&
-                ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
-                (operatingSystem.Version.Minor >= 1)));
-
-            encryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
-            encryptionProvider.FromXmlString(RSAPair.Public);
-
-            decryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
-            decryptionProvider.FromXmlString(RSAPair.Private);
-
-            externalPacketConverter = base.PacketConverter;
-            base.PacketConverter = this;
-
+            //Since we did skip the initialization,... DO IT!
             Init();
         }
 
@@ -85,24 +66,25 @@ namespace Network.RSA
         /// The PublicKey of this instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
-        public string PublicKey => RSAPair.Public;
+        public string PublicKey => RSAConnection.RSAPair.Public;
 
         /// <summary>
         /// The PrivateKey of this instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
-        public string PrivateKey => RSAPair.Private;
+        public string PrivateKey => RSAConnection.RSAPair.Private;
 
         /// <summary>
         /// The used KeySize of this instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
-        public int KeySize => RSAPair.KeySize;
+        public int KeySize => RSAConnection.RSAPair.KeySize;
 
         /// <summary>
-        /// Is this application running on windowsXP or higher?
+        /// Gets the RSA pair.
         /// </summary>
-        public bool XPOrHigher { get; private set; }
+        /// <value>The RSA pair.</value>
+        public RSAPair RSAPair => RSAConnection.RSAPair;
 
         /// <summary>
         /// Use your own packetConverter to serialize/deserialze objects.
@@ -115,43 +97,14 @@ namespace Network.RSA
         /// </summary>
         public override IPacketConverter PacketConverter
         {
-            get => externalPacketConverter;
-            set => externalPacketConverter = value;
+            get => RSAConnection.PacketConverter;
+            set => RSAConnection.PacketConverter = value;
         }
 
         /// <summary>
-        /// Gets or sets the RSA-Pair.
+        /// A helper object to handle RSA requests.
         /// </summary>
-        /// <value>The RSA pair.</value>
-        public RSAPair RSAPair { get; set; }
-
-        /// <summary>
-        /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The Bytes to encrypt.</param>
-        /// <returns>The encrypted bytes.</returns>
-        private byte[] Encryption(byte[] bytes) => encryptionProvider.Encrypt(bytes, XPOrHigher);
-
-        /// <summary>
-        /// Decrypt bytes with the <see cref="RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The bytes to decrypt.</param>
-        /// <returns>The decrypted bytes.</returns>
-        private byte[] Decryption(byte[] bytes) => decryptionProvider.Decrypt(bytes, XPOrHigher);
-
-        /// <summary>
-        /// Gets the encrypted bytes of a <see cref="Packet"/>
-        /// </summary>
-        /// <param name="packet">The packet to encrypt.</param>
-        /// <returns>The encrypted Packet.</returns>
-        public byte[] GetBytes(Packet packet) => Encryption(PacketConverter.GetBytes(packet));
-
-        /// <summary>
-        /// Gets the encrypted packet of bytes.
-        /// </summary>
-        /// <param name="packetType">The packetType to encrypt.</param>
-        /// <param name="data">The encrypted byte sequence.</param>
-        /// <returns>A <see cref="Packet" /> object.</returns>
-        public Packet GetPacket(Type packetType, byte[] data) => PacketConverter.GetPacket(packetType, Decryption(data));
+        /// <value>The RSA connection.</value>
+        private RSAConnection RSAConnection { get; set; }
     }
 }
