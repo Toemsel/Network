@@ -43,7 +43,7 @@ namespace Network.RSA
                 cryptoServiceProvider.PersistKeyInCsp = false;
 
                 RSAParameters keyParameters = cryptoServiceProvider.ExportParameters(true);
-                return new RSAPair(keyParameters.ExtractPrivateKey(), keyParameters.ExtractPublicKey());
+                return new RSAPair(keyParameters.ExtractPublicKey(), keyParameters.ExtractPrivateKey(), keySize);
             }
         }
     }
