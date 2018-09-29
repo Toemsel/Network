@@ -32,8 +32,6 @@ using Network;
 using Network.Enums;
 using Network.Extensions;
 using System;
-using System.Diagnostics;
-using System.IO;
 using TestServerClientPackets;
 using TestServerClientPackets.ExamplePacketsOne;
 
@@ -41,12 +39,10 @@ namespace NetworkTestServer
 {
     /// <summary>
     /// Simple example>
-    /// 1. Retrieve public key.
-    /// 2. Retrieve private key.
-    /// 3. Start to listen on a port
-    /// 4. Applying optional settings
-    /// 5. Register packet listeners.
-    /// 6. Handle incoming packets.
+    /// 1. Start to listen on a port
+    /// 2. Applying optional settings
+    /// 3. Register packet listeners.
+    /// 4. Handle incoming packets.
     /// </summary>
     public class SecureServerExample
     {
@@ -54,15 +50,10 @@ namespace NetworkTestServer
 
         internal void Demo()
         {
-            //1. Retrieve public key
-            string publicKey = File.ReadAllText("PublicKey.xml");
-            //2. Retrieve private key
-            string privateKey = File.ReadAllText("PrivateKey.xml");
+            //1. Start to listen on a port
+            secureServerConnectionContainer = ConnectionFactory.CreateSecureServerConnectionContainer(1234, start: false);
 
-            //3. Start to listen on a port
-            secureServerConnectionContainer = ConnectionFactory.CreateSecureServerConnectionContainer(1234, publicKey, privateKey, start: false);
-
-            //4. Apply optional settings.
+            //2. Apply optional settings.
             #region Optional settings
             secureServerConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{secureServerConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             secureServerConnectionContainer.ConnectionEstablished += connectionEstablished;

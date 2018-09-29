@@ -28,57 +28,46 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-namespace Network.RSA
+using Network.RSA;
+using System.Security.Cryptography;
+
+namespace Network.Interfaces
 {
     /// <summary>
-    /// Contains RSA communication properties.
+    /// A connection supporting RSA en/decryption.
     /// </summary>
-    public class RSAPair
+    internal interface IRSAConnection : IRSACapability
     {
-        private const string PRIVATE_KEY_UNKNOWN = "UNKNOWN";
-
-        public RSAPair(string publicKey, string privateKey, int keySize)
-        {
-            Private = privateKey;
-            Public = publicKey;
-            KeySize = keySize;
-        }
-
-        internal RSAPair(string publicKey, int keySize)
-        {
-            Private = PRIVATE_KEY_UNKNOWN;
-            Public = publicKey;
-            KeySize = keySize;
-        }
+        /// <summary>
+        /// Gets or sets the encryption provider.
+        /// </summary>
+        /// <value>The encryption provider.</value>
+        RSACryptoServiceProvider EncryptionProvider { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the key.
+        /// Gets or sets the decryption provider.
         /// </summary>
-        /// <value>The size of the key.</value>
-        public int KeySize { get; set; }
+        /// <value>The decryption provider.</value>
+        RSACryptoServiceProvider DecryptionProvider { get; set; }
 
         /// <summary>
-        /// Gets or sets the public key.
+        /// Gets or sets the communication partner's RSA pair.
         /// </summary>
-        /// <value>The public.</value>
-        public string Public { get; set; }
+        /// <value>The communication partner RSA pair.</value>
+        RSAPair CommunicationPartnerRSAPair { get; set; }
 
         /// <summary>
-        /// Gets or sets the private key.
+        /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />
         /// </summary>
-        /// <value>The private.</value>
-        public string Private { get; set; }
+        /// <param name="bytes">The Bytes to encrypt.</param>
+        /// <returns>The encrypted bytes.</returns>
+        byte[] Encrypt(byte[] bytes);
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a public key.
+        /// Decrypt bytes with the <see cref="RSACryptoServiceProvider" />
         /// </summary>
-        /// <value><c>true</c> if this instance has a public key; otherwise, <c>false</c>.</value>
-        public bool HasPublicKey => !string.IsNullOrWhiteSpace(Public);
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has a private key.
-        /// </summary>
-        /// <value><c>true</c> if this instance has a private key; otherwise, <c>false</c>.</value>
-        public bool HasPrivateKey => !string.IsNullOrWhiteSpace(Private) && Private != PRIVATE_KEY_UNKNOWN;
+        /// <param name="bytes">The bytes to decrypt.</param>
+        /// <returns>The decrypted bytes.</returns>
+        byte[] Decrypt(byte[] bytes);
     }
 }

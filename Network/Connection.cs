@@ -444,10 +444,7 @@ namespace Network
         /// Suitable for static classes, response packets or basic packets without any inheritance.
         /// </summary>
         /// <param name="packet">The packet.</param>
-        public void Send(Packet packet)
-        {
-            Send(packet, null);
-        }
+        public void Send(Packet packet) => Send(packet, null);
 
         /// <summary>
         /// Converts the given packet into a binary array and sends it to the client's endpoint.
@@ -455,10 +452,7 @@ namespace Network
         /// </summary>
         /// <param name="packet">The packet.</param>
         /// <param name="instance">The instance who called this method.</param>
-        public void Send(Packet packet, object instance)
-        {
-            Send(packet, instance, false);
-        }
+        public void Send(Packet packet, object instance) => Send(packet, instance, false);
 
         /// <summary>
         /// Converts the given packet into a binary array and sends it async to the client's endpoint.
@@ -467,10 +461,16 @@ namespace Network
         /// <typeparam name="T">The type of the expected answer.</typeparam>
         /// <param name="packet">The packet to send.</param>
         /// <returns>T.</returns>
-        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket
-        {
-            return await new AsyncReceiver().Send<T>(packet, this);
-        }
+        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket => await new AsyncReceiver().Send<T>(packet, this);
+
+        /// <summary>
+        /// Converts the given packet into a binary array and sends it to the client's endpoint.
+        /// You wont be able to receive an answer, because no calling object is given.
+        /// Suitable for static classes, response packets or basic packets without any inheritance.
+        /// </summary>
+        /// <param name="packet">The packet.</param>
+        /// <param name="ignoreWriteLock">if set to <c>true</c> [ignore write lock].</param>
+        internal void Send(Packet packet, bool ignoreWriteLock) => Send(packet, null, ignoreWriteLock);
 
         /// <summary>
         /// Converts the given packet into a binary array and sends it to the client's endpoint.
@@ -524,6 +524,7 @@ namespace Network
                         HandleUnknownPacket();
                         continue;
                     }
+
                     Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;

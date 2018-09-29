@@ -51,7 +51,7 @@ namespace Network
         /// Initializes a new instance of the <see cref="TcpConnection"/> class.
         /// </summary>
         /// <param name="tcpClient">The TCP client.</param>
-        internal TcpConnection(TcpClient tcpClient)
+        internal TcpConnection(TcpClient tcpClient, bool skipInitializationProcess = false)
             : base()
         {
             client = tcpClient;
@@ -65,7 +65,11 @@ namespace Network
             tcpClient.ReceiveTimeout = 0;
             tcpClient.LingerState = new LingerOption(true, TIMEOUT);
 
-            Init();
+            //The initialization has to be done elsewhere.
+            //The caller of the constructor wants to apply
+            //additional settings before starting the network comm.
+            if (!skipInitializationProcess)
+                Init();
         }
 
         /// <summary>

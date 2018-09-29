@@ -225,6 +225,15 @@ namespace Network
         /// </summary>
         /// <param name="ipAddress">The ip address to connect to.</param>
         /// <param name="port">The port to connect to.</param>
+        /// <param name="keySize">The keySize.</param>
+        /// <returns>A tcp connection object if the successfully connected. Else null.</returns>
+        public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateSecureTcpConnectionAsync(string ipAddress, int port, int keySize = 2048) => await CreateSecureTcpConnectionAsync(ipAddress, port, RSAKeyGeneration.Generate(keySize));
+
+        /// <summary>
+        /// Creates a new secure tcp connection and tries to connect to the given endpoint async.
+        /// </summary>
+        /// <param name="ipAddress">The ip address to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
         /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
         /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
         /// <param name="keySize">The keySize.</param>
