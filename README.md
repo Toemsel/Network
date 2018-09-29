@@ -7,8 +7,10 @@ Forum http://www.indie-dev.at/?forum=c-network-library <br />
 Documentation http://www.indie-dev.at/?page_id=476 <br />
 NuGet https://www.nuget.org/packages/Network/ <br />
 
-# Donations
-- LiteCoins: LYSaNyRArm1jQdAxYXf7GDFSCuoGnVSVSf
+# Continuous Integration
+
+[![Build Status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/.NET%20Framework)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=7) .NET Framework <br />
+[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) .NET Core 2.0
 
 # Supported Frameworks
 
@@ -38,6 +40,13 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 - Very fast and relieable (6-10ms RTT)
 - Highly customizable
 - OpenSource and Free to use
+
+# Donations
+- LTC: LYSaNyRArm1jQdAxYXf7GDFSCuoGnVSVSf
+- TRX: TVUiQD8LpKScXv2TMxYb7c2bKA2Xdn8ayn
+- ETH: 0xa1249ae140e775d75dd1e96b366cf605264c3f46
+- BTC: 15C8ats3mqKB9F86cZVcL6BcFGNfTLDpM6
+- XRP: rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh
 
 # Example Client
 ```c#
