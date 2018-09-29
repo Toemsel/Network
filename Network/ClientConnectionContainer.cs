@@ -91,10 +91,7 @@ namespace Network
         /// <param name="ipAddress">The ip address.</param>
         /// <param name="port">The port.</param>
         internal ClientConnectionContainer(string ipAddress, int port)
-            : base(ipAddress, port)
-        {
-            Initialize();
-        }
+            : base(ipAddress, port) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
@@ -106,13 +103,12 @@ namespace Network
         {
             this.tcpConnection = tcpConnection;
             this.udpConnection = udpConnection;
-            Initialize();
         }
 
         /// <summary>
         /// Initializes this instance and starts connecting to the endpoint.
         /// </summary>
-        private void Initialize()
+        internal void Initialize()
         {
             reconnectTimer = new Timer();
             reconnectTimer.Elapsed += TryToConnect;

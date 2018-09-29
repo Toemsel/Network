@@ -316,7 +316,12 @@ namespace Network
         /// Creates a new instance of a connection container.
         /// </summary>
         /// <returns>ConnectionContainer.</returns>
-        public static ClientConnectionContainer CreateClientConnectionContainer(string ipAddress, int port) => new ClientConnectionContainer(ipAddress, port);
+        public static ClientConnectionContainer CreateClientConnectionContainer(string ipAddress, int port)
+        {
+            var clientConnectionContainer = new ClientConnectionContainer(ipAddress, port);
+            clientConnectionContainer.Initialize();
+            return clientConnectionContainer;
+        }
 
         /// <summary>
         /// Creates a new instance of a secure-connection container. (RSA Encryption)
@@ -325,7 +330,12 @@ namespace Network
         /// <param name="keySize">The keySize.</param>
         /// </summary>
         /// <returns>ConnectionContainer.</returns>
-        public static ClientConnectionContainer CreateSecureClientConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048) => new SecureClientConnectionContainer(ipAddress, port, publicKey, privateKey, keySize);
+        public static ClientConnectionContainer CreateSecureClientConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048)
+        {
+            var secureClientConnectionContainer = new SecureClientConnectionContainer(ipAddress, port, publicKey, privateKey, keySize);
+            secureClientConnectionContainer.Initialize();
+            return secureClientConnectionContainer;
+        }
 
         /// <summary>
         /// Creates a new instance of a connection container.
@@ -338,7 +348,10 @@ namespace Network
         {
             if (tcpConnection == null ||!tcpConnection.IsAlive)
                 throw new ArgumentException("TCP connection must be connected to an endpoint.");
-            return new ClientConnectionContainer(tcpConnection, udpConnection);
+
+            var clientConnectionContainer = new ClientConnectionContainer(tcpConnection, udpConnection);
+            clientConnectionContainer.Initialize();
+            return clientConnectionContainer;
         }
 
         /// <summary>
@@ -355,7 +368,10 @@ namespace Network
         {
             if (tcpConnection == null || !tcpConnection.IsAlive)
                 throw new ArgumentException("TCP connection must be connected to an endpoint.");
-            return new SecureClientConnectionContainer(tcpConnection, udpConnection, publicKey, privateKey, keySize);
+            
+            var secureClientConnectionContainer = new SecureClientConnectionContainer(tcpConnection, udpConnection, publicKey, privateKey, keySize);
+            secureClientConnectionContainer.Initialize();
+            return secureClientConnectionContainer;
         }
 
         /// <summary>
