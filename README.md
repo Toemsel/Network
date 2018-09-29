@@ -9,12 +9,10 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 # Continuous Integration
 
-[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Desktop)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) DEBUG> .NET Framework <br />
-[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) DEBUG> .NET Core <br />
-
-
-[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Framework)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) RELEASE> .NET Framework <br />
-[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) RELEASE> .NET Core
+[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Desktop)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) DEBUG .NET Framework <br />
+[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) DEBUG .NET Core <br />
+[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Framework)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) RELEASE .NET Framework <br />
+[![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) RELEASE .NET Core
 
 # Supported Frameworks
 
