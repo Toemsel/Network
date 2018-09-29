@@ -28,12 +28,15 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+using Network.Interfaces;
+using Network.RSA;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace Network
 {
-    public abstract class ConnectionContainer
+    public abstract class ConnectionContainer : IRSACapability
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionContainer"/> class.
@@ -61,17 +64,26 @@ namespace Network
         /// <summary>
         /// The PublicKey of this instance.
         /// </summary>
-        public string PublicKey { get; protected set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PublicKey => RSAPair?.Public;
 
         /// <summary>
         /// The PrivateKey of this instance.
         /// </summary>
-        public string PrivateKey { get; protected set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PrivateKey => RSAPair?.Private;
 
         /// <summary>
         /// The used KeySize of this instance.
         /// </summary>
-        public int KeySize { get; protected set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public int KeySize => RSAPair?.KeySize ?? -1;
+
+        /// <summary>
+        /// Gets or sets the RSA-Pair.
+        /// </summary>
+        /// <value>The RSA pair.</value>
+        public RSAPair RSAPair { get; set; }
 
         protected List<Assembly> KnownTypes { get; private set; } = new List<Assembly>();
 

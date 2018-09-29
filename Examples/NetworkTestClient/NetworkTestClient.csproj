@@ -87,6 +87,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Network\Network.csproj">
+      <Project>{793945c4-2e9b-4b9e-a3d6-2d49f1e6da38}</Project>
+      <Name>Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestServerClientPackets\TestServerClientPackets.csproj">
       <Project>{53832142-b075-4828-a922-bde5ec842277}</Project>
       <Name>TestServerClientPackets</Name>
@@ -99,11 +103,6 @@
     <None Include="PublicKey.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Network">
-      <Version>5.1.0.5</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

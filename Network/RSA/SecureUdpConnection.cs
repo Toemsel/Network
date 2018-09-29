@@ -29,11 +29,11 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using Network.Converter;
+using Network.Interfaces;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
-using System.Threading;
 
 namespace Network.RSA
 {
@@ -42,7 +42,7 @@ namespace Network.RSA
     /// It provides convenient methods to send and receive objects with a minimal serialization header.
     /// Compared to the <see cref="UdpConnection"/> the <see cref="SecureUdpConnection"/> does encrypt/decrypt sent/received bytes.
     /// </summary>
-    public class SecureUdpConnection : UdpConnection, IPacketConverter
+    public class SecureUdpConnection : UdpConnection, IPacketConverter, IRSACapability
     {
         /// <summary>
         /// Encryption providers for encryption/decryption.
@@ -58,12 +58,10 @@ namespace Network.RSA
         /// </summary>
         private IPacketConverter externalPacketConverter;
 
-        internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, string publicKey, string privateKey, int keySize = 2048, bool writeLock = false)
+        internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
             : base(udpClient, remoteEndPoint, writeLock, skipInitializationProcess:true)
         {
-            PublicKey = publicKey;
-            PrivateKey = privateKey;
-            KeySize = keySize;
+            RSAPair = rsaPair;
 
             //Are we running on WinXP or higher?
             OperatingSystem operatingSystem = Environment.OSVersion;
@@ -71,11 +69,11 @@ namespace Network.RSA
                 ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
                 (operatingSystem.Version.Minor >= 1)));
 
-            encryptionProvider = new RSACryptoServiceProvider(KeySize);
-            encryptionProvider.FromXmlString(publicKey);
+            encryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
+            encryptionProvider.FromXmlString(RSAPair.Public);
 
-            decryptionProvider = new RSACryptoServiceProvider(KeySize);
-            decryptionProvider.FromXmlString(privateKey);
+            decryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
+            decryptionProvider.FromXmlString(RSAPair.Private);
 
             externalPacketConverter = base.PacketConverter;
             base.PacketConverter = this;
@@ -86,17 +84,20 @@ namespace Network.RSA
         /// <summary>
         /// The PublicKey of this instance.
         /// </summary>
-        public string PublicKey { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PublicKey => RSAPair.Public;
 
         /// <summary>
         /// The PrivateKey of this instance.
         /// </summary>
-        public string PrivateKey { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PrivateKey => RSAPair.Private;
 
         /// <summary>
         /// The used KeySize of this instance.
         /// </summary>
-        public int KeySize { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public int KeySize => RSAPair.KeySize;
 
         /// <summary>
         /// Is this application running on windowsXP or higher?
@@ -117,6 +118,12 @@ namespace Network.RSA
             get => externalPacketConverter;
             set => externalPacketConverter = value;
         }
+
+        /// <summary>
+        /// Gets or sets the RSA-Pair.
+        /// </summary>
+        /// <value>The RSA pair.</value>
+        public RSAPair RSAPair { get; set; }
 
         /// <summary>
         /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />

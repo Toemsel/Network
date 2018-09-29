@@ -29,6 +29,7 @@
 // ***********************************************************************
 #endregion Licence - LGPLv3
 using Network.Converter;
+using Network.Interfaces;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -41,7 +42,7 @@ namespace Network.RSA
     /// It provides convenient methods to send and receive objects with a minimal serialization header.
     /// Compared to the <see cref="TcpConnection"/> the <see cref="SecureTcpConnection"/> does encrypt/decrypt sent/received bytes.
     /// </summary>
-    public class SecureTcpConnection : TcpConnection, IPacketConverter
+    public class SecureTcpConnection : TcpConnection, IPacketConverter, IRSACapability
     {
         /// <summary>
         /// Encryption providers for encryption/decryption.
@@ -57,12 +58,10 @@ namespace Network.RSA
         /// </summary>
         private IPacketConverter externalPacketConverter;
 
-        internal SecureTcpConnection(string publicKey, string privateKey, TcpClient tcpClient, int keySize = 2048)
+        internal SecureTcpConnection(RSAPair rsaPair, TcpClient tcpClient)
             : base(tcpClient)
         {
-            PublicKey = publicKey;
-            PrivateKey = privateKey;
-            KeySize = keySize;
+            RSAPair = rsaPair;
 
             //Are we running on WinXP or higher?
             OperatingSystem operatingSystem = Environment.OSVersion;
@@ -70,11 +69,11 @@ namespace Network.RSA
                 ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
                 (operatingSystem.Version.Minor >= 1)));
 
-            encryptionProvider = new RSACryptoServiceProvider(KeySize);
-            encryptionProvider.FromXmlString(publicKey);
+            encryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
+            encryptionProvider.FromXmlString(RSAPair.Public);
 
-            decryptionProvider = new RSACryptoServiceProvider(KeySize);
-            decryptionProvider.FromXmlString(privateKey);
+            decryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
+            decryptionProvider.FromXmlString(RSAPair.Private);
 
             externalPacketConverter = base.PacketConverter;
             base.PacketConverter = this;
@@ -83,17 +82,20 @@ namespace Network.RSA
         /// <summary>
         /// The PublicKey of this instance.
         /// </summary>
-        public string PublicKey { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PublicKey => RSAPair.Public;
 
         /// <summary>
         /// The PrivateKey of this instance.
         /// </summary>
-        public string PrivateKey { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public string PrivateKey => RSAPair.Private;
 
         /// <summary>
         /// The used KeySize of this instance.
         /// </summary>
-        public int KeySize { get; private set; }
+        [Obsolete("Use 'RSAPair' instead.")]
+        public int KeySize => RSAPair.KeySize;
 
         /// <summary>
         /// Is this application running on windowsXP or higher?
@@ -114,6 +116,13 @@ namespace Network.RSA
             get => externalPacketConverter;
             set => externalPacketConverter = value;
         }
+
+        /// <summary>
+        /// Gets or sets the RSA pair.
+        /// </summary>
+        /// <value>The RSA pair.</value>
+        /// </exception>
+        public RSAPair RSAPair { get; set; }
 
         /// <summary>
         /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />
@@ -152,6 +161,6 @@ namespace Network.RSA
         /// <param name="removeEndPoint">The removeEndPoint to connect to.</param>
         /// <param name="writeLock">The writeLock.</param>
         /// <returns>A Secure-UdpConnection.</returns>
-        protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, PublicKey, PrivateKey, KeySize, writeLock);
+        protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, RSAPair, writeLock);
     }
 }

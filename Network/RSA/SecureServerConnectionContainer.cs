@@ -44,28 +44,22 @@ namespace Network.RSA
         /// </summary>
         /// <param name="ipAddress">The ip address.</param>
         /// <param name="port">The port.</param>
-        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="keySize">The keySize.</param>
+        /// <param name="rsaPair">RSA-Pair.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to tcp/udp/bluetooth clients.</param>
-        internal SecureServerConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048, bool start = true)
+        internal SecureServerConnectionContainer(string ipAddress, int port, RSAPair rsaPair, bool start = true)
             : base(ipAddress, port, start)
         {
-            PublicKey = publicKey;
-            PrivateKey = privateKey;
-            KeySize = keySize;
+            RSAPair = rsaPair;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecureServerConnectionContainer" /> class.
         /// </summary>
         /// <param name="port">The port.</param>
-        /// <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="keySize">The keySize.</param>
+        /// <param name="rsaPair">RSA-Pair.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-        internal SecureServerConnectionContainer(int port, string publicKey, string privateKey, int keySize = 2048, bool start = true)
-            : this(System.Net.IPAddress.Any.ToString(), port, publicKey, privateKey, keySize, start)
+        internal SecureServerConnectionContainer(int port, RSAPair rsaPair, bool start = true)
+            : this(System.Net.IPAddress.Any.ToString(), port, rsaPair, start)
         {
 
         }
@@ -75,6 +69,6 @@ namespace Network.RSA
         /// </summary>
         /// <param name="tcpClient">The tcpClient to be wrapped.</param>
         /// <returns>A <see cref="SecureTcpConnection"/></returns>
-        protected override TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateSecureTcpConnection(tcpClient, PublicKey, PrivateKey, KeySize);
+        protected override TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateSecureTcpConnection(tcpClient, RSAPair);
     }
 }

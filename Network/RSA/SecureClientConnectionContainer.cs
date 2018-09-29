@@ -40,15 +40,11 @@ namespace Network.RSA
         /// </summary>
         /// <param name="ipAddress">The ip address.</param>
         /// <param name="port">The port.</param>
-        /// <param name="publicKey">The Public-Key.</param>
-        /// <param name="privateKey">The Private-Key.</param>
-        /// <param name="keySize">The KeySize.</param>
-        internal SecureClientConnectionContainer(string ipAddress, int port, string publicKey, string privateKey, int keySize = 2048) 
+        /// <param name="rsaPair">RSA-Pair.</param>
+        internal SecureClientConnectionContainer(string ipAddress, int port, RSAPair rsaPair) 
             : base(ipAddress, port)
         {
-            PublicKey = publicKey;
-            PrivateKey = privateKey;
-            KeySize = keySize;
+            RSAPair = rsaPair;
         }
 
         /// <summary>
@@ -56,27 +52,23 @@ namespace Network.RSA
         /// </summary>
         /// <param name="tcpConnection">The TCP connection.</param>
         /// <param name="udpConnection">The UDP connection.</param>
-        /// <param name="publicKey">The Public-Key.</param>
-        /// <param name="privateKey">The Private-Key.</param>
-        /// <param name="keySize">The KeySize.</param>
-        internal SecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, string publicKey, string privateKey, int keySize = 2048)
+        /// <param name="rsaPair">RSA-Pair.</param>
+        internal SecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, RSAPair rsaPair)
             : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
         {
-            PublicKey = publicKey;
-            PrivateKey = privateKey;
-            KeySize = keySize;
+            RSAPair = rsaPair;
         }
 
         /// <summary>
         /// Creates a new SecureTcpConnection.
         /// </summary>
         /// <returns>A TcpConnection.</returns>
-        protected override async Task<Tuple<TcpConnection, ConnectionResult>> CreateTcpConnection() => await ConnectionFactory.CreateSecureTcpConnectionAsync(IPAddress, Port, PublicKey, PrivateKey, KeySize);
+        protected override async Task<Tuple<TcpConnection, ConnectionResult>> CreateTcpConnection() => await ConnectionFactory.CreateSecureTcpConnectionAsync(IPAddress, Port, RSAPair);
 
         /// <summary>
         /// Creates a new SecureUdpConnection from the existing SecureTcpConnection.
         /// </summary>
         /// <returns>A UdpConnection.</returns>
-        protected override async Task<Tuple<UdpConnection, ConnectionResult>> CreateUdpConnection() => await ConnectionFactory.CreateSecureUdpConnectionAsync(TcpConnection, PublicKey, PrivateKey, KeySize);
+        protected override async Task<Tuple<UdpConnection, ConnectionResult>> CreateUdpConnection() => await ConnectionFactory.CreateSecureUdpConnectionAsync(TcpConnection, RSAPair);
     }
 }

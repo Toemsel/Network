@@ -1,5 +1,4 @@
-﻿using Network;
-using Network.Attributes;
+﻿using Network.Attributes;
 using Network.Packets;
 
 namespace TestServerClientPackets
