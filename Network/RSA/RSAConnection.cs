@@ -135,6 +135,7 @@ namespace Network.RSA
         /// </summary>
         private async void ExchangePublicKeys()
         {
+            new BluetoothConnection();
             Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
             {
                 connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
