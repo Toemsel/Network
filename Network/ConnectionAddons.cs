@@ -1,6 +1,8 @@
 ﻿using Network.Interfaces;
 using Network.Logging;
 using Network.Packets;
+using System;
+using System.IO;
 
 namespace Network
 {
