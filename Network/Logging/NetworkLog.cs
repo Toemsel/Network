@@ -62,7 +62,7 @@ namespace Network.Logging
         /// <summary>
         /// Determins if we should enable logging or not.
         /// </summary>
-        internal bool EnableLogging { get; set; } = true;
+        internal bool EnableLogging { get; set; } = false;
 
         /// <summary>
         /// The stream we are going to log into.
