@@ -16,6 +16,12 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 | Debug | .NET Core | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
 | Release | .NET Core | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) |
 
+# Badges
+
+| Service | Description | Badge |
+| ------- | ----------- | ----- |
+| CodeFactor | Code Quality | [![CodeFactor](https://www.codefactor.io/repository/github/toemsel/network/badge)](https://www.codefactor.io/repository/github/toemsel/network) |
+
 # Supported Frameworks
 
 - .NET Framework          >= 4.6
