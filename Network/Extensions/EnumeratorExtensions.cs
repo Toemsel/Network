@@ -2,10 +2,10 @@
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
-// Created          : 07-23-2015
+// Created          : 07-25-2015
 //
 // Last Modified By : Thomas
-// Last Modified On : 08-05-2015
+// Last Modified On : 07-25-2015
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -28,31 +28,28 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Network.Extensions
 {
     /// <summary>
-    /// Offers some nice extensions for a thread instance.
+    /// IEnumerator extensions.
     /// </summary>
-    internal static class ThreadExtension
+    internal static class EnumeratorExtensions
     {
         /// <summary>
-        /// Aborts a thread and catches all the exceptions if some occurs.
+        /// Reads all available elements from an enumerator and inserts it into a collection.
         /// </summary>
-        /// <param name="thread">The thread to abort.</param>
-        /// <returns>If an exception occured.</returns>
-        internal static bool AbortSave(this Thread thread)
+        /// <typeparam name="T">Type of the collection.</typeparam>
+        /// <param name="enumerator">The enumerator.</param>
+        /// <returns>List&lt;T&gt;.</returns>
+        internal static List<T> ToList<T>(this IEnumerator enumerator)
         {
-            try
-            {
-                thread.Abort();
-                return false;
-            }
-            catch
-            {
-                return true;
-            }
+            List<T> collection = new List<T>();
+            while (enumerator.MoveNext())
+                collection.Add((T)enumerator.Current);
+            return collection;
         }
     }
 }

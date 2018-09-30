@@ -2,14 +2,14 @@
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
-// Created          : 07-24-2015
+// Created          : 29.09.2018
 //
 // Last Modified By : Thomas
-// Last Modified On : 08-05-2015
+// Last Modified On : 29.09.2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
-// Thomas Christof (c) 2015
+// Thomas Christof (c) 2018
 // </copyright>
 // <License>
 // GNU LESSER GENERAL PUBLIC LICENSE
@@ -30,14 +30,34 @@
 #endregion Licence - LGPLv3
 using Network.Attributes;
 
-namespace Network.Packets
+namespace Network.Packets.RSA
 {
     /// <summary>
-    /// Disables the writelock on the other side.
+    /// Packet to inform the communication partner about the public-key.
     /// </summary>
-    [PacketType(6)]
-    internal class DisableWriteLock : Packet
+    /// <seealso cref="Network.Packet" />
+    [PacketType(21)]
+    internal class RSAKeyInformationRequest : RequestPacket
     {
 
+        public RSAKeyInformationRequest() { }
+
+        public RSAKeyInformationRequest(string publicKey, int keySize)
+        {
+            PublicKey = publicKey;
+            KeySize = keySize;
+        }
+
+        /// <summary>
+        /// Gets or sets the public key.
+        /// </summary>
+        /// <value>The public key.</value>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the key.
+        /// </summary>
+        /// <value>The size of the key.</value>
+        public int KeySize { get; set; }
     }
 }

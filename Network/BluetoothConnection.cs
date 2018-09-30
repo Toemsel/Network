@@ -63,7 +63,6 @@ namespace Network
         {
             Client = bluetoothClient;
             stream = Client.GetStream();
-            UnlockLocalConnection();
             Init();
         }
 

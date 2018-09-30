@@ -49,7 +49,7 @@ namespace Network.RSA
 
         public RSAConnection(Connection connection, RSAPair rsaPair)
         {
-            ResponsibleConnection = connection;
+            Connection = connection;
             RSAPair = rsaPair;
 
             DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
@@ -62,10 +62,10 @@ namespace Network.RSA
                 (operatingSystem.Version.Minor >= 1)));
 
             //Setup RSA related packets.
-            InitializeRSACommunicationData();
+            ExchangePublicKeys();
         }
 
-        private Connection ResponsibleConnection { get; set; }
+        private Connection Connection { get; set; }
 
         /// <summary>
         /// Use your own packetConverter to serialize/deserialze objects.
@@ -133,37 +133,22 @@ namespace Network.RSA
         /// Sends our information to the communication partner.
         /// Subscribes to the RSA packet events.
         /// </summary>
-        private void InitializeRSACommunicationData()
+        private async void ExchangePublicKeys()
         {
-            ResponsibleConnection.RegisterPacketHandler<RSAKeyInformationPacket>(RSAKeyInformationReceived, this);
-            ResponsibleConnection.RegisterPacketHandler<RSAIsReadyPacket>(RSAIsReadyOnOtherSideReceived, this);
-            ResponsibleConnection.Send(new RSAKeyInformationPacket(RSAPair.Public, RSAPair.KeySize), true);
-        }
+            Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
+            {
+                connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
 
-        /// <summary>
-        /// Our communication-partner did send his public key.
-        /// </summary>
-        /// <param name="rsaKeyInformation">The RSA key information.</param>
-        /// <param name="connection">The connection.</param>
-        private void RSAKeyInformationReceived(RSAKeyInformationPacket rsaKeyInformation, Connection connection)
-        {
-            ResponsibleConnection.UnRegisterPacketHandler<RSAKeyInformationPacket>(this);
+                CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
+                EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
+                EncryptionProvider.FromXmlString(CommunicationPartnerRSAPair.Public);
 
-            CommunicationPartnerRSAPair = new RSAPair(rsaKeyInformation.PublicKey, rsaKeyInformation.KeySize);
-            EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
-            EncryptionProvider.FromXmlString(CommunicationPartnerRSAPair.Public);
+                connection.Send(new RSAKeyInformationResponse(RSAPair.Public, RSAPair.KeySize, rsaKeyRequest));
+            });
 
-            ResponsibleConnection.Send(new RSAIsReadyPacket(), true);
-        }
+            RSAKeyInformationResponse keyInformationResponse = await Connection.SendAsync<RSAKeyInformationResponse>(new RSAKeyInformationRequest(RSAPair.Public, RSAPair.KeySize));
 
-        /// <summary>
-        /// RSA is ready on the other side.
-        /// </summary>
-        /// <param name="rsaIsReadyPacket">The RSA is ready packet.</param>
-        /// <param name="connection">The connection.</param>
-        private void RSAIsReadyOnOtherSideReceived(RSAIsReadyPacket rsaIsReadyPacket, Connection connection)
-        {
-            ResponsibleConnection.UnRegisterPacketHandler<RSAIsReadyPacket>(this);
+            Connection.Logger.Log($"{Connection.GetType().Name} RSA Encryption active.", Enums.LogLevel.Information);
             IsRSACommunicationActive = true;
         }
 

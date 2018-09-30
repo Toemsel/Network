@@ -79,11 +79,6 @@ namespace Network
             socket.SendTimeout = 0;
             socket.ReceiveTimeout = 0;
             socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
-            UnlockRemoteConnection();
-            UnlockLocalConnection(); //Unlock the UDP connection by default.
-            //We do not care if we did not receive the first packets.
-            //The risk is too high to unlock the connection. If the packet gets lost, we
-            //can never unlock the connection nor communicate with the endpoint.
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply

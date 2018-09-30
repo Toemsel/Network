@@ -34,6 +34,7 @@ using System.IO;
 using System.Text;
 using Network.Enums;
 using ConsoleTables;
+using System.Linq;
 
 namespace Network.Logging
 {
@@ -56,12 +57,12 @@ namespace Network.Logging
         /// <summary>
         /// A property for a current timestamp.
         /// </summary>
-        private string TimeStamp { get { return DateTime.Now.ToString("HH:mm:ss:fff"); } }
+        private string TimeStamp => DateTime.Now.ToString("HH:mm:ss:fff");
 
         /// <summary>
         /// Determins if we should enable logging or not.
         /// </summary>
-        internal bool EnableLogging { get; set; } = false;
+        internal bool EnableLogging { get; set; } = true;
 
         /// <summary>
         /// The stream we are going to log into.
@@ -72,30 +73,21 @@ namespace Network.Logging
         /// Enables to log into a costum stream.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
-        internal void LogIntoStream(Stream stream)
-        {
-            StreamLogger = new StreamWriter(stream);
-        }
+        internal void LogIntoStream(Stream stream) => StreamLogger = new StreamWriter(stream);
 
         /// <summary>
         /// Logs a message.
         /// </summary>
         /// <param name="message">The message to log.</param>
         /// <param name="logLevel">The level of the log.</param>
-        internal void Log(string message, LogLevel logLevel = LogLevel.Information)
-        {
-            Log(message, null, logLevel);
-        }
+        internal void Log(string message, LogLevel logLevel = LogLevel.Information) => Log(message, null, logLevel);
 
         /// <summary>
         /// Logs an exception.
         /// </summary>
         /// <param name="exception">The exception to log.</param>
         /// <param name="logLevel">The level of the log.</param>
-        internal void Log(Exception exception, LogLevel logLevel = LogLevel.Information)
-        {
-            Log(string.Empty, exception, logLevel);
-        }
+        internal void Log(Exception exception, LogLevel logLevel = LogLevel.Information) => Log(string.Empty, exception, logLevel);
 
         /// <summary>
         /// Logs a message with an exception.
@@ -109,8 +101,13 @@ namespace Network.Logging
                 return;
 
             string finalLogMessage = BuildLogHeader(exception, logLevel);
-            ConsoleTable tableOutput = new ConsoleTable("Type", "Local", "Message", "(Exception)");
-            tableOutput.AddRow(connection.GetType().Name, message, connection.IPLocalEndPoint?.ToString(), exception?.ToString() ?? "NULL");
+            var tableColumnHeaders = new string[] { "Type", "Local", "Message", "(Exception)" };
+            var tableRowContent = new string[] { connection.GetType().Name, message, connection.IPLocalEndPoint?.ToString(), exception?.ToString() ?? "NULL" };
+            if (exception == null) tableColumnHeaders = tableColumnHeaders.Take(tableColumnHeaders.Length - 1).ToArray();
+            if (exception == null) tableRowContent = tableRowContent.Take(tableRowContent.Length - 1).ToArray();
+
+            ConsoleTable tableOutput = new ConsoleTable(tableColumnHeaders);
+            tableOutput.AddRow(tableRowContent);
             finalLogMessage += tableOutput.ToMarkDownString();
             Log(finalLogMessage);
         }
@@ -120,20 +117,14 @@ namespace Network.Logging
         /// </summary>
         /// <param name="packet">The receiving packet.</param>
         /// <param name="packetObj">The receiving object.</param>
-        internal void LogInComingPacket(byte[] packet, Packet packetObj)
-        {
-            LogPacket(packet, packetObj, "Incoming");
-        }
+        internal void LogInComingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, "Incoming");
 
         /// <summary>
         /// Logs the sending packet.
         /// </summary>
         /// <param name="packet">The bytes of the packet.</param>
         /// <param name="packetObj">The packet to send.</param>
-        internal void LogOutgoingPacket(byte[] packet, Packet packetObj)
-        {
-            LogPacket(packet, packetObj, "Outgoing");
-        }
+        internal void LogOutgoingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, "Outgoing");
 
         private void LogPacket(byte[] packet, Packet packetObj, string direction)
         {
@@ -180,10 +171,7 @@ namespace Network.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="logLevel">The log level.</param>
         /// <returns>A header.</returns>
-        private string BuildLogHeader(Exception exception, LogLevel logLevel)
-        {
-            return $"[{TimeStamp}] {logLevel.ToString()} {exception?.Message} {Environment.NewLine}{Environment.NewLine}";
-        }
+        private string BuildLogHeader(Exception exception, LogLevel logLevel) => $"[{TimeStamp}] {logLevel.ToString()} {exception?.Message} {Environment.NewLine}{Environment.NewLine}";
 
         /// <summary>
         /// Writes everything to the desired stream.

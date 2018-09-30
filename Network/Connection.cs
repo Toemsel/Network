@@ -28,24 +28,24 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+using Network.Async;
 using Network.Attributes;
+using Network.Converter;
 using Network.Enums;
-using Network.RSA;
 using Network.Extensions;
+using Network.Interfaces;
 using Network.Packets;
+using Network.Packets.RSA;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using Network.Converter;
-using Network.Interfaces;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
-using Network.Async;
 
 namespace Network
 {
@@ -71,7 +71,6 @@ namespace Network
         /// whether there is a connection or not. If set to [false] <see cref="RTT"/> and <see cref="Ping"/> wont be enabled/refreshed.
         /// </summary>
         private bool keepAlive = false;
-        private bool writeLock = true;
 
         /// <summary>
         /// A fix hashCode that does not change, even if the most objects changed their values.
@@ -102,7 +101,7 @@ namespace Network
         /// </summary>
         private ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
         private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
-        private ConcurrentQueue<Tuple<Packet, object>> writeLockBuffer = new ConcurrentQueue<Tuple<Packet, object>>();
+        private ConcurrentBag<Packet> receivedUnknownPacketHandlerPackets = new ConcurrentBag<Packet>();
 
         /// <summary>
         /// Events to save CPU time.
@@ -243,6 +242,15 @@ namespace Network
         public bool ForceFlush { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the packet buffer.
+        /// If we receive a packet which has no handler, it will be buffered
+        /// for future handler registrations. (RegisterPacketHandler)
+        /// This buffer indicates how many packets should be buffered.
+        /// </summary>
+        /// <value>The packet buffer.</value>
+        public int PacketBuffer { get; set; } = 1000;
+
+        /// <summary>
         /// Gets or sets the performance of the network lib.
         /// The higher the sleep intervals, the slower the connection.
         /// </summary>
@@ -271,29 +279,6 @@ namespace Network
         }
 
         /// <summary>
-        /// Gets or sets if this connection is still locked. If so, we are not able to send until we get green light to
-        /// start sending packets.
-        /// </summary>
-        protected bool WriteLock
-        {
-            get { return writeLock; }
-            private set
-            {
-                writeLock = value;
-
-                while (!writeLock && writeLockBuffer.Count > 0)
-                {
-                    Tuple<Packet, object> currentPacket = null;
-                    if (!writeLockBuffer.TryDequeue(out currentPacket))
-                        continue;
-
-                    //Send all the packets we have in the buffer.
-                    Send(currentPacket.Item1, currentPacket.Item2);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets all the packets we are listening to.
         /// </summary>
         internal ObjectMap ObjectMapper { get { return objectMap; } }
@@ -304,7 +289,7 @@ namespace Network
         /// <param name="objectMap">The object map to restore.</param>
         internal void RestorePacketHandler(ObjectMap objectMap)
         {
-            this.objectMap = objectMap;
+            this.objectMap.Restore(objectMap);
             ObjectMapRefreshed();
         }
 
@@ -317,6 +302,7 @@ namespace Network
         public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
         {
             objectMap.RegisterStaticPacketHandler<T>(handler);
+            SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
         /// <summary>
@@ -328,6 +314,7 @@ namespace Network
         internal void RegisterStaticPacketHandler<T>(Delegate del) where T : Packet
         {
             objectMap.RegisterStaticPacketHandler<T>(del);
+            SearchAndInvokeUnknownHandlerPackets(del);
         }
 
         /// <summary>
@@ -340,6 +327,7 @@ namespace Network
         public void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
         {
             objectMap.RegisterPacketHandler<T>(handler, obj);
+            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
         /// <summary>
@@ -350,6 +338,7 @@ namespace Network
         public void RegisterRawDataHandler(string key, PacketReceivedHandler<RawData> handler)
         {
             objectMap.RegisterStaticRawDataHandler(key, handler);
+            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
         /// <summary>
@@ -362,6 +351,7 @@ namespace Network
         internal void RegisterPacketHandler<T>(Delegate del, object obj) where T : Packet
         {
             objectMap.RegisterPacketHandler<T>(del, obj);
+            SearchAndInvokeUnknownHandlerPackets(del);
         }
 
         /// <summary>
@@ -489,16 +479,35 @@ namespace Network
                 return; //Wait till we receive green light.
             }
 
-            if (WriteLock && !ignoreWriteLock)
+            sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
+            dataAvailableEvent.Set();
+        }
+        #endregion Sending
+
+        /// <summary>
+        /// If a packet has been received which has no receiver (delegate)
+        /// it will be stored till a receiver (delegate) joins the party.
+        /// This method searches for lonely, stored packets, which had
+        /// no receiver in the past, but may have a receiver now. In that
+        /// case, we immediately forward the packet to the subscriber
+        /// and remove it from the sad, lonely collection.
+        /// </summary>
+        private void SearchAndInvokeUnknownHandlerPackets(Delegate del)
+        {
+            //Retreive the packettype for the given handler.
+            Type delegateForPacketType = del.GetType().GenericTypeArguments.FirstOrDefault();
+
+            if(receivedUnknownPacketHandlerPackets.Any(p => p.GetType().Equals(delegateForPacketType)))
             {
-                writeLockBuffer.Enqueue(new Tuple<Packet, object>(packet, instance));
+                var forwardToDelegatePackets = receivedUnknownPacketHandlerPackets.Where(p => p.GetType().Equals(delegateForPacketType));
+
+                foreach (Packet currentForwardPacket in forwardToDelegatePackets)
+                {
+                    Logger.Log($"Buffered packet {currentForwardPacket.GetType().Name} received a handler => Forwarding", LogLevel.Information);
+                    receivedUnknownPacketHandlerPackets.Remove(currentForwardPacket);
+                    HandleDefaultPackets(currentForwardPacket);
+                }
             }
-            else
-            {
-                sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
-                dataAvailableEvent.Set();
-            }
-            #endregion Sending
         }
 
         #region Threads
@@ -530,13 +539,13 @@ namespace Network
                     receivedPacket.Size = packetLength;
                     packetAvailableEvent.Set();
 
-                    logger.LogInComingPacket(packetData, receivedPacket);
+                    Logger.LogInComingPacket(packetData, receivedPacket);
                 }
             }
             catch (ThreadAbortException) { return; }
             catch (Exception exception)
             {
-                logger.Log("Reading packet from stream", exception, LogLevel.Exception);
+                Logger.Log("Reading packet from stream", exception, LogLevel.Exception);
             }
 
             CloseHandler(CloseReason.ReadPacketThreadException);
@@ -573,7 +582,7 @@ namespace Network
             catch (ThreadAbortException) { return; }
             catch(Exception exception)
             {
-                logger.Log("Write object on stream", exception, LogLevel.Exception);
+                Logger.Log("Write object on stream", exception, LogLevel.Exception);
             }
 
             CloseHandler(CloseReason.WritePacketThreadException);
@@ -645,7 +654,7 @@ namespace Network
                 Array.Copy(packetData, 0, packetByte, 2 + packetLength.Length, packetData.Length);
                 WriteBytes(packetByte);
 
-                logger.LogOutgoingPacket(packetData, packet);
+                Logger.LogOutgoingPacket(packetData, packet);
             }
         }
 
@@ -695,11 +704,6 @@ namespace Network
                 udpConnection.AcknowledgePending = false;
                 return;
             }
-            else if (packet.GetType().Equals(typeof(DisableWriteLock)))
-            {
-                WriteLock = false;
-                return;
-            }
             else if(packet.GetType().Equals(typeof(AddPacketTypeRequest)))
             {
                 Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == ((AddPacketTypeRequest)packet).AssemblyName).SingleOrDefault();
@@ -738,23 +742,36 @@ namespace Network
             {
                 RawData rawData = (RawData)packet;
                 if(objectMap[rawData.Key] == null)
-                    logger.Log($"RawData packet has no listener. Key: {rawData.Key}", LogLevel.Warning);
+                    Logger.Log($"RawData packet has no listener. Key: {rawData.Key}", LogLevel.Warning);
                 else objectMap[rawData.Key].DynamicInvoke(new object[] { packet, this });
                 return;
             }
-
+            
             try
             {
-                if(packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
+                if (packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
                     objectMap[packet.ID].DynamicInvoke(new object[] { packet, this });
-                else if(packet.GetType().IsSubclassOf(typeof(RequestPacket)) && objectMap[packet.GetType()] != null)
+                else if (packet.GetType().IsSubclassOf(typeof(RequestPacket)) && objectMap[packet.GetType()] != null)
                     objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
-                else CloseHandler(CloseReason.UnknownPacket);
+                else PacketWithoutHandlerReceived(packet);
             }
             catch(Exception exception)
             {
-                logger.Log("Provided delegate contains a bug. Packet invocation thread crashed.", exception, LogLevel.Exception);
+                Logger.Log("Provided delegate contains a bug. Packet invocation thread crashed.", exception, LogLevel.Exception);
             }
+        }
+
+        /// <summary>
+        /// Packets the without handler received.
+        /// </summary>
+        /// <param name="packet">The packet.</param>
+        protected virtual void PacketWithoutHandlerReceived(Packet packet)
+        {
+            Logger.Log($"Packet with no handler received: {packet.GetType().Name}.", LogLevel.Warning);
+            if (receivedUnknownPacketHandlerPackets.Count < PacketBuffer)
+                receivedUnknownPacketHandlerPackets.Add(packet);
+            else Logger.Log($"PacketBuffer exeeded the limit of {PacketBuffer}. " +
+                $"Received packet {packet.GetType().Name} dropped.", LogLevel.Error);
         }
 
         /// <summary>
@@ -801,18 +818,8 @@ namespace Network
         /// <summary>
         /// Unlocks the remote connection so that he is able to send packets.
         /// </summary>
-        public void UnlockRemoteConnection()
-        {
-            Send(new DisableWriteLock(), null, true);
-        }
-
-        /// <summary>
-        /// Unlocks the local connection so that this connection is able to send.
-        /// </summary>
-        internal void UnlockLocalConnection()
-        {
-            WriteLock = false;
-        }
+        [Obsolete("Unlocking a connection isn't required anymore.")]
+        public void UnlockRemoteConnection() => Logger.Log($"UnlockRemoteConnection will be removed in a future release.", LogLevel.Warning);
 
         /// <summary>
         /// Gets the next free port.
@@ -926,18 +933,12 @@ namespace Network
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
-        {
-            return hashCode;
-        }
+        public override int GetHashCode() => hashCode;
 
         /// <summary>
         /// Value of the connection.
         /// </summary>
         /// <returns>Overall data about the connection.</returns>
-        public override string ToString()
-        {
-            return $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
-        }
+        public override string ToString() => $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
     }
 }

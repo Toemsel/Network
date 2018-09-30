@@ -233,8 +233,6 @@ namespace Network
                     connectionEstablished(tcpConnection, ConnectionType.TCP);
 
                 KnownTypes.ForEach(tcpConnection.AddExternalPackets);
-                //Now that the server registered all the methods, unlock the client.
-                tcpConnection.UnlockRemoteConnection();
             }
         }
 
@@ -260,9 +258,6 @@ namespace Network
                 if (connectionEstablished != null &&
                     connectionEstablished.GetInvocationList().Length > 0)
                     connectionEstablished(bluetoothConnection, ConnectionType.Bluetooth);
-
-                //Unlock the remote bluetooth connection.
-                bluetoothConnection.UnlockRemoteConnection();
             }
         }
 #endif

@@ -30,6 +30,8 @@
 #endregion Licence - LGPLv3
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Network.Extensions;
 using Network.Interfaces;
 using Network.Packets;
@@ -59,7 +61,16 @@ namespace Network
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>MethodInfo.</returns>
-        internal Delegate this[Type type] { get { return id_methodInfo_object[type_object_id[type].Values.GetEnumerator().ToList<int>()[0]].Item1; } }
+        internal Delegate this[Type type]
+        {
+            get
+            {
+                if (!type_object_id.ContainsKey(type)) return null;
+                var typeObjID = type_object_id[type].Values.First();
+                if (!id_methodInfo_object.ContainsKey(typeObjID)) return null;
+                return id_methodInfo_object[typeObjID].Item1;
+            }
+        }
 
         /// <summary>
         /// Gets the static raw data delegate for the given key.
@@ -75,7 +86,7 @@ namespace Network
         /// <param name="obj">The object.</param>
         /// <returns>System.Int32.</returns>
         internal int this[Type type, object obj] { get { return type_object_id[type][obj]; } }
-
+        
         /// <summary>
         /// Determines whether the specified packet has someone who is going to handle it.
         /// </summary>
@@ -198,6 +209,34 @@ namespace Network
             if (type_object_id[typeof(T)].Count == 0)
                 type_object_id.Remove(typeof(T));
             id_methodInfo_object.Remove(id);
+        }
+
+        /// <summary>
+        /// Restores an existing object map to this instance.
+        /// </summary>
+        /// <param name="objectMap">The object map.</param>
+        internal void Restore(ObjectMap objectMap)
+        {
+            var internalTypes = Assembly.GetAssembly(typeof(ObjectMap)).GetTypes();
+            var externalTypes = objectMap.type_object_id.Keys.ToList().Where(e => !internalTypes.Any(i => i == e));
+
+            foreach(Type currentExternalType in externalTypes)
+            {
+                if (!type_object_id.ContainsKey(currentExternalType))
+                    type_object_id.Add(currentExternalType, objectMap.type_object_id[currentExternalType]);
+
+                var externalIds = objectMap.type_object_id[currentExternalType].Values.ToArray();
+
+                foreach(int currentExternalId in externalIds)
+                {
+                    if (!id_methodInfo_object.ContainsKey(currentExternalId))
+                        id_methodInfo_object.Add(currentExternalId, objectMap.id_methodInfo_object[currentExternalId]);
+                }
+            }
+
+            foreach (string currentExternalRawData in objectMap.string_methodInfo.Keys.ToArray())
+                if (!string_methodInfo.ContainsKey(currentExternalRawData))
+                    string_methodInfo.Add(currentExternalRawData, objectMap.string_methodInfo[currentExternalRawData]);
         }
     }
 }

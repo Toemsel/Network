@@ -36,7 +36,7 @@ namespace Network.Extensions
     /// <summary>
     /// Connection extensions. Provides some methods to handle a connection.
     /// </summary>
-    internal static class ConnectionExtension
+    internal static class ConnectionExtensions
     {
         private static int counter;
 

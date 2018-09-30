@@ -438,7 +438,6 @@ namespace Network
 
             if (!tcpConnection.IsAlive) return; //Connection could already be dead because of the prePackets.
             connectionEstablished?.Invoke(tcpConnection, ConnectionType.TCP);
-            tcpConnection.UnlockRemoteConnection();
         }
 
         /// <summary>

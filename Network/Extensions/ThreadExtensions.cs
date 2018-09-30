@@ -2,14 +2,14 @@
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
-// Created          : 29.09.2018
+// Created          : 07-23-2015
 //
 // Last Modified By : Thomas
-// Last Modified On : 29.09.2018
+// Last Modified On : 08-05-2015
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
-// Thomas Christof (c) 2018
+// Thomas Christof (c) 2015
 // </copyright>
 // <License>
 // GNU LESSER GENERAL PUBLIC LICENSE
@@ -28,36 +28,31 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
-using Network.Attributes;
+using System.Threading;
 
-namespace Network.Packets.RSA
+namespace Network.Extensions
 {
     /// <summary>
-    /// Packet to inform the communication partner about the public-key.
+    /// Offers some nice extensions for a thread instance.
     /// </summary>
-    /// <seealso cref="Network.Packet" />
-    [PacketType(21)]
-    internal class RSAKeyInformationPacket : RequestPacket
+    internal static class ThreadExtensions
     {
-
-        public RSAKeyInformationPacket() { }
-
-        public RSAKeyInformationPacket(string publicKey, int keySize)
+        /// <summary>
+        /// Aborts a thread and catches all the exceptions if some occurs.
+        /// </summary>
+        /// <param name="thread">The thread to abort.</param>
+        /// <returns>If an exception occured.</returns>
+        internal static bool AbortSave(this Thread thread)
         {
-            PublicKey = publicKey;
-            KeySize = keySize;
+            try
+            {
+                thread.Abort();
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
         }
-
-        /// <summary>
-        /// Gets or sets the public key.
-        /// </summary>
-        /// <value>The public key.</value>
-        public string PublicKey { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the key.
-        /// </summary>
-        /// <value>The size of the key.</value>
-        public int KeySize { get; set; }
     }
 }

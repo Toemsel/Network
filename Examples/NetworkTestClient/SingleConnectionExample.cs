@@ -20,8 +20,6 @@ namespace NetworkTestClient
             TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection("127.0.0.1", 1234, out connectionResult);
             //Because of the connectionResult we already know that we are connected.
             if (connectionResult != ConnectionResult.Connected) return;
-            //We have to unlock the remote connection to receive an answer.
-            tcpConnection.UnlockRemoteConnection();
             //2. Send and receive packets.
             CalculationResponse calculationResponse = await tcpConnection.SendAsync<CalculationResponse>(new CalculationRequest(25, 25));
             Console.WriteLine($"Answer received {calculationResponse.Result}");
