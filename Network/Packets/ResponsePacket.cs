@@ -37,8 +37,6 @@ namespace Network.Packets
     /// </summary>
     public class ResponsePacket : Packet
     {
-        public ResponsePacket() { }
-
         public ResponsePacket(RequestPacket packet)
         {
             ID = packet.ID;
