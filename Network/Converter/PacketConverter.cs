@@ -36,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using Network.Extensions;
+using System.Runtime.Serialization;
 
 namespace Network.Converter
 {
@@ -69,11 +70,25 @@ namespace Network.Converter
         /// <param name="data">The data which should be applied.</param>
         public Packet GetPacket(Type packetType, byte[] data)
         {
-            Packet packet = ((Packet)Activator.CreateInstance(packetType));
+            Packet packet = CreateInstanceOfPacketType(packetType);
             MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
             ReadObjectFromStream(packet, binaryReader);
             return packet;
+        }
+
+        /// <summary>
+        /// Creates an object instance of a packet-Type.
+        /// If there is no default constructor, the object instance will
+        /// be created without calling the default constructor.
+        /// </summary>
+        /// <param name="packetType">Type of the packet.</param>
+        /// <returns>Packet.</returns>
+        private Packet CreateInstanceOfPacketType(Type packetType)
+        {
+            if (packetType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new Type[0], null) != null)
+                return (Packet)Activator.CreateInstance(packetType);
+            else return (Packet)FormatterServices.GetUninitializedObject(packetType);
         }
 
         /// <summary>
