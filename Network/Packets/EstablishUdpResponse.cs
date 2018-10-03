@@ -36,8 +36,6 @@ namespace Network.Packets
     [PacketRequest(typeof(EstablishUdpRequest))]
     internal class EstablishUdpResponse : ResponsePacket
     {
-        public EstablishUdpResponse() { }
-
         internal EstablishUdpResponse(int udpPort, RequestPacket request)
             : base(request)
         {

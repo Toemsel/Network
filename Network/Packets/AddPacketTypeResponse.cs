@@ -43,11 +43,6 @@ namespace Network.Packets
         /// <summary>
         /// Initializes a new instance of the <see cref="AddPacketTypeResponse"/> class.
         /// </summary>
-        public AddPacketTypeResponse() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddPacketTypeResponse"/> class.
-        /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="request">The request.</param>
         public AddPacketTypeResponse(List<ushort> dictionary, AddPacketTypeRequest request)

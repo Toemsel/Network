@@ -36,8 +36,6 @@ namespace Network.Packets.RSA
     [PacketRequest(typeof(RSAKeyInformationRequest))]
     internal class RSAKeyInformationResponse : ResponsePacket
     {
-        public RSAKeyInformationResponse() { }
-
         public RSAKeyInformationResponse(string publicKey, int keySize, RSAKeyInformationRequest request)
             : base(request)
         {

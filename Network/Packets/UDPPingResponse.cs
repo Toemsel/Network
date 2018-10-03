@@ -9,8 +9,6 @@ namespace Network.Packets
     [PacketRequest(typeof(UDPPingRequest))]
     internal class UDPPingResponse : ResponsePacket
     {
-        public UDPPingResponse() { }
-
         public UDPPingResponse(UDPPingRequest request)
             : base(request)
         {
