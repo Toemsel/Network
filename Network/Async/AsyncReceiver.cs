@@ -80,7 +80,10 @@ namespace Network.Async
                 if (receivedAsyncPacket == null)
                     await packetReceivedEvent.AsTask(TimeSpan.FromMilliseconds(connection.TIMEOUT));
             }
-            catch { }
+            catch(OverflowException overflowException)
+            {
+                connection.Logger.Log($"Exception while waiting for async packet occured. Request packet {packet.GetType().Name}", overflowException, Enums.LogLevel.Error);
+            }
 
             //No answer from the endPoint
             if (receivedAsyncPacket == null)

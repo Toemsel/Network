@@ -205,15 +205,11 @@ namespace Network
         /// <returns>A tcp connection object if the successfully connected. Else null.</returns>
         public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateTcpConnectionAsync(string ipAddress, int port)
         {
-            try
-            {
-                TcpClient tcpClient = new TcpClient();
-                Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
-                Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
-                if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
-                        return new Tuple<TcpConnection, ConnectionResult>(new TcpConnection(tcpClient), ConnectionResult.Connected);
-            }
-            catch { }
+            TcpClient tcpClient = new TcpClient();
+            Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
+            Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
+            if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
+                return new Tuple<TcpConnection, ConnectionResult>(new TcpConnection(tcpClient), ConnectionResult.Connected);
 
             return new Tuple<TcpConnection, ConnectionResult>(null, ConnectionResult.Timeout);
         }
@@ -247,15 +243,11 @@ namespace Network
         /// <returns>A tcp connection object if the successfully connected. Else null.</returns>
         public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateSecureTcpConnectionAsync(string ipAddress, int port, RSAPair rsaPair)
         {
-            try
-            {
-                TcpClient tcpClient = new TcpClient();
-                Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
-                Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
-                if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
-                    return new Tuple<TcpConnection, ConnectionResult>(new SecureTcpConnection(rsaPair, tcpClient), ConnectionResult.Connected);
-            }
-            catch { }
+            TcpClient tcpClient = new TcpClient();
+            Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
+            Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
+            if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
+                return new Tuple<TcpConnection, ConnectionResult>(new SecureTcpConnection(rsaPair, tcpClient), ConnectionResult.Connected);
 
             return new Tuple<TcpConnection, ConnectionResult>(null, ConnectionResult.Timeout);
         }

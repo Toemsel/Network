@@ -44,10 +44,7 @@ namespace Network.Packets
             Data = data;
         }
 
-        public RawData()
-        {
-
-        }
+        public RawData() { }
 
         /// <summary>
         /// The key both connections are able to register methods to.

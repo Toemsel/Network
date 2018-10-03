@@ -33,8 +33,5 @@ using Network.Attributes;
 namespace Network.Packets
 {
     [PacketType(0)]
-    internal class PingRequest : Packet
-    {
-
-    }
+    internal class PingRequest : Packet { }
 }

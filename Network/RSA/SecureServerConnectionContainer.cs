@@ -59,10 +59,7 @@ namespace Network.RSA
         /// <param name="rsaPair">RSA-Pair.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         internal SecureServerConnectionContainer(int port, RSAPair rsaPair, bool start = true)
-            : this(System.Net.IPAddress.Any.ToString(), port, rsaPair, start)
-        {
-
-        }
+            : this(System.Net.IPAddress.Any.ToString(), port, rsaPair, start) { }
 
         /// <summary>
         /// Instead of a normal TcpConnection, a secure server connection demands a secureTcpConnection.

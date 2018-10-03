@@ -37,8 +37,5 @@ namespace Network.Attributes
     /// The serializer is going to skip all the properties which own this property.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class PacketIgnorePropertyAttribute : Attribute
-    {
-
-    }
+    public class PacketIgnorePropertyAttribute : Attribute { }
 }

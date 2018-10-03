@@ -78,10 +78,7 @@ namespace Network
         /// <param name="port">The port.</param>
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         internal ServerConnectionContainer(int port, bool start = true)
-            : this(System.Net.IPAddress.Any.ToString(), port, start)
-        {
-
-        }
+            : this(System.Net.IPAddress.Any.ToString(), port, start) { }
 
         /// <summary>
         /// Gets the <see cref="List{UdpConnection}"/> with the specified TCP connection.

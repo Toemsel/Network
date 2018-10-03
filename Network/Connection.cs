@@ -804,7 +804,10 @@ namespace Network
                 Send(new CloseRequest(closeReason), true);
                 WriteSubWork(); //Force to write the remaining packets.
             }
-            catch { }
+            catch(Exception exception)
+            {
+                Logger.Log($"Couldn't send a close-message '{closeReason.ToString()}' to the endpoint {IPRemoteEndPoint.ToString()}.", exception, LogLevel.Warning);
+            }
 
             if (callCloseEvent)
                 connectionClosed?.Invoke(closeReason, this);

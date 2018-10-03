@@ -39,7 +39,6 @@ namespace Network.Packets.RSA
     [PacketType(21)]
     internal class RSAKeyInformationRequest : RequestPacket
     {
-
         public RSAKeyInformationRequest() { }
 
         public RSAKeyInformationRequest(string publicKey, int keySize)

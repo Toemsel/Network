@@ -33,8 +33,5 @@ using Network.Attributes;
 namespace Network.Packets
 {
     [PacketType(5)]
-    internal class EstablishUdpResponseACK : Packet
-    {
-
-    }
+    internal class EstablishUdpResponseACK : Packet { }
 }
