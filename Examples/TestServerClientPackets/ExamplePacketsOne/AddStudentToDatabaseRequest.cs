@@ -6,11 +6,6 @@ namespace TestServerClientPackets.ExamplePacketsOne
 {
     public class AddStudentToDatabaseRequest : RequestPacket
     {
-        public AddStudentToDatabaseRequest()
-        {
-
-        }
-
         public AddStudentToDatabaseRequest(Student student)
         {
             Student = student;

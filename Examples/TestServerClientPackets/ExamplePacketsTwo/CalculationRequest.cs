@@ -5,11 +5,6 @@ namespace TestServerClientPackets
 {
     public class CalculationRequest : RequestPacket
     {
-        public CalculationRequest()
-        {
-
-        }
-
         public CalculationRequest(int X, int Y)
         {
             this.X = X;
