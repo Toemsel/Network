@@ -5,7 +5,7 @@
 // Created          : 29.09.2018
 //
 // Last Modified By : Thomas
-// Last Modified On : 29.09.2018
+// Last Modified On : 01.10.2018
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -37,6 +37,13 @@ namespace Network.RSA
     {
         private const string PRIVATE_KEY_UNKNOWN = "UNKNOWN";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RSAPair"/> class.
+        /// Generate a <see cref="RSAPair" /> with <see cref="RSAKeyGeneration"/>.<see cref="RSAKeyGeneration.Generate(int)" />
+        /// </summary>
+        /// <param name="publicKey">The public key. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="privateKey">The private key. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+        /// <param name="keySize">Size of the key.</param>
         public RSAPair(string publicKey, string privateKey, int keySize)
         {
             Private = privateKey;
@@ -44,6 +51,13 @@ namespace Network.RSA
             KeySize = keySize;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RSAPair"/> class.
+        /// Used for internal purposes. The communication partner only
+        /// sends us his public key to encrypt.
+        /// </summary>
+        /// <param name="publicKey">The public key.</param>
+        /// <param name="keySize">Size of the key.</param>
         internal RSAPair(string publicKey, int keySize)
         {
             Private = PRIVATE_KEY_UNKNOWN;
@@ -55,19 +69,19 @@ namespace Network.RSA
         /// Gets or sets the size of the key.
         /// </summary>
         /// <value>The size of the key.</value>
-        public int KeySize { get; set; }
+        public int KeySize { get; private set; }
 
         /// <summary>
         /// Gets or sets the public key.
         /// </summary>
         /// <value>The public.</value>
-        public string Public { get; set; }
+        public string Public { get; private set; }
 
         /// <summary>
         /// Gets or sets the private key.
         /// </summary>
         /// <value>The private.</value>
-        public string Private { get; set; }
+        public string Private { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance has a public key.
