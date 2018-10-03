@@ -53,7 +53,6 @@ namespace NetworkTestClient
                 Console.WriteLine("<9> Exit");
                 Console.Write("> ");
 
-
                 input = 0;
                 while(!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 8)
                     Console.Write("> ");
