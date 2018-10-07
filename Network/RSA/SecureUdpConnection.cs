@@ -42,14 +42,6 @@ namespace Network.RSA
     /// </summary>
     public class SecureUdpConnection : UdpConnection
     {
-        /// <summary>
-        /// The <see cref="SecureUdpConnection"/> is a <see cref="UdpConnection"/>.
-        /// The only difference within the implementation:
-        /// - A Packet will be converted with a different IPacketConverter.
-        /// However, the packetConverter can still be set.
-        /// </summary>
-        private IPacketConverter externalPacketConverter;
-
         internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
             : base(udpClient, remoteEndPoint, writeLock, skipInitializationProcess:true)
         {

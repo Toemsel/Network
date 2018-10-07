@@ -10,7 +10,7 @@
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
-// Thomas Christof (c) 2015
+// Thomas Christof (c) 2018
 // </copyright>
 // <License>
 // GNU LESSER GENERAL PUBLIC LICENSE
