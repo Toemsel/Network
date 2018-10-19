@@ -1,5 +1,8 @@
 # C# Network Library
 
+[![forthebadge](https://forthebadge.com/images/badges/as-seen-on-tv.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
+
 Tutorials http://www.indie-dev.at/?cat=86 <br />
 Downloads http://www.indie-dev.at/?page_id=480 <br />
 Licence http://www.indie-dev.at/?page_id=525 <br />
