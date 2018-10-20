@@ -41,6 +41,11 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 '*' No Bluetooth support
 
+# Tested on Platforms
+
+- Windows 10
+- Ubuntu 18.10
+
 # Features in a nutshell
 
 - TCP communication
