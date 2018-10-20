@@ -23,10 +23,10 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 | Service | Description | Badge |
 | ------- | ----------- | ----- |
-| CodeFactor | Code Quality | [![CodeFactor](https://www.codefactor.io/repository/github/toemsel/network/badge)](https://www.codefactor.io/repository/github/toemsel/network) |
+| CodeFactor | Code Quality | ![CodeFactor](https://www.codefactor.io/repository/github/toemsel/network/badge) |
 | NuGet | Download Count | ![NuGet](https://img.shields.io/nuget/dt/Network.svg) |
 | NuGet | Current Version | ![NuGet](https://img.shields.io/nuget/v/Network.svg) |
-| Discord | Chat-Room | ![Discord](https://img.shields.io/discord/502989126916898837.svg) |
+| Discord | Chat-Room | [![Discord](https://img.shields.io/discord/502989126916898837.svg)](https://discord.gg/tgAzGby) |
 
 
 # Supported Frameworks
