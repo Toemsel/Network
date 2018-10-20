@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to find out which attributes exist for C# debugging
+    // Use hover for the description of the existing attributes
+    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+    "version": "0.2.0",
+    "configurations": [
+         {
+             "name": ".NET Core Client",
+             "type": "coreclr",
+             "request": "launch",
+             "preLaunchTask": "Build Client",
+             // If you have changed target frameworks, make sure to update the program path.
+             "program": "${workspaceFolder}/Examples/NetworkTestClient/bin/Debug/netcoreapp2.1/NetworkTestClient.dll",
+             "args": [],
+             "cwd": "${workspaceFolder}/Examples/NetworkTestClient",
+             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+             "console": "externalTerminal",
+             "internalConsoleOptions":"openOnFirstSessionStart",
+             "justMyCode": true,            
+             "stopAtEntry": false,
+         },
+         {
+             "name": ".NET Core Server",
+             "type": "coreclr",
+             "request": "launch",
+             "preLaunchTask": "Build Server",
+             // If you have changed target frameworks, make sure to update the program path.
+             "program": "${workspaceFolder}/Examples/NetworkTestServer/bin/Debug/netcoreapp2.1/NetworkTestServer.dll",
+             "args": [],
+             "cwd": "${workspaceFolder}/Examples/NetworkTestServer",
+             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+             "console": "externalTerminal",
+             "internalConsoleOptions":"openOnFirstSessionStart",
+             "justMyCode": true,            
+             "stopAtEntry": false,
+         }
+     ],
+     "compounds": [
+         {
+             "name": ".NET Core Client + Server",
+             "configurations": [".NET Core Client", ".NET Core Server"]
+         }
+     ]
+ }

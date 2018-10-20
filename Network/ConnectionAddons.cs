@@ -3,6 +3,7 @@ using Network.Logging;
 using Network.Packets;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Network
 {
@@ -17,6 +18,24 @@ namespace Network
         /// Logger for the connection and all protected classes.
         /// </summary>
         internal NetworkLog Logger { get { return logger; } }
+
+        /// <summary>
+        /// Is the executing assembly on a MAC machine.
+        /// </summary>
+        /// <returns>[True] if on MAC. [False] if not.</returns>
+        internal bool IsMAC => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        /// <summary>
+        /// Is the executing assembly on a Linux machine.
+        /// </summary>
+        /// <returns>[True] if on Linux. [False] if not.</returns>
+        internal bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        /// <summary>
+        /// Is the executing assembly on a Windows machine.
+        /// </summary>
+        /// <returns>[True] if on Windows. [False] if not.</returns>
+        internal bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         /// <summary>
         /// Initializes all the addons.

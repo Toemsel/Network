@@ -78,7 +78,9 @@ namespace Network
             KeepAlive = false;
             socket.SendTimeout = 0;
             socket.ReceiveTimeout = 0;
-            socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
+
+            if(IsWindows)
+                socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply
