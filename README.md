@@ -41,12 +41,6 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 '*' No Bluetooth support
 
-# Works on...
-
-- Windows
-- Linux
-- Mac
-
 # Features in a nutshell
 
 - TCP communication
