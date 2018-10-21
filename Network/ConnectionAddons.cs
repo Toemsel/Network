@@ -17,7 +17,7 @@ namespace Network
         /// <summary>
         /// Logger for the connection and all protected classes.
         /// </summary>
-        internal NetworkLog Logger { get { return logger; } }
+        internal NetworkLog Logger => logger;
 
         /// <summary>
         /// Is the executing assembly on a MAC machine.
@@ -51,10 +51,7 @@ namespace Network
         /// and provide a null reference as stream. Stream hot swapping is supported.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
-        public void LogIntoStream(Stream stream)
-        {
-            logger.LogIntoStream(stream);
-        }        
+        public void LogIntoStream(Stream stream) => logger.LogIntoStream(stream);    
 
         /// <summary>
         /// Indicates if the connection should automatically log.
@@ -86,9 +83,6 @@ namespace Network
         /// Sends a raw data packet.
         /// </summary>
         /// <param name="rawData">The packet to send.</param>
-        public void SendRawData(RawData rawData)
-        {
-            Send(rawData);
-        }
+        public void SendRawData(RawData rawData) => Send(rawData);
     }
 }
