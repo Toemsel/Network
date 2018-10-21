@@ -55,14 +55,37 @@ namespace Network.Extensions
             {
                 switch(currentNode.Name)
                 {
-                    case "Modulus" : rsaParameter.Modulus = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "Exponent" : rsaParameter.Exponent = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "P" : rsaParameter.P = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "Q" : rsaParameter.Q = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "DP" : rsaParameter.DP = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "DQ" : rsaParameter.DQ = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "InverseQ" : rsaParameter.InverseQ = ConvertFromBase64String(currentNode.InnerText); break;
-                    case "D" : rsaParameter.D = ConvertFromBase64String(currentNode.InnerText); break;
+                    case "Modulus": 
+                        rsaParameter.Modulus = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "Exponent": 
+                        rsaParameter.Exponent = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "P": 
+                        rsaParameter.P = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "Q" : 
+                        rsaParameter.Q = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "DP" : 
+                        rsaParameter.DP = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "DQ" : 
+                        rsaParameter.DQ = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "InverseQ" : 
+                        rsaParameter.InverseQ = ConvertFromBase64String(currentNode.InnerText);
+                        break;
+
+                    case "D" : 
+                        rsaParameter.D = ConvertFromBase64String(currentNode.InnerText);
+                        break;
                 }
             }
 
