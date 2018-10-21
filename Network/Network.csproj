@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.0.0.2</Version>
+     <Version>6.1.0.2</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -24,10 +24,11 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>MAC and Linux Support</PackageReleaseNotes>
+     <PackageReleaseNotes>MAC and Linux Support.
+Release preview dependencies removed.</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.0.0.2</AssemblyVersion>
-     <FileVersion>6.0.0.2</FileVersion>
+     <AssemblyVersion>6.1.0.2</AssemblyVersion>
+     <FileVersion>6.1.0.2</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
@@ -47,7 +48,7 @@ Fork me: https://github.com/Toemsel/Network</Description>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46' ">
-    <PackageReference Include="InTheHand.Devices.Bluetooth" Version="4.0.1803.22-preview" />
+    <PackageReference Include="Network.Bluetooth" Version="4.0.1803.22" />
     <PackageReference Include="32feet.NET" Version="3.5.0" />
   </ItemGroup>
 
