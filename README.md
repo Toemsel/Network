@@ -41,10 +41,11 @@ NuGet https://www.nuget.org/packages/Network/ <br />
 
 '*' No Bluetooth support
 
-# Tested on Platforms
+# Works on...
 
-- Windows 10
-- Ubuntu 18.10
+- Windows
+- Linux
+- Mac
 
 # Features in a nutshell
 
