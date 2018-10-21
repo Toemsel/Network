@@ -14,12 +14,12 @@
 - .NET 4.6
 - .NET Standard 2.0 (No Bluetooth support)
 
-Examples at: https://www.indie-dev.at/?page_id=1180
-Documentation at: http://www.indie-dev.at/NetworkLib/HelpFile_2.0.0.0/
+Examples at: https://www.indie-dev.at/overview-en/
+Documentation at: https://www.indie-dev.at/NetworkLib/HelpFile_5.2.1.6/
 Fork me: https://github.com/Toemsel/Network</Description>
      <Copyright>Indie-Dev</Copyright>
-     <PackageLicenseUrl>https://www.indie-dev.at/?page_id=525</PackageLicenseUrl>
-     <PackageProjectUrl>https://www.indie-dev.at/?page_id=1180</PackageProjectUrl>
+     <PackageLicenseUrl>https://www.indie-dev.at/lizenz/</PackageLicenseUrl>
+     <PackageProjectUrl>https://www.indie-dev.at/overview-en/</PackageProjectUrl>
      <PackageIconUrl>http://indie-dev.at/NetworkLib/Public/Icons/network.ico</PackageIconUrl>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
