@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "*.gitignore": true,
+        "*.ico": true,
+        "*.md": true,
+        "**/.ico": true,
+        "**/.md": true,
+        "**/.vs": true,
+        "**/bin": true,
+        "**/obj": true
+    }
+}
