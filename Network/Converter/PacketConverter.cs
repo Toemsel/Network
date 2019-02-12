@@ -162,7 +162,14 @@ namespace Network.Converter
             }
             else if (!IsPrimitive(propertyInfo) && propertyValue == null)
                 binaryWriter.Write((byte)ObjectState.NULL); //Mark it as a NULL object.
-            else binaryWriter.Write(propertyValue);
+            else
+            {
+                byte objectStatus = propertyValue == null ? (byte)ObjectState.NULL : (byte)ObjectState.NOT_NULL;
+                binaryWriter.Write(objectStatus);
+
+                if(propertyValue != null)
+                    binaryWriter.Write(propertyValue);
+            }
         }
 
         /// <summary>
@@ -257,7 +264,12 @@ namespace Network.Converter
         /// <returns>System.Object.</returns>
         private object ReadPrimitiveFromStream(PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
-            return ReadPrimitiveFromStream(propertyInfo.PropertyType, binaryReader);
+            ObjectState objectState = (ObjectState)binaryReader.ReadByte();
+
+            if(objectState == ObjectState.NOT_NULL)
+                return ReadPrimitiveFromStream(propertyInfo.PropertyType, binaryReader);
+
+            return null;
         }
 
         /// <summary>
