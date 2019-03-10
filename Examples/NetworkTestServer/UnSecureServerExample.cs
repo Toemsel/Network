@@ -34,6 +34,7 @@ using Network.Extensions;
 using System;
 using TestServerClientPackets;
 using TestServerClientPackets.ExamplePacketsOne;
+using TestServerClientPackets.ExamplePacketsOne.Containers;
 
 namespace NetworkTestServer
 {
@@ -106,7 +107,7 @@ namespace NetworkTestServer
         private static void addStudentReceived(AddStudentToDatabaseRequest packet, Connection connection)
         {
             //4. Handle incomming packets
-            connection.Send(new AddStudentToDatabaseResponse(0, packet));
+            connection.Send(new AddStudentToDatabaseResponse(DatabaseResult.Success, packet));
         }
     }
 }

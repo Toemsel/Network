@@ -1,9 +1,9 @@
 ﻿namespace TestServerClientPackets.ExamplePacketsOne.Containers
 {
-    public enum DatabaseResult : int
+    public enum DatabaseResult
     {
-        Success = 0,
-        Exception = 1,
-        Error = 2
+        Success,
+        Exception,
+        Error
     }
 }

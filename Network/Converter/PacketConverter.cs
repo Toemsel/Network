@@ -149,8 +149,8 @@ namespace Network.Converter
         {
             dynamic propertyValue = propertyInfo.GetValue(obj);
             if (propertyInfo.PropertyType.IsEnum) //Enums are an exception.
-                propertyValue = (int)propertyValue;
-            if (propertyInfo.PropertyType.IsArray)
+                binaryWriter.Write(propertyValue.ToString());
+            else if (propertyInfo.PropertyType.IsArray)
                 GetBytesFromArray(obj, propertyInfo, binaryWriter);
             else if (propertyInfo.PropertyType.IsGenericType &&
                 propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(List<>)))
@@ -167,7 +167,7 @@ namespace Network.Converter
                 byte objectStatus = propertyValue == null ? (byte)ObjectState.NULL : (byte)ObjectState.NOT_NULL;
                 binaryWriter.Write(objectStatus);
 
-                if(propertyValue != null)
+                if (propertyValue != null)
                     binaryWriter.Write(propertyValue);
             }
         }
@@ -246,6 +246,8 @@ namespace Network.Converter
             else if (propertyInfo.PropertyType.IsGenericType &&
                 propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(List<>)))
                 return ReadListFromStream(obj, propertyInfo, binaryReader);
+            else if (propertyInfo.PropertyType.IsEnum)
+                return Enum.Parse(propertyInfo.PropertyType, binaryReader.ReadString());
             else if (!IsPrimitive(propertyInfo))
             {
                 ObjectState objectState = (ObjectState)binaryReader.ReadByte();
@@ -306,8 +308,6 @@ namespace Network.Converter
                 return binaryReader.ReadUInt32();
             else if (type.Equals(typeof(UInt64)))
                 return binaryReader.ReadUInt64();
-            else if (type.IsEnum)
-                return binaryReader.ReadInt32();
 
             //Only primitive types are supported in this method.
             throw new NotSupportedException();
@@ -318,20 +318,14 @@ namespace Network.Converter
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
         /// <returns>System.Boolean.</returns>
-        private bool IsPrimitive(PropertyInfo propertyInfo)
-        {
-            return IsPrimitive(propertyInfo.PropertyType);
-        }
+        private bool IsPrimitive(PropertyInfo propertyInfo) => IsPrimitive(propertyInfo.PropertyType);
 
         /// <summary>
         /// Determines whether the specified type is primitive.
         /// </summary>
         /// <param name="type">The type to check for primitive</param>
         /// <returns>Is Primitive or not.</returns>
-        private bool IsPrimitive(Type type)
-        {
-            return type.Namespace.Equals("System");
-        }
+        private bool IsPrimitive(Type type) => type.Namespace.Equals("System");
 
         /// <summary>
         /// Extracts all properties from a packet which do not have a packetIgnoreProperty attribute.

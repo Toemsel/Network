@@ -7,13 +7,13 @@ namespace TestServerClientPackets.ExamplePacketsOne
     [PacketRequest(typeof(AddStudentToDatabaseRequest))]
     public class AddStudentToDatabaseResponse : ResponsePacket
     {
-        public AddStudentToDatabaseResponse(DatabaseResult result,
+        public AddStudentToDatabaseResponse(DatabaseResult? result,
             AddStudentToDatabaseRequest addStudentRequest)
             : base(addStudentRequest)
         {
             Result = result;
         }
 
-        public DatabaseResult Result { get; set; }
+        public DatabaseResult? Result { get; set; }
     }
 }
