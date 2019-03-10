@@ -246,7 +246,7 @@ namespace Network
             TcpClient tcpClient = new TcpClient();
             Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
             Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
-            if (await Task.WhenAny(timeoutTask, connectTask) != timeoutTask && tcpClient.Connected)
+            if (await Task.WhenAny(timeoutTask, connectTask).ConfigureAwait(false) != timeoutTask && tcpClient.Connected)
                 return new Tuple<TcpConnection, ConnectionResult>(new SecureTcpConnection(rsaPair, tcpClient), ConnectionResult.Connected);
 
             return new Tuple<TcpConnection, ConnectionResult>(null, ConnectionResult.Timeout);
