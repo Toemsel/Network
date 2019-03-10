@@ -806,7 +806,7 @@ namespace Network
             }
             catch(Exception exception)
             {
-                Logger.Log($"Couldn't send a close-message '{closeReason.ToString()}' to the endpoint {IPRemoteEndPoint.ToString()}.", exception, LogLevel.Warning);
+                Logger.Log($"Couldn't send a close-message '{closeReason.ToString()}' to the endpoint.", exception, LogLevel.Warning);
             }
 
             if (callCloseEvent)

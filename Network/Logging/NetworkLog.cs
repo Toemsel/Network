@@ -5,7 +5,7 @@
 // Created          : 11-23-2015
 //
 // Last Modified By : Thomas
-// Last Modified On : 11-23-2015
+// Last Modified On : 10-03-2019
 // ***********************************************************************
 // <copyright>
 // Company: Indie-Dev
@@ -49,10 +49,7 @@ namespace Network.Logging
         /// </summary>
         private volatile Connection connection;
 
-        internal NetworkLog(Connection connection)
-        {
-            this.connection = connection;
-        }
+        internal NetworkLog(Connection connection) => this.connection = connection;
 
         /// <summary>
         /// A property for a current timestamp.
@@ -97,12 +94,12 @@ namespace Network.Logging
         /// <param name="logLevel">The log level.</param>
         internal void Log(string message, Exception exception, LogLevel logLevel = LogLevel.Information)
         {
-            if(!EnableLogging)
+            if(!EnableLogging || StreamLogger == null)
                 return;
 
             string finalLogMessage = BuildLogHeader(exception, logLevel);
             var tableColumnHeaders = new string[] { "Type", "Local", "Message", "(Exception)" };
-            var tableRowContent = new string[] { connection.GetType().Name, message, connection.IPLocalEndPoint?.ToString(), exception?.ToString() ?? "NULL" };
+            var tableRowContent = new string[] { connection.GetType().Name, message, connection.IPLocalEndPoint?.ToString(), BuildException(exception) };
             if (exception == null) tableColumnHeaders = tableColumnHeaders.Take(tableColumnHeaders.Length - 1).ToArray();
             if (exception == null) tableRowContent = tableRowContent.Take(tableRowContent.Length - 1).ToArray();
 
@@ -174,12 +171,31 @@ namespace Network.Logging
         private string BuildLogHeader(Exception exception, LogLevel logLevel) => $"[{TimeStamp}] {logLevel.ToString()} {exception?.Message} {Environment.NewLine}{Environment.NewLine}";
 
         /// <summary>
+        /// Builds the complete exception and returns it as a string.
+        /// </summary>
+        /// <param name="exception">The exception to convert.</param>
+        /// <returns>A string, containg all innerExceptions as well as the original exception.</returns>
+        private string BuildException(Exception exception)
+        {
+            StringBuilder exceptionBuilder = new StringBuilder(exception?.ToString());
+            exception = exception?.InnerException;
+
+            while(exception != null)
+            {
+                exceptionBuilder.AppendLine(exception.ToString());
+                exception = exception.InnerException;
+            }
+
+            return exceptionBuilder.ToString();
+        }
+
+        /// <summary>
         /// Writes everything to the desired stream.
         /// </summary>
         /// <param name="message">The message to log.</param>
         private void Log(string message)
         {
-            Debug.WriteLine(message);
+            Trace.WriteLine(message);
             StreamLogger?.WriteLine(message);
             StreamLogger?.Flush();
         }
