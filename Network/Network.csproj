@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.0.4</Version>
+     <Version>6.1.0.5</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -26,10 +26,11 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
      <PackageReleaseNotes>MAC and Linux Support.
 Release preview dependencies removed.
-None integer inheritance enums are serializable.</PackageReleaseNotes>
+None integer inheritance enums are serializable.
+ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.0.4</AssemblyVersion>
-     <FileVersion>6.1.0.4</FileVersion>
+     <AssemblyVersion>6.1.0.5</AssemblyVersion>
+     <FileVersion>6.1.0.5</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
