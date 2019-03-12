@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.0.6</Version>
+     <Version>6.1.0.7</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -29,8 +29,8 @@ Release preview dependencies removed.
 None integer inheritance enums are serializable.
 ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.0.6</AssemblyVersion>
-     <FileVersion>6.1.0.6</FileVersion>
+     <AssemblyVersion>6.1.0.7</AssemblyVersion>
+     <FileVersion>6.1.0.7</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />

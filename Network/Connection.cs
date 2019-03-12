@@ -751,7 +751,7 @@ namespace Network
             {
                 if (packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
                     objectMap[packet.ID].DynamicInvoke(new object[] { packet, this });
-                else if (packet.GetType().IsSubclassOf(typeof(RequestPacket)) && objectMap[packet.GetType()] != null)
+                else if (objectMap[packet.GetType()] != null)
                     objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
                 else PacketWithoutHandlerReceived(packet);
             }
