@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : NetworkTestClient
 // Author           : Thomas Christof
@@ -27,9 +28,13 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System;
+
 using Network;
+
+using System;
+
 using TestServerClientPackets;
 
 namespace NetworkTestClient

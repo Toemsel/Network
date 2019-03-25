@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -27,15 +28,18 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+
 using Network.Extensions;
 using Network.Interfaces;
 using Network.Packets;
 using Network.UID;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Network
 {
@@ -86,7 +90,7 @@ namespace Network
         /// <param name="obj">The object.</param>
         /// <returns>System.Int32.</returns>
         internal int this[Type type, object obj] { get { return type_object_id[type][obj]; } }
-        
+
         /// <summary>
         /// Determines whether the specified packet has someone who is going to handle it.
         /// </summary>
@@ -104,7 +108,7 @@ namespace Network
         /// <param name="handler"></param>
         internal void RegisterStaticRawDataHandler<T>(string key, PacketReceivedHandler<T> handler) where T : Packet
         {
-            if(string_methodInfo.ContainsKey(key))
+            if (string_methodInfo.ContainsKey(key))
                 return; //Never register a string key twice.
             string_methodInfo.Add(key, handler);
         }
@@ -115,7 +119,7 @@ namespace Network
         /// <param name="key"></param>
         internal void UnRegisterStaticRawDataHandler(string key)
         {
-            if(!string_methodInfo.ContainsKey(key))
+            if (!string_methodInfo.ContainsKey(key))
                 return; //Never unregister a string key which does not exist
             string_methodInfo.Remove(key);
         }
@@ -194,9 +198,9 @@ namespace Network
         {
             if (!type_object_id.ContainsKey(typeof(T)) ||
                 (obj != null && !type_object_id[typeof(T)].ContainsKey(obj)))
-                    return; //The method does not exist to unregister.
+                return; //The method does not exist to unregister.
 
-            if(obj == null && typeof(T).IsSubclassOf(typeof(RequestPacket)))
+            if (obj == null && typeof(T).IsSubclassOf(typeof(RequestPacket)))
             {
                 int tempId = type_object_id[typeof(T)].Values.GetEnumerator().ToList<int>()[0];
                 type_object_id[typeof(T)].Clear();
@@ -220,14 +224,14 @@ namespace Network
             var internalTypes = Assembly.GetAssembly(typeof(ObjectMap)).GetTypes();
             var externalTypes = objectMap.type_object_id.Keys.ToList().Where(e => !internalTypes.Any(i => i == e));
 
-            foreach(Type currentExternalType in externalTypes)
+            foreach (Type currentExternalType in externalTypes)
             {
                 if (!type_object_id.ContainsKey(currentExternalType))
                     type_object_id.Add(currentExternalType, objectMap.type_object_id[currentExternalType]);
 
                 var externalIds = objectMap.type_object_id[currentExternalType].Values.ToArray();
 
-                foreach(int currentExternalId in externalIds)
+                foreach (int currentExternalId in externalIds)
                 {
                     if (!id_methodInfo_object.ContainsKey(currentExternalId))
                         id_methodInfo_object.Add(currentExternalId, objectMap.id_methodInfo_object[currentExternalId]);

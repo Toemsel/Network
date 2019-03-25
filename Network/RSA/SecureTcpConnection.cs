@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,8 +28,11 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Converter;
+
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -43,7 +47,7 @@ namespace Network.RSA
     public class SecureTcpConnection : TcpConnection
     {
         internal SecureTcpConnection(RSAPair rsaPair, TcpClient tcpClient)
-            : base(tcpClient, skipInitializationProcess:true)
+            : base(tcpClient, skipInitializationProcess: true)
         {
             //Setup the RSAConnectionHelper object.
             RSAConnection = new RSAConnection(this, rsaPair);

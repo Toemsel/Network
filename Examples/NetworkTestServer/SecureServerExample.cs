@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : NetworkTestClient
 // Author           : Thomas Christof
@@ -27,11 +28,15 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network;
 using Network.Enums;
 using Network.Extensions;
+
 using System;
+
 using TestServerClientPackets;
 using TestServerClientPackets.ExamplePacketsOne;
 using TestServerClientPackets.ExamplePacketsOne.Containers;
@@ -55,14 +60,17 @@ namespace NetworkTestServer
             secureServerConnectionContainer = ConnectionFactory.CreateSecureServerConnectionContainer(1234, start: false);
 
             //2. Apply optional settings.
+
             #region Optional settings
+
             secureServerConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{secureServerConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             secureServerConnectionContainer.ConnectionEstablished += connectionEstablished;
 #if NET46
             secureServerConnectionContainer.AllowBluetoothConnections = true;
 #endif
             secureServerConnectionContainer.AllowUDPConnections = true;
-            secureServerConnectionContainer.UDPConnectionLimit = 2;            
+            secureServerConnectionContainer.UDPConnectionLimit = 2;
+
             #endregion Optional settings
 
             //Call start here, because we had to enable the bluetooth property at first.

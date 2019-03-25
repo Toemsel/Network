@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,9 +28,11 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System.Threading.Tasks;
+
 using System;
+using System.Threading.Tasks;
 
 namespace Network.RSA
 {
@@ -41,7 +44,7 @@ namespace Network.RSA
         /// <param name="ipAddress">The ip address.</param>
         /// <param name="port">The port.</param>
         /// <param name="rsaPair">RSA-Pair.</param>
-        internal SecureClientConnectionContainer(string ipAddress, int port, RSAPair rsaPair) 
+        internal SecureClientConnectionContainer(string ipAddress, int port, RSAPair rsaPair)
             : base(ipAddress, port)
         {
             RSAPair = rsaPair;

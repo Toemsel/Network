@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,13 +28,16 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
+using Network.Enums;
+using Network.Packets;
+
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Network.Enums;
-using Network.Packets;
 
 namespace Network
 {
