@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,14 +28,18 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
+using ConsoleTables;
+
+using Network.Enums;
+
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using Network.Enums;
-using ConsoleTables;
 using System.Linq;
+using System.Text;
 
 namespace Network.Logging
 {
@@ -94,7 +99,7 @@ namespace Network.Logging
         /// <param name="logLevel">The log level.</param>
         internal void Log(string message, Exception exception, LogLevel logLevel = LogLevel.Information)
         {
-            if(!EnableLogging || StreamLogger == null)
+            if (!EnableLogging || StreamLogger == null)
                 return;
 
             string finalLogMessage = BuildLogHeader(exception, logLevel);
@@ -180,7 +185,7 @@ namespace Network.Logging
             StringBuilder exceptionBuilder = new StringBuilder(exception?.ToString());
             exception = exception?.InnerException;
 
-            while(exception != null)
+            while (exception != null)
             {
                 exceptionBuilder.AppendLine(exception.ToString());
                 exception = exception.InnerException;

@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : NetworkTestClient
 // Author           : Thomas Christof
@@ -27,7 +28,9 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using System;
 
 namespace NetworkTestClient
@@ -38,7 +41,7 @@ namespace NetworkTestClient
         {
             int input = 0;
 
-            while(input != 9)
+            while (input != 9)
             {
                 Console.WriteLine("<1> Async example");
                 Console.WriteLine("<2> Lambda example");
@@ -54,17 +57,19 @@ namespace NetworkTestClient
                 Console.Write("> ");
 
                 input = 0;
-                while(!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 8)
+                while (!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 8)
                     Console.Write("> ");
 
-                switch(input)
+                switch (input)
                 {
                     case 1:
                         new AsyncExample().Demo();
                         break;
+
                     case 2:
                         new LambdaExample().Demo();
                         break;
+
                     case 3:
                         new DelegateExample().Demo();
                         break;
@@ -76,15 +81,19 @@ namespace NetworkTestClient
                     case 5:
                         new ObjectExample().Demo();
                         break;
+
                     case 6:
                         new SingleConnectionExample().Demo();
                         break;
+
                     case 7:
                         new RawDataExample().Demo();
                         break;
+
                     case 8:
                         new RSAExample().Demo();
                         break;
+
                     default:
                         throw new ArgumentException();
                 }

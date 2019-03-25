@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -27,9 +28,12 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Interfaces;
 using Network.RSA;
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -96,7 +100,7 @@ namespace Network
         /// <param name="assembly">The assembly.</param>
         public void AddKownType(Assembly assembly)
         {
-            if(KnownTypes.Contains(assembly)) return;
+            if (KnownTypes.Contains(assembly)) return;
             KnownTypes.Add(assembly);
         }
 
@@ -106,7 +110,7 @@ namespace Network
         /// <param name="assembly">The assembly.</param>
         public void RemoveKnownType(Assembly assembly)
         {
-            if(!KnownTypes.Contains(assembly)) return;
+            if (!KnownTypes.Contains(assembly)) return;
             KnownTypes.Remove(assembly);
         }
     }

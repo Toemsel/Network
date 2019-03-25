@@ -1,4 +1,5 @@
 #region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,7 +28,9 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using System;
 using System.Security.Cryptography;
 using System.Xml;
@@ -44,46 +47,46 @@ namespace Network.Extensions
         /// </summary>
         /// <param name="xml">The XML to convert.</param>
         /// <returns><see cref="RSAParameters" /></returns>
-        internal static void FromXmlString(this RSACryptoServiceProvider rsaCryptoServiceProvider, string xml) 
+        internal static void FromXmlString(this RSACryptoServiceProvider rsaCryptoServiceProvider, string xml)
         {
             RSAParameters rsaParameter = new RSAParameters();
 
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
-            foreach(XmlNode currentNode in xmlDocument.DocumentElement.ChildNodes)
+            foreach (XmlNode currentNode in xmlDocument.DocumentElement.ChildNodes)
             {
-                switch(currentNode.Name)
+                switch (currentNode.Name)
                 {
-                    case "Modulus": 
+                    case "Modulus":
                         rsaParameter.Modulus = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "Exponent": 
+                    case "Exponent":
                         rsaParameter.Exponent = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "P": 
+                    case "P":
                         rsaParameter.P = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "Q" : 
+                    case "Q":
                         rsaParameter.Q = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "DP" : 
+                    case "DP":
                         rsaParameter.DP = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "DQ" : 
+                    case "DQ":
                         rsaParameter.DQ = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "InverseQ" : 
+                    case "InverseQ":
                         rsaParameter.InverseQ = ConvertFromBase64String(currentNode.InnerText);
                         break;
 
-                    case "D" : 
+                    case "D":
                         rsaParameter.D = ConvertFromBase64String(currentNode.InnerText);
                         break;
                 }

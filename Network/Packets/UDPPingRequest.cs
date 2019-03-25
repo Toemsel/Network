@@ -9,6 +9,8 @@ namespace Network.Packets
     [PacketType(10)]
     internal class UDPPingRequest : RequestPacket
     {
-        public UDPPingRequest() { }
+        public UDPPingRequest()
+        {
+        }
     }
 }

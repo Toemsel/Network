@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,16 +28,18 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System;
+
+using Network.Enums;
+using Network.Extensions;
+using Network.Packets;
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Network.Enums;
-using Network.Extensions;
-using Network.Packets;
 
 namespace Network
 {
@@ -79,13 +82,13 @@ namespace Network
             socket.SendTimeout = 0;
             socket.ReceiveTimeout = 0;
 
-            if(IsWindows)
+            if (IsWindows)
                 socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply
             //additional settings before starting the network comm.
-            if(!skipInitializationProcess)
+            if (!skipInitializationProcess)
                 Init();
         }
 
@@ -162,7 +165,7 @@ namespace Network
 
         /// <summary>
         /// Measures the RTT of the UDP connection.
-        /// Receiving a result 
+        /// Receiving a result
         /// </summary>
         /// <param name="rttResult">The RTT result.</param>
         public void MeasureRTT()
