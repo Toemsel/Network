@@ -1,5 +1,7 @@
 ﻿#if NET46
+
 #region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -28,8 +30,11 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using InTheHand.Net.Sockets;
+
 using System;
 using System.Linq;
 
@@ -101,4 +106,5 @@ namespace Network.Bluetooth
         internal BluetoothDeviceInfo BluetoothDeviceInfo { get; private set; }
     }
 }
+
 #endif

@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -27,6 +28,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
 
 namespace Network.Enums
@@ -40,11 +42,13 @@ namespace Network.Enums
         /// The packet was successfully transmitted.
         /// </summary>
         Success = 0,
+
         /// <summary>
         /// No result received. Timeout limit reached.
         /// Connection may be already dead.
         /// </summary>
         Timeout = 1,
+
         /// <summary>
         /// The connection is not alive. No async transmission possible.
         /// </summary>

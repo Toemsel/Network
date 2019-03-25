@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -27,14 +28,15 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
+using Network.Extensions;
+using Network.Packets;
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Network.Extensions;
-using Network.Interfaces;
-using Network.Packets;
 
 namespace Network.Async
 {
@@ -47,6 +49,7 @@ namespace Network.Async
         /// The packet we actually received.
         /// </summary>
         private Packet receivedAsyncPacket = null;
+
         /// <summary>
         /// A manualResetEvent to let the instance know that the packet arrived.
         /// </summary>
@@ -80,7 +83,7 @@ namespace Network.Async
                 if (receivedAsyncPacket == null)
                     await packetReceivedEvent.AsTask(TimeSpan.FromMilliseconds(connection.TIMEOUT));
             }
-            catch(OverflowException overflowException)
+            catch (OverflowException overflowException)
             {
                 connection.Logger.Log($"Exception while waiting for async packet occured. Request packet {packet.GetType().Name}", overflowException, Enums.LogLevel.Error);
             }

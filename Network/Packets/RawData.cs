@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas Christof
@@ -27,7 +28,9 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Attributes;
 
 namespace Network.Packets
@@ -44,7 +47,9 @@ namespace Network.Packets
             Data = data;
         }
 
-        public RawData() { }
+        public RawData()
+        {
+        }
 
         /// <summary>
         /// The key both connections are able to register methods to.

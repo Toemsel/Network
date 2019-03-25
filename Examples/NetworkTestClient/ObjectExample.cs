@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Network;
+﻿using Network;
 using Network.Enums;
+
+using System;
+using System.Collections.Generic;
+
 using TestServerClientPackets.ExamplePacketsOne;
 using TestServerClientPackets.ExamplePacketsOne.Containers;
 
 namespace NetworkTestClient
 {
-    class ObjectExample
+    internal class ObjectExample
     {
         private ClientConnectionContainer container;
         private Random random = new Random();
@@ -50,7 +52,7 @@ namespace NetworkTestClient
         private List<GeoCoordinate> GenerateVisitedPlaces()
         {
             List<GeoCoordinate> geoCoordinates = new List<GeoCoordinate>();
-            while(random.Next(0, 101) <= 95 && geoCoordinates.Count < 500)
+            while (random.Next(0, 101) <= 95 && geoCoordinates.Count < 500)
             {
                 GeoCoordinate geoCoordinate = new GeoCoordinate();
                 geoCoordinate.Latitude = (float)random.NextDouble();
@@ -63,7 +65,7 @@ namespace NetworkTestClient
         private List<string> GenerateRooms()
         {
             List<string> rooms = new List<string>();
-            while(random.Next(0, 101) <= 95 && rooms.Count < 100)
+            while (random.Next(0, 101) <= 95 && rooms.Count < 100)
                 rooms.Add(random.Next(0, 501).ToString());
             return rooms;
         }

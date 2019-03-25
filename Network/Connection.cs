@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,7 +28,9 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Async;
 using Network.Attributes;
 using Network.Converter;
@@ -35,7 +38,7 @@ using Network.Enums;
 using Network.Extensions;
 using Network.Interfaces;
 using Network.Packets;
-using Network.Packets.RSA;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -86,7 +89,9 @@ namespace Network
         /// A handler which will be invoked if this connection is dead.
         /// </summary>
         private event Action<CloseReason, Connection> connectionClosed;
+
         private event Action<TcpConnection, UdpConnection> connectionEstablished;
+
         private ConcurrentQueue<UdpConnection> pendingUDPConnections = new ConcurrentQueue<UdpConnection>();
         private ConcurrentQueue<Tuple<Packet, object>> pendingUnknownPackets = new ConcurrentQueue<Tuple<Packet, object>>();
 
@@ -94,12 +99,14 @@ namespace Network
         /// When this stopwatch reached the <see cref="TIMEOUT"/> the instance is going to send a ping request.
         /// </summary>
         private Stopwatch nextPingStopWatch = new Stopwatch();
+
         private Stopwatch currentPingStopWatch = new Stopwatch();
 
         /// <summary>
         /// This concurrent queue contains the received/send packets which we have to handle.
         /// </summary>
         private ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
+
         private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
         private ConcurrentBag<Packet> receivedUnknownPacketHandlerPackets = new ConcurrentBag<Packet>();
 
@@ -107,19 +114,24 @@ namespace Network
         /// Events to save CPU time.
         /// </summary>
         private AutoResetEvent dataAvailableEvent = new AutoResetEvent(false);
+
         private AutoResetEvent packetAvailableEvent = new AutoResetEvent(false);
 
         #region Threads
+
         private Thread readStreamThread;
         private Thread writeStreamThread;
         private Thread invokePacketThread;
+
         #endregion Threads
 
         /// <summary>
         /// Maps the type of a packet to their byte value.
         /// </summary>
         private BiDictionary<Type, ushort> typeByte = new BiDictionary<Type, ushort>();
+
         private int currentTypeByteIndex = 100; //The current index we are facing. Start with 100, since we have some network packets.
+
         /// <summary>
         /// Maps a request to their response.
         /// </summary>
@@ -417,6 +429,7 @@ namespace Network
         }
 
         #region Sending
+
         /// <summary>
         /// Sends a ping if there is no ping request already running.
         /// </summary>
@@ -482,6 +495,7 @@ namespace Network
             sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
             dataAvailableEvent.Set();
         }
+
         #endregion Sending
 
         /// <summary>
@@ -497,7 +511,7 @@ namespace Network
             //Retreive the packettype for the given handler.
             Type delegateForPacketType = del.GetType().GenericTypeArguments.FirstOrDefault();
 
-            if(receivedUnknownPacketHandlerPackets.Any(p => p.GetType().Equals(delegateForPacketType)))
+            if (receivedUnknownPacketHandlerPackets.Any(p => p.GetType().Equals(delegateForPacketType)))
             {
                 var forwardToDelegatePackets = receivedUnknownPacketHandlerPackets.Where(p => p.GetType().Equals(delegateForPacketType));
 
@@ -511,6 +525,7 @@ namespace Network
         }
 
         #region Threads
+
         /// <summary>
         /// Reads the bytes from the stream.
         /// </summary>
@@ -524,7 +539,7 @@ namespace Network
                     int packetLength = BitConverter.ToInt32(ReadBytes(4), 0);
                     byte[] packetData = ReadBytes(packetLength);
 
-                    if(!typeByte.ContainsKeyB(packetType))
+                    if (!typeByte.ContainsKeyB(packetType))
                     {
                         //Theoretically it is not possible that we receive a packet
                         //which is not known, since all the packets need to pass a certification.
@@ -534,7 +549,7 @@ namespace Network
                         continue;
                     }
 
-                    Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
+                    Packet receivedPacket = packetConverter.DeserialisePacket(typeByte[packetType], packetData);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;
                     packetAvailableEvent.Set();
@@ -580,7 +595,7 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Logger.Log("Write object on stream", exception, LogLevel.Exception);
             }
@@ -613,10 +628,11 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch(Exception) { }
+            catch (Exception) { }
 
             CloseHandler(CloseReason.InvokePacketThreadException);
         }
+
         #endregion Threads
 
         /// <summary>
@@ -644,7 +660,7 @@ namespace Network
                                 2. [32bits] packet length
                                 3. [xxbits] packet data                 */
 
-                byte[] packetData = packetConverter.GetBytes(packet);
+                byte[] packetData = packetConverter.SerialisePacket(packet);
                 byte[] packetLength = BitConverter.GetBytes(packetData.Length);
                 byte[] packetByte = new byte[2 + packetLength.Length + packetData.Length];
 
@@ -690,7 +706,7 @@ namespace Network
                 EstablishUdpRequest establishUdpRequest = (EstablishUdpRequest)packet;
                 IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
                 Send(new EstablishUdpResponse(udpEndPoint.Port, establishUdpRequest));
-                UdpConnection udpConnection = CreateUdpConnection(udpEndPoint, 
+                UdpConnection udpConnection = CreateUdpConnection(udpEndPoint,
                     new IPEndPoint(IPRemoteEndPoint.Address, establishUdpRequest.UdpPort), true);
                 pendingUDPConnections.Enqueue(udpConnection);
                 connectionEstablished?.Invoke((TcpConnection)this, udpConnection);
@@ -704,7 +720,7 @@ namespace Network
                 udpConnection.AcknowledgePending = false;
                 return;
             }
-            else if(packet.GetType().Equals(typeof(AddPacketTypeRequest)))
+            else if (packet.GetType().Equals(typeof(AddPacketTypeRequest)))
             {
                 Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == ((AddPacketTypeRequest)packet).AssemblyName).SingleOrDefault();
                 if (assembly == null) CloseHandler(CloseReason.AssemblyDoesNotExist);
@@ -738,15 +754,15 @@ namespace Network
                 }
             }
             //Receiving raw data from the connection.
-            else if(packet.GetType().Equals(typeof(RawData)))
+            else if (packet.GetType().Equals(typeof(RawData)))
             {
                 RawData rawData = (RawData)packet;
-                if(objectMap[rawData.Key] == null)
+                if (objectMap[rawData.Key] == null)
                     Logger.Log($"RawData packet has no listener. Key: {rawData.Key}", LogLevel.Warning);
                 else objectMap[rawData.Key].DynamicInvoke(new object[] { packet, this });
                 return;
             }
-            
+
             try
             {
                 if (packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
@@ -755,7 +771,7 @@ namespace Network
                     objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
                 else PacketWithoutHandlerReceived(packet);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Logger.Log("Provided delegate contains a bug. Packet invocation thread crashed.", exception, LogLevel.Exception);
             }
@@ -804,7 +820,7 @@ namespace Network
                 Send(new CloseRequest(closeReason), true);
                 WriteSubWork(); //Force to write the remaining packets.
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Logger.Log($"Couldn't send a close-message '{closeReason.ToString()}' to the endpoint.", exception, LogLevel.Warning);
             }

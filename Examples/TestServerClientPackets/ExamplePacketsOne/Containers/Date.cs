@@ -1,5 +1,6 @@
-﻿using System;
-using Network.Attributes;
+﻿using Network.Attributes;
+
+using System;
 
 namespace TestServerClientPackets.ExamplePacketsOne.Containers
 {

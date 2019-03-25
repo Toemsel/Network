@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Network.Packets;
+﻿using Network.Packets;
 
 namespace TestServerClientPackets
 {

@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,10 +28,13 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Enums;
 using Network.Interfaces;
 using Network.Packets;
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -55,12 +59,14 @@ namespace Network
         /// The connections we have to deal with.
         /// </summary>
         private TcpConnection tcpConnection;
+
         private UdpConnection udpConnection;
 
         /// <summary>
         /// If there is no connection yet, save the packets in this buffer.
         /// </summary>
         private List<Packet> sendSlowBuffer = new List<Packet>();
+
         private List<Packet> sendFastBuffer = new List<Packet>();
         private List<Tuple<Packet, object>> sendSlowObjectBuffer = new List<Tuple<Packet, object>>();
         private List<Tuple<Packet, object>> sendFastObjectBuffer = new List<Tuple<Packet, object>>();
@@ -69,11 +75,12 @@ namespace Network
         /// Cache all the handlers to apply them after we got a new connection.
         /// </summary>
         private ObjectMap tcpPacketHandlerBackup = new ObjectMap();
+
         private ObjectMap udpPacketHandlerBackup = new ObjectMap();
         private List<Tuple<Type, Delegate, object>> tcpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
         private List<Tuple<Type, Delegate, object>> udpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
         private List<Tuple<Type, Delegate>> tcpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
-        private List<Tuple<Type, Delegate>> udpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>(); 
+        private List<Tuple<Type, Delegate>> udpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
         private List<Tuple<Type, object>> tcpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
         private List<Tuple<Type, object>> udpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
         private List<Type> tcpStaticUnPacketHandlerBuffer = new List<Type>();
@@ -83,6 +90,7 @@ namespace Network
         /// Occurs when we get or lose a tcp or udp connection.
         /// </summary>
         private event Action<Connection, ConnectionType, CloseReason> connectionLost;
+
         private event Action<Connection, ConnectionType> connectionEstablished;
 
         /// <summary>
@@ -253,7 +261,7 @@ namespace Network
             else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(T), obj));
         }
 
-                /// <summary>
+        /// <summary>
         /// Registers a packetHandler for UDP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
@@ -377,8 +385,8 @@ namespace Network
         /// <param name="callCloseEvent">If the instance should call the connectionLost event.</param>
         public void Shutdown(CloseReason closeReason, bool callCloseEvent = false)
         {
-            if(IsAlive_TCP) tcpConnection.Close(closeReason, callCloseEvent);
-            if(IsAlive_UDP) udpConnection.Close(closeReason, callCloseEvent);
+            if (IsAlive_TCP) tcpConnection.Close(closeReason, callCloseEvent);
+            if (IsAlive_UDP) udpConnection.Close(closeReason, callCloseEvent);
         }
 
         /// <summary>
@@ -405,7 +413,7 @@ namespace Network
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
             });
-            tcpConnection.ConnectionClosed += (c, cc) => 
+            tcpConnection.ConnectionClosed += (c, cc) =>
             {
                 tcpPacketHandlerBackup = cc.ObjectMapper;
                 connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
@@ -414,7 +422,7 @@ namespace Network
             sendSlowBuffer.ForEach(tcpConnection.Send);
             sendSlowObjectBuffer.ForEach(p => tcpConnection.Send(p.Item1, p.Item2));
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
-            tcpUnPacketHandlerBuffer.ForEach(t => 
+            tcpUnPacketHandlerBuffer.ForEach(t =>
             {
                 MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("UnRegisterPacketHandler");
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
@@ -463,7 +471,7 @@ namespace Network
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
             });
-            udpConnection.ConnectionClosed += (c, cc) => 
+            udpConnection.ConnectionClosed += (c, cc) =>
             {
                 udpPacketHandlerBackup = cc.ObjectMapper;
                 connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
@@ -529,9 +537,9 @@ namespace Network
         /// <exception cref="System.ArgumentException">The given enum doesn't exist</exception>
         public async Task<T> SendAsync<T>(Packet packet, ConnectionType connectionType) where T : ResponsePacket
         {
-            if(connectionType == ConnectionType.TCP)
+            if (connectionType == ConnectionType.TCP)
                 return await SendSlowAsync<T>(packet);
-            else if(connectionType == ConnectionType.UDP)
+            else if (connectionType == ConnectionType.UDP)
                 return await SendFastAsync<T>(packet);
             else throw new ArgumentException("The given enum doesn't exist");
         }

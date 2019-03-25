@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : NetworkTestClient
 // Author           : Thomas Christof
@@ -27,10 +28,13 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System;
-using System.IO;
+
 using Network;
+
+using System;
+
 using TestServerClientPackets;
 
 namespace NetworkTestClient
@@ -45,6 +49,7 @@ namespace NetworkTestClient
     public class RSAExample
     {
 #pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
+
         public async void Demo()
 #pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         {

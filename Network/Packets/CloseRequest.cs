@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,7 +28,9 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
+
 using Network.Attributes;
 using Network.Enums;
 
@@ -39,7 +42,9 @@ namespace Network.Packets
     [PacketType(2)]
     internal class CloseRequest : Packet
     {
-        public CloseRequest() { }
+        public CloseRequest()
+        {
+        }
 
         internal CloseRequest(CloseReason reason)
         {
