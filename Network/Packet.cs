@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,10 +28,13 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
-using System;
+
 using Network.Attributes;
 using Network.Enums;
+
+using System;
 
 namespace Network
 {
@@ -42,7 +46,7 @@ namespace Network
     /// To ignore a property, take a look at <see cref="PacketIgnorePropertyAttribute"/>
     /// Following data types are allowed:
     /// http://www.indie-dev.at/?page_id=461
-    /// 
+    ///
     /// Every other data type will lead to an exception during the serialization process.
     /// </summary>
     public abstract class Packet

@@ -1,4 +1,5 @@
 ﻿#region Licence - LGPLv3
+
 // ***********************************************************************
 // Assembly         : Network
 // Author           : Thomas
@@ -27,6 +28,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
+
 #endregion Licence - LGPLv3
 
 using System;
@@ -34,23 +36,60 @@ using System;
 namespace Network.Converter
 {
     /// <summary>
-    /// Provides extension methods for packets to handle their read and write behaviors.
+    /// Describes the methods that a packet converter must implement in order
+    /// to be able to serialise and deserialise packets to and from a binary
+    /// form.
     /// </summary>
     public interface IPacketConverter
     {
         /// <summary>
-        /// Converts a given packet to a byte array.
+        /// Serialises a given packet to a byte array.
         /// </summary>
         /// <param name="packet">The packet to convert.</param>
         /// <returns>System.Byte[].</returns>
-        byte[] GetBytes(Packet packet);
+        byte[] SerialisePacket(Packet packet);
 
         /// <summary>
-        /// Converts the given data byte array into a Packet object.
+        /// Serialises the given packet of the given type to a byte array.
         /// </summary>
-        /// <param name="packetType">The type of the packet object.</param>
-        /// <param name="data">The data array</param>
-        /// <returns>A consumable object.</returns>
-        Packet GetPacket(Type packetType, byte[] data);
+        /// <typeparam name="P">
+        /// The type of packet to serialise into a byte array.
+        /// </typeparam>
+        /// <param name="packet">
+        /// The packet object to serialise into a byte array.
+        /// </param>
+        /// <returns>
+        /// An array of <see cref="byte"/>s that holds the serialised packet.
+        /// </returns>
+        byte[] SerialisePacket<P>(P packet) where P : Packet;
+
+        /// <summary>
+        /// Deserialises the given data byte array into an object of the given
+        /// type.
+        /// </summary>
+        /// <param name="packetType">
+        /// The type of object to deserialise the byte array to.
+        /// </param>
+        /// <param name="serialisedPacket">
+        /// The byte array holding the serialised packet.
+        /// </param>
+        /// <returns>
+        /// The deserialised packet object of the given type.
+        /// </returns>
+        Packet DeserialisePacket(Type packetType, byte[] serialisedPacket);
+
+        /// <summary>
+        /// Deserialises the given byte array into an object of the given type.
+        /// </summary>
+        /// <typeparam name="P">
+        /// The type to which to deserialise the given byte array.
+        /// </typeparam>
+        /// <param name="serialisedPacket">
+        /// The byte array holding the serialised packet.
+        /// </param>
+        /// <returns>
+        /// The deserialised packet object, of the given type.
+        /// </returns>
+        P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet;
     }
 }
