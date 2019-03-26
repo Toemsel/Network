@@ -33,8 +33,8 @@
 
 using Network.Converter;
 using Network.Interfaces;
+using Network.Packets;
 using Network.Packets.RSA;
-
 using System;
 using System.Security.Cryptography;
 
@@ -141,7 +141,7 @@ namespace Network.RSA
         {
             Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
             {
-                connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
+                connection.DeregisterStaticPacketHandler<RSAKeyInformationRequest>();
 
                 CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
                 EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
@@ -161,14 +161,14 @@ namespace Network.RSA
         /// </summary>
         /// <param name="bytes">The bytes to decrypt.</param>
         /// <returns>The decrypted bytes.</returns>
-        public byte[] Decrypt(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
+        public byte[] DecryptBytes(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
 
         /// <summary>
         /// Encrypts bytes with the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider" />
         /// </summary>
         /// <param name="bytes">The Bytes to encrypt.</param>
         /// <returns>The encrypted bytes.</returns>
-        public byte[] Encrypt(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
+        public byte[] EncryptBytes(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
 
         /// <summary>
         /// Gets the encrypted bytes of a <see cref="Packet"/>
@@ -181,7 +181,7 @@ namespace Network.RSA
             byte[] unEncryptedData = PacketConverter.SerialisePacket(packet);
 
             byte[] rsaStatus = BitConverter.GetBytes(isRSACommunicationActive);
-            byte[] packetData = isRSACommunicationActive ? Encrypt(unEncryptedData) : unEncryptedData;
+            byte[] packetData = isRSACommunicationActive ? EncryptBytes(unEncryptedData) : unEncryptedData;
             byte[] packetDataWithStatus = new byte[packetData.Length + 1];
             Array.Copy(rsaStatus, 0, packetDataWithStatus, 0, 1);
             Array.Copy(packetData, 0, packetDataWithStatus, 1, packetData.Length);
@@ -200,7 +200,7 @@ namespace Network.RSA
             byte[] data = new byte[serialisedPacket.Length - 1];
             Array.Copy(serialisedPacket, 1, data, 0, data.Length);
 
-            return isRSACommunicationActive ? PacketConverter.DeserialisePacket(packetType, Decrypt(data))
+            return isRSACommunicationActive ? PacketConverter.DeserialisePacket(packetType, DecryptBytes(data))
                 : PacketConverter.DeserialisePacket(packetType, data);
         }
     }

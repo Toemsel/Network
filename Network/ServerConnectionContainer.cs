@@ -47,6 +47,7 @@ using System.Threading;
 using Network.Enums;
 
 using System.Threading.Tasks;
+using Network.Packets;
 
 namespace Network
 {
