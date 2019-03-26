@@ -1,5 +1,7 @@
 ﻿using Network.Packets;
 
+using Network.Packets;
+
 namespace Network.Enums
 {
     /// <summary>
