@@ -34,32 +34,32 @@
 namespace Network.Enums
 {
     /// <summary>
-    /// Contains some reasons why the connection has been or should be closed.
+    /// Enumerates the possible reasons for a <see cref="Connection"/> closing/
     /// </summary>
-    public enum CloseReason : int
+    public enum CloseReason
     {
         /// <summary>
-        /// An unknown exception occurred in the network library
+        /// An unknown exception occurred in the network library.
         /// </summary>
         NetworkError = 0,
 
         /// <summary>
-        /// The server closed the connection
+        /// The server closed the connection.
         /// </summary>
         ServerClosed = 1,
 
         /// <summary>
-        /// The client closed the connection
+        /// The client closed the connection.
         /// </summary>
         ClientClosed = 2,
 
         /// <summary>
-        /// The endpoint sent an unknown packet which cant be processed
+        /// The endpoint sent an unknown packet which cant be processed.
         /// </summary>
         UnknownPacket = 3,
 
         /// <summary>
-        /// Connection timeout reached
+        /// Connection timeout reached.
         /// </summary>
         Timeout = 4,
 
@@ -99,7 +99,7 @@ namespace Network.Enums
         InvokePacketThreadException = 11,
 
         /// <summary>
-        /// The assembly for the incomming packet is not available.
+        /// The assembly for the incoming packet is not available.
         /// Make sure that every project is including that assembly.
         /// </summary>
         AssemblyDoesNotExist = 12

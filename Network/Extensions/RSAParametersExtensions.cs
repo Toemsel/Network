@@ -37,38 +37,59 @@ using System.Security.Cryptography;
 namespace Network.Extensions
 {
     /// <summary>
-    /// RSAParamters Extensions.
+    /// Provides additional functionality to the <see cref="RSAParameters"/>
+    /// struct.
     /// </summary>
     internal static class RSAParametersExtensions
     {
+        #region Methods
+
         /// <summary>
-        /// Extracts the private key.
+        /// Extracts the private key from the given <see cref="RSAParameters"/>
+        /// and returns it as an XML string.
         /// </summary>
-        /// <param name="rsaParameter">The RSA parameter.</param>
-        /// <returns>System.String.</returns>
-        internal static string ExtractPrivateKey(this RSAParameters rsaParameter)
+        /// <param name="rsaParameter">
+        /// The <see cref="RSAParameters"/> instance that the extension method
+        /// affects.
+        /// </param>
+        /// <returns>
+        /// The XML string with the private key.
+        /// </returns>
+        public static string ExtractPrivateKey(this RSAParameters rsaParameter)
         {
-            return string.Format("<RSAKeyValue><Modulus>{0}</Modulus><Exponent>{1}</Exponent><P>{2}</P><Q>{3}</Q><DP>{4}</DP><DQ>{5}</DQ><InverseQ>{6}</InverseQ><D>{7}</D></RSAKeyValue>",
-                Convert.ToBase64String(rsaParameter.Modulus),
-                Convert.ToBase64String(rsaParameter.Exponent),
-                Convert.ToBase64String(rsaParameter.P),
-                Convert.ToBase64String(rsaParameter.Q),
-                Convert.ToBase64String(rsaParameter.DP),
-                Convert.ToBase64String(rsaParameter.DQ),
-                Convert.ToBase64String(rsaParameter.InverseQ),
-                Convert.ToBase64String(rsaParameter.D));
+            return
+                $"<RSAKeyValue>" +
+                $"<Modulus>{Convert.ToBase64String(rsaParameter.Modulus)}</Modulus>" +
+                $"<Exponent>{Convert.ToBase64String(rsaParameter.Exponent)}</Exponent>" +
+                $"<P>{Convert.ToBase64String(rsaParameter.P)}</P>" +
+                $"<Q>{Convert.ToBase64String(rsaParameter.Q)}</Q>" +
+                $"<DP>{Convert.ToBase64String(rsaParameter.DP)}</DP>" +
+                $"<DQ>{Convert.ToBase64String(rsaParameter.DQ)}</DQ>" +
+                $"<InverseQ>{Convert.ToBase64String(rsaParameter.InverseQ)}</InverseQ>" +
+                $"<D>{Convert.ToBase64String(rsaParameter.D)}</D>" +
+                $"</RSAKeyValue>";
         }
 
         /// <summary>
-        /// Extracts the public key.
+        /// Extracts the public key from the given <see cref="RSAParameters"/>
+        /// and returns it as an XML string.
         /// </summary>
-        /// <param name="rsaParameter">The RSA parameter.</param>
-        /// <returns>System.String.</returns>
-        internal static string ExtractPublicKey(this RSAParameters rsaParameter)
+        /// <param name="rsaParameter">
+        /// The <see cref="RSAParameters"/> instance that the extension method
+        /// affects.
+        /// </param>
+        /// <returns>
+        /// The XML string with the public key.
+        /// </returns>
+        public static string ExtractPublicKey(this RSAParameters rsaParameter)
         {
-            return string.Format("<RSAKeyValue><Modulus>{0}</Modulus><Exponent>{1}</Exponent></RSAKeyValue>",
-                Convert.ToBase64String(rsaParameter.Modulus),
-                Convert.ToBase64String(rsaParameter.Exponent));
+            return
+                $"<RSAKeyValue>" +
+                $"<Modulus>{Convert.ToBase64String(rsaParameter.Modulus)}</Modulus>" +
+                $"<Exponent>{Convert.ToBase64String(rsaParameter.Exponent)}</Exponent>" +
+                $"</RSAKeyValue>";
         }
+
+        #endregion Methods
     }
 }

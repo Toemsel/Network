@@ -39,7 +39,7 @@ namespace Network.Packets.RSA
     /// Packet to inform the communication partner about the public-key.
     /// </summary>
     /// <seealso cref="Network.Packet" />
-    [PacketType(21)]
+    [PacketType(11)]
     internal class RSAKeyInformationRequest : RequestPacket
     {
         public RSAKeyInformationRequest()

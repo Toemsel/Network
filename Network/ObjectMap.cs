@@ -174,8 +174,8 @@ namespace Network
             if (!type_object_id.ContainsKey(typeof(T)))
                 type_object_id.Add(typeof(T), new Dictionary<object, int>());
 
-            type_object_id[typeof(T)].Add(obj, Generator.UniqueIdentifier<int>());
-            id_methodInfo_object.Add(Generator.LastUniqueIdentifier<int>(), new Tuple<Delegate, object>(del, obj));
+            type_object_id[typeof(T)].Add(obj, UidGenerator.UniqueIdentifier<int>());
+            id_methodInfo_object.Add(UidGenerator.LastUniqueIdentifier<int>(), new Tuple<Delegate, object>(del, obj));
         }
 
         /// <summary>

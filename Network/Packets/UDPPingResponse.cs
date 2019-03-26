@@ -5,7 +5,7 @@ namespace Network.Packets
     /// <summary>
     /// Represents a UDP Ping response.
     /// </summary>
-    [PacketType(11)]
+    [PacketType(9)]
     [PacketRequest(typeof(UDPPingRequest))]
     internal class UDPPingResponse : ResponsePacket
     {

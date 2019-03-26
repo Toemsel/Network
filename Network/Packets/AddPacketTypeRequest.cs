@@ -39,7 +39,7 @@ namespace Network.Packets
     /// Sending unknown packets needs at first a addPacketTypeRequest to
     /// inform the endPoint about the new incomming packet.
     /// </summary>
-    [PacketType(8)]
+    [PacketType(6)]
     internal class AddPacketTypeRequest : RequestPacket
     {
         public AddPacketTypeRequest()

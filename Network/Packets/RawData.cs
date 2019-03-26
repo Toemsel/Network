@@ -38,7 +38,7 @@ namespace Network.Packets
     /// <summary>
     /// Represends raw data containing anything the programmer wants to send.
     /// </summary>
-    [PacketType(15)]
+    [PacketType(10)]
     public class RawData : Packet
     {
         public RawData(string key, byte[] data)

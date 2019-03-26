@@ -6,7 +6,7 @@ namespace Network.Packets
     /// A UDP PingRequest packet.
     /// Used to test the latency between server and client.
     /// </summary>
-    [PacketType(10)]
+    [PacketType(8)]
     internal class UDPPingRequest : RequestPacket
     {
         public UDPPingRequest()

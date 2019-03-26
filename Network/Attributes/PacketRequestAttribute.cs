@@ -31,30 +31,46 @@
 
 #endregion Licence - LGPLv3
 
+using Network.Packets;
 using System;
 
 namespace Network.Attributes
 {
     /// <summary>
-    /// In order to generate an answer out of a question, the relations
-    /// between the request and response packets have to be set.
-    /// E.g NameResponse -> NameRequest.
+    /// Maps a request packet to the response packet that handles it. This
+    /// attribute should be placed on the response packet (must inherit from
+    /// <see cref="ResponsePacket"/> and the <see cref="Type"/> of the
+    /// <see cref="RequestPacket"/> that it
+    /// handles should be given.
     /// </summary>
     public class PacketRequestAttribute : Attribute
     {
+        #region Properties
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="PacketRequestAttribute"/> class.
+        /// The <see cref="Type"/> of the <see cref="RequestPacket"/> that the
+        /// <see cref="ResponsePacket"/> handles.
         /// </summary>
-        /// <param name="type">The type.</param>
+        public Type RequestType { get; }
+
+        #endregion Properties
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructs and returns a new instance of the
+        /// <see cref="PacketRequestAttribute"/> class with the given
+        /// <see cref="RequestPacket"/> type as the handled <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="Type"/> of the <see cref="RequestPacket"/> that the
+        /// decorated <see cref="ResponsePacket"/> should handle.
+        /// </param>
         public PacketRequestAttribute(Type type)
         {
             RequestType = type;
         }
 
-        /// <summary>
-        /// Gets the type of the request.
-        /// </summary>
-        /// <value>The type of the request.</value>
-        public Type RequestType { get; private set; }
+        #endregion Constructors
     }
 }
