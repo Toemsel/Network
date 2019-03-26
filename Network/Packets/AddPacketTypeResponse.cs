@@ -38,12 +38,22 @@ using System.Collections.Generic;
 namespace Network.Packets
 {
     /// <summary>
-    /// The response that we successfully added the assembly.
+    /// Response packet for the <see cref="AddPacketTypeRequest"/> packet.
     /// </summary>
-    [PacketType(7)]
-    [PacketRequest(typeof(AddPacketTypeRequest))]
+    [PacketType(7), PacketRequest(typeof(AddPacketTypeRequest))]
     internal class AddPacketTypeResponse : ResponsePacket
     {
+        #region Properties
+
+        /// <summary>
+        /// List of all the local <see cref="Packet"/> IDs that have been registered.
+        /// </summary>
+        public List<ushort> LocalDict { get; set; }
+
+        #endregion Properties
+
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AddPacketTypeResponse"/> class.
         /// </summary>
@@ -55,10 +65,6 @@ namespace Network.Packets
             LocalDict = dictionary;
         }
 
-        /// <summary>
-        /// Gets or sets the local dictionary in the connection class.
-        /// </summary>
-        /// <value>The local dictionary.</value>
-        public List<ushort> LocalDict { get; set; } = new List<ushort>();
+        #endregion Constructors
     }
 }

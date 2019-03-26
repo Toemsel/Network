@@ -34,14 +34,27 @@
 namespace Network.Packets
 {
     /// <summary>
-    /// This class represents a response to a request.
-    /// To process the response correctly, the request has to be given by default.
+    /// Represents a response to a <see cref="RequestPacket"/>.
     /// </summary>
+    /// <remarks>
+    /// For the packet to be handled correctly, the handled
+    /// <see cref="RequestPacket"/> must be given in the constructor.
+    /// </remarks>
     public class ResponsePacket : Packet
     {
+        #region Constructors
+
+        /// <summary>
+        /// Default constructor for a response packet.
+        /// </summary>
+        /// <param name="packet">
+        /// The <see cref="RequestPacket"/> that is being handled.
+        /// </param>
         public ResponsePacket(RequestPacket packet)
         {
             ID = packet.ID;
         }
+
+        #endregion Constructors
     }
 }

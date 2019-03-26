@@ -153,7 +153,7 @@ namespace Network
             IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
             RegisterPacketHandler<EstablishUdpResponse>((packet, connection) =>
             {
-                UnRegisterPacketHandler<EstablishUdpResponse>(this);
+                DeregisterPacketHandler<EstablishUdpResponse>(this);
                 connectionEstablished.Invoke(udpEndPoint, new IPEndPoint(IPRemoteEndPoint.Address, packet.UdpPort));
                 Send(new EstablishUdpResponseACK());
             }, this);

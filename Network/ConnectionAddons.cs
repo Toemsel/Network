@@ -52,7 +52,7 @@ namespace Network
         /// and provide a null reference as stream. Stream hot swapping is supported.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
-        public void LogIntoStream(Stream stream) => logger.LogIntoStream(stream);
+        public void LogIntoStream(Stream stream) => logger.SetOutputStream(stream);
 
         /// <summary>
         /// Indicates if the connection should automatically log.

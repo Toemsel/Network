@@ -32,22 +32,36 @@
 #endregion Licence - LGPLv3
 
 using Network.Attributes;
+using System;
+using System.Reflection;
 
 namespace Network.Packets
 {
     /// <summary>
-    /// Sending unknown packets needs at first a addPacketTypeRequest to
-    /// inform the endPoint about the new incomming packet.
+    /// Instructs the paired <see cref="Connection"/> to add all the
+    /// <see cref="Type"/>s in the given <see cref="Assembly"/>.
     /// </summary>
     [PacketType(6)]
     internal class AddPacketTypeRequest : RequestPacket
     {
+        #region Properties
+
+        /// <summary>
+        /// The name of the <see cref="Assembly"/> that should be added.
+        /// </summary>
+        public string AssemblyName { get; set; }
+
+        #endregion Properties
+
+        #region Constructors
+
         public AddPacketTypeRequest()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddPacketType"/> class.
+        /// Constructs and returns a new instance of the <see cref="AddPacketTypeRequest"/>
+        /// class, with the given <see cref="Assembly"/>s name specified.
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         public AddPacketTypeRequest(string assemblyName)
@@ -55,10 +69,6 @@ namespace Network.Packets
             AssemblyName = assemblyName;
         }
 
-        /// <summary>
-        /// Gets or sets the name of the assembly.
-        /// </summary>
-        /// <value>The name of the assembly.</value>
-        public string AssemblyName { get; set; }
+        #endregion Constructors
     }
 }

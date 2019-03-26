@@ -371,7 +371,7 @@ namespace Network
         /// because there is no handler to invoke anymore.
         /// </summary>
         /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
-        public void UnRegisterStaticPacketHandler<T>() where T : Packet
+        public void DeregisterStaticPacketHandler<T>() where T : Packet
         {
             objectMap.UnRegisterStaticPacketHandler<T>();
         }
@@ -382,7 +382,7 @@ namespace Network
         /// </summary>
         /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
         /// <param name="obj">The object which wants to receive the packet.</param>
-        public void UnRegisterPacketHandler<T>(object obj) where T : Packet
+        public void DeregisterPacketHandler<T>(object obj) where T : Packet
         {
             objectMap.UnRegisterPacketHandler<T>(obj);
         }

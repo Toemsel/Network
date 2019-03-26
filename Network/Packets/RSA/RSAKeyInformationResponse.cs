@@ -35,27 +35,36 @@ using Network.Attributes;
 
 namespace Network.Packets.RSA
 {
-    [PacketType(12)]
-    [PacketRequest(typeof(RSAKeyInformationRequest))]
+    /// <summary>
+    /// Response packet for a <see cref="RSAKeyInformationRequest"/>.
+    /// </summary>
+    [PacketType(12), PacketRequest(typeof(RSAKeyInformationRequest))]
     internal class RSAKeyInformationResponse : ResponsePacket
     {
-        public RSAKeyInformationResponse(string publicKey, int keySize, RSAKeyInformationRequest request)
+        #region Properties
+
+        /// <summary>
+        /// The public RSA key for encryption, decryption and signing.
+        /// </summary>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// The size of the RSA key.
+        /// </summary>
+        public int KeySize { get; set; }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public RSAKeyInformationResponse(
+            string publicKey, int keySize, RSAKeyInformationRequest request)
             : base(request)
         {
             PublicKey = publicKey;
             KeySize = keySize;
         }
 
-        /// <summary>
-        /// Gets or sets the public key.
-        /// </summary>
-        /// <value>The public key.</value>
-        public string PublicKey { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the key.
-        /// </summary>
-        /// <value>The size of the key.</value>
-        public int KeySize { get; set; }
+        #endregion Constructors
     }
 }

@@ -244,7 +244,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void TCP_UnRegisterStaticPacketHandler<T>() where T : Packet
         {
-            if (IsAlive_TCP) tcpConnection.UnRegisterStaticPacketHandler<T>();
+            if (IsAlive_TCP) tcpConnection.DeregisterStaticPacketHandler<T>();
             else tcpStaticUnPacketHandlerBuffer.Add(typeof(T));
         }
 
@@ -257,7 +257,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void TCP_UnRegisterPacketHandler<T>(object obj) where T : Packet
         {
-            if (IsAlive_TCP) tcpConnection.UnRegisterPacketHandler<T>(obj);
+            if (IsAlive_TCP) tcpConnection.DeregisterPacketHandler<T>(obj);
             else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(T), obj));
         }
 
@@ -296,7 +296,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void UDP_UnRegisterStaticPacketHandler<T>() where T : Packet
         {
-            if (IsAlive_UDP) udpConnection.UnRegisterStaticPacketHandler<T>();
+            if (IsAlive_UDP) udpConnection.DeregisterStaticPacketHandler<T>();
             else udpStaticUnPacketHandlerBuffer.Add(typeof(T));
         }
 
@@ -309,7 +309,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void UDP_UnRegisterPacketHandler<T>(object obj) where T : Packet
         {
-            if (IsAlive_UDP) udpConnection.UnRegisterPacketHandler<T>(obj);
+            if (IsAlive_UDP) udpConnection.DeregisterPacketHandler<T>(obj);
             else udpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(T), obj));
         }
 
@@ -359,7 +359,7 @@ namespace Network
         /// </summary>
         /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UnRegisterStaticPacketHandler<T>() where T : Packet
+        public void DeregisterStaticPacketHandler<T>() where T : Packet
         {
             TCP_UnRegisterStaticPacketHandler<T>();
             UDP_UnRegisterStaticPacketHandler<T>();
@@ -372,7 +372,7 @@ namespace Network
         /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UnRegisterPacketHandler<T>(object obj) where T : Packet
+        public void DeregisterPacketHandler<T>(object obj) where T : Packet
         {
             TCP_UnRegisterPacketHandler<T>(obj);
             UDP_UnRegisterPacketHandler<T>(obj);
@@ -424,13 +424,13 @@ namespace Network
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
             tcpUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("UnRegisterPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("DeregisterPacketHandler");
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
                 unRegisterPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
             });
             tcpStaticUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("UnRegisterStaticPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("DeregisterStaticPacketHandler");
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
                 unRegisterPacketHandler.Invoke(tcpConnection, null);
             });
@@ -461,13 +461,13 @@ namespace Network
             //Restore new state by adding packets the user wanted to register while the connection was dead.
             udpPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod("RegisterPacketHandler", BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(udpConnection, new object[2] { t.Item2, t.Item3 });
             });
             udpStaticPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod("RegisterStaticPacketHandler", BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterStaticPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
             });
@@ -482,13 +482,13 @@ namespace Network
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
             udpUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("UnRegisterPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.DeregisterPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
                 unRegisterPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
             });
             udpStaticUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("UnRegisterStaticPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.DeregisterStaticPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
                 unRegisterPacketHandler.Invoke(udpConnection, null);
             });
