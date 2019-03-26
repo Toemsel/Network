@@ -396,7 +396,7 @@ namespace Network
             });
             tcpConnection.ConnectionClosed += (c, cc) =>
             {
-                tcpPacketHandlerBackup = cc.BackupPacketHandler();
+                tcpPacketHandlerBackup = cc.PacketHandlerMapper;
                 connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
                 Reconnect();
             };
@@ -454,7 +454,7 @@ namespace Network
             });
             udpConnection.ConnectionClosed += (c, cc) =>
             {
-                udpPacketHandlerBackup = cc.BackupPacketHandler();
+                udpPacketHandlerBackup = cc.PacketHandlerMapper;
                 connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
                 Reconnect();
             };
