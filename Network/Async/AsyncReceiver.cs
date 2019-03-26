@@ -89,7 +89,7 @@ namespace Network.Async
             connection.RegisterPacketHandler<R>(((packetAnswer, c) =>
             {
                 receivedAsyncPacket = packetAnswer;
-                c.DeregisterPacketHandler<R>(tempObject);
+                c.UnRegisterPacketHandler<R>(tempObject);
                 packetReceivedEvent.Set();
             }), tempObject);
 
