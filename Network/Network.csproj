@@ -32,6 +32,12 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
      <AssemblyVersion>6.1.0.7</AssemblyVersion>
      <FileVersion>6.1.0.7</FileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <DocumentationFile>G:\Git Repos\EnderRifter\Network\Network\Network.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>G:\Git Repos\EnderRifter\Network\Network\Network.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
     <EmbeddedResource Remove="packages\**" />
