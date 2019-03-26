@@ -239,7 +239,7 @@ namespace Network
         }
 
         /// <summary>
-        /// The objectMap has been refreshed.
+        /// The packetHandlerMap has been refreshed.
         /// </summary>
         public override void ObjectMapRefreshed()
         {
