@@ -34,9 +34,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 
-namespace Network.UID
+namespace Network.Utilities
 {
     /// <summary>
     /// Provides methods for the generation of unique identifiers for objects.
@@ -65,7 +64,7 @@ namespace Network.UID
         /// <returns>
         /// The unique ID.
         /// </returns>
-        public static T UniqueIdentifier<T>()
+        public static T GenerateUid<T>()
         {
             Type type = typeof(T);
 
@@ -89,14 +88,14 @@ namespace Network.UID
         /// </returns>
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the method is called before an ID is present. This occurs
-        /// if a previous call to <see cref="UniqueIdentifier{T}"/> was not made
+        /// if a previous call to <see cref="GenerateUid{T}"/> was not made
         /// for the given type, and thus no ID actually exists.
         /// </exception>
-        public static T LastUniqueIdentifier<T>()
+        public static T LastGeneratedUid<T>()
         {
             Type type = typeof(T);
 
-            // if we call the LastUniqueIdentifier before we actually
+            // if we call the LastGeneratedUid before we actually
             // filled the dictionary, there was no last UID. Therefore exception.
             if (!typeToIdMap.ContainsKey(type))
             {
