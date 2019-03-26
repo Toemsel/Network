@@ -35,7 +35,7 @@ using Network.Attributes;
 
 namespace Network.Packets.RSA
 {
-    [PacketType(22)]
+    [PacketType(12)]
     [PacketRequest(typeof(RSAKeyInformationRequest))]
     internal class RSAKeyInformationResponse : ResponsePacket
     {

@@ -34,23 +34,25 @@
 namespace Network.Enums
 {
     /// <summary>
-    /// Represents the state of the packet.
+    /// Enumerates the possible states that a <see cref="Packet"/> could be in
+    /// after transmission.
     /// </summary>
-    public enum PacketState : int
+    public enum PacketState
     {
         /// <summary>
-        /// The packet was successfully transmitted.
+        /// The packet was successfully transmitted and received.
         /// </summary>
         Success = 0,
 
         /// <summary>
-        /// No result received. Timeout limit reached.
-        /// Connection may be already dead.
+        /// The packet was not received within the specified timeout. The
+        /// <see cref="Connection"/> could be dead.
         /// </summary>
         Timeout = 1,
 
         /// <summary>
-        /// The connection is not alive. No async transmission possible.
+        /// The <see cref="Connection"/> is not alive, so no asynchronous
+        /// transmission is possible.
         /// </summary>
         ConnectionNotAlive = 2
     }
