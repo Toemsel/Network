@@ -40,7 +40,7 @@ namespace Network.Packets
     /// <summary>
     /// The response that we successfully added the assembly.
     /// </summary>
-    [PacketType(9)]
+    [PacketType(7)]
     [PacketRequest(typeof(AddPacketTypeRequest))]
     internal class AddPacketTypeResponse : ResponsePacket
     {
