@@ -57,7 +57,7 @@ namespace Network.RSA
             RSAPair = rsaPair;
 
             DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
-            Extensions.RSACryptoServiceProviderExtensions.FromXmlString(DecryptionProvider, RSAPair.Private);
+            Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
 
             //Are we running on WinXP or higher?
             OperatingSystem operatingSystem = Environment.OSVersion;
@@ -145,7 +145,7 @@ namespace Network.RSA
 
                 CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
                 EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
-                Extensions.RSACryptoServiceProviderExtensions.FromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
+                Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
 
                 connection.Send(new RSAKeyInformationResponse(RSAPair.Public, RSAPair.KeySize, rsaKeyRequest));
             });

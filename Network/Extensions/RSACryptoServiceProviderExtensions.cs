@@ -38,16 +38,26 @@ using System.Xml;
 namespace Network.Extensions
 {
     /// <summary>
-    /// Due the lack of implementation under Linux, we need to implement some basic functions by ourself.
+    /// Provides additional functionality to the <see cref="RSACryptoServiceProvider"/>
+    /// class, that is unavailable under Linux by default.
     /// </summary>
     internal static class RSACryptoServiceProviderExtensions
     {
+        #region Methods
+
         /// <summary>
-        /// Converts a string, containing a valid XML, to a RSA Parameter.
+        /// Reads in and imports <see cref="RSAParameters"/> from the given XML
+        /// string.
         /// </summary>
-        /// <param name="xml">The XML to convert.</param>
-        /// <returns><see cref="RSAParameters" /></returns>
-        internal static void FromXmlString(this RSACryptoServiceProvider rsaCryptoServiceProvider, string xml)
+        /// <param name="rsaCryptoServiceProvider">
+        /// The <see cref="RSACryptoServiceProvider"/> this extension method
+        /// affects.
+        /// </param>
+        /// <param name="xml">
+        /// The XML string from which to load the parameters.
+        /// </param>
+        public static void ImportParametersFromXmlString(
+            this RSACryptoServiceProvider rsaCryptoServiceProvider, string xml)
         {
             RSAParameters rsaParameter = new RSAParameters();
 
@@ -96,10 +106,17 @@ namespace Network.Extensions
         }
 
         /// <summary>
-        /// Decodes a base64 string.
+        /// Decodes a base-64 encoded string into a byte array and returns it.
         /// </summary>
-        /// <param name="text">The text to decode.</param>
-        /// <returns>Decoded text in bytes.</returns>
-        private static byte[] ConvertFromBase64String(string text) => string.IsNullOrWhiteSpace(text) ? null : Convert.FromBase64String(text);
+        /// <param name="text">
+        /// The base-64 encoded string.
+        /// </param>
+        /// <returns>
+        /// The byte array that the base-64 encoded text represents.
+        /// </returns>
+        private static byte[] ConvertFromBase64String(string text) =>
+            string.IsNullOrWhiteSpace(text) ? null : Convert.FromBase64String(text);
+
+        #endregion Methods
     }
 }

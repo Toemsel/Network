@@ -33,6 +33,9 @@
 
 namespace Network.Enums
 {
+    /// <summary>
+    /// Enumerates the possible severity levels for a log message.
+    /// </summary>
     internal enum LogLevel
     {
         Information,

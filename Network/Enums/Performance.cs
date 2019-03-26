@@ -1,16 +1,16 @@
 ﻿namespace Network.Enums
 {
     /// <summary>
-    /// The higher the value, the faster the network library.
-    /// A faster connection results in more CPU consumption.
-    /// Sofrt_Realtime > Default > Fast > Normal > Slow > Energy_Saving.
+    /// Enumerates the possible values for sleep intervals.
+    /// Fastest Performance >> Slowest Performance :
+    /// SoftRealtime        >> EnergySaving
     /// </summary>
     public enum Performance : int
     {
         /// <summary>
         /// Sleep intervals of more than 500ms.
         /// </summary>
-        Energy_Saving = 500,
+        EnergySaving = 500,
 
         /// <summary>
         /// Sleep intervals of more than 100ms.
@@ -36,6 +36,6 @@
         /// <summary>
         /// Sleep interval of more than 1ms.
         /// </summary>
-        Soft_Realtime = 1
+        SoftRealtime = 1
     }
 }

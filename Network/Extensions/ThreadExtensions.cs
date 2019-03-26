@@ -36,16 +36,25 @@ using System.Threading;
 namespace Network.Extensions
 {
     /// <summary>
-    /// Offers some nice extensions for a thread instance.
+    /// Provides additional functionality to the <see cref="Thread"/>
+    /// class, that isn't available under .NET Standard 2.0.
     /// </summary>
     internal static class ThreadExtensions
     {
+        #region Methods
+
         /// <summary>
-        /// Aborts a thread and catches all the exceptions if some occurs.
+        /// Allows for a <see cref="Thread"/> object to be aborted in a program
+        /// running under the .NET Standard C# implementation.
         /// </summary>
-        /// <param name="thread">The thread to abort.</param>
-        /// <returns>If an exception occured.</returns>
-        internal static bool AbortSave(this Thread thread)
+        /// <param name="thread">
+        /// The <see cref="Thread"/> instance this extension method affects.
+        /// </param>
+        /// <returns>
+        /// Whether the <see cref="Thread.Abort(object)"/> method raised an
+        /// exception.
+        /// </returns>
+        public static bool AbortSave(this Thread thread)
         {
             try
             {
@@ -57,5 +66,7 @@ namespace Network.Extensions
                 return true;
             }
         }
+
+        #endregion Methods
     }
 }
