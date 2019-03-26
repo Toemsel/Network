@@ -35,20 +35,29 @@ using Network.Attributes;
 
 namespace Network.Packets
 {
-    [PacketType(4)]
-    [PacketRequest(typeof(EstablishUdpRequest))]
+    /// <summary>
+    /// Response packet for the <see cref="EstablishUdpRequest"/> packet.
+    /// </summary>
+    [PacketType(4), PacketRequest(typeof(EstablishUdpRequest))]
     internal class EstablishUdpResponse : ResponsePacket
     {
-        internal EstablishUdpResponse(int udpPort, RequestPacket request)
+        #region Properties
+
+        /// <summary>
+        /// The port the UDP connection should use.
+        /// </summary>
+        public int UdpPort { get; set; }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public EstablishUdpResponse(int udpPort, RequestPacket request)
             : base(request)
         {
             UdpPort = udpPort;
         }
 
-        /// <summary>
-        /// Gets or sets the UDP port.
-        /// </summary>
-        /// <value>The UDP port.</value>
-        public int UdpPort { get; set; }
+        #endregion Constructors
     }
 }

@@ -3,13 +3,17 @@
 namespace Network.Packets
 {
     /// <summary>
-    /// Represents a UDP Ping response.
+    /// Response to a <see cref="UDPPingRequest"/> packet.
     /// </summary>
-    [PacketType(9)]
-    [PacketRequest(typeof(UDPPingRequest))]
+    [PacketType(9), PacketRequest(typeof(UDPPingRequest))]
     internal class UDPPingResponse : ResponsePacket
     {
-        public UDPPingResponse(UDPPingRequest request)
-            : base(request) { }
+        #region Constructors
+
+        public UDPPingResponse(UDPPingRequest request) : base(request)
+        {
+        }
+
+        #endregion Constructors
     }
 }

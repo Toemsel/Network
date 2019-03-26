@@ -34,7 +34,7 @@
 namespace Network.Packets
 {
     /// <summary>
-    /// This class represents a request.
+    /// Represents a request packet.
     /// </summary>
     public class RequestPacket : Packet { }
 }

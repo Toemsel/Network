@@ -37,24 +37,31 @@ using Network.Enums;
 namespace Network.Packets
 {
     /// <summary>
-    /// This packet means that the remote endpoint closed the connection.
+    /// Closes the paired <see cref="Connection"/>.
     /// </summary>
     [PacketType(2)]
     internal class CloseRequest : Packet
     {
+        #region Properties
+
+        /// <summary>
+        /// The reason that the paired <see cref="Connection"/> should close.
+        /// </summary>
+        public CloseReason CloseReason { get; set; }
+
+        #endregion Properties
+
+        #region Constructors
+
         public CloseRequest()
         {
         }
 
-        internal CloseRequest(CloseReason reason)
+        public CloseRequest(CloseReason reason)
         {
             CloseReason = reason;
         }
 
-        /// <summary>
-        /// Gets or sets the reason why the connection has been closed.
-        /// </summary>
-        /// <value>The close reason.</value>
-        public CloseReason CloseReason { get; set; }
+        #endregion Constructors
     }
 }
