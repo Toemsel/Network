@@ -281,13 +281,20 @@ namespace Network
         /// <summary>
         /// Gets all the packets we are listening to.
         /// </summary>
-        internal ObjectMap ObjectMapper { get { return objectMap; } }
+        [Obsolete("Use BackupPacketHandler instead.")]
+        internal ObjectMap ObjectMapper => objectMap;
+
+        /// <summary>
+        /// Returns the current internal structure of the object map.
+        /// The objectMap contains the packet-handling (delegates), based off their packet-type.
+        /// </summary>
+        public ObjectMap BackupPacketHandler() => objectMap;
 
         /// <summary>
         /// Restores the packetHandler. Can only be called if the internal packetHandler is empty.
         /// </summary>
         /// <param name="objectMap">The object map to restore.</param>
-        internal void RestorePacketHandler(ObjectMap objectMap)
+        public void RestorePacketHandler(ObjectMap objectMap)
         {
             this.objectMap.Restore(objectMap);
             ObjectMapRefreshed();

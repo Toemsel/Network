@@ -43,7 +43,7 @@ namespace Network
     /// Is able to map objects to their unique ID and back.
     /// Also stores the object's handlers.
     /// </summary>
-    internal class ObjectMap
+    public class ObjectMap
     {
         private Dictionary<Type, Dictionary<object, int>> type_object_id = new Dictionary<Type, Dictionary<object, int>>();
         private Dictionary<int, Tuple<Delegate, object>> id_methodInfo_object = new Dictionary<int, Tuple<Delegate, object>>();
