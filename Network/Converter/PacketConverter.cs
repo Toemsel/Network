@@ -56,7 +56,7 @@ namespace Network.Converter
         /// Caches packet <see cref="Type"/>s and their relevant
         /// <see cref="PropertyInfo"/>s, to avoid slow and unnecessary reflection.
         /// </summary>
-        private Dictionary<Type, PropertyInfo[]> packetPropertyCache =
+        private readonly Dictionary<Type, PropertyInfo[]> packetPropertyCache =
             new Dictionary<Type, PropertyInfo[]>();
 
         /// <summary>
@@ -71,7 +71,9 @@ namespace Network.Converter
 
         /// <summary>
         /// Returns an array of the <see cref="PropertyInfo"/>s that need to be
-        /// serialised on the given <see cref="Type"/>.
+        /// serialised on the given <see cref="Type"/>. If the given <see cref="Type"/>
+        /// has already been cached, it will use the cached <see cref="PropertyInfo"/>
+        /// array, to save CPU time.
         /// </summary>
         /// <param name="type">
         /// The <see cref="Type"/> whose serialisable properties to get.
@@ -170,7 +172,7 @@ namespace Network.Converter
         /// to serialise the properties of the given <see cref="object"/>.
         /// </param>
         /// <remarks>
-        /// This method to only serialise properties that lack the custom
+        /// This method can only serialise properties that lack the custom
         /// <see cref="PacketIgnorePropertyAttribute"/>.
         /// </remarks>
         private void SerialiseObjectToWriter(object obj, BinaryWriter binaryWriter)
@@ -373,107 +375,233 @@ namespace Network.Converter
         #region Deserialisation
 
         /// <summary>
-        /// Reads all the properties from an object and calls the <see cref="DeserialiseObjectFromReader"/> method.
+        /// Deserialises all the properties on the given <see cref="object"/> that
+        /// can be deserialised from the given <see cref="BinaryReader"/>s
+        /// underlying <see cref="MemoryStream"/>.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="binaryReader">The binary reader.</param>
-        /// <returns>System.Object.</returns>
-        private void DeserialiseObjectFromReader(object obj, BinaryReader binaryReader)
+        /// <param name="obj">
+        /// The <see cref="object"/> whose properties to deserialise using the given
+        /// <see cref="BinaryReader"/>.
+        /// </param>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/>
+        /// to deserialise the properties of the given <see cref="object"/>.
+        /// </param>
+        /// <returns>
+        /// The given <see cref="object"/> with all deserialisable properties
+        /// set.
+        /// </returns>
+        /// <remarks>
+        /// This method can only deserialise properties that lack the custom
+        /// <see cref="PacketIgnorePropertyAttribute"/>. Any other properties
+        /// will be left at their default values.
+        /// </remarks>
+        private object DeserialiseObjectFromReader(object obj, BinaryReader binaryReader)
         {
             PropertyInfo[] propertiesToSerialise = GetTypeProperties(obj.GetType());
 
             for (int i = 0; i < propertiesToSerialise.Length; ++i)
             {
-                DeserialiseObjectFromReader(obj, propertiesToSerialise[i], binaryReader);
+                propertiesToSerialise[i].SetValue(
+                    obj,
+                    DeserialiseObjectFromReader(
+                        obj, propertiesToSerialise[i], binaryReader));
             }
+
+            return obj;
         }
 
         /// <summary>
-        /// Reads the object from stream. Can differ between:
-        /// - Primitives
-        /// - Lists
-        /// - Arrays
-        /// - Classes (None list + arrays)
+        /// Deserialises the given <see cref="PropertyInfo"/> from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryReader">The binary reader.</param>
-        /// <returns>System.Object.</returns>
-        private object DeserialiseObjectFromReader(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        /// <param name="obj">
+        /// The <see cref="object"/> whose <see cref="PropertyInfo"/> value to
+        /// deserialise.
+        /// </param>
+        /// <param name="propertyInfo">
+        /// The <see cref="PropertyInfo"/> to deserialise from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </param>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> frpm whose underlying <see cref="MemoryStream"/>
+        /// to deserialise the given <see cref="PropertyInfo"/>.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/> deserialised from the <see cref="MemoryStream"/>.
+        /// This can be null if the <see cref="NetworkObjectState"/> is
+        /// <see cref="NetworkObjectState.Null"/>.
+        /// </returns>
+        private object DeserialiseObjectFromReader(
+            object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
-            if (propertyInfo.PropertyType.IsArray)
-                return ReadArrayFromStream(obj, propertyInfo, binaryReader);
-            else if (propertyInfo.PropertyType.IsGenericType &&
-                propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(List<>)))
-                return ReadListFromStream(obj, propertyInfo, binaryReader);
-            else if (propertyInfo.PropertyType.IsEnum)
-                return Enum.Parse(propertyInfo.PropertyType, binaryReader.ReadString());
-            else if (!PacketConverterHelper.PropertyIsPrimitive(propertyInfo))
+            Type propertyType = propertyInfo.PropertyType;
+
+            // we have an enumeration
+            if (propertyType.IsEnum)
             {
-                NetworkObjectState networkObjectState = (NetworkObjectState)binaryReader.ReadByte();
-                if (networkObjectState == NetworkObjectState.NotNull)
-                    return DeserialiseObjectFromReader(Activator.CreateInstance(propertyInfo.PropertyType), binaryReader);
-                return null; //The object we received is null. So return nothing.
+                return Enum.Parse(propertyType, binaryReader.ReadString());
             }
-            else return ReadPrimitiveFromStream(propertyInfo, binaryReader);
+
+            // we have an array
+            if (propertyType.IsArray)
+            {
+                return ReadArrayFromStream(obj, propertyInfo, binaryReader);
+            }
+
+            // we have a generic list
+            if (propertyType.IsGenericType &&
+                     propertyType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                return ReadListFromStream(obj, propertyInfo, binaryReader);
+            }
+
+            // we have a non-primitive type
+            if (!PacketConverterHelper.TypeIsPrimitive(propertyType))
+            {
+                NetworkObjectState networkObjectState =
+                    (NetworkObjectState)binaryReader.ReadByte();
+
+                if (networkObjectState == NetworkObjectState.NotNull)
+                {
+                    // this will recursively deserialise all the properties
+                    // that are made up of primitives (even complex types)
+                    return DeserialiseObjectFromReader(
+                        PacketConverterHelper.InstantiateObject(propertyType), binaryReader);
+                }
+
+                // if it is null we just return null
+                return null;
+            }
+
+            // we have a primitive type
+            return ReadPrimitiveFromStream(propertyInfo, binaryReader);
         }
 
         /// <summary>
-        /// Reads the length of the array from the stream and creates the array instance.
-        /// Also fills the array by using recursion.
+        /// Deserialises the given <see cref="Array"/> from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/>
+        /// to serialise each of the <see cref="Array"/>s elements to the stream.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryReader">The binary reader.</param>
-        /// <returns>System.Array.</returns>
-        private Array ReadArrayFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        /// <param name="obj">
+        /// The <see cref="Array"/> to deserialise from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </param>
+        /// The <see cref="PropertyInfo"/> holding the <see cref="Array"/>.
+        /// <param name="propertyInfo">
+        /// </param>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/>
+        /// to deserialise the given <see cref="PropertyInfo"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if the <see cref="Array"/>s elements do not have a type.
+        /// </exception>
+        private Array ReadArrayFromStream(
+            object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
             int arraySize = binaryReader.ReadInt32();
-            Type arrayType = propertyInfo.PropertyType.GetElementType();
-            Array propertyData = Array.CreateInstance(arrayType, arraySize);
+
+            Type elementType = propertyInfo.PropertyType.GetElementType();
+            Array array = Array.CreateInstance(elementType, arraySize);
+
             for (int i = 0; i < arraySize; ++i)
             {
-                if (arrayType.IsClass && !IsPrimitive(arrayType)) propertyData.SetValue(DeserialiseObjectFromReader(Activator.CreateInstance(arrayType), binaryReader), i);
-                else propertyData.SetValue(ReadPrimitiveFromStream(arrayType, binaryReader), i);
+                if (elementType.IsClass && !PacketConverterHelper.TypeIsPrimitive(elementType))
+                {
+                    array.SetValue(
+                        DeserialiseObjectFromReader(
+                            PacketConverterHelper.InstantiateObject(elementType), binaryReader), i);
+                }
+                else
+                {
+                    array.SetValue(
+                        ReadPrimitiveFromStream(elementType, binaryReader), i);
+                }
             }
 
-            return propertyData;
+            return array;
         }
 
         /// <summary>
-        /// Reads the length of the list from the stream and creates the list instance.
-        /// Also fills the list by using recursion.
+        /// Deserialises the given <see cref="IList"/> from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/>
+        /// to serialise each of the <see cref="IList"/>s elements to the stream.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryReader">The binary reader.</param>
-        /// <returns>System.Collections.IList.</returns>
-        private IList ReadListFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
+        /// <param name="obj">
+        /// The <see cref="IList"/> to deserialise from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </param>
+        /// The <see cref="PropertyInfo"/> holding the <see cref="IList"/>.
+        /// <param name="propertyInfo">
+        /// </param>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/>
+        /// to deserialise the given <see cref="PropertyInfo"/>.
+        /// </param>
+        /// <exception cref="NullReferenceException">
+        /// Thrown if the <see cref="IList"/> held in the <see cref="MemoryStream"/>
+        /// is null, or if the <see cref="IList"/>s elements do not have a type.
+        /// </exception>
+        private IList ReadListFromStream(
+            object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
             int listSize = binaryReader.ReadInt32();
+
             Type listType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
+
+            IList list = (IList)Activator
+                .CreateInstance(typeof(List<>).MakeGenericType(listType));
+
             for (int i = 0; i < listSize; ++i)
             {
-                if (listType.IsClass && !IsPrimitive(listType)) list.Add(DeserialiseObjectFromReader(Activator.CreateInstance(listType), binaryReader));
-                else list.Add(ReadPrimitiveFromStream(listType, binaryReader));
+                if (listType.IsClass && !PacketConverterHelper.TypeIsPrimitive(listType))
+                {
+                    list.Add(
+                        DeserialiseObjectFromReader(
+                            PacketConverterHelper.InstantiateObject(listType), binaryReader));
+                }
+                else
+                {
+                    list.Add(ReadPrimitiveFromStream(listType, binaryReader));
+                }
             }
 
             return list;
         }
 
         /// <summary>
-        /// Reads a primitive from a stream.
+        /// Deserialises and returns a primitive object from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
         /// </summary>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="binaryReader">The binary reader.</param>
-        /// <returns>System.Object.</returns>
-        private object ReadPrimitiveFromStream(PropertyInfo propertyInfo, BinaryReader binaryReader)
+        /// <param name="propertyInfo">
+        /// The <see cref="PropertyInfo"/> to deserialise from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </param>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/>
+        /// to deserialise the primitive.
+        /// </param>
+        /// <returns>
+        /// The primitive object that was deserialised from the <see cref="MemoryStream"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method can return 'null' if the <see cref="NetworkObjectState"/>
+        /// is <see cref="NetworkObjectState.Null"/>.
+        /// </remarks>
+        private object ReadPrimitiveFromStream(
+            PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
-            NetworkObjectState networkObjectState = (NetworkObjectState)binaryReader.ReadByte();
+            NetworkObjectState networkObjectState =
+                (NetworkObjectState)binaryReader.ReadByte();
 
             if (networkObjectState == NetworkObjectState.NotNull)
-                return ReadPrimitiveFromStream(propertyInfo.PropertyType, binaryReader);
+            {
+                return ReadPrimitiveFromStream(
+                    propertyInfo.PropertyType, binaryReader);
+            }
 
             return null;
         }

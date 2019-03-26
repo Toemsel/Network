@@ -102,6 +102,35 @@ namespace Network.Converter
         /// <summary>
         /// Instantiates and returns a default object of the given <see cref="Type"/>.
         /// </summary>
+        /// <param name="objectType">
+        /// The <see cref="Type"/> to instantiate.
+        /// </param>
+        /// <returns>
+        /// The default instance of the given <see cref="Type"/>.
+        /// </returns>
+        public static object InstantiateObject(Type objectType)
+        {
+            bool parameterlessConstructorExists =
+                objectType.GetConstructor(
+                    BindingFlags.Public | BindingFlags.Instance,
+                    null,
+                    new Type[0],
+                    null) != null;
+
+            // if a default parameterless constructor exists, we use it
+            if (parameterlessConstructorExists)
+            {
+                return Activator.CreateInstance(objectType);
+            }
+            else
+            {
+                return FormatterServices.GetUninitializedObject(objectType);
+            }
+        }
+
+        /// <summary>
+        /// Instantiates and returns a default object of the given <see cref="Type"/>.
+        /// </summary>
         /// <param name="packetType">
         /// The <see cref="Type"/> to instantiate.
         /// </param>
@@ -110,15 +139,21 @@ namespace Network.Converter
         /// </returns>
         public static Packet InstantiatePacket(Type packetType)
         {
-            // if a default parameterless constructor exists, we use it
-            if (packetType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new Type[0], null) != null)
-            {
-                return (Packet)Activator.CreateInstance(packetType);
-            }
-            else
-            {
-                return (Packet)FormatterServices.GetUninitializedObject(packetType);
-            }
+            return (Packet)InstantiateObject(packetType);
+        }
+
+        /// <summary>
+        /// Instantiates and returns a default object of the given generic type.
+        /// </summary>
+        /// <typeparam name="O">
+        /// The generic type of the object to instantiate.
+        /// </typeparam>
+        /// <returns>
+        /// The default instance of the given generic type.
+        /// </returns>
+        public static O InstantiateGenericObject<O>()
+        {
+            return (O)InstantiateObject(typeof(O));
         }
 
         /// <summary>
@@ -132,7 +167,7 @@ namespace Network.Converter
         /// </returns>
         public static P InstantiateGenericPacket<P>() where P : Packet
         {
-            return (P)InstantiatePacket(typeof(P));
+            return (P)InstantiateObject(typeof(P));
         }
 
         #endregion Type Instantiation

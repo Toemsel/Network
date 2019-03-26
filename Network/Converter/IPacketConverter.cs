@@ -42,6 +42,8 @@ namespace Network.Converter
     /// </summary>
     public interface IPacketConverter
     {
+        #region Methods
+
         /// <summary>
         /// Serialises a given packet to a byte array.
         /// </summary>
@@ -91,5 +93,7 @@ namespace Network.Converter
         /// The deserialised packet object, of the given type.
         /// </returns>
         P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet;
+
+        #endregion Methods
     }
 }
