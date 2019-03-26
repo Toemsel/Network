@@ -188,6 +188,19 @@ namespace Network.RSA
             return packetDataWithStatus;
         }
 
+        public byte[] SerialisePacket<P>(P packet) where P : Packet
+        {
+            bool isRSACommunicationActive = IsRSACommunicationActive;
+            byte[] unEncryptedData = PacketConverter.SerialisePacket(packet);
+
+            byte[] rsaStatus = BitConverter.GetBytes(isRSACommunicationActive);
+            byte[] packetData = isRSACommunicationActive ? EncryptBytes(unEncryptedData) : unEncryptedData;
+            byte[] packetDataWithStatus = new byte[packetData.Length + 1];
+            Array.Copy(rsaStatus, 0, packetDataWithStatus, 0, 1);
+            Array.Copy(packetData, 0, packetDataWithStatus, 1, packetData.Length);
+            return packetDataWithStatus;
+        }
+
         /// <summary>
         /// Gets the encrypted packet of bytes.
         /// </summary>
@@ -202,6 +215,16 @@ namespace Network.RSA
 
             return isRSACommunicationActive ? PacketConverter.DeserialisePacket(packetType, DecryptBytes(data))
                 : PacketConverter.DeserialisePacket(packetType, data);
+        }
+
+        public P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet
+        {
+            bool isRSACommunicationActive = serialisedPacket[0] == 1;
+            byte[] data = new byte[serialisedPacket.Length - 1];
+            Array.Copy(serialisedPacket, 1, data, 0, data.Length);
+
+            return isRSACommunicationActive ? PacketConverter.DeserialisePacket<P>(DecryptBytes(data))
+                : PacketConverter.DeserialisePacket<P>(data);
         }
     }
 }

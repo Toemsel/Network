@@ -34,7 +34,7 @@
 using Network.Enums;
 using Network.Interfaces;
 using Network.Packets;
-
+using Network.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -74,9 +74,9 @@ namespace Network
         /// <summary>
         /// Cache all the handlers to apply them after we got a new connection.
         /// </summary>
-        private ObjectMap tcpPacketHandlerBackup = new ObjectMap();
+        private PacketHandlerMap tcpPacketHandlerBackup = new PacketHandlerMap();
 
-        private ObjectMap udpPacketHandlerBackup = new ObjectMap();
+        private PacketHandlerMap udpPacketHandlerBackup = new PacketHandlerMap();
         private List<Tuple<Type, Delegate, object>> tcpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
         private List<Tuple<Type, Delegate, object>> udpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
         private List<Tuple<Type, Delegate>> tcpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
@@ -415,7 +415,7 @@ namespace Network
             });
             tcpConnection.ConnectionClosed += (c, cc) =>
             {
-                tcpPacketHandlerBackup = cc.BackupPacketHandler();
+                tcpPacketHandlerBackup = cc.PacketHandlerMapper;
                 connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
                 Reconnect();
             };
@@ -473,7 +473,7 @@ namespace Network
             });
             udpConnection.ConnectionClosed += (c, cc) =>
             {
-                udpPacketHandlerBackup = cc.BackupPacketHandler();
+                udpPacketHandlerBackup = cc.PacketHandlerMapper;
                 connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
                 Reconnect();
             };

@@ -38,7 +38,7 @@ using Network.Enums;
 using Network.Extensions;
 using Network.Interfaces;
 using Network.Packets;
-
+using Network.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -140,7 +140,7 @@ namespace Network
         /// <summary>
         /// Has to map the objects to their unique id and back.
         /// </summary>
-        private ObjectMap objectMap = new ObjectMap();
+        private PacketHandlerMap packetHandlerMap = new PacketHandlerMap();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
@@ -191,12 +191,12 @@ namespace Network
         {
             assembly.GetTypes().ToList().Where(c => c.IsSubclassOf(typeof(Packet))).ToList().ForEach(p =>
             {
-                if (typeByte.ContainsKeyA(p)) return; //Already in the dictionary.
+                if (typeByte.ContainsKey(p)) return; //Already in the dictionary.
                 ushort packetId = (ushort)Interlocked.Increment(ref currentTypeByteIndex);
                 Attribute packetTypeAttribute = p.GetCustomAttribute(typeof(PacketTypeAttribute));
                 //Apply the local ID if there exist any.
                 if (packetTypeAttribute != null) packetId = ((PacketTypeAttribute)packetTypeAttribute).Id;
-                typeByte.Add(p, packetId);
+                typeByte[p] = packetId;
             });
 
             assembly.GetTypes().ToList().Where(c => c.GetCustomAttributes(typeof(PacketRequestAttribute)).Count() > 0).ToList().
@@ -293,22 +293,15 @@ namespace Network
         /// <summary>
         /// Gets all the packets we are listening to.
         /// </summary>
-        [Obsolete("Use BackupPacketHandler instead.")]
-        internal ObjectMap ObjectMapper => objectMap;
-
-        /// <summary>
-        /// Returns the current internal structure of the object map.
-        /// The objectMap contains the packet-handling (delegates), based off their packet-type.
-        /// </summary>
-        public ObjectMap BackupPacketHandler() => objectMap;
+        internal PacketHandlerMap PacketHandlerMapper { get { return packetHandlerMap; } }
 
         /// <summary>
         /// Restores the packetHandler. Can only be called if the internal packetHandler is empty.
         /// </summary>
-        /// <param name="objectMap">The object map to restore.</param>
-        public void RestorePacketHandler(ObjectMap objectMap)
+        /// <param name="packetHandlerMap">The object map to restore.</param>
+        internal void RestorePacketHandler(PacketHandlerMap packetHandlerMap)
         {
-            this.objectMap.Restore(objectMap);
+            this.packetHandlerMap.Restore(packetHandlerMap);
             ObjectMapRefreshed();
         }
 
@@ -320,7 +313,7 @@ namespace Network
         /// <param name="handler">The handler which should be invoked.</param>
         public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
         {
-            objectMap.RegisterStaticPacketHandler<T>(handler);
+            packetHandlerMap.RegisterStaticPacketHandler<T>(handler);
             SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
@@ -332,7 +325,7 @@ namespace Network
         /// <param name="del">The delete.</param>
         internal void RegisterStaticPacketHandler<T>(Delegate del) where T : Packet
         {
-            objectMap.RegisterStaticPacketHandler<T>(del);
+            packetHandlerMap.RegisterStaticPacketHandler<T>(del);
             SearchAndInvokeUnknownHandlerPackets(del);
         }
 
@@ -345,7 +338,7 @@ namespace Network
         /// <param name="obj">The object which wants to receive the packet.</param>
         public void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
         {
-            objectMap.RegisterPacketHandler<T>(handler, obj);
+            packetHandlerMap.RegisterPacketHandler<T>(handler, obj);
             SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
@@ -356,7 +349,7 @@ namespace Network
         /// <param name="handler">The delegate to forward the packet to.</param>
         public void RegisterRawDataHandler(string key, PacketReceivedHandler<RawData> handler)
         {
-            objectMap.RegisterStaticRawDataHandler(key, handler);
+            packetHandlerMap.RegisterStaticRawDataHandler(key, handler);
             SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
@@ -369,7 +362,7 @@ namespace Network
         /// <param name="obj">The object which wants to receive the packet.</param>
         internal void RegisterPacketHandler<T>(Delegate del, object obj) where T : Packet
         {
-            objectMap.RegisterPacketHandler<T>(del, obj);
+            packetHandlerMap.RegisterPacketHandler<T>(del, obj);
             SearchAndInvokeUnknownHandlerPackets(del);
         }
 
@@ -380,7 +373,7 @@ namespace Network
         /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
         public void DeregisterStaticPacketHandler<T>() where T : Packet
         {
-            objectMap.UnRegisterStaticPacketHandler<T>();
+            packetHandlerMap.DeregisterStaticPacketHandler<T>();
         }
 
         /// <summary>
@@ -391,7 +384,7 @@ namespace Network
         /// <param name="obj">The object which wants to receive the packet.</param>
         public void DeregisterPacketHandler<T>(object obj) where T : Packet
         {
-            objectMap.UnRegisterPacketHandler<T>(obj);
+            packetHandlerMap.DeregisterPacketHandler<T>(obj);
         }
 
         /// <summary>
@@ -401,7 +394,7 @@ namespace Network
         /// <param name="key">The key who is representing a raw data packet.</param>
         public void UnRegisterRawDataHandler(string key)
         {
-            objectMap.UnRegisterStaticRawDataHandler(key);
+            packetHandlerMap.DeregisterStaticRawDataHandler(key);
         }
 
         /// <summary>
@@ -491,7 +484,7 @@ namespace Network
         internal void Send(Packet packet, object instance, bool ignoreWriteLock)
         {
             //Ensure that everyone is aware of that packetType.
-            if (!typeByte.ContainsKeyA(packet.GetType()) || pendingUnknownPackets.Any(p => p.Item1.GetType().Assembly.Equals(packet.GetType().Assembly)))
+            if (!typeByte.ContainsKey(packet.GetType()) || pendingUnknownPackets.Any(p => p.Item1.GetType().Assembly.Equals(packet.GetType().Assembly)))
             {
                 AddExternalPackets(packet.GetType().Assembly);
                 pendingUnknownPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
@@ -546,7 +539,7 @@ namespace Network
                     int packetLength = BitConverter.ToInt32(ReadBytes(4), 0);
                     byte[] packetData = ReadBytes(packetLength);
 
-                    if (!typeByte.ContainsKeyB(packetType))
+                    if (!typeByte.ContainsValue(packetType))
                     {
                         //Theoretically it is not possible that we receive a packet
                         //which is not known, since all the packets need to pass a certification.
@@ -657,7 +650,7 @@ namespace Network
 
                 //Insert the ID into the packet if it is an request packet.
                 if (packet.GetType().IsSubclassOf(typeof(RequestPacket)) && packetWithObject.Item2 != null)
-                    packet.ID = objectMap[requestResponseMap[packet.GetType()], packetWithObject.Item2];
+                    packet.ID = packetHandlerMap[requestResponseMap[packet.GetType()], packetWithObject.Item2];
 
                 //Prepare some data in the packet.
                 packet.BeforeSend();
@@ -732,7 +725,7 @@ namespace Network
                 Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == ((AddPacketTypeRequest)packet).AssemblyName).SingleOrDefault();
                 if (assembly == null) CloseHandler(CloseReason.AssemblyDoesNotExist);
                 else AddExternalPackets(assembly);
-                Send(new AddPacketTypeResponse(typeByte.BElements, (AddPacketTypeRequest)packet));
+                Send(new AddPacketTypeResponse(typeByte.Values.ToList(), (AddPacketTypeRequest)packet));
                 return;
             }
             else if (packet.GetType().Equals(typeof(AddPacketTypeResponse)))
@@ -764,18 +757,18 @@ namespace Network
             else if (packet.GetType().Equals(typeof(RawData)))
             {
                 RawData rawData = (RawData)packet;
-                if (objectMap[rawData.Key] == null)
+                if (packetHandlerMap[rawData.Key] == null)
                     Logger.Log($"RawData packet has no listener. Key: {rawData.Key}", LogLevel.Warning);
-                else objectMap[rawData.Key].DynamicInvoke(new object[] { packet, this });
+                else packetHandlerMap[rawData.Key].DynamicInvoke(new object[] { packet, this });
                 return;
             }
 
             try
             {
-                if (packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && objectMap[packet.ID] != null)
-                    objectMap[packet.ID].DynamicInvoke(new object[] { packet, this });
-                else if (objectMap[packet.GetType()] != null)
-                    objectMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
+                if (packet.GetType().IsSubclassOf(typeof(ResponsePacket)) && packetHandlerMap[packet.ID] != null)
+                    packetHandlerMap[packet.ID].DynamicInvoke(new object[] { packet, this });
+                else if (packetHandlerMap[packet.GetType()] != null)
+                    packetHandlerMap[packet.GetType()].DynamicInvoke(new object[] { packet, this });
                 else PacketWithoutHandlerReceived(packet);
             }
             catch (Exception exception)
@@ -866,7 +859,7 @@ namespace Network
         protected abstract void HandleUnknownPacket();
 
         /// <summary>
-        /// The objectMap has been refreshed.
+        /// The packetHandlerMap has been refreshed.
         /// </summary>
         public virtual void ObjectMapRefreshed() { }
 
