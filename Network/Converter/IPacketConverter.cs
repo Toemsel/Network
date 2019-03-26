@@ -31,6 +31,7 @@
 
 #endregion Licence - LGPLv3
 
+using Network.Packets;
 using System;
 
 namespace Network.Converter

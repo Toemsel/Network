@@ -31,47 +31,61 @@
 
 #endregion Licence - LGPLv3
 
+using Network.Packets;
 using Network.RSA;
-
 using System.Security.Cryptography;
 
 namespace Network.Interfaces
 {
     /// <summary>
-    /// A connection supporting RSA en/decryption.
+    /// Describes the properties and methods that a class must implement to be
+    /// able to communicate via secure, RSA encrypted messages.
     /// </summary>
-    internal interface IRSAConnection : IRSACapability
+    public interface IRSAConnection : IRSACapability
     {
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the encryption provider.
+        /// Provides RSA encryption services, to encrypt serialised <see cref="Packet"/>s.
         /// </summary>
-        /// <value>The encryption provider.</value>
         RSACryptoServiceProvider EncryptionProvider { get; set; }
 
         /// <summary>
-        /// Gets or sets the decryption provider.
+        /// Provides RSA decryption services, to decrypt serialised <see cref="Packet"/>s.
         /// </summary>
-        /// <value>The decryption provider.</value>
         RSACryptoServiceProvider DecryptionProvider { get; set; }
 
-        /// <summary>
-        /// Gets or sets the communication partner's RSA pair.
-        /// </summary>
-        /// <value>The communication partner RSA pair.</value>
+        /// <inheritdoc cref="IRSACapability.RSAPair"/>
         RSAPair CommunicationPartnerRSAPair { get; set; }
 
-        /// <summary>
-        /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The Bytes to encrypt.</param>
-        /// <returns>The encrypted bytes.</returns>
-        byte[] Encrypt(byte[] bytes);
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
-        /// Decrypt bytes with the <see cref="RSACryptoServiceProvider" />
+        /// Encrypts the given byte array using the <see cref="EncryptionProvider"/>
+        /// and returns the encrypted version.
         /// </summary>
-        /// <param name="bytes">The bytes to decrypt.</param>
-        /// <returns>The decrypted bytes.</returns>
-        byte[] Decrypt(byte[] bytes);
+        /// <param name="bytes">
+        /// The original, plaintext byte array.
+        /// </param>
+        /// <returns>
+        /// The encrypted byte array.
+        /// </returns>
+        byte[] EncryptBytes(byte[] bytes);
+
+        /// <summary>
+        /// Decrypts the given byte array using the <see cref="DecryptionProvider"/>
+        /// and returns the plaintext version.
+        /// </summary>
+        /// <param name="bytes">
+        /// The encrypted byte array.
+        /// </param>
+        /// <returns>
+        /// The original, plaintext byte array.
+        /// </returns>
+        byte[] DecryptBytes(byte[] bytes);
+
+        #endregion Methods
     }
 }

@@ -31,6 +31,8 @@
 
 #endregion Licence - LGPLv3
 
+using Network.Packets;
+
 namespace Network.Enums
 {
     /// <summary>

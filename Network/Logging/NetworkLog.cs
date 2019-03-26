@@ -32,9 +32,8 @@
 #endregion Licence - LGPLv3
 
 using ConsoleTables;
-
 using Network.Enums;
-
+using Network.Packets;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -44,116 +43,268 @@ using System.Text;
 namespace Network.Logging
 {
     /// <summary>
-    /// This class is in charge of logging network specific events and states
-    /// into a given stream or dumping it onto the output window.
+    /// Enumerates the directions that a <see cref="Packet"/> can be travelling
+    /// on the network.
+    /// </summary>
+    internal enum PacketDirection
+    {
+        /// <summary>
+        /// The packet is incoming from the network; it is being received by
+        /// the monitored <see cref="Connection"/>.
+        /// </summary>
+        Incoming,
+
+        /// <summary>
+        /// The packet is outgoing to the network; it is being transmitted by
+        /// the monitored <see cref="Connection"/>.
+        /// </summary>
+        Outgoing
+    }
+
+    /// <summary>
+    /// Logs network traffic, events and connection states into a given
+    /// <see cref="Stream"/>, be it a <see cref="FileStream"/> or the 'Output'
+    /// window of Visual Studio.
     /// </summary>
     internal class NetworkLog
     {
+        #region Variables
+
         /// <summary>
-        /// We need the connection to retrieve specific connection information.
+        /// The <see cref="Connection"/> that the <see cref="NetworkLog"/>
+        /// instance will monitor for network traffic, etc.
         /// </summary>
-        private volatile Connection connection;
+        private readonly Connection monitoredConnection;
 
-        internal NetworkLog(Connection connection) => this.connection = connection;
+        #endregion Variables
+
+        #region Properties
 
         /// <summary>
-        /// A property for a current timestamp.
+        /// Whether logging is enabled.
+        /// </summary>
+        public bool EnableLogging { get; set; } = false;
+
+        /// <summary>
+        /// The current timestamp, in the format 'hh:mm:ss:fff'.
         /// </summary>
         private string TimeStamp => DateTime.Now.ToString("HH:mm:ss:fff");
 
         /// <summary>
-        /// Determins if we should enable logging or not.
-        /// </summary>
-        internal bool EnableLogging { get; set; } = false;
-
-        /// <summary>
-        /// The stream we are going to log into.
+        /// The <see cref="StreamWriter"/> that writes all logged to the current
+        /// output <see cref="Stream"/>.
         /// </summary>
         private StreamWriter StreamLogger { get; set; }
 
-        /// <summary>
-        /// Enables to log into a costum stream.
-        /// </summary>
-        /// <param name="stream">The stream to log into.</param>
-        internal void LogIntoStream(Stream stream) => StreamLogger = new StreamWriter(stream);
+        #endregion Properties
+
+        #region Constructors
 
         /// <summary>
-        /// Logs a message.
+        /// Constructs and returns a new instance of the <see cref="NetworkLog"/>
+        /// class, that monitors the given <see cref="Connection"/>.
         /// </summary>
-        /// <param name="message">The message to log.</param>
-        /// <param name="logLevel">The level of the log.</param>
-        internal void Log(string message, LogLevel logLevel = LogLevel.Information) => Log(message, null, logLevel);
+        /// <param name="connection">
+        /// The <see cref="Connection"/> that the <see cref="NetworkLog"/> should
+        /// monitor for traffic, events and states.
+        /// </param>
+        public NetworkLog(Connection connection)
+        {
+            monitoredConnection = connection;
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        #region Logging A Message
 
         /// <summary>
-        /// Logs an exception.
+        /// WRites the given message to the current <see cref="StreamLogger"/>,
+        /// and to the 'Output' window.
         /// </summary>
-        /// <param name="exception">The exception to log.</param>
-        /// <param name="logLevel">The level of the log.</param>
-        internal void Log(Exception exception, LogLevel logLevel = LogLevel.Information) => Log(string.Empty, exception, logLevel);
+        /// <param name="message">
+        /// The message that should be logged.
+        /// </param>
+        private void LogToAllOutputs(string message)
+        {
+            Trace.WriteLine(message);
+            StreamLogger?.WriteLine(message);
+            StreamLogger?.Flush();
+        }
 
         /// <summary>
-        /// Logs a message with an exception.
+        /// Logs the given <see cref="string"/> message and <see cref="Exception"/>,
+        /// with the given <see cref="Enums.LogLevel"/> to all output
+        /// <see cref="Stream"/>s.
         /// </summary>
-        /// <param name="message">The message to log.</param>
-        /// <param name="exception">The exception to log.</param>
-        /// <param name="logLevel">The log level.</param>
-        internal void Log(string message, Exception exception, LogLevel logLevel = LogLevel.Information)
+        /// <param name="message">
+        /// The message to log to the output <see cref="Stream"/>s.
+        /// </param>
+        /// <param name="exception">
+        /// The <see cref="Exception"/> to log to the output <see cref="Stream"/>s.
+        /// </param>
+        /// <param name="logLevel">
+        /// The <see cref="Enums.LogLevel"/> of the log message.
+        /// </param>
+        /// <remarks>
+        /// If <see cref="EnableLogging"/> if set to <c>false</c> or the
+        /// <see cref="StreamLogger"/> is <c>null</c>, then no message is logged.
+        /// </remarks>
+        public void Log(string message, Exception exception,
+            LogLevel logLevel = LogLevel.Information)
         {
             if (!EnableLogging || StreamLogger == null)
+            {
                 return;
+            }
 
             string finalLogMessage = BuildLogHeader(exception, logLevel);
-            var tableColumnHeaders = new string[] { "Type", "Local", "Message", "(Exception)" };
-            var tableRowContent = new string[] { connection.GetType().Name, message, connection.IPLocalEndPoint?.ToString(), BuildException(exception) };
-            if (exception == null) tableColumnHeaders = tableColumnHeaders.Take(tableColumnHeaders.Length - 1).ToArray();
-            if (exception == null) tableRowContent = tableRowContent.Take(tableRowContent.Length - 1).ToArray();
+
+            string[] tableColumnHeaders =
+            {
+                "Type", "Local", "Message", "(Exception)"
+            };
+
+            object[] tableRowContent =
+            {
+                monitoredConnection.GetType().Name,
+                message,
+                monitoredConnection.IPLocalEndPoint?.ToString(),
+                BuildException(exception)
+            };
+
+            if (exception == null)
+            {
+                tableColumnHeaders = tableColumnHeaders
+                    .Take(tableColumnHeaders.Length - 1)
+                    .ToArray();
+
+                tableRowContent = tableRowContent
+                    .Take(tableRowContent.Length - 1)
+                    .ToArray();
+            }
 
             ConsoleTable tableOutput = new ConsoleTable(tableColumnHeaders);
             tableOutput.AddRow(tableRowContent);
             finalLogMessage += tableOutput.ToMarkDownString();
-            Log(finalLogMessage);
+            LogToAllOutputs(finalLogMessage);
         }
 
         /// <summary>
-        /// Logs receiving packets.
+        /// Logs the given <see cref="Exception"/> with the given
+        /// <see cref="Enums.LogLevel"/> to the output <see cref="Stream"/>s.
         /// </summary>
-        /// <param name="packet">The receiving packet.</param>
-        /// <param name="packetObj">The receiving object.</param>
-        internal void LogInComingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, "Incoming");
+        /// <param name="exception">
+        /// The <see cref="Exception"/> to log to the output <see cref="Stream"/>s.
+        /// </param>
+        /// <param name="logLevel">
+        /// The <see cref="Enums.LogLevel"/> of the log message.
+        /// </param>
+        public void Log(Exception exception, LogLevel logLevel = LogLevel.Information) =>
+            Log(string.Empty, exception, logLevel);
 
         /// <summary>
-        /// Logs the sending packet.
+        /// Logs the given <see cref="string"/> message with the given
+        /// <see cref="Enums.LogLevel"/> to the output <see cref="Stream"/>s.
         /// </summary>
-        /// <param name="packet">The bytes of the packet.</param>
-        /// <param name="packetObj">The packet to send.</param>
-        internal void LogOutgoingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, "Outgoing");
+        /// <param name="message">
+        /// The message to log to the output <see cref="Stream"/>s.
+        /// </param>
+        /// <param name="logLevel">
+        /// The <see cref="Enums.LogLevel"/> of the log message.
+        /// </param>
+        public void Log(string message, LogLevel logLevel = LogLevel.Information) =>
+            Log(message, null, logLevel);
 
-        private void LogPacket(byte[] packet, Packet packetObj, string direction)
+        #endregion Logging A Message
+
+        /// <summary>
+        /// Sets the output <see cref="Stream"/> (<see cref="StreamLogger"/>)
+        /// to the given <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to log messages into.
+        /// </param>
+        public void SetOutputStream(Stream stream) =>
+            StreamLogger = new StreamWriter(stream);
+
+        /// <summary>
+        /// Logs an incoming packet to the output <see cref="Stream"/>s.
+        /// </summary>
+        /// <param name="packet">
+        /// The serialised incoming packet.
+        /// </param>
+        /// <param name="packetObj">
+        /// The incoming <see cref="Packet"/> object.
+        /// </param>
+        public void LogInComingPacket(byte[] packet, Packet packetObj) =>
+            LogPacket(packet, packetObj, PacketDirection.Incoming);
+
+        /// <summary>
+        /// Logs an outgoing packet to the output <see cref="Stream"/>s.
+        /// </summary>
+        /// <param name="packet">
+        /// The serialised outgoing packet.
+        /// </param>
+        /// <param name="packetObj">
+        /// The outgoing <see cref="Packet"/> object.
+        /// </param>
+        public void LogOutgoingPacket(byte[] packet, Packet packetObj) =>
+            LogPacket(packet, packetObj, PacketDirection.Outgoing);
+
+        /// <summary>
+        /// Logs the given packet to the output <see cref="Stream"/>s, along with
+        /// its direction.
+        /// </summary>
+        /// <param name="packet">
+        /// The serialised packet.
+        /// </param>
+        /// <param name="packetObj">
+        /// The <see cref="Packet"/> object.
+        /// </param>
+        /// <param name="direction">
+        /// The direction that the packet is traveling across the network.
+        /// </param>
+        private void LogPacket(byte[] packet, Packet packetObj, PacketDirection direction)
         {
             if (!EnableLogging)
+            {
                 return;
+            }
 
-            var tableOutPut = BuildConsoleTable(packet, packetObj, direction);
-            Log(tableOutPut.ToStringAlternative());
+            ConsoleTable tableOutPut =
+                BuildConsoleTable(packet, packetObj, direction.ToString());
+
+            LogToAllOutputs(tableOutPut.ToStringAlternative());
         }
 
         /// <summary>
-        /// Builds the console table.
+        /// Builds a <see cref="ConsoleTable"/> with the given parameters and
+        /// returns it.
         /// </summary>
-        /// <param name="packet">The packet.</param>
-        /// <param name="packetObj">The packet object.</param>
-        /// <param name="direction">The direction.</param>
-        /// <returns>ConsoleTable.</returns>
+        /// <param name="packet">
+        /// The serialised packet.
+        /// </param>
+        /// <param name="packetObj">
+        /// The <see cref="Packet"/> object.
+        /// </param>
+        /// <param name="direction">
+        /// The direction that the packet is travelling across the network.
+        /// </param>
+        /// <returns>
+        /// The built <see cref="ConsoleTable"/>.
+        /// </returns>
         private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, string direction)
         {
-            var type = connection.GetType().Name;
-            var local = connection.IPLocalEndPoint?.ToString();
-            var ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
-            var packetName = packetObj.GetType().Name.ToString();
+            object type = monitoredConnection.GetType().Name;
+            object local = monitoredConnection.IPLocalEndPoint?.ToString();
+            object ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
+            object packetName = packetObj.GetType().Name;
 
-            ConsoleTable tableOutPut = null;
+            ConsoleTable tableOutPut;
 
-            if (string.IsNullOrWhiteSpace(ascii))
+            if (string.IsNullOrWhiteSpace((string)ascii))
             {
                 tableOutPut = new ConsoleTable("Direction", "Type", "Local", "Packet");
                 tableOutPut.AddRow(direction, type, local, packetName);
@@ -168,21 +319,37 @@ namespace Network.Logging
         }
 
         /// <summary>
-        /// Creates the header for each log.
+        /// Builds and returns the header for each log message.
         /// </summary>
-        /// <param name="exception">The exception to log.</param>
-        /// <param name="logLevel">The log level.</param>
-        /// <returns>A header.</returns>
-        private string BuildLogHeader(Exception exception, LogLevel logLevel) => $"[{TimeStamp}] {logLevel.ToString()} {exception?.Message} {Environment.NewLine}{Environment.NewLine}";
+        /// <param name="exception">
+        /// The <see cref=" Exception"/> to log.
+        /// </param>
+        /// <param name="logLevel">
+        /// The <see cref="Enums.LogLevel"/> for the log message.
+        /// </param>
+        /// <returns></returns>
+        private string BuildLogHeader(Exception exception, LogLevel logLevel) =>
+            $"[{TimeStamp}] " +
+            $"{logLevel.ToString()} " +
+            $"{exception?.Message} " +
+            $"{Environment.NewLine}" +
+            $"{Environment.NewLine}";
 
         /// <summary>
-        /// Builds the complete exception and returns it as a string.
+        /// Builds and returns a <see cref="string"/> message containing an
+        /// <see cref="Exception"/>.
         /// </summary>
-        /// <param name="exception">The exception to convert.</param>
-        /// <returns>A string, containg all innerExceptions as well as the original exception.</returns>
+        /// <param name="exception">
+        /// The <see cref="Exception"/> to format as a <see cref="string"/>.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Exception"/> formatted as a <see cref="string"/> message.
+        /// </returns>
         private string BuildException(Exception exception)
         {
-            StringBuilder exceptionBuilder = new StringBuilder(exception?.ToString());
+            StringBuilder exceptionBuilder =
+                new StringBuilder(exception?.ToString());
+
             exception = exception?.InnerException;
 
             while (exception != null)
@@ -194,15 +361,6 @@ namespace Network.Logging
             return exceptionBuilder.ToString();
         }
 
-        /// <summary>
-        /// Writes everything to the desired stream.
-        /// </summary>
-        /// <param name="message">The message to log.</param>
-        private void Log(string message)
-        {
-            Trace.WriteLine(message);
-            StreamLogger?.WriteLine(message);
-            StreamLogger?.Flush();
-        }
+        #endregion Methods
     }
 }
