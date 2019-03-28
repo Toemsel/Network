@@ -24,8 +24,7 @@ namespace Network.Async
         /// A <see cref="ManualResetEvent"/> that allows for the instance to wait
         /// until the <see cref="ResponsePacket"/> for a sent packet is received.
         /// </summary>
-        private readonly ManualResetEvent packetReceivedEvent =
-            new ManualResetEvent(false);
+        private readonly ManualResetEvent packetReceivedEvent = new ManualResetEvent(false);
 
         #endregion Variables
 
@@ -57,7 +56,7 @@ namespace Network.Async
             Packet receivedAsyncPacket = null;
             object tempObject = new object();
 
-            // register the packet we would like to receive.
+            //Register the packet we would like to receive.
             connection.RegisterPacketHandler<R>(((packetAnswer, c) =>
             {
                 receivedAsyncPacket = packetAnswer;
@@ -65,10 +64,10 @@ namespace Network.Async
                 packetReceivedEvent.Set();
             }), tempObject);
 
-            // send the packet normally.
+            //Send the packet normally.
             connection.Send(packet, tempObject);
 
-            // wait for an answer or till we reach the timeout.
+            //Wait for an answer or till we reach the timeout.
             try
             {
                 if (receivedAsyncPacket == null)
@@ -85,7 +84,7 @@ namespace Network.Async
                     Enums.LogLevel.Error);
             }
 
-            // no answer from the endPoint
+            //No answer from the endPoint
             if (receivedAsyncPacket == null)
             {
                 R emptyPacket = Activator.CreateInstance<R>();
