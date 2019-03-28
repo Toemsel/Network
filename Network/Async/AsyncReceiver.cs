@@ -79,8 +79,7 @@ namespace Network.Async
             }
             catch (OverflowException overflowException)
             {
-                connection.Logger.Log(
-                    $"Exception while waiting for async packet occured. " +
+                connection.Logger.Log($"Exception while waiting for async packet occured. " +
                     $"Request packet {packet.GetType().Name}",
                     overflowException,
                     Enums.LogLevel.Error);
