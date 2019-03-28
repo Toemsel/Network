@@ -1,10 +1,9 @@
 ﻿using Network.Attributes;
+using Network.Packets;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Network.Packets;
 
 namespace Network.Converter
 {
@@ -12,8 +11,10 @@ namespace Network.Converter
     /// Provides helper methods for serialising and deserialising packets to and
     /// from their binary form.
     /// </summary>
-    public static class PacketConverterHelper
+    internal static class PacketConverterHelper
     {
+        #region Variables
+
         /// <summary>
         /// The <see cref="Type"/> of the custom property that will cause a property
         /// to be ignored during serialisation. See <see cref="PacketIgnorePropertyAttribute"/>
@@ -21,6 +22,10 @@ namespace Network.Converter
         /// </summary>
         public static readonly Type propertyIgnoreAttributeType =
             typeof(PacketIgnorePropertyAttribute);
+
+        #endregion Variables
+
+        #region Methods
 
         #region Type Checking
 
@@ -172,5 +177,7 @@ namespace Network.Converter
         }
 
         #endregion Type Instantiation
+
+        #endregion Methods
     }
 }

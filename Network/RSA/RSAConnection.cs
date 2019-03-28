@@ -1,37 +1,4 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 29.09.2018
-//
-// Last Modified By : Thomas
-// Last Modified On : 29.09.2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Converter;
+﻿using Network.Converter;
 using Network.Interfaces;
 using Network.Packets;
 using Network.Packets.RSA;
@@ -50,8 +17,20 @@ namespace Network.RSA
     {
         #region Variables
 
-        private volatile RSAPair communicationPartnerRSAPair;
+        /// <summary>
+        /// The <see cref="Network.RSA.RSAPair"/> for the remote communication
+        /// partner.
+        /// </summary>
+        private volatile RSAPair remoteRSAKeyPair;
+
+        /// <summary>
+        /// The RSA encryption provider for encrypting packets.
+        /// </summary>
         private volatile RSACryptoServiceProvider encryptionProvider;
+
+        /// <summary>
+        /// Whether RSA encryption is active on this connection.
+        /// </summary>
         private volatile bool isRSACommunicationActive = false;
 
         #endregion Variables
@@ -92,8 +71,8 @@ namespace Network.RSA
         /// <value>The communication partner RSA pair.</value>
         public RSAPair CommunicationPartnerRSAPair
         {
-            get => communicationPartnerRSAPair;
-            set => communicationPartnerRSAPair = value;
+            get => remoteRSAKeyPair;
+            set => remoteRSAKeyPair = value;
         }
 
         /// <summary>

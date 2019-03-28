@@ -1,40 +1,6 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 28-11-2016
-//
-// Last Modified By : Thomas Christof
-// Last Modified On : 28-11-2015
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2016
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Converter;
+﻿using Network.Converter;
 using Network.Packets;
 using System;
-using System.Text;
 
 namespace Network.Extensions
 {
@@ -51,6 +17,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static bool ToBoolean(this RawData rawData)
         {
             return RawDataConverter.ToBoolean(rawData);
@@ -63,6 +30,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static byte ToUInt8(this RawData rawData)
         {
             return RawDataConverter.ToUInt8(rawData);
@@ -73,6 +41,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static ushort ToUInt16(this RawData rawData)
         {
             return RawDataConverter.ToUInt16(rawData);
@@ -83,6 +52,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static uint ToUInt32(this RawData rawData)
         {
             return RawDataConverter.ToUInt32(rawData);
@@ -93,6 +63,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static ulong ToUInt64(this RawData rawData)
         {
             return RawDataConverter.ToUInt64(rawData);
@@ -107,6 +78,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static sbyte ToInt8(this RawData rawData)
         {
             return RawDataConverter.ToInt8(rawData);
@@ -117,6 +89,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static short ToInt16(this RawData rawData)
         {
             return RawDataConverter.ToInt16(rawData);
@@ -127,6 +100,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static int ToInt32(this RawData rawData)
         {
             return RawDataConverter.ToInt32(rawData);
@@ -137,6 +111,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static long ToInt64(this RawData rawData)
         {
             return RawDataConverter.ToInt64(rawData);
@@ -153,6 +128,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUTF16_BigEndian_String(this RawData rawData)
         {
             return RawDataConverter.ToUTF16_BigEndian_String(rawData);
@@ -163,6 +139,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUTF16_LittleEndian_String(this RawData rawData)
         {
             return RawDataConverter.ToUTF16_LittleEndian_String(rawData);
@@ -173,6 +150,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUnicodeString(this RawData rawData)
         {
             return RawDataConverter.ToUnicodeString(rawData);
@@ -187,6 +165,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUTF32String(this RawData rawData)
         {
             return RawDataConverter.ToUTF32String(rawData);
@@ -197,6 +176,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUTF8String(this RawData rawData)
         {
             return RawDataConverter.ToUTF8String(rawData);
@@ -207,6 +187,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToUTF7String(this RawData rawData)
         {
             return RawDataConverter.ToUTF7String(rawData);
@@ -219,6 +200,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static string ToASCIIString(this RawData rawData)
         {
             return RawDataConverter.ToASCIIString(rawData);
@@ -229,6 +211,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static char ToChar(this RawData rawData)
         {
             return RawDataConverter.ToChar(rawData);
@@ -243,6 +226,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static float ToSingle(this RawData rawData)
         {
             return RawDataConverter.ToSingle(rawData);
@@ -253,6 +237,7 @@ namespace Network.Extensions
         /// This method should probably not be used, it would be preferable to
         /// use the relevant <see cref="RawDataConverter"/> method instead.
         /// </remarks>
+        [Obsolete("Use the relevant 'RawDataConverter' method instead.")]
         public static double ToDouble(this RawData rawData)
         {
             return RawDataConverter.ToDouble(rawData);

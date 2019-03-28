@@ -3,7 +3,7 @@
     /// <summary>
     /// The possible states of a network object before and after deserialisation.
     /// </summary>
-    public enum NetworkObjectState : byte
+    public enum ObjectState : byte
     {
         /// <summary>
         /// The network object is null, so there is nothing to read from the
@@ -12,9 +12,19 @@
         Null = 0x00,
 
         /// <summary>
+        /// Identical to <see cref="Null"/>.
+        /// </summary>
+        NULL = Null,
+
+        /// <summary>
         /// The network object is not null, so there is something to read from
         /// the network stream.
         /// </summary>
-        NotNull = 0xFF
+        NotNull = 0xFF,
+
+        /// <summary>
+        /// Identical to <see cref="NotNull"/>.
+        /// </summary>
+        NOT_NULL = NotNull,
     }
 }
