@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestServer", "..\Exa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerClientPackets", "..\Examples\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network.XUnit", "..\Network.XUnit\TestServerClientPackets\Network.XUnit.csproj", "{53832142-B075-4828-A922-BDE5EC842278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{53832142-B075-4828-A922-BDE5EC842277}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53832142-B075-4828-A922-BDE5EC842277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53832142-B075-4828-A922-BDE5EC842278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
