@@ -3735,7 +3735,8 @@
         </member>
         <member name="T:Network.RSA.RSAConnection">
             <summary>
-            A RSAConnection contains all required information to handle RSA encrypted serialisedPacket.
+            Provides RSA encryption and decryption facilities to a <see cref="T:Network.Connection"/>,
+            allowing encrypted communication.
             </summary>
             <seealso cref="T:Network.Interfaces.IRSACapability" />
             <seealso cref="T:Network.Interfaces.IRSAConnection" />
