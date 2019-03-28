@@ -67,7 +67,7 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
 
   <ItemGroup>
     <None Update="Network.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>
