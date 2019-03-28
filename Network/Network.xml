@@ -822,6 +822,16 @@
             Gets all the packets we are listening to.
             </summary>
         </member>
+        <member name="M:Network.Connection.BackupPacketHandler">
+            <summary>
+            Returns the current <see cref="T:Network.Utilities.PacketHandlerMap"/> instance, so that
+            the types of packets handled can be read.
+            </summary>
+            <returns>
+            The current <see cref="T:Network.Utilities.PacketHandlerMap"/> instance used by this
+            connection.
+            </returns>
+        </member>
         <member name="M:Network.Connection.RestorePacketHandler(Network.Utilities.PacketHandlerMap)">
             <summary>
             Restores the packetHandler. Can only be called if the internal packetHandler is empty.
@@ -2646,6 +2656,186 @@
             The deserialised value.
             </returns>
         </member>
+        <member name="T:Network.Enums.CloseReason">
+            <summary>
+            Enumerates the possible reasons for a <see cref="T:Network.Connection"/> closing/
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.NetworkError">
+            <summary>
+            An unknown exception occurred in the network library.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.ServerClosed">
+            <summary>
+            The server closed the connection.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.ClientClosed">
+            <summary>
+            The client closed the connection.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.UnknownPacket">
+            <summary>
+            The endpoint sent an unknown packet which cant be processed.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.Timeout">
+            <summary>
+            Connection timeout reached.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.DifferentVersion">
+            <summary>
+            The endpoints version is different.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.InvalidUdpRequest">
+            <summary>
+            UDP connection requested in an improper situation.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.UdpLimitExceeded">
+            <summary>
+            The client requested too many UDP connections.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.InternalException">
+            <summary>
+            An internal handled exception.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.WritePacketThreadException">
+            <summary>
+            An exception in the writePacketThread occured.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.ReadPacketThreadException">
+            <summary>
+            An exception in the readPacketThread occured.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.InvokePacketThreadException">
+            <summary>
+            An exception in the invokePacketThread occured.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.AssemblyDoesNotExist">
+            <summary>
+            The assembly for the incoming packet is not available.
+            Make sure that every project is including that assembly.
+            </summary>
+        </member>
+        <member name="T:Network.Enums.ConnectionType">
+            <summary>
+            Enumerates the possible types of <see cref="T:Network.Connection"/>.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.ConnectionType.TCP">
+            <summary>
+            The <see cref="T:Network.Connection"/> should use TCP to communicate across
+            the network.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.ConnectionType.UDP">
+            <summary>
+            The <see cref="T:Network.Connection"/> should use UDP to communicate across
+            the network.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.ConnectionType.Bluetooth">
+            <summary>
+            The <see cref="T:Network.Connection"/> should use Bluetooth to communicate
+            across the network.
+            </summary>
+        </member>
+        <member name="T:Network.Enums.LogLevel">
+            <summary>
+            Enumerates the possible severity levels for a log message.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.LogLevel.Information">
+            <summary>
+            This log message contains information. Low severity.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.LogLevel.Warning">
+            <summary>
+            This log message contains a warning. Medium severity.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.LogLevel.Error">
+            <summary>
+            This log message contains an error. High severity.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.LogLevel.Exception">
+            <summary>
+            This log message contains an exception. Extreme severity.
+            </summary>
+        </member>
+        <member name="T:Network.Enums.PacketState">
+            <summary>
+            Enumerates the possible states that a <see cref="T:Network.Packets.Packet"/> could be in
+            after transmission.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.PacketState.Success">
+            <summary>
+            The packet was successfully transmitted and received.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.PacketState.Timeout">
+            <summary>
+            The packet was not received within the specified timeout. The
+            <see cref="T:Network.Connection"/> could be dead.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.PacketState.ConnectionNotAlive">
+            <summary>
+            The <see cref="T:Network.Connection"/> is not alive, so no asynchronous
+            transmission is possible.
+            </summary>
+        </member>
+        <member name="T:Network.Enums.Performance">
+            <summary>
+            Enumerates the possible values for sleep intervals.
+            Fastest Performance >> Slowest Performance :
+            SoftRealtime        >> EnergySaving
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.EnergySaving">
+            <summary>
+            Sleep intervals of more than 500ms.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.Slow">
+            <summary>
+            Sleep intervals of more than 100ms.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.Normal">
+            <summary>
+            Sleep interval of more than 25ms.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.Fast">
+            <summary>
+            Sleep interval of more than 10ms.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.Default">
+            <summary>
+            Sleep interval of more than 5ms.
+            This is the default value, recommended for usage.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.SoftRealtime">
+            <summary>
+            Sleep interval of more than 1ms.
+            </summary>
+        </member>
         <member name="T:Network.Extensions.ConcurrentBagExtensions">
             <summary>
             Provides additional functionality to the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/>
@@ -3541,186 +3731,6 @@
         <member name="T:Network.Packets.UDPPingResponse">
             <summary>
             Response to a <see cref="T:Network.Packets.UDPPingRequest"/> packet.
-            </summary>
-        </member>
-        <member name="T:Network.Enums.CloseReason">
-            <summary>
-            Enumerates the possible reasons for a <see cref="T:Network.Connection"/> closing/
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.NetworkError">
-            <summary>
-            An unknown exception occurred in the network library.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.ServerClosed">
-            <summary>
-            The server closed the connection.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.ClientClosed">
-            <summary>
-            The client closed the connection.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.UnknownPacket">
-            <summary>
-            The endpoint sent an unknown packet which cant be processed.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.Timeout">
-            <summary>
-            Connection timeout reached.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.DifferentVersion">
-            <summary>
-            The endpoints version is different.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.InvalidUdpRequest">
-            <summary>
-            UDP connection requested in an improper situation.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.UdpLimitExceeded">
-            <summary>
-            The client requested too many UDP connections.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.InternalException">
-            <summary>
-            An internal handled exception.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.WritePacketThreadException">
-            <summary>
-            An exception in the writePacketThread occured.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.ReadPacketThreadException">
-            <summary>
-            An exception in the readPacketThread occured.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.InvokePacketThreadException">
-            <summary>
-            An exception in the invokePacketThread occured.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.CloseReason.AssemblyDoesNotExist">
-            <summary>
-            The assembly for the incoming packet is not available.
-            Make sure that every project is including that assembly.
-            </summary>
-        </member>
-        <member name="T:Network.Enums.ConnectionType">
-            <summary>
-            Enumerates the possible types of <see cref="T:Network.Connection"/>.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.ConnectionType.TCP">
-            <summary>
-            The <see cref="T:Network.Connection"/> should use TCP to communicate across
-            the network.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.ConnectionType.UDP">
-            <summary>
-            The <see cref="T:Network.Connection"/> should use UDP to communicate across
-            the network.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.ConnectionType.Bluetooth">
-            <summary>
-            The <see cref="T:Network.Connection"/> should use Bluetooth to communicate
-            across the network.
-            </summary>
-        </member>
-        <member name="T:Network.Enums.LogLevel">
-            <summary>
-            Enumerates the possible severity levels for a log message.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.LogLevel.Information">
-            <summary>
-            This log message contains information. Low severity.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.LogLevel.Warning">
-            <summary>
-            This log message contains a warning. Medium severity.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.LogLevel.Error">
-            <summary>
-            This log message contains an error. High severity.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.LogLevel.Exception">
-            <summary>
-            This log message contains an exception. Extreme severity.
-            </summary>
-        </member>
-        <member name="T:Network.Enums.PacketState">
-            <summary>
-            Enumerates the possible states that a <see cref="T:Network.Packets.Packet"/> could be in
-            after transmission.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.PacketState.Success">
-            <summary>
-            The packet was successfully transmitted and received.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.PacketState.Timeout">
-            <summary>
-            The packet was not received within the specified timeout. The
-            <see cref="T:Network.Connection"/> could be dead.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.PacketState.ConnectionNotAlive">
-            <summary>
-            The <see cref="T:Network.Connection"/> is not alive, so no asynchronous
-            transmission is possible.
-            </summary>
-        </member>
-        <member name="T:Network.Enums.Performance">
-            <summary>
-            Enumerates the possible values for sleep intervals.
-            Fastest Performance >> Slowest Performance :
-            SoftRealtime        >> EnergySaving
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.EnergySaving">
-            <summary>
-            Sleep intervals of more than 500ms.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.Slow">
-            <summary>
-            Sleep intervals of more than 100ms.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.Normal">
-            <summary>
-            Sleep interval of more than 25ms.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.Fast">
-            <summary>
-            Sleep interval of more than 10ms.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.Default">
-            <summary>
-            Sleep interval of more than 5ms.
-            This is the default value, recommended for usage.
-            </summary>
-        </member>
-        <member name="F:Network.Enums.Performance.SoftRealtime">
-            <summary>
-            Sleep interval of more than 1ms.
             </summary>
         </member>
         <member name="T:Network.RSA.RSAConnection">
