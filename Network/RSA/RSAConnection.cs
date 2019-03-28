@@ -35,6 +35,28 @@ namespace Network.RSA
 
         #endregion Variables
 
+        #region Constructors
+
+        public RSAConnection(Connection connection, RSAPair rsaPair)
+        {
+            Connection = connection;
+            RSAPair = rsaPair;
+
+            DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
+            Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
+
+            //Are we running on WinXP or higher?
+            OperatingSystem operatingSystem = Environment.OSVersion;
+            XPOrHigher = (operatingSystem.Platform == PlatformID.Win32NT) &&
+                ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
+                (operatingSystem.Version.Minor >= 1)));
+
+            //Setup RSA related packets.
+            ExchangePublicKeys();
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -105,28 +127,6 @@ namespace Network.RSA
         }
 
         #endregion Properties
-
-        #region Constructors
-
-        public RSAConnection(Connection connection, RSAPair rsaPair)
-        {
-            Connection = connection;
-            RSAPair = rsaPair;
-
-            DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
-            Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
-
-            //Are we running on WinXP or higher?
-            OperatingSystem operatingSystem = Environment.OSVersion;
-            XPOrHigher = (operatingSystem.Platform == PlatformID.Win32NT) &&
-                ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
-                (operatingSystem.Version.Minor >= 1)));
-
-            //Setup RSA related packets.
-            ExchangePublicKeys();
-        }
-
-        #endregion Constructors
 
         #region Methods
 

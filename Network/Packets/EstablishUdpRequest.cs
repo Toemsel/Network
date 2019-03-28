@@ -8,15 +8,6 @@ namespace Network.Packets
     [PacketType(3)]
     internal class EstablishUdpRequest : RequestPacket
     {
-        #region Properties
-
-        /// <summary>
-        /// The port that the UDP connection should use.
-        /// </summary>
-        public int UdpPort { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         public EstablishUdpRequest()
@@ -29,5 +20,14 @@ namespace Network.Packets
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The port that the UDP connection should use.
+        /// </summary>
+        public int UdpPort { get; set; }
+
+        #endregion Properties
     }
 }

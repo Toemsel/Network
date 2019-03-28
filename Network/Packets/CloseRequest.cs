@@ -9,15 +9,6 @@ namespace Network.Packets
     [PacketType(2)]
     internal class CloseRequest : Packet
     {
-        #region Properties
-
-        /// <summary>
-        /// The reason that the paired <see cref="Connection"/> should close.
-        /// </summary>
-        public CloseReason CloseReason { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         public CloseRequest()
@@ -30,5 +21,14 @@ namespace Network.Packets
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The reason that the paired <see cref="Connection"/> should close.
+        /// </summary>
+        public CloseReason CloseReason { get; set; }
+
+        #endregion Properties
     }
 }

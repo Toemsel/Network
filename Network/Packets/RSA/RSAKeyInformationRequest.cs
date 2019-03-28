@@ -9,20 +9,6 @@ namespace Network.Packets.RSA
     [PacketType(11)]
     internal class RSAKeyInformationRequest : RequestPacket
     {
-        #region Properties
-
-        /// <summary>
-        /// The public RSA key for encryption, decryption and signing.
-        /// </summary>
-        public string PublicKey { get; set; }
-
-        /// <summary>
-        /// The size of the RSA key.
-        /// </summary>
-        public int KeySize { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         public RSAKeyInformationRequest()
@@ -36,5 +22,19 @@ namespace Network.Packets.RSA
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The public RSA key for encryption, decryption and signing.
+        /// </summary>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// The size of the RSA key.
+        /// </summary>
+        public int KeySize { get; set; }
+
+        #endregion Properties
     }
 }

@@ -12,16 +12,6 @@ namespace Network.Attributes
     /// </summary>
     public class PacketRequestAttribute : Attribute
     {
-        #region Properties
-
-        /// <summary>
-        /// The <see cref="Type"/> of the <see cref="RequestPacket"/> that the
-        /// <see cref="ResponsePacket"/> handles.
-        /// </summary>
-        public Type RequestType { get; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <summary>
@@ -39,5 +29,15 @@ namespace Network.Attributes
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The <see cref="Type"/> of the <see cref="RequestPacket"/> that the
+        /// <see cref="ResponsePacket"/> handles.
+        /// </summary>
+        public Type RequestType { get; }
+
+        #endregion Properties
     }
 }

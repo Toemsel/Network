@@ -11,15 +11,6 @@ namespace Network.Packets
     [PacketType(6)]
     internal class AddPacketTypeRequest : RequestPacket
     {
-        #region Properties
-
-        /// <summary>
-        /// The name of the <see cref="Assembly"/> that should be added.
-        /// </summary>
-        public string AssemblyName { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         public AddPacketTypeRequest()
@@ -37,5 +28,14 @@ namespace Network.Packets
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The name of the <see cref="Assembly"/> that should be added.
+        /// </summary>
+        public string AssemblyName { get; set; }
+
+        #endregion Properties
     }
 }
