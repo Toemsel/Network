@@ -41,10 +41,11 @@ using System.Security.Cryptography;
 namespace Network.RSA
 {
     /// <summary>
-    /// A RSAConnection contains all required information to handle RSA encrypted serialisedPacket.
+    /// Provides RSA encryption and decryption facilities to a <see cref="Network.Connection"/>,
+    /// allowing encrypted communication.
     /// </summary>
-    /// <seealso cref="Network.Interfaces.IRSACapability" />
-    /// <seealso cref="Network.Interfaces.IRSAConnection" />
+    /// <seealso cref="IRSACapability" />
+    /// <seealso cref="IRSAConnection" />
     internal class RSAConnection : IPacketConverter, IRSACapability, IRSAConnection
     {
         #region Variables
