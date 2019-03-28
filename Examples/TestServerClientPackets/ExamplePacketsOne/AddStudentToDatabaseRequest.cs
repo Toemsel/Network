@@ -1,7 +1,5 @@
 ﻿using Network.Packets;
-
 using System.Collections.Generic;
-
 using TestServerClientPackets.ExamplePacketsOne.Containers;
 
 namespace TestServerClientPackets.ExamplePacketsOne

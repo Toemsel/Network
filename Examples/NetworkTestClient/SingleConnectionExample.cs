@@ -1,7 +1,5 @@
 ﻿using Network;
-
 using System;
-
 using TestServerClientPackets;
 
 namespace NetworkTestClient

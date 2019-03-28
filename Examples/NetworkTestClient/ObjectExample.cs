@@ -1,9 +1,7 @@
 ﻿using Network;
 using Network.Enums;
-
 using System;
 using System.Collections.Generic;
-
 using TestServerClientPackets.ExamplePacketsOne;
 using TestServerClientPackets.ExamplePacketsOne.Containers;
 
