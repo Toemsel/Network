@@ -64,4 +64,10 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' ">
 
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Network.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
