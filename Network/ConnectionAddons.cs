@@ -1,7 +1,6 @@
 ﻿using Network.Interfaces;
 using Network.Logging;
 using Network.Packets;
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

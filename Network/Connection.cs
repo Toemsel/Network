@@ -1,37 +1,4 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 07-23-2015
-//
-// Last Modified By : Thomas Christof
-// Last Modified On : 30.09.2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Async;
+﻿using Network.Async;
 using Network.Attributes;
 using Network.Converter;
 using Network.Enums;
@@ -387,6 +354,13 @@ namespace Network
             packetHandlerMap.DeregisterStaticPacketHandler<T>();
         }
 
+        /// <inheritdoc />
+        [Obsolete("Use 'DeregisterStaticPacketHandler' instead.")]
+        public void UnRegisterStaticPacketHandler<P>() where P : Packet
+        {
+            DeregisterStaticPacketHandler<P>();
+        }
+
         /// <summary>
         /// UnRegisters a packetHandler. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
@@ -396,6 +370,13 @@ namespace Network
         public void DeregisterPacketHandler<T>(object obj) where T : Packet
         {
             packetHandlerMap.DeregisterPacketHandler<T>(obj);
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use 'DeregisterPacketHandler' instead.")]
+        public void UnRegisterPacketHandler<P>(object obj) where P : Packet
+        {
+            DeregisterPacketHandler<P>(obj);
         }
 
         /// <summary>

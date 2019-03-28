@@ -1,37 +1,5 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas Christof
-// Created          : 02-10-2016
-//
-// Last Modified By : Thomas Christof
-// Last Modified On : 10-10-2015
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Packets;
+﻿using Network.Packets;
+using System;
 
 namespace Network.Interfaces
 {
@@ -62,21 +30,21 @@ namespace Network.Interfaces
         /// Registers the given <see cref="PacketReceivedHandler{T}"/> for all
         /// <see cref="Packet"/>s of the given type.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="P">
         /// The type of <see cref="Packet"/> the delegate should handle.
         /// </typeparam>
         /// <param name="handler">
         /// The <see cref="PacketReceivedHandler{T}"/> delegate to be invoked
         /// for each received packet of the given type.
         /// </param>
-        void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler)
-            where T : Packet;
+        void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler)
+            where P : Packet;
 
         /// <summary>
         /// Registers the given <see cref="PacketReceivedHandler{T}"/> on the
         /// given <see cref="object"/> for all <see cref="Packet"/>s of the given type.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="P">
         /// The type of <see cref="Packet"/> the delegate should handle.
         /// </typeparam>
         /// <param name="handler">
@@ -86,25 +54,29 @@ namespace Network.Interfaces
         /// <param name="obj">
         /// The <see cref="object"/> that should receive the <see cref="Packet"/>s.
         /// </param>
-        void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj)
-            where T : Packet;
+        void RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj)
+            where P : Packet;
 
         /// <summary>
         /// Deregisters all <see cref="PacketReceivedHandler{T}"/>s for the given
         /// <see cref="Packet"/> type.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="P">
         /// The type of <see cref="Packet"/> for which all currently registered
         /// <see cref="PacketReceivedHandler{T}"/>s should be deregistered.
         /// </typeparam>
-        void DeregisterStaticPacketHandler<T>() where T : Packet;
+        void DeregisterStaticPacketHandler<P>() where P : Packet;
+
+        /// <inheritdoc cref="DeregisterStaticPacketHandler{P}"/>
+        [Obsolete("Use 'DeregisterStaticPacketHandler' instead.")]
+        void UnRegisterStaticPacketHandler<P>() where P : Packet;
 
         /// <summary>
         /// Deregisters all <see cref="PacketReceivedHandler{T}"/>s for the given
         /// <see cref="Packet"/> type that are currently registered on the given
         /// <see cref="object"/>.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="P">
         /// The type of <see cref="Packet"/> for which all currently registered
         /// <see cref="PacketReceivedHandler{T}"/>s should be deregistered.
         /// </typeparam>
@@ -113,7 +85,11 @@ namespace Network.Interfaces
         /// <see cref="PacketReceivedHandler{T}"/>s of the given type should
         /// be deregistered.
         /// </param>
-        void DeregisterPacketHandler<T>(object obj) where T : Packet;
+        void DeregisterPacketHandler<P>(object obj) where P : Packet;
+
+        /// <inheritdoc cref="DeregisterPacketHandler{P}"/>
+        [Obsolete("Use 'DeregisterPacketHandler' instead.")]
+        void UnRegisterPacketHandler<P>(object obj) where P : Packet;
 
         #endregion Methods
     }
