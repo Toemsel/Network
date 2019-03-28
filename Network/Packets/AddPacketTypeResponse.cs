@@ -10,15 +10,6 @@ namespace Network.Packets
     [PacketType(7), PacketRequest(typeof(AddPacketTypeRequest))]
     internal class AddPacketTypeResponse : ResponsePacket
     {
-        #region Properties
-
-        /// <summary>
-        /// List of all the local <see cref="Packet"/> IDs that have been registered.
-        /// </summary>
-        public List<ushort> LocalDict { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <summary>
@@ -33,5 +24,14 @@ namespace Network.Packets
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// List of all the local <see cref="Packet"/> IDs that have been registered.
+        /// </summary>
+        public List<ushort> LocalDict { get; set; }
+
+        #endregion Properties
     }
 }

@@ -8,21 +8,6 @@ namespace Network.Packets
     [PacketType(10)]
     public class RawData : Packet
     {
-        #region Properties
-
-        /// <summary>
-        /// The key both connections are able to register <see cref="RawData"/>
-        /// packet handlers to.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// The serialised primitive value.
-        /// </summary>
-        public byte[] Data { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <summary>
@@ -50,5 +35,20 @@ namespace Network.Packets
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The key both connections are able to register <see cref="RawData"/>
+        /// packet handlers to.
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// The serialised primitive value.
+        /// </summary>
+        public byte[] Data { get; set; }
+
+        #endregion Properties
     }
 }

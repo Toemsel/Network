@@ -15,6 +15,29 @@ namespace Network.Bluetooth
     /// </remarks>
     public class DeviceInfo
     {
+        #region Constructors
+
+        /// <summary>
+        /// Constructs and returns a new instance of the <see cref="DeviceInfo"/>,
+        /// mapping the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
+        /// to the <see cref="DeviceInfo"/>.
+        /// </summary>
+        /// <param name="deviceInfo">
+        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties
+        /// to use for the new <see cref="DeviceInfo"/> instance.
+        /// </param>
+        internal DeviceInfo(BluetoothDeviceInfo deviceInfo)
+        {
+            DeviceName = deviceInfo.DeviceName;
+            IsKnown = deviceInfo.Remembered;
+            SignalStrength = deviceInfo.Rssi;
+            LastSeen = deviceInfo.LastSeen;
+            LastUsed = deviceInfo.LastUsed;
+            BluetoothDeviceInfo = deviceInfo;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -49,29 +72,6 @@ namespace Network.Bluetooth
         internal BluetoothDeviceInfo BluetoothDeviceInfo { get; }
 
         #endregion Properties
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructs and returns a new instance of the <see cref="DeviceInfo"/>,
-        /// mapping the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
-        /// to the <see cref="DeviceInfo"/>.
-        /// </summary>
-        /// <param name="deviceInfo">
-        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties
-        /// to use for the new <see cref="DeviceInfo"/> instance.
-        /// </param>
-        internal DeviceInfo(BluetoothDeviceInfo deviceInfo)
-        {
-            DeviceName = deviceInfo.DeviceName;
-            IsKnown = deviceInfo.Remembered;
-            SignalStrength = deviceInfo.Rssi;
-            LastSeen = deviceInfo.LastSeen;
-            LastUsed = deviceInfo.LastUsed;
-            BluetoothDeviceInfo = deviceInfo;
-        }
-
-        #endregion Constructors
 
         #region Methods
 

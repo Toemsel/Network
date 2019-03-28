@@ -8,6 +8,18 @@ namespace Network.Packets.RSA
     [PacketType(12), PacketRequest(typeof(RSAKeyInformationRequest))]
     internal class RSAKeyInformationResponse : ResponsePacket
     {
+        #region Constructors
+
+        public RSAKeyInformationResponse(
+            string publicKey, int keySize, RSAKeyInformationRequest request)
+            : base(request)
+        {
+            PublicKey = publicKey;
+            KeySize = keySize;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -21,17 +33,5 @@ namespace Network.Packets.RSA
         public int KeySize { get; set; }
 
         #endregion Properties
-
-        #region Constructors
-
-        public RSAKeyInformationResponse(
-            string publicKey, int keySize, RSAKeyInformationRequest request)
-            : base(request)
-        {
-            PublicKey = publicKey;
-            KeySize = keySize;
-        }
-
-        #endregion Constructors
     }
 }

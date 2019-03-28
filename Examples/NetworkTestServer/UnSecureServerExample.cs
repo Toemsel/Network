@@ -25,7 +25,6 @@ namespace NetworkTestServer
             serverConnectionContainer = ConnectionFactory.CreateServerConnectionContainer(1234, false);
 
             //2. Apply optional settings.
-
             #region Optional settings
 
             serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");

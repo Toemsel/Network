@@ -45,6 +45,23 @@ namespace Network.Logging
 
         #endregion Variables
 
+        #region Constructors
+
+        /// <summary>
+        /// Constructs and returns a new instance of the <see cref="NetworkLog"/>
+        /// class, that monitors the given <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="connection">
+        /// The <see cref="Connection"/> that the <see cref="NetworkLog"/> should
+        /// monitor for traffic, events and states.
+        /// </param>
+        public NetworkLog(Connection connection)
+        {
+            monitoredConnection = connection;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -64,23 +81,6 @@ namespace Network.Logging
         private StreamWriter StreamLogger { get; set; }
 
         #endregion Properties
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructs and returns a new instance of the <see cref="NetworkLog"/>
-        /// class, that monitors the given <see cref="Connection"/>.
-        /// </summary>
-        /// <param name="connection">
-        /// The <see cref="Connection"/> that the <see cref="NetworkLog"/> should
-        /// monitor for traffic, events and states.
-        /// </param>
-        public NetworkLog(Connection connection)
-        {
-            monitoredConnection = connection;
-        }
-
-        #endregion Constructors
 
         #region Methods
 

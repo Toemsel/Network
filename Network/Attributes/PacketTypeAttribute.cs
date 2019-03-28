@@ -102,15 +102,6 @@ namespace Network.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class PacketTypeAttribute : Attribute
     {
-        #region Properties
-
-        /// <summary>
-        /// The ID to use for the decorated <see cref="Packet"/>.
-        /// </summary>
-        public ushort Id { get; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <summary>
@@ -126,5 +117,14 @@ namespace Network.Attributes
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The ID to use for the decorated <see cref="Packet"/>.
+        /// </summary>
+        public ushort Id { get; }
+
+        #endregion Properties
     }
 }
