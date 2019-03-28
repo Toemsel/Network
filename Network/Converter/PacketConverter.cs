@@ -1,37 +1,4 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 07-24-2015
-//
-// Last Modified By : Thomas
-// Last Modified On : 28-09-2016
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2016
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Attributes;
+﻿using Network.Attributes;
 using Network.Extensions;
 using Network.Packets;
 using System;
@@ -46,7 +13,7 @@ namespace Network.Converter
     /// Implements <see cref="IPacketConverter"/>, and provides methods to serialise
     /// and deserialise a packet to and from its binary form.
     /// </summary>
-    public class PacketConverter : IPacketConverter
+    internal class PacketConverter : IPacketConverter
     {
         #region Variables
 
@@ -227,13 +194,13 @@ namespace Network.Converter
                 if (propertyValue != null) // not null non-primitive type value
                 {
                     // there is a value to read from the network stream
-                    binaryWriter.Write((byte)NetworkObjectState.NotNull);
+                    binaryWriter.Write((byte)ObjectState.NotNull);
                     SerialiseObjectToWriter(propertyValue, binaryWriter);
                 }
                 else // null non-primitive type value
                 {
                     // there isn't a value to read from the network stream
-                    binaryWriter.Write((byte)NetworkObjectState.Null);
+                    binaryWriter.Write((byte)ObjectState.Null);
                 }
             }
             // we have a primitive type
@@ -242,13 +209,13 @@ namespace Network.Converter
                 if (propertyValue != null) // not null primitive type value
                 {
                     // there is a value to read from the network stream
-                    binaryWriter.Write((byte)NetworkObjectState.NotNull);
+                    binaryWriter.Write((byte)ObjectState.NotNull);
                     SerialiseObjectToWriter(propertyValue, binaryWriter);
                 }
                 else // null primitive type value
                 {
                     // there isn't a value to read from the network stream
-                    binaryWriter.Write((byte)NetworkObjectState.Null);
+                    binaryWriter.Write((byte)ObjectState.Null);
                 }
             }
         }
@@ -396,14 +363,14 @@ namespace Network.Converter
         /// </remarks>
         private object DeserialiseObjectFromReader(object obj, BinaryReader binaryReader)
         {
-            PropertyInfo[] propertiesToSerialise = GetTypeProperties(obj.GetType());
+            PropertyInfo[] propertiesToDeserialise = GetTypeProperties(obj.GetType());
 
-            for (int i = 0; i < propertiesToSerialise.Length; ++i)
+            for (int i = 0; i < propertiesToDeserialise.Length; ++i)
             {
-                propertiesToSerialise[i].SetValue(
+                propertiesToDeserialise[i].SetValue(
                     obj,
                     DeserialiseObjectFromReader(
-                        obj, propertiesToSerialise[i], binaryReader));
+                        obj, propertiesToDeserialise[i], binaryReader));
             }
 
             return obj;
@@ -427,8 +394,8 @@ namespace Network.Converter
         /// </param>
         /// <returns>
         /// The <see cref="object"/> deserialised from the <see cref="MemoryStream"/>.
-        /// This can be null if the <see cref="NetworkObjectState"/> is
-        /// <see cref="NetworkObjectState.Null"/>.
+        /// This can be null if the <see cref="ObjectState"/> is
+        /// <see cref="ObjectState.Null"/>.
         /// </returns>
         private object DeserialiseObjectFromReader(
             object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
@@ -457,10 +424,10 @@ namespace Network.Converter
             // we have a non-primitive type
             if (!PacketConverterHelper.TypeIsPrimitive(propertyType))
             {
-                NetworkObjectState networkObjectState =
-                    (NetworkObjectState)binaryReader.ReadByte();
+                ObjectState objectState =
+                    (ObjectState)binaryReader.ReadByte();
 
-                if (networkObjectState == NetworkObjectState.NotNull)
+                if (objectState == ObjectState.NotNull)
                 {
                     // this will recursively deserialise all the properties
                     // that are made up of primitives (even complex types)
@@ -586,16 +553,16 @@ namespace Network.Converter
         /// The primitive object that was deserialised from the <see cref="MemoryStream"/>.
         /// </returns>
         /// <remarks>
-        /// This method can return 'null' if the <see cref="NetworkObjectState"/>
-        /// is <see cref="NetworkObjectState.Null"/>.
+        /// This method can return 'null' if the <see cref="ObjectState"/>
+        /// is <see cref="ObjectState.Null"/>.
         /// </remarks>
         private object ReadPrimitiveFromStream(
             PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
-            NetworkObjectState networkObjectState =
-                (NetworkObjectState)binaryReader.ReadByte();
+            ObjectState objectState =
+                (ObjectState)binaryReader.ReadByte();
 
-            if (networkObjectState == NetworkObjectState.NotNull)
+            if (objectState == ObjectState.NotNull)
             {
                 return ReadPrimitiveFromStream(
                     propertyInfo.PropertyType, binaryReader);
@@ -628,70 +595,91 @@ namespace Network.Converter
         {
             #region Reading Primitives From Stream
 
-            if (type == typeof(String))
-            {
-                return binaryReader.ReadString();
-            }
-
-            if (type == typeof(Int16))
-            {
-                return binaryReader.ReadInt16();
-            }
-
-            if (type == typeof(Int32))
-            {
-                return binaryReader.ReadInt32();
-            }
-
-            if (type == typeof(Int64))
-            {
-                return binaryReader.ReadInt64();
-            }
-
-            if (type == typeof(Boolean))
+            if (type == typeof(bool))
             {
                 return binaryReader.ReadBoolean();
             }
 
-            if (type == typeof(Byte))
+            #region Unsigned
+
+            if (type == typeof(byte))
             {
                 return binaryReader.ReadByte();
             }
 
-            if (type == typeof(Char))
-            {
-                return binaryReader.ReadChar();
-            }
-
-            if (type == typeof(Decimal))
-            {
-                return binaryReader.ReadDecimal();
-            }
-
-            if (type == typeof(Double))
-            {
-                return binaryReader.ReadDouble();
-            }
-
-            if (type == typeof(Single))
-            {
-                return binaryReader.ReadSingle();
-            }
-
-            if (type == typeof(UInt16))
+            if (type == typeof(ushort))
             {
                 return binaryReader.ReadUInt16();
             }
 
-            if (type == typeof(UInt32))
+            if (type == typeof(uint))
             {
                 return binaryReader.ReadUInt32();
             }
 
-            if (type == typeof(UInt64))
+            if (type == typeof(ulong))
             {
                 return binaryReader.ReadUInt64();
             }
+
+            #endregion Unsigned
+
+            #region Signed
+
+            if (type == typeof(sbyte))
+            {
+                return binaryReader.ReadSByte();
+            }
+
+            if (type == typeof(short))
+            {
+                return binaryReader.ReadInt16();
+            }
+
+            if (type == typeof(int))
+            {
+                return binaryReader.ReadInt32();
+            }
+
+            if (type == typeof(long))
+            {
+                return binaryReader.ReadInt64();
+            }
+
+            #endregion Signed
+
+            #region String
+
+            if (type == typeof(string))
+            {
+                return binaryReader.ReadString();
+            }
+
+            if (type == typeof(char))
+            {
+                return binaryReader.ReadChar();
+            }
+
+            #endregion String
+
+            #region Floating Point
+
+            if (type == typeof(float))
+            {
+                return binaryReader.ReadSingle();
+            }
+
+            if (type == typeof(double))
+            {
+                return binaryReader.ReadDouble();
+            }
+
+            if (type == typeof(decimal))
+            {
+                return binaryReader.ReadDecimal();
+            }
+
+            #endregion Floating Point
 
             #endregion Reading Primitives From Stream
 

@@ -1,37 +1,4 @@
-﻿#region Licence - LGPLv3
-
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 07-26-2015
-//
-// Last Modified By : Thomas
-// Last Modified On : 27-08-2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-
-#endregion Licence - LGPLv3
-
-using Network.Enums;
+﻿using Network.Enums;
 using Network.Interfaces;
 using Network.Packets;
 using Network.Utilities;
@@ -226,156 +193,170 @@ namespace Network
         /// Registers a packetHandler for TCP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void TCP_RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
+        public void TCP_RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.RegisterPacketHandler<T>(handler, obj);
-            else tcpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(T), handler, obj));
+            if (IsAlive_TCP) tcpConnection.RegisterPacketHandler<P>(handler, obj);
+            else tcpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(P), handler, obj));
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for TCP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void TCP_UnRegisterStaticPacketHandler<T>() where T : Packet
+        public void TCP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.DeregisterStaticPacketHandler<T>();
-            else tcpStaticUnPacketHandlerBuffer.Add(typeof(T));
+            if (IsAlive_TCP) tcpConnection.DeregisterStaticPacketHandler<P>();
+            else tcpStaticUnPacketHandlerBuffer.Add(typeof(P));
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for TCP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void TCP_UnRegisterPacketHandler<T>(object obj) where T : Packet
+        public void TCP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.DeregisterPacketHandler<T>(obj);
-            else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(T), obj));
+            if (IsAlive_TCP) tcpConnection.DeregisterPacketHandler<P>(obj);
+            else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
         }
 
         /// <summary>
         /// Registers a packetHandler for UDP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UDP_RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
+        public void UDP_RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.RegisterStaticPacketHandler<T>(handler);
-            else udpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(T), handler));
+            if (IsAlive_UDP) udpConnection.RegisterStaticPacketHandler<P>(handler);
+            else udpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(P), handler));
         }
 
         /// <summary>
         /// Registers a packetHandler for UDP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UDP_RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
+        public void UDP_RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.RegisterPacketHandler<T>(handler, obj);
-            else udpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(T), handler, obj));
+            if (IsAlive_UDP) udpConnection.RegisterPacketHandler<P>(handler, obj);
+            else udpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(P), handler, obj));
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for UDP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UDP_UnRegisterStaticPacketHandler<T>() where T : Packet
+        public void UDP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.DeregisterStaticPacketHandler<T>();
-            else udpStaticUnPacketHandlerBuffer.Add(typeof(T));
+            if (IsAlive_UDP) udpConnection.DeregisterStaticPacketHandler<P>();
+            else udpStaticUnPacketHandlerBuffer.Add(typeof(P));
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for UDP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void UDP_UnRegisterPacketHandler<T>(object obj) where T : Packet
+        public void UDP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.DeregisterPacketHandler<T>(obj);
-            else udpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(T), obj));
+            if (IsAlive_UDP) udpConnection.DeregisterPacketHandler<P>(obj);
+            else udpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
         }
 
         /// <summary>
         /// Registers a packetHandler for TCP and UDP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
+        public void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet
         {
-            TCP_RegisterStaticPacketHandler<T>(handler);
-            UDP_RegisterStaticPacketHandler<T>(handler);
+            TCP_RegisterStaticPacketHandler<P>(handler);
+            UDP_RegisterStaticPacketHandler<P>(handler);
         }
 
         /// <summary>
         /// Registers a packetHandler for TCP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void TCP_RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
+        public void TCP_RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.RegisterStaticPacketHandler<T>(handler);
-            else tcpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(T), handler));
+            if (IsAlive_TCP) tcpConnection.RegisterStaticPacketHandler<P>(handler);
+            else tcpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(P), handler));
         }
 
         /// <summary>
         /// Registers a packetHandler for TCP and UDP. This handler will be invoked if this connection
         /// receives the given type.
         /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
+        /// <typeparam name="P">The type we would like to receive.</typeparam>
         /// <param name="handler">The handler which should be invoked.</param>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
+        public void RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet
         {
-            TCP_RegisterPacketHandler<T>(handler, obj);
-            UDP_RegisterPacketHandler<T>(handler, obj);
+            TCP_RegisterPacketHandler<P>(handler, obj);
+            UDP_RegisterPacketHandler<P>(handler, obj);
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for TCP and UDP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void DeregisterStaticPacketHandler<T>() where T : Packet
+        public void DeregisterStaticPacketHandler<P>() where P : Packet
         {
-            TCP_UnRegisterStaticPacketHandler<T>();
-            UDP_UnRegisterStaticPacketHandler<T>();
+            TCP_UnRegisterStaticPacketHandler<P>();
+            UDP_UnRegisterStaticPacketHandler<P>();
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use 'DeregisterStaticPacketHandler' instead.")]
+        public void UnRegisterStaticPacketHandler<P>() where P : Packet
+        {
+            DeregisterStaticPacketHandler<P>();
         }
 
         /// <summary>
         /// UnRegisters a packetHandler for TCP and UDP. If this connection will receive the given type, it will be ignored,
         /// because there is no handler to invoke anymore.
         /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
+        /// <typeparam name="P">The type we dont want to receive anymore.</typeparam>
         /// <param name="obj">The object which wants to receive the packet.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void DeregisterPacketHandler<T>(object obj) where T : Packet
+        public void DeregisterPacketHandler<P>(object obj) where P : Packet
         {
-            TCP_UnRegisterPacketHandler<T>(obj);
-            UDP_UnRegisterPacketHandler<T>(obj);
+            TCP_UnRegisterPacketHandler<P>(obj);
+            UDP_UnRegisterPacketHandler<P>(obj);
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use 'DeregisterPacketHandler' instead.")]
+        public void UnRegisterPacketHandler<P>(object obj) where P : Packet
+        {
+            DeregisterPacketHandler<P>(obj);
         }
 
         /// <summary>
