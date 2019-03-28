@@ -88,11 +88,9 @@ namespace Network.Converter
         /// <inheritdoc />
         public Packet DeserialisePacket(Type packetType, byte[] serialisedPacket)
         {
-            MemoryStream memoryStream =
-                new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
+            MemoryStream memoryStream = new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
 
-            BinaryReader binaryReader =
-                new BinaryReader(memoryStream);
+            BinaryReader binaryReader = new BinaryReader(memoryStream);
 
             // temporary object whose properties will be set during deserialisation
             Packet packet = PacketConverterHelper.InstantiatePacket(packetType);
@@ -105,11 +103,9 @@ namespace Network.Converter
         /// <inheritdoc />
         public P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet
         {
-            MemoryStream memoryStream =
-                new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
+            MemoryStream memoryStream = new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
 
-            BinaryReader binaryReader =
-                new BinaryReader(memoryStream);
+            BinaryReader binaryReader = new BinaryReader(memoryStream);
 
             // temporary object whose properties will be set during deserialisation
             P packet = PacketConverterHelper.InstantiateGenericPacket<P>();
@@ -144,7 +140,7 @@ namespace Network.Converter
         {
             PropertyInfo[] propertiesToSerialise = GetTypeProperties(obj.GetType());
 
-            for (int i = 0; i < propertiesToSerialise.Length; ++i)
+            for (int i = 0; i < propertiesToSerialise.Length; i++)
             {
                 SerialiseObjectToWriter(obj, propertiesToSerialise[i], binaryWriter);
             }
@@ -365,7 +361,7 @@ namespace Network.Converter
         {
             PropertyInfo[] propertiesToDeserialise = GetTypeProperties(obj.GetType());
 
-            for (int i = 0; i < propertiesToDeserialise.Length; ++i)
+            for (int i = 0; i < propertiesToDeserialise.Length; i++)
             {
                 propertiesToDeserialise[i].SetValue(
                     obj,
