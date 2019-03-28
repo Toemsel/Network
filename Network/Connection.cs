@@ -293,7 +293,18 @@ namespace Network
         /// <summary>
         /// Gets all the packets we are listening to.
         /// </summary>
+        [Obsolete("Use 'BackupPacketHandler' instead")]
         internal PacketHandlerMap PacketHandlerMapper { get { return packetHandlerMap; } }
+
+        /// <summary>
+        /// Returns the current <see cref="PacketHandlerMap"/> instance, so that
+        /// the types of packets handled can be read.
+        /// </summary>
+        /// <returns>
+        /// The current <see cref="PacketHandlerMap"/> instance used by this
+        /// connection.
+        /// </returns>
+        public PacketHandlerMap BackupPacketHandler() => packetHandlerMap;
 
         /// <summary>
         /// Restores the packetHandler. Can only be called if the internal packetHandler is empty.
