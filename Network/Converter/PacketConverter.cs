@@ -204,9 +204,10 @@ namespace Network.Converter
             {
                 if (propertyValue != null) // not null primitive type value
                 {
-                    // there is a value to read from the network stream
+                    // There is a value to read from the network stream
                     binaryWriter.Write((byte)ObjectState.NotNull);
-                    SerialiseObjectToWriter(propertyValue, binaryWriter);
+                    // We write the value to the stream
+                    binaryWriter.Write(propertyValue);
                 }
                 else // null primitive type value
                 {
