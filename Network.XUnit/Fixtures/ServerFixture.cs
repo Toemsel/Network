@@ -1,29 +1,26 @@
 using System;
-using Network.Enums;
-
 namespace Network.XUnit.Fixtures
 {
-    public class ServerFixture : IDisposable
+    public abstract class ServerFixture<T> : IDisposable where T : ServerConnectionContainer
     {
-        private ServerConnectionContainer serverConnectionContainer;
-
         public readonly int Port;
 
         public readonly string Address;
+
+        protected T ServerConnectionContainer { get; private set; }
+
+        protected abstract ServerConnectionContainer CreateServerConnectionContainer();
 
         public ServerFixture()
         {
             Port = new Random().Next(1000, 50000);
             Address = "127.0.0.1";
 
-            serverConnectionContainer = ConnectionFactory.CreateServerConnectionContainer(Port, false);
-            serverConnectionContainer.AllowUDPConnections = true;
-            serverConnectionContainer.Start();
+            ServerConnectionContainer = (T)CreateServerConnectionContainer();
+            ServerConnectionContainer.AllowUDPConnections = true;
+            ServerConnectionContainer.Start();
         }
 
-        public void Dispose()
-        {
-            
-        }
+        public void Dispose() { }
     }
 }
