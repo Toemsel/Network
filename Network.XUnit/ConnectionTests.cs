@@ -3,41 +3,31 @@ using System;
 using Xunit;
 using Network;
 using Network.Enums;
+using Network.XUnit.Fixtures;
 
 namespace Network.XUnit
 {
-    public class ConnectionTests : IDisposable
+    public class ConnectionTests : IClassFixture<ServerFixture>
     {
-        private ServerConnectionContainer serverConnectionContainer;
+        private ServerFixture serverFixture;
 
-        public ConnectionTests()
-        {
-            serverConnectionContainer = Config.CreateServerConnectionContainer(true);
-            serverConnectionContainer.Start();
-        }
+        public ConnectionTests(ServerFixture ServerFixture) => serverFixture = ServerFixture;
 
         [Fact]
         public void TcpConnectionTest()
         {
-            TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection(Config.SERVER_ADDRESS, Config.SERVER_PORT, out ConnectionResult connectionResult);
+            TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult connectionResult);
             Assert.Equal(connectionResult, ConnectionResult.Connected);
         }
 
         [Fact]
         public void UdpConnectionTest()
         {
-            TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection(Config.SERVER_ADDRESS, Config.SERVER_PORT, out ConnectionResult tcpConnectionResult);
+            TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult tcpConnectionResult);
             UdpConnection udpConnectionh = ConnectionFactory.CreateUdpConnection(tcpConnection, out ConnectionResult udpConnectionResult);
 
             Assert.Equal(tcpConnectionResult, ConnectionResult.Connected);
             Assert.Equal(udpConnectionResult, ConnectionResult.Connected);
-        }
-
-        public void Dispose()
-        {
-            serverConnectionContainer.CloseConnections(CloseReason.ServerClosed);
-            serverConnectionContainer.Stop();
-            serverConnectionContainer = null;
         }
     }
 }
