@@ -249,23 +249,18 @@ namespace Network.Converter
             if (elementType.IsClass &&
                 !PacketConverterHelper.TypeIsPrimitive(elementType))
             {
-                array
-                    .GetEnumerator()
-                    .ToList<object>()
-                    .ForEach(element =>
-                    {
-                        SerialiseObjectToWriter(element, binaryWriter);
-                    });
+                foreach (object element in array)
+                {
+                    SerialiseObjectToWriter(element, binaryWriter);
+                }
             }
             else // primitive type
             {
-                array
-                    .GetEnumerator()
-                    .ToList<object>().ForEach(primitiveElement =>
-                    {
-                        dynamic primitiveValue = primitiveElement;
-                        binaryWriter.Write(primitiveValue);
-                    });
+                foreach (object primitiveElement in array)
+                {
+                    dynamic primitiveValue = primitiveElement;
+                    binaryWriter.Write(primitiveValue);
+                }
             }
         }
 
@@ -301,34 +296,30 @@ namespace Network.Converter
                 .CreateInstance(typeof(List<>)
                     .MakeGenericType(elementType));
 
-            ((IEnumerable)propertyInfo.GetValue(obj))
-                ?.GetEnumerator()
-                .ToList<object>()
-                .ForEach(o => list.Add(o));
+            IEnumerable currentList = (IEnumerable)propertyInfo.GetValue(obj);
+
+            foreach (object element in currentList)
+            {
+                list.Add(element);
+            }
 
             binaryWriter.Write(list.Count);
 
             if (elementType.IsClass &&
                 !PacketConverterHelper.TypeIsPrimitive(elementType))
             {
-                list
-                    .GetEnumerator()
-                    .ToList<object>()
-                    .ForEach(element =>
-                    {
-                        SerialiseObjectToWriter(element, binaryWriter);
-                    });
+                foreach (object element in list)
+                {
+                    SerialiseObjectToWriter(element, binaryWriter);
+                }
             }
             else // primitive type
             {
-                list
-                    .GetEnumerator()
-                    .ToList<object>()
-                    .ForEach(primitiveElement =>
-                    {
-                        dynamic primitiveValue = primitiveElement;
-                        binaryWriter.Write(primitiveValue);
-                    });
+                foreach (object primitiveElement in list)
+                {
+                    dynamic primitiveValue = primitiveElement;
+                    binaryWriter.Write(primitiveValue);
+                }
             }
         }
 
