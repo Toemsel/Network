@@ -13,7 +13,6 @@ namespace Network.XUnit
 
         public SendDataTypesTest(SecureServerFixture serverFixture) => this.serverFixture = serverFixture;
 
-        [Fact]
         public async Task TcpSendPrimitivesTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult connectionResult);
@@ -23,7 +22,6 @@ namespace Network.XUnit
             Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
 
-        [Fact]
         public async Task UdpSendPrimitivesTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult tcpConnectionResult);
@@ -35,7 +33,6 @@ namespace Network.XUnit
             Assert.Equal(simpleDataTypesResponse.State, PacketState.Success);
         }
 
-        [Fact]
         public async Task TcpSendNullablePrimitivesTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult connectionResult);
@@ -45,7 +42,6 @@ namespace Network.XUnit
             Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
 
-        [Fact]
         public async Task UdpSendNullablePrimitivesTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult tcpConnectionResult);
@@ -57,7 +53,6 @@ namespace Network.XUnit
             Assert.Equal(simpleDataTypesResponse.State, PacketState.Success);
         }
 
-        [Fact]
         public async Task TcpSendObjectDataTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult connectionResult);
@@ -67,7 +62,6 @@ namespace Network.XUnit
             Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
 
-        [Fact]
         public async Task UdpSendObjectDataTest()
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult tcpConnectionResult);
