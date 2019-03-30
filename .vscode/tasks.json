@@ -12,6 +12,16 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "Build XUnit",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Network.XUnit/Network.XUnit.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "Build Server",
             "command": "dotnet",
             "type": "process",

@@ -89,6 +89,7 @@ namespace Network.Async
             {
                 //Create an object without a constructor.
                 R emptyPacket = Activator.CreateInstance<R>();
+
                 emptyPacket.State = Enums.PacketState.Timeout;
                 return emptyPacket;
             }

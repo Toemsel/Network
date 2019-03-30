@@ -17,8 +17,6 @@ namespace NetworkTestClient
         public async void Demo()
 #pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         {
-            var tcpConnection = await ConnectionFactory.CreateTcpConnectionAsync("127.0.0.1", 1234);
-
             //1. Establish a connection to the server.
             ClientConnectionContainer container = ConnectionFactory.CreateClientConnectionContainer("127.0.0.1", 1234);
             //2. Register what happens if we get a connection
