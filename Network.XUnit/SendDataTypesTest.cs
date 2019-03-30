@@ -7,7 +7,7 @@ using Xunit;
 namespace Network.XUnit
 {
 
-    private class SendDataTypesTest : IClassFixture<SecureServerFixture>
+    public class SendDataTypesTest : IClassFixture<SecureServerFixture>
     {
         private SecureServerFixture serverFixture;
 
