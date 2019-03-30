@@ -16,7 +16,7 @@ namespace Network.XUnit
         {
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult connectionResult);
 
-            Assert.Equal(connectionResult, ConnectionResult.Connected);
+            Assert.Equal(ConnectionResult.Connected, connectionResult);
 
             tcpConnection.Close(CloseReason.ClientClosed);
         }
@@ -27,8 +27,8 @@ namespace Network.XUnit
             TcpConnection tcpConnection = ConnectionFactory.CreateSecureTcpConnection(serverFixture.Address, serverFixture.Port, out ConnectionResult tcpConnectionResult);
             UdpConnection udpConnectionh = ConnectionFactory.CreateSecureUdpConnection(tcpConnection, out ConnectionResult udpConnectionResult);
 
-            Assert.Equal(tcpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(udpConnectionResult, ConnectionResult.Connected);
+            Assert.Equal(ConnectionResult.Connected, tcpConnectionResult);
+            Assert.Equal(ConnectionResult.Connected, udpConnectionResult);
 
             tcpConnection.Close(CloseReason.ClientClosed);
             udpConnectionh.Close(CloseReason.ClientClosed);
@@ -39,7 +39,7 @@ namespace Network.XUnit
         {
             var connectionResult = await ConnectionFactory.CreateSecureTcpConnectionAsync(serverFixture.Address, serverFixture.Port);
 
-            Assert.Equal(connectionResult.Item2, ConnectionResult.Connected);
+            Assert.Equal(ConnectionResult.Connected, connectionResult.Item2);
 
             connectionResult.Item1.Close(CloseReason.ClientClosed);
         }
@@ -50,8 +50,8 @@ namespace Network.XUnit
             var tcpConnectionResult = await ConnectionFactory.CreateSecureTcpConnectionAsync(serverFixture.Address, serverFixture.Port);
             var udpConnectionResult = await ConnectionFactory.CreateSecureUdpConnectionAsync(tcpConnectionResult.Item1);
 
-            Assert.Equal(tcpConnectionResult.Item2, ConnectionResult.Connected);
-            Assert.Equal(udpConnectionResult.Item2, ConnectionResult.Connected);
+            Assert.Equal(ConnectionResult.Connected, tcpConnectionResult.Item2);
+            Assert.Equal(ConnectionResult.Connected, udpConnectionResult.Item2);
 
             tcpConnectionResult.Item1.Close(CloseReason.ClientClosed);
             udpConnectionResult.Item1.Close(CloseReason.ClientClosed);

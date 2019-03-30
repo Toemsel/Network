@@ -88,6 +88,7 @@ namespace Network.Async
             //No answer from the endPoint
             if (receivedAsyncPacket == null)
             {
+                //! Create an object without a constructor!
                 T emptyPacket = Activator.CreateInstance<T>();
                 emptyPacket.State = Enums.PacketState.Timeout;
                 return emptyPacket;

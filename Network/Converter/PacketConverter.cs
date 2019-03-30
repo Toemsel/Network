@@ -282,6 +282,13 @@ namespace Network.Converter
         /// <returns>System.Object.</returns>
         private object ReadPrimitiveFromStream(Type type, BinaryReader binaryReader)
         {
+            Type underlyingNullableType = Nullable.GetUnderlyingType(type);
+
+            // we do have a nullable as an underlying type.
+            // Hence, we have to readjust our type value.
+            if(underlyingNullableType != null)
+                type = underlyingNullableType;
+
             if (type.Equals(typeof(String)))
                 return binaryReader.ReadString();
             else if (type.Equals(typeof(Int16)))
