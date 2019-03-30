@@ -74,6 +74,13 @@ namespace Network.Converter
         }
 
         /// <inheritdoc />
+        [Obsolete("Use 'SerialisePacket' instead.")]
+        public byte[] GetBytes(Packet packet)
+        {
+            return SerialisePacket(packet);
+        }
+
+        /// <inheritdoc />
         public byte[] SerialisePacket<P>(P packet) where P : Packet
         {
             MemoryStream memoryStream = new MemoryStream();
@@ -97,6 +104,13 @@ namespace Network.Converter
             DeserialiseObjectFromReader(packet, binaryReader);
 
             return packet;
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use 'DeserialisePacket' instead.")]
+        public Packet GetPacket(Type packetType, byte[] serialisedPacket)
+        {
+            return DeserialisePacket(packetType, serialisedPacket);
         }
 
         /// <inheritdoc />
@@ -581,6 +595,14 @@ namespace Network.Converter
         private object ReadPrimitiveFromStream(Type type, BinaryReader binaryReader)
         {
             #region Reading Primitives From Stream
+
+            //Handling the case where a nullable type gets sent
+            Type underlyingNullableType = Nullable.GetUnderlyingType(type);
+
+            if (underlyingNullableType != null)
+            {
+                type = underlyingNullableType;
+            }
 
             if (type == typeof(bool))
             {

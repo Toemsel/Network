@@ -20,6 +20,14 @@ namespace Network.Converter
         byte[] SerialisePacket(Packet packet);
 
         /// <summary>
+        /// Serialises a given packet to a byte array.
+        /// </summary>
+        /// <param name="packet">The packet to convert.</param>
+        /// <returns>System.Byte[].</returns>
+        [Obsolete("Use 'SerialisePacket' instead.")]
+        byte[] GetBytes(Packet packet);
+
+        /// <summary>
         /// Serialises the given packet of the given type to a byte array.
         /// </summary>
         /// <typeparam name="P">
@@ -47,6 +55,22 @@ namespace Network.Converter
         /// The deserialised packet object of the given type.
         /// </returns>
         Packet DeserialisePacket(Type packetType, byte[] serialisedPacket);
+
+        /// <summary>
+        /// Deserialises the given data byte array into an object of the given
+        /// type.
+        /// </summary>
+        /// <param name="packetType">
+        /// The type of object to deserialise the byte array to.
+        /// </param>
+        /// <param name="serialisedPacket">
+        /// The byte array holding the serialised packet.
+        /// </param>
+        /// <returns>
+        /// The deserialised packet object of the given type.
+        /// </returns>
+        [Obsolete("Use 'DeserialisePacket' instead.")]
+        Packet GetPacket(Type packetType, byte[] serialisedPacket);
 
         /// <summary>
         /// Deserialises the given byte array into an object of the given type.

@@ -1,4 +1,6 @@
-﻿namespace Network.Converter
+﻿using System;
+
+namespace Network.Converter
 {
     /// <summary>
     /// The possible states of a network object before and after deserialisation.
@@ -14,6 +16,7 @@
         /// <summary>
         /// Identical to <see cref="Null"/>.
         /// </summary>
+        [Obsolete("Use 'Null' instead.")]
         NULL = Null,
 
         /// <summary>
@@ -25,6 +28,7 @@
         /// <summary>
         /// Identical to <see cref="NotNull"/>.
         /// </summary>
+        [Obsolete("Use 'NotNull' instead.")]
         NOT_NULL = NotNull,
     }
 }

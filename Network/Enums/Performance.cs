@@ -1,16 +1,24 @@
-﻿namespace Network.Enums
+﻿using System;
+
+namespace Network.Enums
 {
     /// <summary>
     /// Enumerates the possible values for sleep intervals.
     /// Fastest Performance >> Slowest Performance :
     /// SoftRealtime        >> EnergySaving
     /// </summary>
-    public enum Performance : int
+    public enum Performance
     {
         /// <summary>
         /// Sleep intervals of more than 500ms.
         /// </summary>
         EnergySaving = 500,
+
+        /// <summary>
+        /// Identical to <see cref="EnergySaving"/>.
+        /// </summary>
+        [Obsolete("Use 'EnergySaving' instead.")]
+        Energy_Saving = EnergySaving,
 
         /// <summary>
         /// Sleep intervals of more than 100ms.
@@ -36,6 +44,12 @@
         /// <summary>
         /// Sleep interval of more than 1ms.
         /// </summary>
-        SoftRealtime = 1
+        SoftRealtime = 1,
+
+        /// <summary>
+        /// Identical to <see cref="SoftRealtime"/>.
+        /// </summary>
+        [Obsolete("Use 'SoftRealtime' instead.")]
+        Soft_Realtime = SoftRealtime,
     }
 }

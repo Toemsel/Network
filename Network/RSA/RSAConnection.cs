@@ -197,6 +197,22 @@ namespace Network.RSA
         /// Serialises the given <see cref="Packet"/>, and encrypts the resulting
         /// bytes using the private RSA key and the <see cref="EncryptionProvider"/>.
         /// </summary>
+        /// <param name="packet">
+        /// The <see cref="Packet"/> object to serialise.
+        /// </param>
+        /// <returns>
+        /// The RSA encrypted bytes that represent the given packet.
+        /// </returns>
+        [Obsolete("Use 'SerialisePacket' instead.")]
+        public byte[] GetBytes(Packet packet)
+        {
+            return SerialisePacket(packet);
+        }
+
+        /// <summary>
+        /// Serialises the given <see cref="Packet"/>, and encrypts the resulting
+        /// bytes using the private RSA key and the <see cref="EncryptionProvider"/>.
+        /// </summary>
         /// <typeparam name="P">
         /// The type of the packet to serialise.
         /// </typeparam>
@@ -240,6 +256,25 @@ namespace Network.RSA
 
             return isRSACommunicationActive ? PacketConverter.DeserialisePacket(packetType, DecryptBytes(data))
                 : PacketConverter.DeserialisePacket(packetType, data);
+        }
+
+        /// <summary>
+        /// Deserialises the given encrypted bytes into a <see cref="Packet"/>
+        /// of the given type.
+        /// </summary>
+        /// <param name="packetType">
+        /// The type of packet to deserialise the bytes to.
+        /// </param>
+        /// <param name="serialisedPacket">
+        /// The RSA encrypted bytes to deserialise.
+        /// </param>
+        /// <returns>
+        /// The deserialised <see cref="Packet"/> object.
+        /// </returns>
+        [Obsolete("Use 'DeserialisePacket' instead.")]
+        public Packet GetPacket(Type packetType, byte[] serialisedPacket)
+        {
+            return DeserialisePacket(packetType, serialisedPacket);
         }
 
         /// <summary>
