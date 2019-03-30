@@ -1,73 +1,58 @@
-﻿#region Licence - LGPLv3
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 29.09.2018
-//
-// Last Modified By : Thomas
-// Last Modified On : 29.09.2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-#endregion Licence - LGPLv3
+﻿using Network.Packets;
 using Network.RSA;
 using System.Security.Cryptography;
 
 namespace Network.Interfaces
 {
     /// <summary>
-    /// A connection supporting RSA en/decryption.
+    /// Describes the properties and methods that a class must implement to be
+    /// able to communicate via secure, RSA encrypted messages.
     /// </summary>
-    internal interface IRSAConnection : IRSACapability
+    public interface IRSAConnection : IRSACapability
     {
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the encryption provider.
+        /// Provides RSA encryption services, to encrypt serialised <see cref="Packet"/>s.
         /// </summary>
-        /// <value>The encryption provider.</value>
         RSACryptoServiceProvider EncryptionProvider { get; set; }
 
         /// <summary>
-        /// Gets or sets the decryption provider.
+        /// Provides RSA decryption services, to decrypt serialised <see cref="Packet"/>s.
         /// </summary>
-        /// <value>The decryption provider.</value>
         RSACryptoServiceProvider DecryptionProvider { get; set; }
 
-        /// <summary>
-        /// Gets or sets the communication partner's RSA pair.
-        /// </summary>
-        /// <value>The communication partner RSA pair.</value>
+        /// <inheritdoc cref="IRSACapability.RSAPair"/>
         RSAPair CommunicationPartnerRSAPair { get; set; }
 
-        /// <summary>
-        /// Encrypts bytes with the <see cref="RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The Bytes to encrypt.</param>
-        /// <returns>The encrypted bytes.</returns>
-        byte[] Encrypt(byte[] bytes);
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
-        /// Decrypt bytes with the <see cref="RSACryptoServiceProvider" />
+        /// Encrypts the given byte array using the <see cref="EncryptionProvider"/>
+        /// and returns the encrypted version.
         /// </summary>
-        /// <param name="bytes">The bytes to decrypt.</param>
-        /// <returns>The decrypted bytes.</returns>
-        byte[] Decrypt(byte[] bytes);
+        /// <param name="bytes">
+        /// The original, plaintext byte array.
+        /// </param>
+        /// <returns>
+        /// The encrypted byte array.
+        /// </returns>
+        byte[] EncryptBytes(byte[] bytes);
+
+        /// <summary>
+        /// Decrypts the given byte array using the <see cref="DecryptionProvider"/>
+        /// and returns the plaintext version.
+        /// </summary>
+        /// <param name="bytes">
+        /// The encrypted byte array.
+        /// </param>
+        /// <returns>
+        /// The original, plaintext byte array.
+        /// </returns>
+        byte[] DecryptBytes(byte[] bytes);
+
+        #endregion Methods
     }
 }

@@ -1,37 +1,10 @@
-﻿#region Licence - LGPLv3
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 07-24-2015
-//
-// Last Modified By : Thomas
-// Last Modified On : 29-09-2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-#endregion Licence - LGPLv3
-#if NET46
+﻿#if NET46
+
 using InTheHand.Net.Sockets;
 using Network.Bluetooth;
+
 #endif
+
 using Network.RSA;
 using System;
 using System.Net.Sockets;
@@ -50,11 +23,13 @@ namespace Network
         /// A connection could be established
         /// </summary>
         Connected,
+
         /// <summary>
         /// A connection couldn't be established.
         /// IP + Port correct? Firewall rules?
         /// </summary>
         Timeout,
+
         /// <summary>
         /// Could not establish a UDP connection.
         /// The depending TCP connection is not alive.
@@ -73,6 +48,7 @@ namespace Network
         public const int CONNECTION_TIMEOUT = 8000;
 
 #if NET46
+
         /// <summary>
         /// The GUID of this assembly, needed for bluetooth connections.
         /// </summary>
@@ -134,6 +110,7 @@ namespace Network
         {
             return new BluetoothConnection(bluetoothClient);
         }
+
 #endif
 
         /// <summary>
@@ -350,6 +327,7 @@ namespace Network
             if (udpConnection == null && cancellationToken.IsCancellationRequested) connectionResult = ConnectionResult.Timeout;
             return new Tuple<UdpConnection, ConnectionResult>(udpConnection, connectionResult);
         }
+
         /// <summary>
         /// Creates a new instance of a udp connection async.
         /// </summary>
@@ -441,7 +419,7 @@ namespace Network
         /// <exception cref="System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
         public static ClientConnectionContainer CreateClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection)
         {
-            if (tcpConnection == null ||!tcpConnection.IsAlive)
+            if (tcpConnection == null || !tcpConnection.IsAlive)
                 throw new ArgumentException("TCP connection must be connected to an endpoint.");
 
             var clientConnectionContainer = new ClientConnectionContainer(tcpConnection, udpConnection);

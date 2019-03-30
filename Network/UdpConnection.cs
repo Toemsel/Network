@@ -1,42 +1,11 @@
-﻿#region Licence - LGPLv3
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 07-24-2015
-//
-// Last Modified By : Thomas
-// Last Modified On : 07-26-2015
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-#endregion Licence - LGPLv3
-using System;
+﻿using Network.Enums;
+using Network.Extensions;
+using Network.Packets;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Network.Enums;
-using Network.Extensions;
-using Network.Packets;
 
 namespace Network
 {
@@ -79,13 +48,13 @@ namespace Network
             socket.SendTimeout = 0;
             socket.ReceiveTimeout = 0;
 
-            if(IsWindows)
+            if (IsWindows)
                 socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply
             //additional settings before starting the network comm.
-            if(!skipInitializationProcess)
+            if (!skipInitializationProcess)
                 Init();
         }
 
@@ -162,7 +131,7 @@ namespace Network
 
         /// <summary>
         /// Measures the RTT of the UDP connection.
-        /// Receiving a result 
+        /// Receiving a result
         /// </summary>
         /// <param name="rttResult">The RTT result.</param>
         public void MeasureRTT()
@@ -236,7 +205,7 @@ namespace Network
         }
 
         /// <summary>
-        /// The objectMap has been refreshed.
+        /// The packetHandlerMap has been refreshed.
         /// </summary>
         public override void ObjectMapRefreshed()
         {

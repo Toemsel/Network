@@ -32,6 +32,12 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
      <AssemblyVersion>6.1.0.7</AssemblyVersion>
      <FileVersion>6.1.0.7</FileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <DocumentationFile>.\.\Network.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>.\.\Network.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
     <EmbeddedResource Remove="packages\**" />
@@ -43,6 +49,7 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
     <PackageReference Include="ConsoleTables" Version="2.2.0" />
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
@@ -56,5 +63,11 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' ">
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Network.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

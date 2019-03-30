@@ -51,7 +51,7 @@ namespace Network
         /// and provide a null reference as stream. Stream hot swapping is supported.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
-        public void LogIntoStream(Stream stream) => logger.LogIntoStream(stream);    
+        public void LogIntoStream(Stream stream) => logger.SetOutputStream(stream);
 
         /// <summary>
         /// Indicates if the connection should automatically log.
@@ -70,7 +70,7 @@ namespace Network
         /// <param name="data">The data to send.</param>
         public void SendRawData(string key, byte[] data)
         {
-            if(data == null)
+            if (data == null)
             {
                 logger.Log("Can't send a null reference data byte array", new ArgumentException(), Enums.LogLevel.Information);
                 return;

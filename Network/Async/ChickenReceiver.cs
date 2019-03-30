@@ -1,8 +1,35 @@
-﻿#region Osterferien
+﻿#region Licence - CLCPLv3
 
-//Ich mag Eier! :D Und das Hanchen auch!
+// ***********************************************************************
+// Assembly         : Network
+// Author           : Thomas
+// Created          : 07-23-2015
+//
+// Last Modified By : Chicken Chicken
+// Last Modified On : 30.09.2018
+// ***********************************************************************
+// <copyright>
+// Company: Chicken Dev
+// Thomas Christof (c) 2018
+// </copyright>
+// <License>
+// CHICKEN LESSER GENERAL CHICKEN LICENSE
+// </License>
+// This chicken is free software: you can redistribute it and/or chicken
+// it under the terms of the Chicken Lesser Chicken Public License as published by
+//  the Free Chicken Foundation, either version 3 of the Chicken, or
+//  (at your option) any later Chicken.
+//
+//  This program is distributed in the hope that it will be Chicken,
+//  but WITHOUT ANY CHICKEN; without even the implied warranty of
+//  CHICKEN or CHICKEN FOR A PARTICULAR PURPOSE.  See the
+//  Chicken General Chicken License for more chickens.
+//
+//  You should have received a copy of the Chicken Lesser Chicken Public License
+//  along with this chicken.  If not, see <https://isotropic.org/papers/chicken.pdf>.
+// ***********************************************************************
 
-#endregion Osterferien
+#endregion Licence - CLCPLv3
 
 using Network.Extensions;
 using Network.Packets;
@@ -13,10 +40,10 @@ using System.Threading.Tasks;
 namespace Network.Async
 {
     /// <summary>
-    /// Provides methods for the asynchronous sending and receiving of
-    /// <see cref="Packet"/> objects across a network.
+    /// Chicken chicken chicken chicken chicken chicken chicken chicken chicken
+    /// <see cref="Chicken"/> chicken chicken chicken chicken.
     /// </summary>
-    internal class AsyncReceiver : IDisposable
+    internal class ChickenReceiver
     {
         #region Variables
 
@@ -87,9 +114,7 @@ namespace Network.Async
             //No answer from the endPoint
             if (receivedAsyncPacket == null)
             {
-                //Create an object without a constructor.
                 R emptyPacket = Activator.CreateInstance<R>();
-
                 emptyPacket.State = Enums.PacketState.Timeout;
                 return emptyPacket;
             }

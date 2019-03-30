@@ -1,35 +1,6 @@
-﻿#region Licence - LGPLv3
-// ***********************************************************************
-// Assembly         : Network
-// Author           : Thomas
-// Created          : 29.09.2018
-//
-// Last Modified By : Thomas
-// Last Modified On : 29.09.2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-#endregion Licence - LGPLv3
-using Network.Converter;
+﻿using Network.Converter;
 using Network.Interfaces;
+using Network.Packets;
 using Network.Packets.RSA;
 using System;
 using System.Security.Cryptography;
@@ -37,15 +8,34 @@ using System.Security.Cryptography;
 namespace Network.RSA
 {
     /// <summary>
-    /// A RSAConnection contains all required information to handle RSA encrypted data.
+    /// Provides RSA encryption and decryption facilities to a <see cref="Network.Connection"/>,
+    /// allowing encrypted communication.
     /// </summary>
-    /// <seealso cref="Network.Interfaces.IRSACapability" />
-    /// <seealso cref="Network.Interfaces.IRSAConnection" />
+    /// <seealso cref="IRSACapability" />
+    /// <seealso cref="IRSAConnection" />
     internal class RSAConnection : IPacketConverter, IRSACapability, IRSAConnection
     {
-        private volatile RSAPair communicationPartnerRSAPair;
+        #region Variables
+
+        /// <summary>
+        /// The <see cref="Network.RSA.RSAPair"/> for the remote communication
+        /// partner.
+        /// </summary>
+        private volatile RSAPair remoteRSAKeyPair;
+
+        /// <summary>
+        /// The RSA encryption provider for encrypting packets.
+        /// </summary>
         private volatile RSACryptoServiceProvider encryptionProvider;
+
+        /// <summary>
+        /// Whether RSA encryption is active on this connection.
+        /// </summary>
         private volatile bool isRSACommunicationActive = false;
+
+        #endregion Variables
+
+        #region Constructors
 
         public RSAConnection(Connection connection, RSAPair rsaPair)
         {
@@ -53,7 +43,7 @@ namespace Network.RSA
             RSAPair = rsaPair;
 
             DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
-            Extensions.RSACryptoServiceProviderExtensions.FromXmlString(DecryptionProvider, RSAPair.Private);
+            Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
 
             //Are we running on WinXP or higher?
             OperatingSystem operatingSystem = Environment.OSVersion;
@@ -65,6 +55,14 @@ namespace Network.RSA
             ExchangePublicKeys();
         }
 
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// The underlying <see cref="Network.Connection"/> object that allows
+        /// communication across the network.
+        /// </summary>
         private Connection Connection { get; set; }
 
         /// <summary>
@@ -72,8 +70,8 @@ namespace Network.RSA
         /// Take care that the internal packet structure should still remain the same:
         ///     1. [16bits]  packet type
         ///     2. [32bits]  packet length
-        ///     3. [xxbits]  packet data
-        /// The default packetConverter uses reflection to get and set data within objects.
+        ///     3. [xxbits]  packet serialisedPacket
+        /// The default packetConverter uses reflection to get and set serialisedPacket within objects.
         /// Using your own packetConverter could result in a higher throughput.
         /// </summary>
         public IPacketConverter PacketConverter { get; set; }
@@ -95,8 +93,8 @@ namespace Network.RSA
         /// <value>The communication partner RSA pair.</value>
         public RSAPair CommunicationPartnerRSAPair
         {
-            get => communicationPartnerRSAPair;
-            set => communicationPartnerRSAPair = value;
+            get => remoteRSAKeyPair;
+            set => remoteRSAKeyPair = value;
         }
 
         /// <summary>
@@ -128,8 +126,12 @@ namespace Network.RSA
             private set => isRSACommunicationActive = value;
         }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
-        /// Initializes the RSA communication data.
+        /// Initializes the RSA communication serialisedPacket.
         /// Sends our information to the communication partner.
         /// Subscribes to the RSA packet events.
         /// </summary>
@@ -141,7 +143,7 @@ namespace Network.RSA
 
                 CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
                 EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
-                Extensions.RSACryptoServiceProviderExtensions.FromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
+                Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
 
                 connection.Send(new RSAKeyInformationResponse(RSAPair.Public, RSAPair.KeySize, rsaKeyRequest));
             });
@@ -157,27 +159,34 @@ namespace Network.RSA
         /// </summary>
         /// <param name="bytes">The bytes to decrypt.</param>
         /// <returns>The decrypted bytes.</returns>
-        public byte[] Decrypt(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
+        public byte[] DecryptBytes(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
 
         /// <summary>
         /// Encrypts bytes with the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider" />
         /// </summary>
         /// <param name="bytes">The Bytes to encrypt.</param>
         /// <returns>The encrypted bytes.</returns>
-        public byte[] Encrypt(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
+        public byte[] EncryptBytes(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
+
+        #region Implementation of IPacketConverter
 
         /// <summary>
-        /// Gets the encrypted bytes of a <see cref="Packet"/>
+        /// Serialises the given <see cref="Packet"/>, and encrypts the resulting
+        /// bytes using the private RSA key and the <see cref="EncryptionProvider"/>.
         /// </summary>
-        /// <param name="packet">The packet to encrypt.</param>
-        /// <returns>The encrypted Packet.</returns>
-        public byte[] GetBytes(Packet packet)
+        /// <param name="packet">
+        /// The <see cref="Packet"/> object to serialise.
+        /// </param>
+        /// <returns>
+        /// The RSA encrypted bytes that represent the given packet.
+        /// </returns>
+        public byte[] SerialisePacket(Packet packet)
         {
             bool isRSACommunicationActive = IsRSACommunicationActive;
-            byte[] unEncryptedData = PacketConverter.GetBytes(packet);
+            byte[] unEncryptedData = PacketConverter.SerialisePacket(packet);
 
             byte[] rsaStatus = BitConverter.GetBytes(isRSACommunicationActive);
-            byte[] packetData = isRSACommunicationActive ? Encrypt(unEncryptedData) : unEncryptedData;
+            byte[] packetData = isRSACommunicationActive ? EncryptBytes(unEncryptedData) : unEncryptedData;
             byte[] packetDataWithStatus = new byte[packetData.Length + 1];
             Array.Copy(rsaStatus, 0, packetDataWithStatus, 0, 1);
             Array.Copy(packetData, 0, packetDataWithStatus, 1, packetData.Length);
@@ -185,19 +194,115 @@ namespace Network.RSA
         }
 
         /// <summary>
-        /// Gets the encrypted packet of bytes.
+        /// Serialises the given <see cref="Packet"/>, and encrypts the resulting
+        /// bytes using the private RSA key and the <see cref="EncryptionProvider"/>.
         /// </summary>
-        /// <param name="packetType">The packetType to encrypt.</param>
-        /// <param name="data">The encrypted byte sequence.</param>
-        /// <returns>A <see cref="Packet" /> object.</returns>
-        public Packet GetPacket(Type packetType, byte[] rawData)
+        /// <param name="packet">
+        /// The <see cref="Packet"/> object to serialise.
+        /// </param>
+        /// <returns>
+        /// The RSA encrypted bytes that represent the given packet.
+        /// </returns>
+        [Obsolete("Use 'SerialisePacket' instead.")]
+        public byte[] GetBytes(Packet packet)
         {
-            bool isRSACommunicationActive = rawData[0] == 1;
-            byte[] data = new byte[rawData.Length - 1];
-            Array.Copy(rawData, 1, data, 0, data.Length);
-
-            return isRSACommunicationActive ? PacketConverter.GetPacket(packetType, Decrypt(data))
-                : PacketConverter.GetPacket(packetType, data);
+            return SerialisePacket(packet);
         }
+
+        /// <summary>
+        /// Serialises the given <see cref="Packet"/>, and encrypts the resulting
+        /// bytes using the private RSA key and the <see cref="EncryptionProvider"/>.
+        /// </summary>
+        /// <typeparam name="P">
+        /// The type of the packet to serialise.
+        /// </typeparam>
+        /// <param name="packet">
+        /// The <see cref="Packet"/> object to serialise.
+        /// </param>
+        /// <returns>
+        /// The RSA encrypted bytes that represent the given packet.
+        /// </returns>
+        public byte[] SerialisePacket<P>(P packet) where P : Packet
+        {
+            bool isRSACommunicationActive = IsRSACommunicationActive;
+            byte[] unEncryptedData = PacketConverter.SerialisePacket(packet);
+
+            byte[] rsaStatus = BitConverter.GetBytes(isRSACommunicationActive);
+            byte[] packetData = isRSACommunicationActive ? EncryptBytes(unEncryptedData) : unEncryptedData;
+            byte[] packetDataWithStatus = new byte[packetData.Length + 1];
+            Array.Copy(rsaStatus, 0, packetDataWithStatus, 0, 1);
+            Array.Copy(packetData, 0, packetDataWithStatus, 1, packetData.Length);
+            return packetDataWithStatus;
+        }
+
+        /// <summary>
+        /// Deserialises the given encrypted bytes into a <see cref="Packet"/>
+        /// of the given type.
+        /// </summary>
+        /// <param name="packetType">
+        /// The type of packet to deserialise the bytes to.
+        /// </param>
+        /// <param name="serialisedPacket">
+        /// The RSA encrypted bytes to deserialise.
+        /// </param>
+        /// <returns>
+        /// The deserialised <see cref="Packet"/> object.
+        /// </returns>
+        public Packet DeserialisePacket(Type packetType, byte[] serialisedPacket)
+        {
+            bool isRSACommunicationActive = serialisedPacket[0] == 1;
+            byte[] data = new byte[serialisedPacket.Length - 1];
+            Array.Copy(serialisedPacket, 1, data, 0, data.Length);
+
+            return isRSACommunicationActive ? PacketConverter.DeserialisePacket(packetType, DecryptBytes(data))
+                : PacketConverter.DeserialisePacket(packetType, data);
+        }
+
+        /// <summary>
+        /// Deserialises the given encrypted bytes into a <see cref="Packet"/>
+        /// of the given type.
+        /// </summary>
+        /// <param name="packetType">
+        /// The type of packet to deserialise the bytes to.
+        /// </param>
+        /// <param name="serialisedPacket">
+        /// The RSA encrypted bytes to deserialise.
+        /// </param>
+        /// <returns>
+        /// The deserialised <see cref="Packet"/> object.
+        /// </returns>
+        [Obsolete("Use 'DeserialisePacket' instead.")]
+        public Packet GetPacket(Type packetType, byte[] serialisedPacket)
+        {
+            return DeserialisePacket(packetType, serialisedPacket);
+        }
+
+        /// <summary>
+        /// Deserialises the given encrypted bytes into a <see cref="Packet"/>
+        /// of the given type.
+        /// </summary>
+        /// <typeparam name="P">
+        /// The type of packet to deserialise the bytes to.
+        /// </typeparam>
+        /// <param name="serialisedPacket">
+        /// The RSA encrypted bytes to deserialise.
+        /// </param>
+        /// <returns>
+        /// The deserialised <see cref="Packet"/> object.
+        /// </returns>
+        public P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet
+        {
+            bool isRSACommunicationActive = serialisedPacket[0] == 1;
+            byte[] data = new byte[serialisedPacket.Length - 1];
+            Array.Copy(serialisedPacket, 1, data, 0, data.Length);
+
+            return isRSACommunicationActive ?
+                PacketConverter.DeserialisePacket<P>(DecryptBytes(data))
+                : PacketConverter.DeserialisePacket<P>(data);
+        }
+
+        #endregion Implementation of IPacketConverter
+
+        #endregion Methods
     }
 }

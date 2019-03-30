@@ -1,34 +1,4 @@
-﻿#region Licence - LGPLv3
-// ***********************************************************************
-// Assembly         : NetworkTestServer
-// Author           : Thomas Christof
-// Created          : 27.08.2018
-//
-// Last Modified By : Thomas Christof
-// Last Modified On : 27.08.2018
-// ***********************************************************************
-// <copyright>
-// Company: Indie-Dev
-// Thomas Christof (c) 2018
-// </copyright>
-// <License>
-// GNU LESSER GENERAL PUBLIC LICENSE
-// </License>
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ***********************************************************************
-#endregion Licence - LGPLv3
-using Network;
+﻿using Network;
 using Network.Enums;
 using Network.Extensions;
 using System;
@@ -56,6 +26,7 @@ namespace NetworkTestServer
 
             //2. Apply optional settings.
             #region Optional settings
+
             serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             serverConnectionContainer.ConnectionEstablished += connectionEstablished;
 #if NET46
@@ -63,6 +34,7 @@ namespace NetworkTestServer
 #endif
             serverConnectionContainer.AllowUDPConnections = true;
             serverConnectionContainer.UDPConnectionLimit = 2;
+
             #endregion Optional settings
 
             //Call start here, because we had to enable the bluetooth property at first.

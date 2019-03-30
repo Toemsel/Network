@@ -1,21 +1,34 @@
-﻿namespace Network.Converter
+﻿using System;
+
+namespace Network.Converter
 {
     /// <summary>
-    /// The possible states of a network object.
+    /// The possible states of a network object before and after deserialisation.
     /// </summary>
     public enum ObjectState : byte
     {
         /// <summary>
-        /// The object is null.
-        /// We didn't write something on the stream.
-        /// So we cant read anything from the stream.
+        /// The network object is null, so there is nothing to read from the
+        /// network stream.
         /// </summary>
-        NULL = 0x00,
+        Null = 0x00,
+
         /// <summary>
-        /// The object is not null.
-        /// We wrote something on the stream.
-        /// So we can read something from the stream.
+        /// Identical to <see cref="Null"/>.
         /// </summary>
-        NOT_NULL = 0xFF
+        [Obsolete("Use 'Null' instead.")]
+        NULL = Null,
+
+        /// <summary>
+        /// The network object is not null, so there is something to read from
+        /// the network stream.
+        /// </summary>
+        NotNull = 0xFF,
+
+        /// <summary>
+        /// Identical to <see cref="NotNull"/>.
+        /// </summary>
+        [Obsolete("Use 'NotNull' instead.")]
+        NOT_NULL = NotNull,
     }
 }

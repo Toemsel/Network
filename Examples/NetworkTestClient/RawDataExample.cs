@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
-using Network;
+﻿using Network;
 using Network.Converter;
+using System;
+using System.Text;
 
 namespace NetworkTestClient
 {
@@ -20,7 +20,7 @@ namespace NetworkTestClient
             //1. Establish a connection to the server.
             TcpConnection tcpConnection = ConnectionFactory.CreateTcpConnection("127.0.0.1", 1234, out connectionResult);
             //2. Register what happens if we get a connection
-            if(connectionResult == ConnectionResult.Connected)
+            if (connectionResult == ConnectionResult.Connected)
             {
                 Console.WriteLine($"{tcpConnection.ToString()} Connection established");
                 //3. Send a raw data packet request.
