@@ -55,6 +55,7 @@ namespace NetworkTestServer
             //3. Register packet listeners.
             connection.RegisterStaticPacketHandler<CalculationRequest>(calculationReceived);
             connection.RegisterStaticPacketHandler<AddStudentToDatabaseRequest>(addStudentReceived);
+            connection.RegisterStaticPacketHandler<NullableSimpleDataTypesRequest>((p, c) => c.Send(new NullableSimpleDataTypesResponse(p)));
             connection.RegisterRawDataHandler("HelloWorld", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToUTF8String()}"));
             connection.RegisterRawDataHandler("BoolValue", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToBoolean()}"));
             connection.RegisterRawDataHandler("DoubleValue", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToDouble()}"));
