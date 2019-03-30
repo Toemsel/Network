@@ -463,13 +463,13 @@ namespace Network
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
             udpUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.DeregisterPacketHandler));
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
                 unRegisterPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
             });
             udpStaticUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.DeregisterStaticPacketHandler));
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterStaticPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
                 unRegisterPacketHandler.Invoke(udpConnection, null);
             });

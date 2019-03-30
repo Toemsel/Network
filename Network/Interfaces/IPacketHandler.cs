@@ -65,10 +65,6 @@ namespace Network.Interfaces
         /// The type of <see cref="Packet"/> for which all currently registered
         /// <see cref="PacketReceivedHandler{T}"/>s should be deregistered.
         /// </typeparam>
-        void DeregisterStaticPacketHandler<P>() where P : Packet;
-
-        /// <inheritdoc cref="DeregisterStaticPacketHandler{P}"/>
-        [Obsolete("Use 'DeregisterStaticPacketHandler' instead.")]
         void UnRegisterStaticPacketHandler<P>() where P : Packet;
 
         /// <summary>
@@ -85,10 +81,6 @@ namespace Network.Interfaces
         /// <see cref="PacketReceivedHandler{T}"/>s of the given type should
         /// be deregistered.
         /// </param>
-        void DeregisterPacketHandler<P>(object obj) where P : Packet;
-
-        /// <inheritdoc cref="DeregisterPacketHandler{P}"/>
-        [Obsolete("Use 'DeregisterPacketHandler' instead.")]
         void UnRegisterPacketHandler<P>(object obj) where P : Packet;
 
         #endregion Methods

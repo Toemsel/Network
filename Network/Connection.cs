@@ -344,39 +344,16 @@ namespace Network
             SearchAndInvokeUnknownHandlerPackets(del);
         }
 
-        /// <summary>
-        /// UnRegisters a packetHandler. If this connection will receive the given type, it will be ignored,
-        /// because there is no handler to invoke anymore.
-        /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
-        public void DeregisterStaticPacketHandler<T>() where T : Packet
+        /// <inheritdoc />
+        public void UnRegisterStaticPacketHandler<T>() where T : Packet
         {
             packetHandlerMap.DeregisterStaticPacketHandler<T>();
         }
 
         /// <inheritdoc />
-        [Obsolete("Use 'DeregisterStaticPacketHandler' instead.")]
-        public void UnRegisterStaticPacketHandler<P>() where P : Packet
-        {
-            DeregisterStaticPacketHandler<P>();
-        }
-
-        /// <summary>
-        /// UnRegisters a packetHandler. If this connection will receive the given type, it will be ignored,
-        /// because there is no handler to invoke anymore.
-        /// </summary>
-        /// <typeparam name="T">The type we dont want to receive anymore.</typeparam>
-        /// <param name="obj">The object which wants to receive the packet.</param>
-        public void DeregisterPacketHandler<T>(object obj) where T : Packet
+        public void UnRegisterPacketHandler<T>(object obj) where T : Packet
         {
             packetHandlerMap.DeregisterPacketHandler<T>(obj);
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Use 'DeregisterPacketHandler' instead.")]
-        public void UnRegisterPacketHandler<P>(object obj) where P : Packet
-        {
-            DeregisterPacketHandler<P>(obj);
         }
 
         /// <summary>
