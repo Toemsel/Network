@@ -139,7 +139,7 @@ namespace Network.RSA
         {
             Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
             {
-                connection.DeregisterStaticPacketHandler<RSAKeyInformationRequest>();
+                connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
 
                 CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
                 EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);

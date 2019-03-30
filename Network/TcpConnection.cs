@@ -119,7 +119,7 @@ namespace Network
             IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
             RegisterPacketHandler<EstablishUdpResponse>((packet, connection) =>
             {
-                DeregisterPacketHandler<EstablishUdpResponse>(this);
+                UnRegisterPacketHandler<EstablishUdpResponse>(this);
                 connectionEstablished.Invoke(udpEndPoint, new IPEndPoint(IPRemoteEndPoint.Address, packet.UdpPort));
                 Send(new EstablishUdpResponseACK());
             }, this);

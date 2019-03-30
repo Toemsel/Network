@@ -211,7 +211,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void TCP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.DeregisterStaticPacketHandler<P>();
+            if (IsAlive_TCP) tcpConnection.UnRegisterStaticPacketHandler<P>();
             else tcpStaticUnPacketHandlerBuffer.Add(typeof(P));
         }
 
@@ -224,7 +224,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void TCP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
-            if (IsAlive_TCP) tcpConnection.DeregisterPacketHandler<P>(obj);
+            if (IsAlive_TCP) tcpConnection.UnRegisterPacketHandler<P>(obj);
             else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
         }
 
@@ -263,7 +263,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void UDP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.DeregisterStaticPacketHandler<P>();
+            if (IsAlive_UDP) udpConnection.UnRegisterStaticPacketHandler<P>();
             else udpStaticUnPacketHandlerBuffer.Add(typeof(P));
         }
 
@@ -276,7 +276,7 @@ namespace Network
         /// <exception cref="System.NotImplementedException"></exception>
         public void UDP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
-            if (IsAlive_UDP) udpConnection.DeregisterPacketHandler<P>(obj);
+            if (IsAlive_UDP) udpConnection.UnRegisterPacketHandler<P>(obj);
             else udpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
         }
 
