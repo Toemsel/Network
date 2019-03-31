@@ -165,10 +165,7 @@ namespace Network
         /// Handles if the connection should be closed, based on the reason.
         /// </summary>
         /// <param name="closeReason">The close reason.</param>
-        protected override void CloseHandler(CloseReason closeReason)
-        {
-            Close(closeReason, true);
-        }
+        protected override void CloseHandler(CloseReason closeReason) => Close(closeReason, true);
 
         /// <summary>
         /// Handles the case if we receive an unknown packet.
@@ -195,10 +192,6 @@ namespace Network
         /// <summary>
         /// Closes the socket.
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
-        protected override void CloseSocket()
-        {
-            client.Close();
-        }
+        protected override void CloseSocket() => client.Close();
     }
 }

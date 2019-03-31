@@ -81,8 +81,7 @@ namespace Network.Extensions
         /// <returns>
         /// The byte array that the base-64 encoded text represents.
         /// </returns>
-        private static byte[] ConvertFromBase64String(string text) =>
-            string.IsNullOrWhiteSpace(text) ? null : Convert.FromBase64String(text);
+        private static byte[] ConvertFromBase64String(string text) => string.IsNullOrWhiteSpace(text) ? null : Convert.FromBase64String(text);
 
         #endregion Methods
     }

@@ -52,7 +52,7 @@ namespace Network.Utilities
         /// <returns>
         /// Whether any delegate methods have been registered for the packet.
         /// </returns>
-        public bool HasRegisteredHandler(Packet packet)
+        internal bool HasRegisteredHandler(Packet packet)
         {
             return packetIdToDelegateMethodMap.ContainsKey(packet.ID);
         }
@@ -64,7 +64,7 @@ namespace Network.Utilities
         /// <param name="map">
         /// The <see cref="PacketHandlerMap"/> whose state to restore to.
         /// </param>
-        public void Restore(PacketHandlerMap map)
+        internal void Restore(PacketHandlerMap map)
         {
             Type[] internalAssemblyTypes =
                 Assembly.GetAssembly(typeof(PacketHandlerMap)).GetTypes();
@@ -103,7 +103,7 @@ namespace Network.Utilities
         /// <param name="handlerInstance">
         /// The handler object instance on which the delegate method will be invoked.
         /// </param>
-        public void RegisterPacketHandler<P>(
+        internal void RegisterPacketHandler<P>(
             Delegate handlerDelegate, object handlerInstance) where P : Packet
         {
             Type packetType = typeof(P);
@@ -144,7 +144,7 @@ namespace Network.Utilities
         /// <param name="handlerInstance">
         /// The handler object instance on which the delegate method will be invoked.
         /// </param>
-        public void RegisterPacketDelegate<P>(
+        internal void RegisterPacketDelegate<P>(
             PacketReceivedHandler<P> handlerDelegate,
             object handlerInstance) where P : Packet
         {
@@ -162,7 +162,7 @@ namespace Network.Utilities
         /// The static delegate method to be invoked when the given packet is
         /// received.
         /// </param>
-        public void RegisterStaticPacketHandler<P>(Delegate handlerDelegate)
+        internal void RegisterStaticPacketHandler<P>(Delegate handlerDelegate)
             where P : Packet
         {
             RegisterPacketHandler<P>(handlerDelegate, new object());
@@ -179,7 +179,7 @@ namespace Network.Utilities
         /// The static delegate method to be invoked when the given packet is
         /// received.
         /// </param>
-        public void RegisterStaticPacketHandler<P>(
+        internal void RegisterStaticPacketHandler<P>(
             PacketReceivedHandler<P> handlerDelegate) where P : Packet
         {
             RegisterStaticPacketHandler<P>((Delegate)handlerDelegate);
@@ -196,7 +196,7 @@ namespace Network.Utilities
         /// The delegate method to invoke for incoming <see cref="RawData"/>
         /// packets with the given key.
         /// </param>
-        public void RegisterStaticRawDataHandler(string key, Delegate handlerDelegate)
+        internal void RegisterStaticRawDataHandler(string key, Delegate handlerDelegate)
         {
             if (keyToDelegateMethodMap.ContainsKey(key))
             {
@@ -221,7 +221,7 @@ namespace Network.Utilities
         /// <param name="handlerInstance">
         /// The handler instance for which to deregisters packet handlers.
         /// </param>
-        public void DeregisterPacketHandler<P>(object handlerInstance) where P : Packet
+        internal void DeregisterPacketHandler<P>(object handlerInstance) where P : Packet
         {
             Type packetType = typeof(P);
 
@@ -261,7 +261,7 @@ namespace Network.Utilities
         /// <typeparam name="P">
         /// The packet type for which to deregister all packet handlers.
         /// </typeparam>
-        public void DeregisterStaticPacketHandler<P>() where P : Packet
+        internal void DeregisterStaticPacketHandler<P>() where P : Packet
         {
             DeregisterPacketHandler<P>(null);
         }
@@ -273,7 +273,7 @@ namespace Network.Utilities
         /// <param name="key">
         /// The key for which to deregister packet handlers.
         /// </param>
-        public void DeregisterStaticRawDataHandler(string key)
+        internal void DeregisterStaticRawDataHandler(string key)
         {
             if (!keyToDelegateMethodMap.ContainsKey(key))
             {
@@ -300,7 +300,7 @@ namespace Network.Utilities
         /// <returns>
         /// The handler delegate associated with the given key.
         /// </returns>
-        public Delegate this[string key]
+        internal Delegate this[string key]
         {
             get { return keyToDelegateMethodMap[key]; }
         }
@@ -315,7 +315,7 @@ namespace Network.Utilities
         /// <returns>
         /// The handler delegate associated with packets of the given id.
         /// </returns>
-        public Delegate this[int packetID]
+        internal Delegate this[int packetID]
         {
             get { return packetIdToDelegateMethodMap[packetID].handlerDelegate; }
         }
@@ -330,7 +330,7 @@ namespace Network.Utilities
         /// <returns>
         /// The handler delegate registered for the given type.
         /// </returns>
-        public Delegate this[Type packetType]
+        internal Delegate this[Type packetType]
         {
             get
             {
@@ -365,7 +365,7 @@ namespace Network.Utilities
         /// <returns>
         /// The ID associated with the given handler of the given packet type.
         /// </returns>
-        public int this[Type packetType, object handlerInstance]
+        internal int this[Type packetType, object handlerInstance]
         {
             get { return packetTypeToHandlerIdMap[packetType][handlerInstance]; }
         }

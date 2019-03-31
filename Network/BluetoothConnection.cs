@@ -214,15 +214,9 @@ namespace Network
             Close(closeReason, true);
         }
 
-        protected override void CloseSocket()
-        {
-            Client.Close();
-        }
+        protected override void CloseSocket() => Client.Close();
 
-        protected override void HandleUnknownPacket()
-        {
-            Close(CloseReason.UnknownPacket, true);
-        }
+        protected override void HandleUnknownPacket() => Close(CloseReason.UnknownPacket, true);
 
         protected override byte[] ReadBytes(int amount)
         {

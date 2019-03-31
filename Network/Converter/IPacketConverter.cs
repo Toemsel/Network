@@ -42,8 +42,7 @@ namespace Network.Converter
         byte[] SerialisePacket<P>(P packet) where P : Packet;
 
         /// <summary>
-        /// Deserialises the given data byte array into an object of the given
-        /// type.
+        /// Deserialises the given data byte array into an object of the given type.
         /// </summary>
         /// <param name="packetType">
         /// The type of object to deserialise the byte array to.

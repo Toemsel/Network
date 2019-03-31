@@ -8,7 +8,7 @@ namespace Network.Interfaces
     /// Describes the properties and methods that a class must implement to be
     /// able to communicate via secure, RSA encrypted messages.
     /// </summary>
-    public interface IRSAConnection : IRSACapability
+    internal interface IRSAConnection : IRSACapability
     {
         #region Properties
 

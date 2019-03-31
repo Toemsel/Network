@@ -433,7 +433,7 @@ namespace Network
         /// <typeparam name="T">The type of the expected answer.</typeparam>
         /// <param name="packet">The packet to send.</param>
         /// <returns>T.</returns>
-        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket => await new AsyncReceiver().Send<T>(packet, this);
+        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket => await new ChickenReceiver().Send<T>(packet, this);
 
         /// <summary>
         /// Converts the given packet into a binary array and sends it to the client's endpoint.
@@ -458,7 +458,7 @@ namespace Network
                 AddExternalPackets(packet.GetType().Assembly);
                 pendingUnknownPackets.Enqueue(new Tuple<Packet, object>(packet, instance));
                 Send(new AddPacketTypeRequest(packet.GetType().Assembly.FullName));
-                return; //Wait till we receive green light.
+                return; //Wait till we receive green light
             }
 
             sendPackets.Enqueue(new Tuple<Packet, object>(packet, instance));

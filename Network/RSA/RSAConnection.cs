@@ -40,8 +40,8 @@ namespace Network.RSA
         public RSAConnection(Connection connection, RSAPair rsaPair)
         {
             Connection = connection;
-            RSAPair = rsaPair;
 
+            RSAPair = rsaPair;
             DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
             Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
 

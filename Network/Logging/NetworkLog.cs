@@ -168,8 +168,7 @@ namespace Network.Logging
         /// <param name="logLevel">
         /// The <see cref="Enums.LogLevel"/> of the log message.
         /// </param>
-        public void Log(Exception exception, LogLevel logLevel = LogLevel.Information) =>
-            Log(string.Empty, exception, logLevel);
+        public void Log(Exception exception, LogLevel logLevel = LogLevel.Information) => Log(string.Empty, exception, logLevel);
 
         /// <summary>
         /// Logs the given <see cref="string"/> message with the given
@@ -181,8 +180,7 @@ namespace Network.Logging
         /// <param name="logLevel">
         /// The <see cref="Enums.LogLevel"/> of the log message.
         /// </param>
-        public void Log(string message, LogLevel logLevel = LogLevel.Information) =>
-            Log(message, null, logLevel);
+        public void Log(string message, LogLevel logLevel = LogLevel.Information) => Log(message, null, logLevel);
 
         #endregion Logging A Message
 
@@ -193,8 +191,7 @@ namespace Network.Logging
         /// <param name="stream">
         /// The <see cref="Stream"/> to log messages into.
         /// </param>
-        public void SetOutputStream(Stream stream) =>
-            StreamLogger = new StreamWriter(stream);
+        public void SetOutputStream(Stream stream) => StreamLogger = new StreamWriter(stream);
 
         /// <summary>
         /// Logs an incoming packet to the output <see cref="Stream"/>s.
@@ -205,8 +202,7 @@ namespace Network.Logging
         /// <param name="packetObj">
         /// The incoming <see cref="Packet"/> object.
         /// </param>
-        public void LogInComingPacket(byte[] packet, Packet packetObj) =>
-            LogPacket(packet, packetObj, PacketDirection.Incoming);
+        public void LogInComingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, PacketDirection.Incoming);
 
         /// <summary>
         /// Logs an outgoing packet to the output <see cref="Stream"/>s.
@@ -217,8 +213,7 @@ namespace Network.Logging
         /// <param name="packetObj">
         /// The outgoing <see cref="Packet"/> object.
         /// </param>
-        public void LogOutgoingPacket(byte[] packet, Packet packetObj) =>
-            LogPacket(packet, packetObj, PacketDirection.Outgoing);
+        public void LogOutgoingPacket(byte[] packet, Packet packetObj) => LogPacket(packet, packetObj, PacketDirection.Outgoing);
 
         /// <summary>
         /// Logs the given packet to the output <see cref="Stream"/>s, along with
@@ -236,32 +231,20 @@ namespace Network.Logging
         private void LogPacket(byte[] packet, Packet packetObj, PacketDirection direction)
         {
             if (!EnableLogging)
-            {
                 return;
-            }
 
-            ConsoleTable tableOutPut =
-                BuildConsoleTable(packet, packetObj, direction.ToString());
-
+            ConsoleTable tableOutPut = BuildConsoleTable(packet, packetObj, direction.ToString());
+            
             LogToAllOutputs(tableOutPut.ToStringAlternative());
         }
 
         /// <summary>
-        /// Builds a <see cref="ConsoleTable"/> with the given parameters and
-        /// returns it.
+        /// Builds a <see cref="ConsoleTable"/> with the given parameters and returns it.
         /// </summary>
-        /// <param name="packet">
-        /// The serialised packet.
-        /// </param>
-        /// <param name="packetObj">
-        /// The <see cref="Packet"/> object.
-        /// </param>
-        /// <param name="direction">
-        /// The direction that the packet is travelling across the network.
-        /// </param>
-        /// <returns>
-        /// The built <see cref="ConsoleTable"/>.
-        /// </returns>
+        /// <param name="packet">The serialised packet.</param>
+        /// <param name="packetObj">The <see cref="Packet"/> object.</param>
+        /// <param name="direction"> The direction that the packet is travelling across the network.</param>
+        /// <returns>The built <see cref="ConsoleTable"/>.</returns>
         private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, string direction)
         {
             object type = monitoredConnection.GetType().Name;

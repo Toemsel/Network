@@ -16,8 +16,7 @@ namespace Network.Interfaces
     /// <param name="connection">
     /// The <see cref="Connection"/> that received the packet.
     /// </param>
-    public delegate void PacketReceivedHandler<T>(
-        T packet, Connection connection) where T : Packet;
+    public delegate void PacketReceivedHandler<T>(T packet, Connection connection) where T : Packet;
 
     /// <summary>
     /// Describes the methods a class must implement to handle <see cref="Packet"/>s.
@@ -37,8 +36,7 @@ namespace Network.Interfaces
         /// The <see cref="PacketReceivedHandler{T}"/> delegate to be invoked
         /// for each received packet of the given type.
         /// </param>
-        void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler)
-            where P : Packet;
+        void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet;
 
         /// <summary>
         /// Registers the given <see cref="PacketReceivedHandler{T}"/> on the
@@ -54,8 +52,7 @@ namespace Network.Interfaces
         /// <param name="obj">
         /// The <see cref="object"/> that should receive the <see cref="Packet"/>s.
         /// </param>
-        void RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj)
-            where P : Packet;
+        void RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet;
 
         /// <summary>
         /// Deregisters all <see cref="PacketReceivedHandler{T}"/>s for the given
