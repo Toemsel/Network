@@ -4,85 +4,58 @@ using System;
 namespace Network.Converter
 {
     /// <summary>
-    /// Describes the methods that a packet converter must implement in order
-    /// to be able to serialise and deserialise packets to and from a binary
-    /// form.
+    /// Describes the methods that a packet converter must implement in order to be able to serialise and deserialise packets to and from a binary form.
     /// </summary>
     public interface IPacketConverter
     {
         #region Methods
 
         /// <summary>
-        /// Serialises a given packet to a byte array.
+        /// Serialises the given <see cref="Packet"/> object to a <see cref="byte"/> array.
         /// </summary>
-        /// <param name="packet">The packet to convert.</param>
-        /// <returns>System.Byte[].</returns>
+        /// <param name="packet">The <see cref="Packet"/> object to serialise into a <see cref="byte"/> array.</param>
+        /// <returns>A <see cref="byte"/> array that holds the serialised packet.</returns>
         byte[] SerialisePacket(Packet packet);
 
         /// <summary>
-        /// Serialises a given packet to a byte array.
+        /// Serialises the given <see cref="Packet"/> object to a <see cref="byte"/> array.
         /// </summary>
-        /// <param name="packet">The packet to convert.</param>
-        /// <returns>System.Byte[].</returns>
+        /// <param name="packet">The <see cref="Packet"/> object to serialise into a <see cref="byte"/> array.</param>
+        /// <returns>A <see cref="byte"/> array that holds the serialised packet.</returns>
         [Obsolete("Use 'SerialisePacket' instead.")]
         byte[] GetBytes(Packet packet);
 
         /// <summary>
-        /// Serialises the given packet of the given type to a byte array.
+        /// Serialises the given <see cref="Packet"/> object to a <see cref="byte"/> array.
         /// </summary>
-        /// <typeparam name="P">
-        /// The type of packet to serialise into a byte array.
-        /// </typeparam>
-        /// <param name="packet">
-        /// The packet object to serialise into a byte array.
-        /// </param>
-        /// <returns>
-        /// An array of <see cref="byte"/>s that holds the serialised packet.
-        /// </returns>
+        /// <typeparam name="P">The <see cref="Type"/> of packet to serialise.</typeparam>
+        /// <param name="packet">The <see cref="Packet"/> object to serialise into a <see cref="byte"/> array.</param>
+        /// <returns>A <see cref="byte"/> array that holds the serialised packet.</returns>
         byte[] SerialisePacket<P>(P packet) where P : Packet;
 
         /// <summary>
-        /// Deserialises the given data byte array into an object of the given type.
+        /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <param name="packetType">
-        /// The type of object to deserialise the byte array to.
-        /// </param>
-        /// <param name="serialisedPacket">
-        /// The byte array holding the serialised packet.
-        /// </param>
-        /// <returns>
-        /// The deserialised packet object of the given type.
-        /// </returns>
+        /// <param name="packetType">The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.</param>
+        /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
+        /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         Packet DeserialisePacket(Type packetType, byte[] serialisedPacket);
 
         /// <summary>
-        /// Deserialises the given data byte array into an object of the given
-        /// type.
+        /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <param name="packetType">
-        /// The type of object to deserialise the byte array to.
-        /// </param>
-        /// <param name="serialisedPacket">
-        /// The byte array holding the serialised packet.
-        /// </param>
-        /// <returns>
-        /// The deserialised packet object of the given type.
-        /// </returns>
+        /// <param name="packetType">The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.</param>
+        /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
+        /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         [Obsolete("Use 'DeserialisePacket' instead.")]
         Packet GetPacket(Type packetType, byte[] serialisedPacket);
 
         /// <summary>
-        /// Deserialises the given byte array into an object of the given type.
+        /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <typeparam name="P">
-        /// The type to which to deserialise the given byte array.
-        /// </typeparam>
-        /// <param name="serialisedPacket">
-        /// The byte array holding the serialised packet.
-        /// </param>
-        /// <returns>
-        /// The deserialised packet object, of the given type.
-        /// </returns>
+        /// <typeparam name = "P"> The < see cref="Type"/> of<see cref="Packet"/> to deserialise the<see cref= "byte" /> array to.</typeparam>
+        /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
+        /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet;
 
         #endregion Methods

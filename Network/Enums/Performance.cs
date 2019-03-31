@@ -3,9 +3,7 @@
 namespace Network.Enums
 {
     /// <summary>
-    /// Enumerates the possible values for sleep intervals.
-    /// Fastest Performance >> Slowest Performance :
-    /// SoftRealtime        >> EnergySaving
+    /// Enumerates the possible values for sleep intervals. Fastest Performance >> Slowest Performance : SoftRealtime >> EnergySaving
     /// </summary>
     public enum Performance
     {
@@ -36,8 +34,7 @@ namespace Network.Enums
         Fast = 10,
 
         /// <summary>
-        /// Sleep interval of more than 5ms.
-        /// This is the default value, recommended for usage.
+        /// Sleep interval of more than 5ms. This is the default value, recommended for usage.
         /// </summary>
         Default = 5,
 

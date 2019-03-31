@@ -40,16 +40,17 @@ using System.Threading.Tasks;
 namespace Network.Async
 {
     /// <summary>
-    /// Chicken chicken chicken chicken chicken chicken chicken chicken chicken
-    /// <see cref="Chicken"/> chicken chicken chicken chicken.
+    /// Chicken chicken chicken, chicken chicken chicken chicken chicken chicken, <see cref="ChickenReceiver"/> chicken chicken chicken chicken.
     /// </summary>
-    internal class ChickenReceiver
+    /// <remarks>
+    /// Provides methods for the asynchronous sending and receiving of <see cref="Packet"/> objects across the network.
+    /// </remarks>
+    internal class ChickenReceiver : IDisposable
     {
         #region Variables
 
         /// <summary>
-        /// A <see cref="ManualResetEvent"/> that allows for the instance to wait
-        /// until the <see cref="ResponsePacket"/> for a sent packet is received.
+        /// A <see cref="ManualResetEvent"/> that allows for the instance to wait until the <see cref="ResponsePacket"/> for a sent packet is received.
         /// </summary>
         private readonly ManualResetEvent packetReceivedEvent = new ManualResetEvent(false);
 
@@ -58,27 +59,15 @@ namespace Network.Async
         #region Methods
 
         /// <summary>
-        /// Sends the given <see cref="Packet"/> to the network, via the given
-        /// <see cref="Connection"/> and waits asynchronously for the response,
-        /// returning it.
+        /// Sends the given <see cref="Packet"/> to the network, via the given <see cref="Connection"/> and waits asynchronously for the response, returning it.
         /// </summary>
-        /// <typeparam name="R">
-        /// The type of the <see cref="ResponsePacket"/> to wait for.
-        /// </typeparam>
-        /// <param name="packet">
-        /// The <see cref="Packet"/> to send to the network.
-        /// </param>
-        /// <param name="connection">
-        /// The <see cref="Connection"/> that should send the given packet and
-        /// wait for the response.
-        /// </param>
+        /// <typeparam name="R">The type of the <see cref="ResponsePacket"/> to wait for.</typeparam>
+        /// <param name="packet">The <see cref="Packet"/> to send to the network.</param>
+        /// <param name="connection">The <see cref="Connection"/> that should send the given packet and wait for the response.</param>
         /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation, that
-        /// promises a <see cref="ResponsePacket"/> of the given type upon
-        /// completion.
+        /// A <see cref="Task"/> representing the asynchronous operation, that promises a <see cref="ResponsePacket"/> of the given type upon completion.
         /// </returns>
-        public async Task<R> Send<R>(
-            Packet packet, Connection connection) where R : ResponsePacket
+        public async Task<R> Send<R>(Packet packet, Connection connection) where R : ResponsePacket
         {
             Packet receivedAsyncPacket = null;
             object tempObject = new object();
@@ -105,10 +94,8 @@ namespace Network.Async
             }
             catch (OverflowException overflowException)
             {
-                connection.Logger.Log($"Exception while waiting for async packet occured. " +
-                    $"Request packet {packet.GetType().Name}",
-                    overflowException,
-                    Enums.LogLevel.Error);
+                connection.Logger.Log($"Exception while waiting for async packet occured. Request packet {packet.GetType().Name}",
+                    overflowException, Enums.LogLevel.Error);
             }
 
             //No answer from the endPoint

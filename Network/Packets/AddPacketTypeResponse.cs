@@ -1,5 +1,4 @@
 ﻿using Network.Attributes;
-
 using System.Collections.Generic;
 
 namespace Network.Packets
@@ -15,10 +14,9 @@ namespace Network.Packets
         /// <summary>
         /// Initializes a new instance of the <see cref="AddPacketTypeResponse"/> class.
         /// </summary>
-        /// <param name="dictionary">The dictionary.</param>
-        /// <param name="request">The request.</param>
-        public AddPacketTypeResponse(List<ushort> dictionary, AddPacketTypeRequest request)
-            : base(request)
+        /// <param name="dictionary">All registered packet IDs for the currently registered <see cref="Packet"/>s.</param>
+        /// <param name="request">The <see cref="AddPacketTypeRequest"/>.</param>
+        internal AddPacketTypeResponse(List<ushort> dictionary, AddPacketTypeRequest request) : base(request)
         {
             LocalDict = dictionary;
         }

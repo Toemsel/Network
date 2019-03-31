@@ -4,75 +4,28 @@
         <name>Network</name>
     </assembly>
     <members>
-        <member name="T:Network.Async.AsyncReceiver">
-            <summary>
-            Provides methods for the asynchronous sending and receiving of
-            <see cref="T:Network.Packets.Packet"/> objects across a network.
-            </summary>
-        </member>
-        <member name="F:Network.Async.AsyncReceiver.packetReceivedEvent">
-            <summary>
-            A <see cref="T:System.Threading.ManualResetEvent"/> that allows for the instance to wait
-            until the <see cref="T:Network.Packets.ResponsePacket"/> for a sent packet is received.
-            </summary>
-        </member>
-        <member name="M:Network.Async.AsyncReceiver.Send``1(Network.Packets.Packet,Network.Connection)">
-            <summary>
-            Sends the given <see cref="T:Network.Packets.Packet"/> to the network, via the given
-            <see cref="T:Network.Connection"/> and waits asynchronously for the response,
-            returning it.
-            </summary>
-            <typeparam name="R">
-            The type of the <see cref="T:Network.Packets.ResponsePacket"/> to wait for.
-            </typeparam>
-            <param name="packet">
-            The <see cref="T:Network.Packets.Packet"/> to send to the network.
-            </param>
-            <param name="connection">
-            The <see cref="T:Network.Connection"/> that should send the given packet and
-            wait for the response.
-            </param>
-            <returns>
-            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, that
-            promises a <see cref="T:Network.Packets.ResponsePacket"/> of the given type upon
-            completion.
-            </returns>
-        </member>
-        <member name="M:Network.Async.AsyncReceiver.Dispose">
-            <inheritdoc />
-        </member>
         <member name="T:Network.Async.ChickenReceiver">
             <summary>
-            Chicken chicken chicken chicken chicken chicken chicken chicken chicken
-            <see cref="!:Chicken"/> chicken chicken chicken chicken.
+            Chicken chicken chicken, chicken chicken chicken chicken chicken chicken, <see cref="T:Network.Async.ChickenReceiver"/> chicken chicken chicken chicken.
             </summary>
+            <remarks>
+            Provides methods for the asynchronous sending and receiving of <see cref="T:Network.Packets.Packet"/> objects across the network.
+            </remarks>
         </member>
         <member name="F:Network.Async.ChickenReceiver.packetReceivedEvent">
             <summary>
-            A <see cref="T:System.Threading.ManualResetEvent"/> that allows for the instance to wait
-            until the <see cref="T:Network.Packets.ResponsePacket"/> for a sent packet is received.
+            A <see cref="T:System.Threading.ManualResetEvent"/> that allows for the instance to wait until the <see cref="T:Network.Packets.ResponsePacket"/> for a sent packet is received.
             </summary>
         </member>
         <member name="M:Network.Async.ChickenReceiver.Send``1(Network.Packets.Packet,Network.Connection)">
             <summary>
-            Sends the given <see cref="T:Network.Packets.Packet"/> to the network, via the given
-            <see cref="T:Network.Connection"/> and waits asynchronously for the response,
-            returning it.
+            Sends the given <see cref="T:Network.Packets.Packet"/> to the network, via the given <see cref="T:Network.Connection"/> and waits asynchronously for the response, returning it.
             </summary>
-            <typeparam name="R">
-            The type of the <see cref="T:Network.Packets.ResponsePacket"/> to wait for.
-            </typeparam>
-            <param name="packet">
-            The <see cref="T:Network.Packets.Packet"/> to send to the network.
-            </param>
-            <param name="connection">
-            The <see cref="T:Network.Connection"/> that should send the given packet and
-            wait for the response.
-            </param>
+            <typeparam name="R">The type of the <see cref="T:Network.Packets.ResponsePacket"/> to wait for.</typeparam>
+            <param name="packet">The <see cref="T:Network.Packets.Packet"/> to send to the network.</param>
+            <param name="connection">The <see cref="T:Network.Connection"/> that should send the given packet and wait for the response.</param>
             <returns>
-            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, that
-            promises a <see cref="T:Network.Packets.ResponsePacket"/> of the given type upon
-            completion.
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, that promises a <see cref="T:Network.Packets.ResponsePacket"/> of the given type upon completion.
             </returns>
         </member>
         <member name="M:Network.Async.ChickenReceiver.Dispose">
@@ -80,142 +33,58 @@
         </member>
         <member name="T:Network.Attributes.PacketIgnorePropertyAttribute">
             <summary>
-            Marks a property to be ignored by a <see cref="T:Network.Converter.IPacketConverter"/>. Its value
-            will not be serialised before being sent, so will be the default for its type
-            upon deserialisation.
+            Marks a property to be ignored by a <see cref="T:Network.Converter.IPacketConverter"/>. Its value will not be serialised before being sent, so will be the default
+            for its type upon deserialisation.
             </summary>
         </member>
         <member name="T:Network.Attributes.PacketRequestAttribute">
             <summary>
-            Maps a request packet to the response packet that handles it. This
-            attribute should be placed on the response packet (must inherit from
-            <see cref="T:Network.Packets.ResponsePacket"/> and the <see cref="T:System.Type"/> of the
-            <see cref="T:Network.Packets.RequestPacket"/> that it
-            handles should be given.
+            Maps a request packet to the response packet that handles it. This attribute should be placed on the response packet (must inherit from
+            <see cref="T:Network.Packets.ResponsePacket"/>) and the <see cref="T:System.Type"/> of the <see cref="T:Network.Packets.RequestPacket"/> that it handles should be given.
             </summary>
         </member>
         <member name="M:Network.Attributes.PacketRequestAttribute.#ctor(System.Type)">
             <summary>
-            Constructs and returns a new instance of the
-            <see cref="T:Network.Attributes.PacketRequestAttribute"/> class with the given
-            <see cref="T:Network.Packets.RequestPacket"/> type as the handled <see cref="T:System.Type"/>.
+            Constructs and returns a new instance of the <see cref="T:Network.Attributes.PacketRequestAttribute"/> class with the given <see cref="T:Network.Packets.RequestPacket"/> type as
+            the handled <see cref="T:System.Type"/>.
             </summary>
             <param name="type">
-            The <see cref="T:System.Type"/> of the <see cref="T:Network.Packets.RequestPacket"/> that the
-            decorated <see cref="T:Network.Packets.ResponsePacket"/> should handle.
+            The <see cref="T:System.Type"/> of the <see cref="T:Network.Packets.RequestPacket"/> that the decorated <see cref="T:Network.Packets.ResponsePacket"/> should handle.
             </param>
         </member>
         <member name="P:Network.Attributes.PacketRequestAttribute.RequestType">
-            <summary>
-            The <see cref="T:System.Type"/> of the <see cref="T:Network.Packets.RequestPacket"/> that the
-            <see cref="T:Network.Packets.ResponsePacket"/> handles.
-            </summary>
+            <summary>The <see cref="T:System.Type"/> of the <see cref="T:Network.Packets.RequestPacket"/> that the <see cref="T:Network.Packets.ResponsePacket"/> handles.</summary>
         </member>
         <member name="T:Network.Attributes.PacketTypeAttribute">
             <summary>
-            To identify every packet server and client side, a unique identifier is needed.
-            Mark every packet class with this attribute and set a unique id. (UInt16)
-            2^16 (65536) unique ids are possible. Double usage of one id will lead to an exception.
+            To identify every packet server and client side, a unique identifier is needed. Mark every packet class with this attribute and set a unique id
+            (UInt16). 2^16 (65536) unique ids are possible. Double usage of one id will lead to an exception.
             <list type="table">
-            <listheader>
-            <description>
-            Following ids are already taken by the network lib:
-            </description>
-            </listheader>
-            <item>
-            <term>0</term>
-            <description>
-            <see cref="T:Network.Packets.PingRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>1</term>
-            <description>
-            <see cref="T:Network.Packets.PingResponse"/>
-            </description>
-            </item>
-            <item>
-            <term>2</term>
-            <description>
-            <see cref="T:Network.Packets.CloseRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>3</term>
-            <description>
-            <see cref="T:Network.Packets.EstablishUdpRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>4</term>
-            <description>
-            <see cref="T:Network.Packets.EstablishUdpResponse"/>
-            </description>
-            </item>
-            <item>
-            <term>5</term>
-            <description>
-            <see cref="T:Network.Packets.EstablishUdpResponseACK"/>
-            </description>
-            </item>
-            <item>
-            <term>6</term>
-            <description>
-            <see cref="T:Network.Packets.AddPacketTypeRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>7</term>
-            <description>
-            <see cref="T:Network.Packets.AddPacketTypeResponse"/>
-            </description>
-            </item>
-            <item>
-            <term>8</term>
-            <description>
-            <see cref="T:Network.Packets.UDPPingRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>9</term>
-            <description>
-            <see cref="T:Network.Packets.UDPPingResponse"/>
-            </description>
-            </item>
-            <item>
-            <term>10</term>
-            <description>
-            <see cref="T:Network.Packets.RawData"/>
-            </description>
-            </item>
-            <item>
-            <term>11</term>
-            <description>
-            <see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/>
-            </description>
-            </item>
-            <item>
-            <term>12</term>
-            <description>
-            <see cref="T:Network.Packets.RSA.RSAKeyInformationResponse"/>
-            </description>
-            </item>
+            <listheader> <description>Following ids are already taken by the network lib:</description> </listheader>
+            <item> <term>00</term> <description><see cref="T:Network.Packets.PingRequest"/>               </description>  </item>
+            <item> <term>01</term> <description><see cref="T:Network.Packets.PingResponse"/>              </description>  </item>
+            <item> <term>02</term> <description><see cref="T:Network.Packets.CloseRequest"/>              </description>  </item>
+            <item> <term>03</term> <description><see cref="T:Network.Packets.EstablishUdpRequest"/>       </description>  </item>
+            <item> <term>04</term> <description><see cref="T:Network.Packets.EstablishUdpResponse"/>      </description>  </item>
+            <item> <term>05</term> <description><see cref="T:Network.Packets.EstablishUdpResponseACK"/>   </description>  </item>
+            <item> <term>06</term> <description><see cref="T:Network.Packets.AddPacketTypeRequest"/>      </description>  </item>
+            <item> <term>07</term> <description><see cref="T:Network.Packets.AddPacketTypeResponse"/>     </description>  </item>
+            <item> <term>08</term> <description><see cref="T:Network.Packets.UDPPingRequest"/>            </description>  </item>
+            <item> <term>09</term> <description><see cref="T:Network.Packets.UDPPingResponse"/>           </description>  </item>
+            <item> <term>10</term> <description><see cref="T:Network.Packets.RawData"/>                   </description>  </item>
+            <item> <term>11</term> <description><see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/>  </description>  </item>
+            <item> <term>12</term> <description><see cref="T:Network.Packets.RSA.RSAKeyInformationResponse"/> </description>  </item>
             </list>
             </summary>
             <remarks>
-            Knowledge about the ID isn't essential anymore (Since version 2.0.0.0).
-            However, the above IDs should NOT be overwritten, for compatibility
-            purposes.
+            Knowledge about the ID isn't essential anymore (Since version 2.0.0.0). However, the above IDs should NOT be overwritten, for compatibility purposes.
             </remarks>
         </member>
         <member name="M:Network.Attributes.PacketTypeAttribute.#ctor(System.UInt16)">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Attributes.PacketTypeAttribute"/>
-            class, with the given ID to be used for the decorated <see cref="T:Network.Packets.Packet"/>.
+            Constructs and returns a new instance of the <see cref="T:Network.Attributes.PacketTypeAttribute"/> class, with the given ID to be used for the decorated <see cref="T:Network.Packets.Packet"/>.
             </summary>
-            <param name="packetType">
-            The ID to use for the decorated <see cref="T:Network.Packets.Packet"/>.
-            </param>
+            <param name="packetType">The ID to use for the decorated <see cref="T:Network.Packets.Packet"/>.</param>
         </member>
         <member name="P:Network.Attributes.PacketTypeAttribute.Id">
             <summary>
@@ -273,19 +142,16 @@
             Stores information about a Bluetooth device.
             </summary>
             <remarks>
-            This class is only applicable if the build is for the .NET Framework 4.6.
-            It is only compiled if the 'NET46' preprocessor variable is set.
+            This class is only applicable if the build is for the .NET Framework 4.6. It is only compiled if the 'NET46' preprocessor variable is set.
             </remarks>
         </member>
         <member name="M:Network.Bluetooth.DeviceInfo.#ctor(InTheHand.Net.Sockets.BluetoothDeviceInfo)">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Bluetooth.DeviceInfo"/>,
-            mapping the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
+            Constructs and returns a new instance of the <see cref="T:Network.Bluetooth.DeviceInfo"/>, mapping the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
             to the <see cref="T:Network.Bluetooth.DeviceInfo"/>.
             </summary>
             <param name="deviceInfo">
-            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties
-            to use for the new <see cref="T:Network.Bluetooth.DeviceInfo"/> instance.
+            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties to use for the new <see cref="T:Network.Bluetooth.DeviceInfo"/> instance.
             </param>
         </member>
         <member name="P:Network.Bluetooth.DeviceInfo.DeviceName">
@@ -315,23 +181,17 @@
         </member>
         <member name="P:Network.Bluetooth.DeviceInfo.BluetoothDeviceInfo">
             <summary>
-            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> for the
-            device.
+            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> for the device.
             </summary>
         </member>
         <member name="M:Network.Bluetooth.DeviceInfo.GenerateDeviceInfos(InTheHand.Net.Sockets.BluetoothDeviceInfo[])">
             <summary>
-            For each of the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s,
-            generates a <see cref="T:Network.Bluetooth.DeviceInfo"/> and returns the generated array.
+            For each of the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, generates a <see cref="T:Network.Bluetooth.DeviceInfo"/> and returns the generated array.
             </summary>
             <param name="infos">
-            An array of <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s,
-            for each of which to generate the corresponding <see cref="T:Network.Bluetooth.DeviceInfo"/>.
+            An array of <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, for each of which to generate the corresponding <see cref="T:Network.Bluetooth.DeviceInfo"/>.
             </param>
-            <returns>
-            An array of <see cref="T:Network.Bluetooth.DeviceInfo"/>s, one for each of the given
-            <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s.
-            </returns>
+            <returns>An array of <see cref="T:Network.Bluetooth.DeviceInfo"/>s, one for each of the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s.</returns>
         </member>
         <member name="T:Network.ClientConnectionContainer">
             <summary>
@@ -922,23 +782,8 @@
             <param name="del">The delegate.</param>
             <param name="obj">The object which wants to receive the packet.</param>
         </member>
-        <member name="M:Network.Connection.DeregisterStaticPacketHandler``1">
-            <summary>
-            UnRegisters a packetHandler. If this connection will receive the given type, it will be ignored,
-            because there is no handler to invoke anymore.
-            </summary>
-            <typeparam name="T">The type we dont want to receive anymore.</typeparam>
-        </member>
         <member name="M:Network.Connection.UnRegisterStaticPacketHandler``1">
             <inheritdoc />
-        </member>
-        <member name="M:Network.Connection.DeregisterPacketHandler``1(System.Object)">
-            <summary>
-            UnRegisters a packetHandler. If this connection will receive the given type, it will be ignored,
-            because there is no handler to invoke anymore.
-            </summary>
-            <typeparam name="T">The type we dont want to receive anymore.</typeparam>
-            <param name="obj">The object which wants to receive the packet.</param>
         </member>
         <member name="M:Network.Connection.UnRegisterPacketHandler``1(System.Object)">
             <inheritdoc />
@@ -1701,70 +1546,56 @@
         </member>
         <member name="T:Network.Converter.IPacketConverter">
             <summary>
-            Describes the methods that a packet converter must implement in order
-            to be able to serialise and deserialise packets to and from a binary
-            form.
+            Describes the methods that a packet converter must implement in order to be able to serialise and deserialise packets to and from a binary form.
             </summary>
         </member>
         <member name="M:Network.Converter.IPacketConverter.SerialisePacket(Network.Packets.Packet)">
             <summary>
-            Serialises a given packet to a byte array.
+            Serialises the given <see cref="T:Network.Packets.Packet"/> object to a <see cref="T:System.Byte"/> array.
             </summary>
-            <param name="packet">The packet to convert.</param>
-            <returns>System.Byte[].</returns>
+            <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
+            <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
+        </member>
+        <member name="M:Network.Converter.IPacketConverter.GetBytes(Network.Packets.Packet)">
+            <summary>
+            Serialises the given <see cref="T:Network.Packets.Packet"/> object to a <see cref="T:System.Byte"/> array.
+            </summary>
+            <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
+            <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
         </member>
         <member name="M:Network.Converter.IPacketConverter.SerialisePacket``1(``0)">
             <summary>
-            Serialises the given packet of the given type to a byte array.
+            Serialises the given <see cref="T:Network.Packets.Packet"/> object to a <see cref="T:System.Byte"/> array.
             </summary>
-            <typeparam name="P">
-            The type of packet to serialise into a byte array.
-            </typeparam>
-            <param name="packet">
-            The packet object to serialise into a byte array.
-            </param>
-            <returns>
-            An array of <see cref="T:System.Byte"/>s that holds the serialised packet.
-            </returns>
+            <typeparam name="P">The <see cref="T:System.Type"/> of packet to serialise.</typeparam>
+            <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
+            <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
         </member>
         <member name="M:Network.Converter.IPacketConverter.DeserialisePacket(System.Type,System.Byte[])">
             <summary>
-            Deserialises the given data byte array into an object of the given
-            type.
+            Deserialises the given <see cref="T:System.Byte"/> array into a <see cref="T:Network.Packets.Packet"/> of the given <see cref="T:System.Type"/>.
             </summary>
-            <param name="packetType">
-            The type of object to deserialise the byte array to.
-            </param>
-            <param name="serialisedPacket">
-            The byte array holding the serialised packet.
-            </param>
-            <returns>
-            The deserialised packet object of the given type.
-            </returns>
+            <param name="packetType">The <see cref="T:System.Type"/> of <see cref="T:Network.Packets.Packet"/> to deserialise the <see cref="T:System.Byte"/> array to.</param>
+            <param name="serialisedPacket">The <see cref="T:System.Byte"/> array holding the serialised <see cref="T:Network.Packets.Packet"/>.</param>
+            <returns>The deserialised <see cref="T:Network.Packets.Packet"/> object of the given type.</returns>
         </member>
-        <member name="M:Network.Converter.IPacketConverter.DeserialisePacket``1(System.Byte[])">
+        <member name="M:Network.Converter.IPacketConverter.GetPacket(System.Type,System.Byte[])">
             <summary>
-            Deserialises the given byte array into an object of the given type.
+            Deserialises the given <see cref="T:System.Byte"/> array into a <see cref="T:Network.Packets.Packet"/> of the given <see cref="T:System.Type"/>.
             </summary>
-            <typeparam name="P">
-            The type to which to deserialise the given byte array.
-            </typeparam>
-            <param name="serialisedPacket">
-            The byte array holding the serialised packet.
-            </param>
-            <returns>
-            The deserialised packet object, of the given type.
-            </returns>
+            <param name="packetType">The <see cref="T:System.Type"/> of <see cref="T:Network.Packets.Packet"/> to deserialise the <see cref="T:System.Byte"/> array to.</param>
+            <param name="serialisedPacket">The <see cref="T:System.Byte"/> array holding the serialised <see cref="T:Network.Packets.Packet"/>.</param>
+            <returns>The deserialised <see cref="T:Network.Packets.Packet"/> object of the given type.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:Network.Converter.IPacketConverter.DeserialisePacket``1(System.Byte[])" -->
         <member name="T:Network.Converter.ObjectState">
             <summary>
-            The possible states of a network object before and after deserialisation.
+            Enumerates the possible states of a network object before and after deserialisation.
             </summary>
         </member>
         <member name="F:Network.Converter.ObjectState.Null">
             <summary>
-            The network object is null, so there is nothing to read from the
-            network stream.
+            The network object is null, so there is nothing to read from the network stream.
             </summary>
         </member>
         <member name="F:Network.Converter.ObjectState.NULL">
@@ -1774,8 +1605,7 @@
         </member>
         <member name="F:Network.Converter.ObjectState.NotNull">
             <summary>
-            The network object is not null, so there is something to read from
-            the network stream.
+            The network object is not null, so there is something to read from the network stream.
             </summary>
         </member>
         <member name="F:Network.Converter.ObjectState.NOT_NULL">
@@ -1785,37 +1615,31 @@
         </member>
         <member name="T:Network.Converter.PacketConverter">
             <summary>
-            Implements <see cref="T:Network.Converter.IPacketConverter"/>, and provides methods to serialise
-            and deserialise a packet to and from its binary form.
+            Implements <see cref="T:Network.Converter.IPacketConverter"/>, and provides methods to serialise and deserialise a <see cref="T:Network.Packets.Packet"/> object to and from its binary form.
             </summary>
         </member>
         <member name="F:Network.Converter.PacketConverter.packetPropertyCache">
             <summary>
-            Caches packet <see cref="T:System.Type"/>s and their relevant
-            <see cref="T:System.Reflection.PropertyInfo"/>s, to avoid slow and unnecessary reflection.
+            Caches packet <see cref="T:System.Type"/>s and their relevant <see cref="T:System.Reflection.PropertyInfo"/>s, to avoid slow and unnecessary reflection.
             </summary>
         </member>
         <member name="F:Network.Converter.PacketConverter.packetPropertyCacheLock">
             <summary>
-            An object to synchronise multi-threaded access to the
-            <see cref="F:Network.Converter.PacketConverter.packetPropertyCache"/>.
+            An object to synchronise multi-threaded access to the <see cref="F:Network.Converter.PacketConverter.packetPropertyCache"/>.
             </summary>
         </member>
         <member name="M:Network.Converter.PacketConverter.GetTypeProperties(System.Type)">
             <summary>
-            Returns an array of the <see cref="T:System.Reflection.PropertyInfo"/>s that need to be
-            serialised on the given <see cref="T:System.Type"/>. If the given <see cref="T:System.Type"/>
-            has already been cached, it will use the cached <see cref="T:System.Reflection.PropertyInfo"/>
-            array, to save CPU time.
+            Returns an array of the <see cref="T:System.Reflection.PropertyInfo"/>s that need to be serialised on the given <see cref="T:System.Type"/>. If the given <see cref="T:System.Type"/>
+            has already been cached, it will use the cached <see cref="T:System.Reflection.PropertyInfo"/> array, to save CPU time.
             </summary>
-            <param name="type">
-            The <see cref="T:System.Type"/> whose serialisable properties to get.
-            </param>
-            <returns>
-            An array of all <see cref="T:System.Reflection.PropertyInfo"/>s that should be serialised.
-            </returns>
+            <param name="type">The <see cref="T:System.Type"/> whose serialisable properties to get.</param>
+            <returns>An array of all <see cref="T:System.Reflection.PropertyInfo"/>s that should be serialised on the given <see cref="T:System.Type"/></returns>
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialisePacket(Network.Packets.Packet)">
+            <inheritdoc />
+        </member>
+        <member name="M:Network.Converter.PacketConverter.GetBytes(Network.Packets.Packet)">
             <inheritdoc />
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialisePacket``1(``0)">
@@ -1824,900 +1648,511 @@
         <member name="M:Network.Converter.PacketConverter.DeserialisePacket(System.Type,System.Byte[])">
             <inheritdoc />
         </member>
+        <member name="M:Network.Converter.PacketConverter.GetPacket(System.Type,System.Byte[])">
+            <inheritdoc />
+        </member>
         <member name="M:Network.Converter.PacketConverter.DeserialisePacket``1(System.Byte[])">
             <inheritdoc />
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)">
             <summary>
-            Serialises all the properties on the given <see cref="T:System.Object"/> that
-            need to be serialised to the given <see cref="T:System.IO.BinaryWriter"/>s
+            Serialises all the properties on the given <see cref="T:System.Object"/> that need to be serialised to the given <see cref="T:System.IO.BinaryWriter"/>s
             underlying <see cref="T:System.IO.MemoryStream"/>.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Object"/> whose properties to serialise using the given
-            <see cref="T:System.IO.BinaryWriter"/>.
-            </param>
+            <param name="obj">The <see cref="T:System.Object"/> whose properties to serialise using the given <see cref="T:System.IO.BinaryWriter"/>.</param>
             <param name="binaryWriter">
-            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to serialise the properties of the given <see cref="T:System.Object"/>.
+            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/> to serialise the properties of the given <see cref="T:System.Object"/>.
             </param>
-            <remarks>
-            This method can only serialise properties that lack the custom
-            <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>.
-            </remarks>
+            <remarks>This method can only serialise properties that lack the custom <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>.</remarks>
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryWriter)">
             <summary>
-            Serialises the given <see cref="T:System.Reflection.PropertyInfo"/> to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            Serialises the given <see cref="T:System.Reflection.PropertyInfo"/> to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/> value to
-            serialise.
-            </param>
+            <param name="obj">The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/> value to serialise.</param>
             <param name="propertyInfo">
-            The <see cref="T:System.Reflection.PropertyInfo"/> to serialise to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            The <see cref="T:System.Reflection.PropertyInfo"/> to serialise to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
             <param name="binaryWriter">
-            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/> to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialiseArrayToWriter(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryWriter)">
             <summary>
-            Serialises the given <see cref="T:System.Array"/> to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            Uses <see cref="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)"/>
-            to serialise each of the <see cref="T:System.Array"/>s elements to the stream.
+            Serialises the given <see cref="T:System.Array"/> to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>. Uses
+            <see cref="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)"/> to serialise each of the <see cref="T:System.Array"/>s elements to the stream.
             </summary>
             <param name="obj">
-            The <see cref="T:System.Array"/> to serialise to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            The <see cref="T:System.Array"/> to serialise to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
-            The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Array"/>.
-            <param name="propertyInfo">
-            </param>
+            <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Array"/>.</param>
             <param name="binaryWriter">
-            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/> to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
             <exception cref="T:System.NullReferenceException">
-            Thrown if the <see cref="T:System.Array"/> held in the given <see cref="T:System.Reflection.PropertyInfo"/>
-            is null, or if the <see cref="T:System.Array"/>s elements do not have a type.
+            Thrown if the <see cref="T:System.Array"/> held in the given <see cref="T:System.Reflection.PropertyInfo"/> is null, or if the <see cref="T:System.Array"/>s elements do not have a type.
             </exception>
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialiseListToWriter(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryWriter)">
             <summary>
-            Serialises the given <see cref="T:System.Collections.IList"/> to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            Uses <see cref="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)"/>
-            to serialise each of the <see cref="T:System.Collections.IList"/>s elements to the stream.
+            Serialises the given <see cref="T:System.Collections.IList"/> to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            Uses <see cref="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)"/> to serialise each of the <see cref="T:System.Collections.IList"/>s elements to the stream.
             </summary>
             <param name="obj">
-            The <see cref="T:System.Collections.IList"/> to serialise to the given
-            <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            The <see cref="T:System.Collections.IList"/> to serialise to the given <see cref="T:System.IO.BinaryWriter"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
-            The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Collections.IList"/>.
-            <param name="propertyInfo">
-            </param>
+            <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Collections.IList"/>. </param>
             <param name="binaryWriter">
-            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryWriter"/> to whose underlying <see cref="T:System.IO.MemoryStream"/> to serialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
             <exception cref="T:System.NullReferenceException">
-            Thrown if the <see cref="T:System.Collections.IList"/> held in the given <see cref="T:System.Reflection.PropertyInfo"/>
-            is null, or if the <see cref="T:System.Collections.IList"/>s elements do not have a type.
+            Thrown if the <see cref="T:System.Collections.IList"/> held in the given <see cref="T:System.Reflection.PropertyInfo"/> is null, or if the <see cref="T:System.Collections.IList"/>s elements do not have a type.
             </exception>
         </member>
         <member name="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.IO.BinaryReader)">
             <summary>
-            Deserialises all the properties on the given <see cref="T:System.Object"/> that
-            can be deserialised from the given <see cref="T:System.IO.BinaryReader"/>s
+            Deserialises all the properties on the given <see cref="T:System.Object"/> that can be deserialised from the given <see cref="T:System.IO.BinaryReader"/>s
             underlying <see cref="T:System.IO.MemoryStream"/>.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Object"/> whose properties to deserialise using the given
-            <see cref="T:System.IO.BinaryReader"/>.
-            </param>
+            <param name="obj">The <see cref="T:System.Object"/> whose properties to deserialise using the given <see cref="T:System.IO.BinaryReader"/>.</param>
             <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to deserialise the properties of the given <see cref="T:System.Object"/>.
+            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/> to deserialise the properties of the given <see cref="T:System.Object"/>.
             </param>
-            <returns>
-            The given <see cref="T:System.Object"/> with all deserialisable properties
-            set.
-            </returns>
+            <returns>The given <see cref="T:System.Object"/> with all deserialisable properties set.</returns>
             <remarks>
-            This method can only deserialise properties that lack the custom
-            <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>. Any other properties
+            This method can only deserialise properties that lack the custom <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>. Any other properties
             will be left at their default values.
             </remarks>
         </member>
         <member name="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryReader)">
             <summary>
-            Deserialises the given <see cref="T:System.Reflection.PropertyInfo"/> from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            Deserialises the given <see cref="T:System.Reflection.PropertyInfo"/> from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/> value to
-            deserialise.
-            </param>
+            <param name="obj"> The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/> value to deserialise.</param>
             <param name="propertyInfo">
-            The <see cref="T:System.Reflection.PropertyInfo"/> to deserialise from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            The <see cref="T:System.Reflection.PropertyInfo"/> to deserialise from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
             <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> frpm whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/> to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
             <returns>
-            The <see cref="T:System.Object"/> deserialised from the <see cref="T:System.IO.MemoryStream"/>.
-            This can be null if the <see cref="T:Network.Converter.ObjectState"/> is
+            The <see cref="T:System.Object"/> deserialised from the <see cref="T:System.IO.MemoryStream"/>. This can be null if the <see cref="T:Network.Converter.ObjectState"/> is
             <see cref="F:Network.Converter.ObjectState.Null"/>.
             </returns>
         </member>
         <member name="M:Network.Converter.PacketConverter.ReadArrayFromStream(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryReader)">
             <summary>
-            Deserialises the given <see cref="T:System.Array"/> from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            Uses <see cref="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.IO.BinaryReader)"/>
-            to serialise each of the <see cref="T:System.Array"/>s elements to the stream.
+            Deserialises the given <see cref="T:System.Array"/> from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            Uses <see cref="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.IO.BinaryReader)"/> to serialise each of the <see cref="T:System.Array"/>s elements to the stream.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Array"/> to deserialise from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            </param>
-            The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Array"/>.
-            <param name="propertyInfo">
-            </param>
+            <param name="obj">The <see cref="T:System.Array"/> to deserialise from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.</param>
+            <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Array"/>.</param>
             <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/> to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
-            <exception cref="T:System.ArgumentNullException">
-            Thrown if the <see cref="T:System.Array"/>s elements do not have a type.
-            </exception>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <see cref="T:System.Array"/>s elements do not have a type.</exception>
         </member>
         <member name="M:Network.Converter.PacketConverter.ReadListFromStream(System.Object,System.Reflection.PropertyInfo,System.IO.BinaryReader)">
             <summary>
-            Deserialises the given <see cref="T:System.Collections.IList"/> from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            Uses <see cref="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.IO.BinaryReader)"/>
-            to serialise each of the <see cref="T:System.Collections.IList"/>s elements to the stream.
+            Deserialises the given <see cref="T:System.Collections.IList"/> from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            Uses <see cref="M:Network.Converter.PacketConverter.DeserialiseObjectFromReader(System.Object,System.IO.BinaryReader)"/> to serialise each of the <see cref="T:System.Collections.IList"/>s elements to the stream.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Collections.IList"/> to deserialise from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            <param name="obj"> The <see cref="T:System.Collections.IList"/> to deserialise from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
-            The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Collections.IList"/>.
-            <param name="propertyInfo">
-            </param>
+            <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> holding the <see cref="T:System.Collections.IList"/>.</param>
             <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
+            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/> to deserialise the given <see cref="T:System.Reflection.PropertyInfo"/>.
             </param>
             <exception cref="T:System.NullReferenceException">
-            Thrown if the <see cref="T:System.Collections.IList"/> held in the <see cref="T:System.IO.MemoryStream"/>
-            is null, or if the <see cref="T:System.Collections.IList"/>s elements do not have a type.
+            Thrown if the <see cref="T:System.Collections.IList"/> held in the <see cref="T:System.IO.MemoryStream"/> is null, or if the <see cref="T:System.Collections.IList"/>s elements do not have a type.
             </exception>
-        </member>
-        <member name="M:Network.Converter.PacketConverter.ReadPrimitiveFromStream(System.Reflection.PropertyInfo,System.IO.BinaryReader)">
-            <summary>
-            Deserialises and returns a primitive object from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            </summary>
-            <param name="propertyInfo">
-            The <see cref="T:System.Reflection.PropertyInfo"/> to deserialise from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
-            </param>
-            <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to deserialise the primitive.
-            </param>
-            <returns>
-            The primitive object that was deserialised from the <see cref="T:System.IO.MemoryStream"/>.
-            </returns>
-            <remarks>
-            This method can return 'null' if the <see cref="T:Network.Converter.ObjectState"/>
-            is <see cref="F:Network.Converter.ObjectState.Null"/>.
-            </remarks>
         </member>
         <member name="M:Network.Converter.PacketConverter.ReadPrimitiveFromStream(System.Type,System.IO.BinaryReader)">
             <summary>
-            Reads a primitive type from the given <see cref="T:System.IO.BinaryReader"/>s
-            underlying <see cref="T:System.IO.MemoryStream"/> and returns it.
+            Reads a primitive type from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/> and returns it.
             </summary>
             <param name="type">
-            The <see cref="T:System.Type"/> of the primitive to read from the given
-            <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
+            The <see cref="T:System.Type"/> of the primitive to read from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.
             </param>
-            <param name="binaryReader">
-            The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/>
-            to read the primitive.
-            </param>
-            <returns>
-            The primitive that was read from the given <see cref="T:System.IO.BinaryReader"/>s
-            underlying <see cref="T:System.IO.MemoryStream"/>.
-            </returns>
-            <exception cref="T:System.NotSupportedException">
-            Thrown whenever a <see cref="T:System.Type"/> is passed to this method that
-            is not a primitive.
-            </exception>
+            <param name="binaryReader">The <see cref="T:System.IO.BinaryReader"/> from whose underlying <see cref="T:System.IO.MemoryStream"/> to read the primitive.</param>
+            <returns>The primitive that was read from the given <see cref="T:System.IO.BinaryReader"/>s underlying <see cref="T:System.IO.MemoryStream"/>.</returns>
+            <exception cref="T:System.NotSupportedException">Thrown whenever a <see cref="T:System.Type"/> is passed to this method that is not a primitive.</exception>
         </member>
         <member name="T:Network.Converter.PacketConverterHelper">
             <summary>
-            Provides helper methods for serialising and deserialising packets to and
-            from their binary form.
+            Provides helper methods for serialising and deserialising packets to and from their binary form.
             </summary>
         </member>
-        <member name="F:Network.Converter.PacketConverterHelper.propertyIgnoreAttributeType">
+        <member name="F:Network.Converter.PacketConverterHelper.PropertyIgnoreAttributeType">
             <summary>
-            The <see cref="T:System.Type"/> of the custom property that will cause a property
-            to be ignored during serialisation. See <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>
+            The <see cref="T:System.Type"/> of the custom property that will cause a property to be ignored during serialisation. See <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>
             for more information regarding its usage.
             </summary>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.TypeIsPrimitive(System.Type)">
             <summary>
-            Checks whether the given <see cref="T:System.Type"/> is a primitive type,
-            that is if it lives in the 'System' namespace.
+            Checks whether the given <see cref="T:System.Type"/> is a primitive type, that is if it lives in the 'System' namespace.
             </summary>
-            <param name="type">
-            The <see cref="T:System.Type"/> to test.
-            </param>
-            <returns>
-            Whether the given <see cref="T:System.Type"/> is a primitive.
-            </returns>
-            <remarks>
-            If the given <see cref="T:System.Type"/> is null, then the method will return
-            false.
-            </remarks>
+            <param name="type">The <see cref="T:System.Type"/> to test.</param>
+            <returns>Whether the given <see cref="T:System.Type"/> is a primitive.</returns>
+            <remarks>If the given <see cref="T:System.Type"/> is null, then the method will return false.</remarks>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.PropertyIsPrimitive(System.Reflection.PropertyInfo)">
             <summary>
-            Checks whether the underlying <see cref="T:System.Type"/> of the given property
-            is a primitive type. See <see cref="M:Network.Converter.PacketConverterHelper.TypeIsPrimitive(System.Type)"/> for more.
+            Checks whether the underlying <see cref="T:System.Type"/> of the given property is a primitive type. See <see cref="M:Network.Converter.PacketConverterHelper.TypeIsPrimitive(System.Type)"/> for more
+            information regarding its usage.
             </summary>
-            <param name="property">
-            The <see cref="T:System.Reflection.PropertyInfo"/> to test.
-            </param>
-            <returns>
-            Whether the given <see cref="T:System.Reflection.PropertyInfo"/>s underlying
-            <see cref="T:System.Type"/> is primitive.
-            </returns>
+            <param name="property">The <see cref="T:System.Reflection.PropertyInfo"/> to test.</param>
+            <returns>Whether the given <see cref="T:System.Reflection.PropertyInfo"/>s underlying <see cref="T:System.Type"/> is primitive.</returns>
+            <remarks>If the given properties underlying element <see cref="T:System.Type"/> is null, then the method will return false.</remarks>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.GetTypeProperties(System.Type)">
             <summary>
-            Gets all the <see cref="T:System.Reflection.PropertyInfo"/>s of the given <see cref="T:System.Type"/>
-            that should be serialised (lack the <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>
+            Gets all the <see cref="T:System.Reflection.PropertyInfo"/>s of the given <see cref="T:System.Type"/> that should be serialised (lack the <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>
             attribute) and returns them as an array.
             </summary>
-            <param name="type">
-            The <see cref="T:System.Type"/> whose <see cref="T:System.Reflection.PropertyInfo"/>s to read.
-            </param>
-            <returns>
-            An array of all the <see cref="T:System.Reflection.PropertyInfo"/>s on the given object.
-            </returns>
+            <param name="type">The <see cref="T:System.Type"/> whose <see cref="T:System.Reflection.PropertyInfo"/>s to read.</param>
+            <returns>An array of all the <see cref="T:System.Reflection.PropertyInfo"/>s on the given object.</returns>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.GetObjectProperties(System.Object)">
             <summary>
-            Gets all the <see cref="T:System.Reflection.PropertyInfo"/>s of the given <see cref="T:System.Object"/>
-            that should be serialised and returns them as an array. See
+            Gets all the <see cref="T:System.Reflection.PropertyInfo"/>s of the given <see cref="T:System.Object"/> that should be serialised and returns them as an array. See
             <see cref="M:Network.Converter.PacketConverterHelper.GetTypeProperties(System.Type)"/> for more information.
             </summary>
-            <param name="_object">
-            The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/>s to read.
-            </param>
-            <returns>
-            An array of all the <see cref="T:System.Reflection.PropertyInfo"/>s on the given object.
-            </returns>
+            <param name="_object">The <see cref="T:System.Object"/> whose <see cref="T:System.Reflection.PropertyInfo"/>s to read.</param>
+            <returns>An array of all the <see cref="T:System.Reflection.PropertyInfo"/>s on the given object.</returns>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.InstantiateObject(System.Type)">
             <summary>
-            Instantiates and returns a default object of the given <see cref="T:System.Type"/>.
+            Instantiates and returns a default <see cref="T:System.Object"/> of the given <see cref="T:System.Type"/>.
             </summary>
-            <param name="objectType">
-            The <see cref="T:System.Type"/> to instantiate.
-            </param>
-            <returns>
-            The default instance of the given <see cref="T:System.Type"/>.
-            </returns>
+            <param name="objectType">The <see cref="T:System.Type"/> to instantiate.</param>
+            <returns>The default instance of the given <see cref="T:System.Type"/>.</returns>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.InstantiatePacket(System.Type)">
             <summary>
-            Instantiates and returns a default object of the given <see cref="T:System.Type"/>.
+            Instantiates and returns a default <see cref="T:Network.Packets.Packet"/> of the given <see cref="T:System.Type"/>.
             </summary>
-            <param name="packetType">
-            The <see cref="T:System.Type"/> to instantiate.
-            </param>
-            <returns>
-            The default instance of the given <see cref="T:System.Type"/>.
-            </returns>
+            <param name="packetType">The <see cref="T:System.Type"/> to instantiate.</param>
+            <returns>The default instance of the given <see cref="T:System.Type"/>.</returns>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.InstantiateGenericObject``1">
             <summary>
-            Instantiates and returns a default object of the given generic type.
+            Instantiates and returns a default <see cref="T:System.Object"/> of the given generic type.
             </summary>
-            <typeparam name="O">
-            The generic type of the object to instantiate.
-            </typeparam>
-            <returns>
-            The default instance of the given generic type.
-            </returns>
+            <typeparam name="O">The generic type of the object to instantiate.</typeparam>
+            <returns>The default instance of the given generic type.</returns>
         </member>
         <member name="M:Network.Converter.PacketConverterHelper.InstantiateGenericPacket``1">
             <summary>
-            Instantiates and returns a default object of the given generic type.
+            Instantiates and returns a default <see cref="T:System.Object"/> of the given generic type.
             </summary>
-            <typeparam name="P">
-            The generic type of packet to instantiate.
-            </typeparam>
-            <returns>
-            The default instance of the given generic type.
-            </returns>
+            <typeparam name="P">The generic type of packet to instantiate.</typeparam>
+            <returns>The default instance of the given generic type.</returns>
         </member>
         <member name="T:Network.Converter.RawDataConverter">
             <summary>
-            Converts raw primitive type values into a <see cref="T:Network.Packets.RawData"/> packet
-            that can be sent across the network, and vice versa.
+            Converts raw primitive type values into a <see cref="T:Network.Packets.RawData"/> packet that can be sent across the network, and vice versa.
             </summary>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromBoolean(System.String,System.Boolean)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Boolean"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Boolean"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUInt8(System.String,System.Byte)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Byte"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Byte"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUInt16(System.String,System.UInt16)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt16"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt16"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUInt32(System.String,System.UInt32)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt32"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt32"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUInt64(System.String,System.UInt64)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt64"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.UInt64"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromInt8(System.String,System.SByte)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.SByte"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.SByte"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromInt16(System.String,System.Int16)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int16"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int16"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromInt32(System.String,System.Int32)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int32"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int32"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromInt64(System.String,System.Int64)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int64"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Int64"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUTF16_BigEndian_String(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.BigEndianUnicode"/> encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.BigEndianUnicode"/> encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUTF16_LittleEndian_String(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUnicodeString(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.Unicode"/> encoding. Identical to
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.Unicode"/> encoding. Identical to
             <see cref="M:Network.Converter.RawDataConverter.FromUTF16_LittleEndian_String(System.String,System.String)"/> method.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUTF32String(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.UTF32"/> encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.UTF32"/> encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUTF8String(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.UTF8"/> encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.UTF8"/> encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromUTF7String(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.UTF7"/> encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.UTF7"/> encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromASCIIString(System.String,System.String)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/>
-            value, using the <see cref="P:System.Text.Encoding.ASCII"/> encoding.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.String"/> value, using the <see cref="P:System.Text.Encoding.ASCII"/> encoding.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromChar(System.String,System.Char)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Char"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Char"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromSingle(System.String,System.Single)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Single"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Single"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.FromDouble(System.String,System.Double)">
             <summary>
-            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Double"/>
-            value.
+            Returns a <see cref="T:Network.Packets.RawData"/> holding the given <see cref="T:System.Double"/> value.
             </summary>
-            <param name="key">
-            The key to use for the <see cref="T:Network.Packets.RawData"/> packet.
-            </param>
-            <param name="value">
-            The primitive value to send.
-            </param>
-            <returns>
-            A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the
-            given key.
-            </returns>
+            <param name="key">The key to use for the <see cref="T:Network.Packets.RawData"/> packet.</param>
+            <param name="value">The primitive value to send.</param>
+            <returns>A <see cref="T:Network.Packets.RawData"/> packet holding the given primitive, with the given key.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.GetBytes(System.Object)">
             <summary>
             Converts the given value into bytes and returns them.
             </summary>
-            <param name="value">
-            The value to convert into bytes.
-            </param>
-            <returns>
-            The byte array of the serialised value.
-            </returns>
+            <param name="value">The value to convert into bytes.</param>
+            <returns>The byte array of the serialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToBoolean(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Boolean"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Boolean"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUInt8(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Byte"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Byte"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUInt16(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt16"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt16"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUInt32(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt32"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt32"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUInt64(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt64"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.UInt64"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToInt8(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.SByte"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.SByte"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToInt16(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int16"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int16"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToInt32(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int32"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int32"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToInt64(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int64"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Int64"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUTF16_BigEndian_String(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.BigEndianUnicode"/> encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.BigEndianUnicode"/> encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUTF16_LittleEndian_String(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUnicodeString(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding, and
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.Unicode"/> (little endian) encoding, and
             returns it. Identical to the <see cref="M:Network.Converter.RawDataConverter.ToUTF16_LittleEndian_String(Network.Packets.RawData)"/>
             method.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUTF32String(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.UTF32"/> encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.UTF32"/> encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUTF8String(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.UTF8"/> encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.UTF8"/> encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToUTF7String(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.UTF7"/> encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.UTF7"/> encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToASCIIString(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/>
-            using the <see cref="P:System.Text.Encoding.ASCII"/> encoding, and
-            returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.String"/> using the <see cref="P:System.Text.Encoding.ASCII"/> encoding, and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToChar(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Char"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Char"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToSingle(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Single"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Single"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="M:Network.Converter.RawDataConverter.ToDouble(Network.Packets.RawData)">
             <summary>
-            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Double"/>
-            and returns it.
+            Converts the <see cref="P:Network.Packets.RawData.Data"/> array into a <see cref="T:System.Double"/> and returns it.
             </summary>
-            <param name="rawData">
-            The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.
-            </param>
-            <returns>
-            The deserialised value.
-            </returns>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet whose data to deserialise.</param>
+            <returns>The deserialised value.</returns>
         </member>
         <member name="T:Network.Enums.CloseReason">
             <summary>
-            Enumerates the possible reasons for a <see cref="T:Network.Connection"/> closing/
+            Enumerates the possible reasons for a <see cref="T:Network.Connection"/> closing.
             </summary>
         </member>
         <member name="F:Network.Enums.CloseReason.NetworkError">
@@ -2782,8 +2217,7 @@
         </member>
         <member name="F:Network.Enums.CloseReason.AssemblyDoesNotExist">
             <summary>
-            The assembly for the incoming packet is not available.
-            Make sure that every project is including that assembly.
+            The assembly for the incoming packet is not available. Make sure that every project is including that assembly.
             </summary>
         </member>
         <member name="T:Network.Enums.ConnectionType">
@@ -2793,20 +2227,17 @@
         </member>
         <member name="F:Network.Enums.ConnectionType.TCP">
             <summary>
-            The <see cref="T:Network.Connection"/> should use TCP to communicate across
-            the network.
+            The <see cref="T:Network.Connection"/> should use TCP to communicate across the network.
             </summary>
         </member>
         <member name="F:Network.Enums.ConnectionType.UDP">
             <summary>
-            The <see cref="T:Network.Connection"/> should use UDP to communicate across
-            the network.
+            The <see cref="T:Network.Connection"/> should use UDP to communicate across the network.
             </summary>
         </member>
         <member name="F:Network.Enums.ConnectionType.Bluetooth">
             <summary>
-            The <see cref="T:Network.Connection"/> should use Bluetooth to communicate
-            across the network.
+            The <see cref="T:Network.Connection"/> should use Bluetooth to communicate across the network.
             </summary>
         </member>
         <member name="T:Network.Enums.LogLevel">
@@ -2836,8 +2267,7 @@
         </member>
         <member name="T:Network.Enums.PacketState">
             <summary>
-            Enumerates the possible states that a <see cref="T:Network.Packets.Packet"/> could be in
-            after transmission.
+            Enumerates the possible states that a <see cref="T:Network.Packets.Packet"/> could be in after transmission.
             </summary>
         </member>
         <member name="F:Network.Enums.PacketState.Success">
@@ -2847,26 +2277,27 @@
         </member>
         <member name="F:Network.Enums.PacketState.Timeout">
             <summary>
-            The packet was not received within the specified timeout. The
-            <see cref="T:Network.Connection"/> could be dead.
+            The packet was not received within the specified timeout. The <see cref="T:Network.Connection"/> could be dead.
             </summary>
         </member>
         <member name="F:Network.Enums.PacketState.ConnectionNotAlive">
             <summary>
-            The <see cref="T:Network.Connection"/> is not alive, so no asynchronous
-            transmission is possible.
+            The <see cref="T:Network.Connection"/> is not alive, so no asynchronous transmission is possible.
             </summary>
         </member>
         <member name="T:Network.Enums.Performance">
             <summary>
-            Enumerates the possible values for sleep intervals.
-            Fastest Performance >> Slowest Performance :
-            SoftRealtime        >> EnergySaving
+            Enumerates the possible values for sleep intervals. Fastest Performance >> Slowest Performance : SoftRealtime >> EnergySaving
             </summary>
         </member>
         <member name="F:Network.Enums.Performance.EnergySaving">
             <summary>
             Sleep intervals of more than 500ms.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.Performance.Energy_Saving">
+            <summary>
+            Identical to <see cref="F:Network.Enums.Performance.EnergySaving"/>.
             </summary>
         </member>
         <member name="F:Network.Enums.Performance.Slow">
@@ -2886,8 +2317,7 @@
         </member>
         <member name="F:Network.Enums.Performance.Default">
             <summary>
-            Sleep interval of more than 5ms.
-            This is the default value, recommended for usage.
+            Sleep interval of more than 5ms. This is the default value, recommended for usage.
             </summary>
         </member>
         <member name="F:Network.Enums.Performance.SoftRealtime">
@@ -2895,35 +2325,28 @@
             Sleep interval of more than 1ms.
             </summary>
         </member>
+        <member name="F:Network.Enums.Performance.Soft_Realtime">
+            <summary>
+            Identical to <see cref="F:Network.Enums.Performance.SoftRealtime"/>.
+            </summary>
+        </member>
         <member name="T:Network.Extensions.ConcurrentBagExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/>
-            class.
+            Provides additional functionality to the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/> class.
             </summary>
-            <remarks>
-            See https://stackoverflow.com/a/48861922/2934290 for the original question
-            and the relevant code.
-            </remarks>
+            <remarks>See https://stackoverflow.com/a/48861922/2934290 for the original question and the relevant code. </remarks>
         </member>
         <member name="M:Network.Extensions.ConcurrentBagExtensions.Remove``1(System.Collections.Concurrent.ConcurrentBag{``0},``0)">
             <summary>
             Removes the given item from the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/>.
             </summary>
-            <typeparam name="T">
-            The type for the elements held in the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/>.
-            </typeparam>
-            <param name="bag">
-            The <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/> instance that the extension method
-            should affect.
-            </param>
-            <param name="item">
-            The item to remove from the bag.
-            </param>
+            <typeparam name="T">The type for the elements held in the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/>.</typeparam>
+            <param name="bag">The <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/> instance that the extension method should affect.</param>
+            <param name="item">The item to remove from the bag.</param>
         </member>
         <member name="T:Network.Extensions.ConnectionExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:Network.Connection"/>
-            class.
+            Provides additional functionality to the <see cref="T:Network.Connection"/> class.
             </summary>
         </member>
         <member name="F:Network.Extensions.ConnectionExtensions.counter">
@@ -2931,321 +2354,231 @@
             A private thread-safe counter for generating unique hash codes.
             </summary>
             <remarks>
-            Increments are guaranteed to be atomic on all 32-bit and higher
-            systems, as any single-instruction operation on a variable is
-            by definition atomic. Since an <see cref="T:System.Int32"/> is 32 bits long,
-            it can be loaded with 1 instruction into a register on a 32-bit or
-            higher system. Likewise, addition is also atomic. This guarantees
-            atomic behaviour for increments on an <see cref="T:System.Int32"/>.
+            Increments are guaranteed to be atomic on all 32-bit and higher systems, as any single-cpu-instruction operation on a variable is
+            by definition atomic. Since an <see cref="T:System.Int32"/> is 32 bits long, it can be loaded with 1 instruction into a register on a 32-bit or
+            higher system. Likewise, addition is also atomic. This guarantees atomic behaviour for increments on an <see cref="T:System.Int32"/>.
             </remarks>
         </member>
         <member name="M:Network.Extensions.ConnectionExtensions.GenerateUniqueHashCode(Network.Connection)">
             <summary>
-            Generates a new unique hash code for the <see cref="T:Network.Connection"/> via
-            a thread-safe increment operation.
+            Generates a new unique hash code for the <see cref="T:Network.Connection"/> via a thread-safe increment operation.
             </summary>
-            <param name="connection">
-            The <see cref="T:Network.Connection"/> instance this extension method affects.
-            </param>
-            <returns>
-            A new, unique hash code.
-            </returns>
-            <remarks>
-            This method is thread safe, see <see cref="F:Network.Extensions.ConnectionExtensions.counter"/> for more info.
-            </remarks>
+            <param name="connection">The <see cref="T:Network.Connection"/> instance this extension method affects.</param>
+            <returns>A new, unique hash code.</returns>
+            <remarks>This method is thread safe, see <see cref="F:Network.Extensions.ConnectionExtensions.counter"/> for more info.</remarks>
         </member>
         <member name="T:Network.Extensions.EnumeratorExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Collections.IEnumerator"/>
-            interface.
+            Provides additional functionality to the <see cref="T:System.Collections.IEnumerator"/> interface.
             </summary>
         </member>
         <member name="M:Network.Extensions.EnumeratorExtensions.ToList``1(System.Collections.IEnumerator)">
             <summary>
-            Adds each item in the <see cref="T:System.Collections.IEnumerator"/> into a <see cref="T:System.Collections.Generic.List`1"/>
-            and return the new <see cref="T:System.Collections.Generic.List`1"/>.
+            Adds each item in the <see cref="T:System.Collections.IEnumerator"/> into a <see cref="T:System.Collections.Generic.List`1"/> and return the new <see cref="T:System.Collections.Generic.List`1"/>.
             </summary>
-            <typeparam name="T">
-            The type of the elements in the <see cref="T:System.Collections.Generic.List`1"/>.
-            </typeparam>
-            <param name="enumerator">
-            The <see cref="T:System.Collections.IEnumerator"/> instance that the extension method affects.
-            </param>
-            <returns>
-            The <see cref="T:System.Collections.Generic.List`1"/> instance with the elements of the
-            <see cref="T:System.Collections.IEnumerator"/>.
-            </returns>
+            <typeparam name="T">The type of the elements in the <see cref="T:System.Collections.Generic.List`1"/>.</typeparam>
+            <param name="enumerator">The <see cref="T:System.Collections.IEnumerator"/> instance that the extension method affects.</param>
+            <returns>The <see cref="T:System.Collections.Generic.List`1"/> instance with the elements of the <see cref="T:System.Collections.IEnumerator"/>.</returns>
         </member>
         <member name="T:Network.Extensions.RawDataExtension">
             <summary>
-            Provides additional functionality to the <see cref="T:Network.Packets.RawData"/>
-            class.
+            Provides additional functionality to the <see cref="T:Network.Packets.RawData"/> class.
             </summary>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToBoolean(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToBoolean(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt8(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt8(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt16(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt16(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt32(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt32(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt64(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt64(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt8(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt8(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt16(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt16(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt32(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt32(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt64(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt64(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF16_BigEndian_String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF16_BigEndian_String(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF16_LittleEndian_String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF16_LittleEndian_String(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUnicodeString(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUnicodeString(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF32String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF32String(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF8String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF8String(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF7String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF7String(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToASCIIString(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToASCIIString(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToChar(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToChar(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToSingle(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToSingle(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToDouble(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToDouble(Network.Packets.RawData)"/>
             <remarks>
-            This method should probably not be used, it would be preferable to
-            use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
+            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
             </remarks>
         </member>
         <member name="T:Network.Extensions.RSACryptoServiceProviderExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/>
-            class, that is unavailable under Linux by default.
+            Provides additional functionality to the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/> class, that is unavailable under Linux by default.
             </summary>
         </member>
         <member name="M:Network.Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(System.Security.Cryptography.RSACryptoServiceProvider,System.String)">
             <summary>
-            Reads in and imports <see cref="T:System.Security.Cryptography.RSAParameters"/> from the given XML
-            string.
+            Reads in and imports <see cref="T:System.Security.Cryptography.RSAParameters"/> from the given XML string.
             </summary>
-            <param name="rsaCryptoServiceProvider">
-            The <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/> this extension method
-            affects.
-            </param>
-            <param name="xml">
-            The XML string from which to load the parameters.
-            </param>
+            <param name="rsaCryptoServiceProvider">The <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/> this extension method affects.</param>
+            <param name="xml">The XML string from which to load the parameters.</param>
+            <exception cref="T:System.NullReferenceException">Thrown if the <see cref="T:System.Xml.XmlDocument"/> generated from the given xml <see cref="T:System.String"/> is null.</exception>
         </member>
         <member name="M:Network.Extensions.RSACryptoServiceProviderExtensions.ConvertFromBase64String(System.String)">
             <summary>
             Decodes a base-64 encoded string into a byte array and returns it.
             </summary>
-            <param name="text">
-            The base-64 encoded string.
-            </param>
-            <returns>
-            The byte array that the base-64 encoded text represents.
-            </returns>
+            <param name="text">The base-64 encoded string.</param>
+            <returns>The byte array that the base-64 encoded text represents.</returns>
         </member>
         <member name="T:Network.Extensions.RSAParametersExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Security.Cryptography.RSAParameters"/>
-            struct.
+            Provides additional functionality to the <see cref="T:System.Security.Cryptography.RSAParameters"/> struct.
             </summary>
         </member>
         <member name="M:Network.Extensions.RSAParametersExtensions.ExtractPrivateKey(System.Security.Cryptography.RSAParameters)">
             <summary>
-            Extracts the private key from the given <see cref="T:System.Security.Cryptography.RSAParameters"/>
-            and returns it as an XML string.
+            Extracts the private key from the given <see cref="T:System.Security.Cryptography.RSAParameters"/> and returns it as an XML string.
             </summary>
-            <param name="rsaParameter">
-            The <see cref="T:System.Security.Cryptography.RSAParameters"/> instance that the extension method
-            affects.
-            </param>
-            <returns>
-            The XML string with the private key.
-            </returns>
+            <param name="rsaParameter">The <see cref="T:System.Security.Cryptography.RSAParameters"/> instance that the extension method affects.</param>
+            <returns>The XML <see cref="T:System.String"/> with the private key.</returns>
         </member>
         <member name="M:Network.Extensions.RSAParametersExtensions.ExtractPublicKey(System.Security.Cryptography.RSAParameters)">
             <summary>
-            Extracts the public key from the given <see cref="T:System.Security.Cryptography.RSAParameters"/>
-            and returns it as an XML string.
+            Extracts the public key from the given <see cref="T:System.Security.Cryptography.RSAParameters"/> and returns it as an XML string.
             </summary>
-            <param name="rsaParameter">
-            The <see cref="T:System.Security.Cryptography.RSAParameters"/> instance that the extension method
-            affects.
-            </param>
-            <returns>
-            The XML string with the public key.
-            </returns>
+            <param name="rsaParameter">The <see cref="T:System.Security.Cryptography.RSAParameters"/> instance that the extension method affects.</param>
+            <returns>The XML <see cref="T:System.String"/> with the public key.</returns>
         </member>
         <member name="T:Network.Extensions.ThreadExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Threading.Thread"/>
-            class, that isn't available under .NET Standard 2.0.
+            Provides additional functionality to the <see cref="T:System.Threading.Thread"/> class, that isn't available under .NET Standard 2.0.
             </summary>
         </member>
         <member name="M:Network.Extensions.ThreadExtensions.AbortSave(System.Threading.Thread)">
             <summary>
-            Allows for a <see cref="T:System.Threading.Thread"/> object to be aborted in a program
-            running under the .NET Standard C# implementation.
+            Allows for a <see cref="T:System.Threading.Thread"/> object to be aborted in a program running under the .NET Standard C# implementation.
             </summary>
-            <param name="thread">
-            The <see cref="T:System.Threading.Thread"/> instance this extension method affects.
-            </param>
-            <returns>
-            Whether the <see cref="M:System.Threading.Thread.Abort(System.Object)"/> method raised an
-            exception.
-            </returns>
+            <param name="thread">The <see cref="T:System.Threading.Thread"/> instance this extension method affects.</param>
+            <returns>Whether the <see cref="M:System.Threading.Thread.Abort(System.Object)"/> method raised an exception.</returns>
         </member>
         <member name="T:Network.Extensions.WaitHandleExtensions">
             <summary>
-            Provides additional functionality to the <see cref="T:System.Threading.WaitHandle"/>
-            class.
+            Provides additional functionality to the <see cref="T:System.Threading.WaitHandle"/> class.
             </summary>
         </member>
         <member name="M:Network.Extensions.WaitHandleExtensions.AsTask(System.Threading.WaitHandle)">
             <summary>
-            Returns a <see cref="T:System.Threading.Tasks.Task"/> that represents asynchronously waiting
-            for the <see cref="T:System.Threading.WaitHandle"/> instance to be set. There is no
+            Returns a <see cref="T:System.Threading.Tasks.Task"/> that represents asynchronously waiting for the <see cref="T:System.Threading.WaitHandle"/> instance to be set. There is no
             timeout for the wait operation.
             </summary>
-            <param name="handle">
-            The <see cref="T:System.Threading.WaitHandle"/> instance this extension method affects.
-            </param>
-            <returns>
-            The <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
-            </returns>
+            <param name="handle">The <see cref="T:System.Threading.WaitHandle"/> instance this extension method affects.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
         </member>
         <member name="M:Network.Extensions.WaitHandleExtensions.AsTask(System.Threading.WaitHandle,System.TimeSpan)">
             <summary>
-            Returns a <see cref="T:System.Threading.Tasks.Task"/> that represents asynchronously waiting
-            for the <see cref="T:System.Threading.WaitHandle"/> instance to be set. Cancels the
+            Returns a <see cref="T:System.Threading.Tasks.Task"/> that represents asynchronously waiting for the <see cref="T:System.Threading.WaitHandle"/> instance to be set. Cancels the
             <see cref="T:System.Threading.Tasks.Task"/> if the given timeout is exceeded.
             </summary>
-            <param name="handle">
-            The <see cref="T:System.Threading.WaitHandle"/> instance this extension method affects.
-            </param>
-            <param name="timeout">
-            The <see cref="T:System.TimeSpan"/> to wait for the operation to complete
-            before it is cancelled.
-            </param>
-            <returns>
-            The <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
-            </returns>
+            <param name="handle">The <see cref="T:System.Threading.WaitHandle"/> instance this extension method affects.</param>
+            <param name="timeout">The <see cref="T:System.TimeSpan"/> to wait for the operation to complete before it is cancelled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
         </member>
         <member name="T:Network.Interfaces.PacketReceivedHandler`1">
             <summary>
-            Represents a method that handles receiving a <see cref="T:Network.Packets.Packet"/> of
-            the given type on the given <see cref="T:Network.Connection"/>.
+            Represents a method that handles receiving a <see cref="T:Network.Packets.Packet"/> of the given type on the given <see cref="T:Network.Connection"/>.
             </summary>
-            <typeparam name="T">
-            The type of <see cref="T:Network.Packets.Packet"/> that the delegate should handle.
-            </typeparam>
-            <param name="packet">
-            The received <see cref="T:Network.Packets.Packet"/> object.
-            </param>
-            <param name="connection">
-            The <see cref="T:Network.Connection"/> that received the packet.
-            </param>
+            <typeparam name="T">The type of <see cref="T:Network.Packets.Packet"/> that the delegate should handle.</typeparam>
+            <param name="packet">The received <see cref="T:Network.Packets.Packet"/> object.</param>
+            <param name="connection">The <see cref="T:Network.Connection"/> that received the packet.</param>
         </member>
         <member name="T:Network.Interfaces.IPacketHandler">
             <summary>
@@ -3254,69 +2587,42 @@
         </member>
         <member name="M:Network.Interfaces.IPacketHandler.RegisterStaticPacketHandler``1(Network.Interfaces.PacketReceivedHandler{``0})">
             <summary>
-            Registers the given <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> for all
-            <see cref="T:Network.Packets.Packet"/>s of the given type.
+            Registers the given <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> for all <see cref="T:Network.Packets.Packet"/>s of the given type.
             </summary>
-            <typeparam name="P">
-            The type of <see cref="T:Network.Packets.Packet"/> the delegate should handle.
-            </typeparam>
-            <param name="handler">
-            The <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> delegate to be invoked
-            for each received packet of the given type.
-            </param>
+            <typeparam name="P">The type of <see cref="T:Network.Packets.Packet"/> the delegate should handle.</typeparam>
+            <param name="handler">The <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> delegate to be invoked for each received packet of the given type.</param>
         </member>
         <member name="M:Network.Interfaces.IPacketHandler.RegisterPacketHandler``1(Network.Interfaces.PacketReceivedHandler{``0},System.Object)">
             <summary>
-            Registers the given <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> on the
-            given <see cref="T:System.Object"/> for all <see cref="T:Network.Packets.Packet"/>s of the given type.
+            Registers the given <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> on the given <see cref="T:System.Object"/> for all <see cref="T:Network.Packets.Packet"/>s of the given type.
             </summary>
-            <typeparam name="P">
-            The type of <see cref="T:Network.Packets.Packet"/> the delegate should handle.
-            </typeparam>
-            <param name="handler">
-            The <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> delegate to be invoked
-            for each received packet of the given type.
-            </param>
-            <param name="obj">
-            The <see cref="T:System.Object"/> that should receive the <see cref="T:Network.Packets.Packet"/>s.
-            </param>
-        </member>
-        <member name="M:Network.Interfaces.IPacketHandler.DeregisterStaticPacketHandler``1">
-            <summary>
-            Deregisters all <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s for the given
-            <see cref="T:Network.Packets.Packet"/> type.
-            </summary>
-            <typeparam name="P">
-            The type of <see cref="T:Network.Packets.Packet"/> for which all currently registered
-            <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s should be deregistered.
-            </typeparam>
+            <typeparam name="P">The type of <see cref="T:Network.Packets.Packet"/> the delegate should handle.</typeparam>
+            <param name="handler">The <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> delegate to be invoked for each received packet of the given type.</param>
+            <param name="obj">The <see cref="T:System.Object"/> that should receive the <see cref="T:Network.Packets.Packet"/>s.</param>
         </member>
         <member name="M:Network.Interfaces.IPacketHandler.UnRegisterStaticPacketHandler``1">
-            <inheritdoc cref="M:Network.Interfaces.IPacketHandler.DeregisterStaticPacketHandler``1"/>
-        </member>
-        <member name="M:Network.Interfaces.IPacketHandler.DeregisterPacketHandler``1(System.Object)">
             <summary>
-            Deregisters all <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s for the given
-            <see cref="T:Network.Packets.Packet"/> type that are currently registered on the given
+            Deregisters all <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s for the given <see cref="T:Network.Packets.Packet"/> type.
+            </summary>
+            <typeparam name="P">
+            The type of <see cref="T:Network.Packets.Packet"/> for which all currently registered <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s should be deregistered.
+            </typeparam>
+        </member>
+        <member name="M:Network.Interfaces.IPacketHandler.UnRegisterPacketHandler``1(System.Object)">
+            <summary>
+            Deregisters all <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s for the given <see cref="T:Network.Packets.Packet"/> type that are currently registered on the given
             <see cref="T:System.Object"/>.
             </summary>
             <typeparam name="P">
-            The type of <see cref="T:Network.Packets.Packet"/> for which all currently registered
-            <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s should be deregistered.
+            The type of <see cref="T:Network.Packets.Packet"/> for which all currently registered <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s should be deregistered.
             </typeparam>
             <param name="obj">
-            The <see cref="T:System.Object"/> on which all currently registered
-            <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s of the given type should
-            be deregistered.
+            The <see cref="T:System.Object"/> on which all currently registered <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s of the given type should be deregistered.
             </param>
-        </member>
-        <member name="M:Network.Interfaces.IPacketHandler.UnRegisterPacketHandler``1(System.Object)">
-            <inheritdoc cref="M:Network.Interfaces.IPacketHandler.DeregisterPacketHandler``1(System.Object)"/>
         </member>
         <member name="T:Network.Interfaces.IRSACapability">
             <summary>
-            Describes the properties and methods that a class must implement to be
-            capable of RSA encryption.
+            Describes the properties and methods that a class must implement to be capable of RSA encryption.
             </summary>
         </member>
         <member name="P:Network.Interfaces.IRSACapability.RSAPair">
@@ -3326,8 +2632,7 @@
         </member>
         <member name="T:Network.Interfaces.IRSAConnection">
             <summary>
-            Describes the properties and methods that a class must implement to be
-            able to communicate via secure, RSA encrypted messages.
+            Describes the properties and methods that a class must implement to be able to communicate via secure, RSA encrypted messages.
             </summary>
         </member>
         <member name="P:Network.Interfaces.IRSAConnection.EncryptionProvider">
@@ -3345,68 +2650,48 @@
         </member>
         <member name="M:Network.Interfaces.IRSAConnection.EncryptBytes(System.Byte[])">
             <summary>
-            Encrypts the given byte array using the <see cref="P:Network.Interfaces.IRSAConnection.EncryptionProvider"/>
-            and returns the encrypted version.
+            Encrypts the given byte array using the <see cref="P:Network.Interfaces.IRSAConnection.EncryptionProvider"/> and returns the encrypted version.
             </summary>
-            <param name="bytes">
-            The original, plaintext byte array.
-            </param>
-            <returns>
-            The encrypted byte array.
-            </returns>
+            <param name="bytes">The original, plaintext byte array.</param>
+            <returns>The encrypted byte array.</returns>
         </member>
         <member name="M:Network.Interfaces.IRSAConnection.DecryptBytes(System.Byte[])">
             <summary>
-            Decrypts the given byte array using the <see cref="P:Network.Interfaces.IRSAConnection.DecryptionProvider"/>
-            and returns the plaintext version.
+            Decrypts the given byte array using the <see cref="P:Network.Interfaces.IRSAConnection.DecryptionProvider"/> and returns the plaintext version.
             </summary>
-            <param name="bytes">
-            The encrypted byte array.
-            </param>
-            <returns>
-            The original, plaintext byte array.
-            </returns>
+            <param name="bytes">The encrypted byte array.</param>
+            <returns>The original, plaintext byte array.</returns>
         </member>
         <member name="T:Network.Logging.PacketDirection">
             <summary>
-            Enumerates the directions that a <see cref="T:Network.Packets.Packet"/> can be travelling
-            on the network.
+            Enumerates the directions that a <see cref="T:Network.Packets.Packet"/> can be traveling on the network.
             </summary>
         </member>
         <member name="F:Network.Logging.PacketDirection.Incoming">
             <summary>
-            The packet is incoming from the network; it is being received by
-            the monitored <see cref="T:Network.Connection"/>.
+            The packet is incoming from the network; it is being received by the monitored <see cref="T:Network.Connection"/>.
             </summary>
         </member>
         <member name="F:Network.Logging.PacketDirection.Outgoing">
             <summary>
-            The packet is outgoing to the network; it is being transmitted by
-            the monitored <see cref="T:Network.Connection"/>.
+            The packet is outgoing to the network; it is being transmitted by the monitored <see cref="T:Network.Connection"/>.
             </summary>
         </member>
         <member name="T:Network.Logging.NetworkLog">
             <summary>
-            Logs network traffic, events and connection states into a given
-            <see cref="T:System.IO.Stream"/>, be it a <see cref="T:System.IO.FileStream"/> or the 'Output'
-            window of Visual Studio.
+            Logs network traffic, events and connection states into a given <see cref="T:System.IO.Stream"/>, be it a <see cref="T:System.IO.FileStream"/> or the 'Output' window of Visual Studio.
             </summary>
         </member>
         <member name="F:Network.Logging.NetworkLog.monitoredConnection">
             <summary>
-            The <see cref="T:Network.Connection"/> that the <see cref="T:Network.Logging.NetworkLog"/>
-            instance will monitor for network traffic, etc.
+            The <see cref="T:Network.Connection"/> that the <see cref="T:Network.Logging.NetworkLog"/> instance will monitor for network traffic, etc.
             </summary>
         </member>
         <member name="M:Network.Logging.NetworkLog.#ctor(Network.Connection)">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Logging.NetworkLog"/>
-            class, that monitors the given <see cref="T:Network.Connection"/>.
+            Constructs and returns a new instance of the <see cref="T:Network.Logging.NetworkLog"/> class, that monitors the given <see cref="T:Network.Connection"/>.
             </summary>
-            <param name="connection">
-            The <see cref="T:Network.Connection"/> that the <see cref="T:Network.Logging.NetworkLog"/> should
-            monitor for traffic, events and states.
-            </param>
+            <param name="connection">The <see cref="T:Network.Connection"/> that the <see cref="T:Network.Logging.NetworkLog"/> should monitor for traffic, events and states.</param>
         </member>
         <member name="P:Network.Logging.NetworkLog.EnableLogging">
             <summary>
@@ -3420,163 +2705,102 @@
         </member>
         <member name="P:Network.Logging.NetworkLog.StreamLogger">
             <summary>
-            The <see cref="T:System.IO.StreamWriter"/> that writes all logged to the current
-            output <see cref="T:System.IO.Stream"/>.
+            The <see cref="T:System.IO.StreamWriter"/> that writes all logged to the current output <see cref="T:System.IO.Stream"/>.
             </summary>
         </member>
         <member name="M:Network.Logging.NetworkLog.LogToAllOutputs(System.String)">
             <summary>
-            WRites the given message to the current <see cref="P:Network.Logging.NetworkLog.StreamLogger"/>,
-            and to the 'Output' window.
+            WRites the given message to the current <see cref="P:Network.Logging.NetworkLog.StreamLogger"/>, and to the 'Output' window.
             </summary>
-            <param name="message">
-            The message that should be logged.
-            </param>
+            <param name="message">The message that should be logged.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.Log(System.String,System.Exception,Network.Enums.LogLevel)">
             <summary>
-            Logs the given <see cref="T:System.String"/> message and <see cref="T:System.Exception"/>,
-            with the given <see cref="T:Network.Enums.LogLevel"/> to all output
-            <see cref="T:System.IO.Stream"/>s.
+            Logs the given <see cref="T:System.String"/> message and <see cref="T:System.Exception"/>, with the given <see cref="T:Network.Enums.LogLevel"/> to all output <see cref="T:System.IO.Stream"/>s.
             </summary>
-            <param name="message">
-            The message to log to the output <see cref="T:System.IO.Stream"/>s.
-            </param>
-            <param name="exception">
-            The <see cref="T:System.Exception"/> to log to the output <see cref="T:System.IO.Stream"/>s.
-            </param>
-            <param name="logLevel">
-            The <see cref="T:Network.Enums.LogLevel"/> of the log message.
-            </param>
+            <param name="message">The message to log to the output <see cref="T:System.IO.Stream"/>s.</param>
+            <param name="exception">The <see cref="T:System.Exception"/> to log to the output <see cref="T:System.IO.Stream"/>s.</param>
+            <param name="logLevel">The <see cref="T:Network.Enums.LogLevel"/> of the log message.</param>
             <remarks>
-            If <see cref="P:Network.Logging.NetworkLog.EnableLogging"/> if set to <c>false</c> or the
-            <see cref="P:Network.Logging.NetworkLog.StreamLogger"/> is <c>null</c>, then no message is logged.
+            If <see cref="P:Network.Logging.NetworkLog.EnableLogging"/> if set to <c>false</c> or the <see cref="P:Network.Logging.NetworkLog.StreamLogger"/> is <c>null</c>, then no message is logged.
             </remarks>
         </member>
         <member name="M:Network.Logging.NetworkLog.Log(System.Exception,Network.Enums.LogLevel)">
             <summary>
-            Logs the given <see cref="T:System.Exception"/> with the given
-            <see cref="T:Network.Enums.LogLevel"/> to the output <see cref="T:System.IO.Stream"/>s.
+            Logs the given <see cref="T:System.Exception"/> with the given <see cref="T:Network.Enums.LogLevel"/> to the output <see cref="T:System.IO.Stream"/>s.
             </summary>
-            <param name="exception">
-            The <see cref="T:System.Exception"/> to log to the output <see cref="T:System.IO.Stream"/>s.
-            </param>
-            <param name="logLevel">
-            The <see cref="T:Network.Enums.LogLevel"/> of the log message.
-            </param>
+            <param name="exception">The <see cref="T:System.Exception"/> to log to the output <see cref="T:System.IO.Stream"/>s.</param>
+            <param name="logLevel">The <see cref="T:Network.Enums.LogLevel"/> of the log message.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.Log(System.String,Network.Enums.LogLevel)">
             <summary>
-            Logs the given <see cref="T:System.String"/> message with the given
-            <see cref="T:Network.Enums.LogLevel"/> to the output <see cref="T:System.IO.Stream"/>s.
+            Logs the given <see cref="T:System.String"/> message with the given <see cref="T:Network.Enums.LogLevel"/> to the output <see cref="T:System.IO.Stream"/>s.
             </summary>
-            <param name="message">
-            The message to log to the output <see cref="T:System.IO.Stream"/>s.
-            </param>
-            <param name="logLevel">
-            The <see cref="T:Network.Enums.LogLevel"/> of the log message.
-            </param>
+            <param name="message">The message to log to the output <see cref="T:System.IO.Stream"/>s.</param>
+            <param name="logLevel">The <see cref="T:Network.Enums.LogLevel"/> of the log message.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.SetOutputStream(System.IO.Stream)">
             <summary>
-            Sets the output <see cref="T:System.IO.Stream"/> (<see cref="P:Network.Logging.NetworkLog.StreamLogger"/>)
-            to the given <see cref="T:System.IO.Stream"/>.
+            Sets the output <see cref="T:System.IO.Stream"/> (<see cref="P:Network.Logging.NetworkLog.StreamLogger"/>) to the given <see cref="T:System.IO.Stream"/>.
             </summary>
-            <param name="stream">
-            The <see cref="T:System.IO.Stream"/> to log messages into.
-            </param>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to log messages into.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.LogInComingPacket(System.Byte[],Network.Packets.Packet)">
             <summary>
             Logs an incoming packet to the output <see cref="T:System.IO.Stream"/>s.
             </summary>
-            <param name="packet">
-            The serialised incoming packet.
-            </param>
-            <param name="packetObj">
-            The incoming <see cref="T:Network.Packets.Packet"/> object.
-            </param>
+            <param name="packet">The serialised incoming packet.</param>
+            <param name="packetObj">The incoming <see cref="T:Network.Packets.Packet"/> object.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.LogOutgoingPacket(System.Byte[],Network.Packets.Packet)">
             <summary>
             Logs an outgoing packet to the output <see cref="T:System.IO.Stream"/>s.
             </summary>
-            <param name="packet">
-            The serialised outgoing packet.
-            </param>
-            <param name="packetObj">
-            The outgoing <see cref="T:Network.Packets.Packet"/> object.
-            </param>
+            <param name="packet">The serialised outgoing packet.</param>
+            <param name="packetObj">The outgoing <see cref="T:Network.Packets.Packet"/> object.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.LogPacket(System.Byte[],Network.Packets.Packet,Network.Logging.PacketDirection)">
             <summary>
-            Logs the given packet to the output <see cref="T:System.IO.Stream"/>s, along with
-            its direction.
+            Logs the given packet to the output <see cref="T:System.IO.Stream"/>s, along with its direction.
             </summary>
-            <param name="packet">
-            The serialised packet.
-            </param>
-            <param name="packetObj">
-            The <see cref="T:Network.Packets.Packet"/> object.
-            </param>
-            <param name="direction">
-            The direction that the packet is traveling across the network.
-            </param>
+            <param name="packet">The serialised packet.</param>
+            <param name="packetObj">The <see cref="T:Network.Packets.Packet"/> object.</param>
+            <param name="direction">The direction that the packet is traveling across the network.</param>
         </member>
         <member name="M:Network.Logging.NetworkLog.BuildConsoleTable(System.Byte[],Network.Packets.Packet,System.String)">
             <summary>
-            Builds a <see cref="T:ConsoleTables.ConsoleTable"/> with the given parameters and
-            returns it.
+            Builds a <see cref="T:ConsoleTables.ConsoleTable"/> with the given parameters and returns it.
             </summary>
-            <param name="packet">
-            The serialised packet.
-            </param>
-            <param name="packetObj">
-            The <see cref="T:Network.Packets.Packet"/> object.
-            </param>
-            <param name="direction">
-            The direction that the packet is travelling across the network.
-            </param>
-            <returns>
-            The built <see cref="T:ConsoleTables.ConsoleTable"/>.
-            </returns>
+            <param name="packet">The serialised packet.</param>
+            <param name="packetObj">The <see cref="T:Network.Packets.Packet"/> object.</param>
+            <param name="direction"> The direction that the packet is traveling across the network.</param>
+            <returns>The built <see cref="T:ConsoleTables.ConsoleTable"/>.</returns>
         </member>
         <member name="M:Network.Logging.NetworkLog.BuildLogHeader(System.Exception,Network.Enums.LogLevel)">
             <summary>
             Builds and returns the header for each log message.
             </summary>
-            <param name="exception">
-            The <see cref="T:System.Exception"/> to log.
-            </param>
-            <param name="logLevel">
-            The <see cref="T:Network.Enums.LogLevel"/> for the log message.
-            </param>
-            <returns></returns>
+            <param name="exception">The <see cref="T:System.Exception"/> to log.</param>
+            <param name="logLevel">The <see cref="T:Network.Enums.LogLevel"/> for the log message.</param>
+            <returns>The formatted log message header <see cref="T:System.String"/>.</returns>
         </member>
         <member name="M:Network.Logging.NetworkLog.BuildException(System.Exception)">
             <summary>
-            Builds and returns a <see cref="T:System.String"/> message containing an
-            <see cref="T:System.Exception"/>.
+            Builds and returns a <see cref="T:System.String"/> message containing an <see cref="T:System.Exception"/>.
             </summary>
-            <param name="exception">
-            The <see cref="T:System.Exception"/> to format as a <see cref="T:System.String"/>.
-            </param>
-            <returns>
-            The <see cref="T:System.Exception"/> formatted as a <see cref="T:System.String"/> message.
-            </returns>
+            <param name="exception">The <see cref="T:System.Exception"/> to format as a <see cref="T:System.String"/>.</param>
+            <returns>The <see cref="T:System.Exception"/> formatted as a <see cref="T:System.String"/> message.</returns>
         </member>
         <member name="T:Network.Packets.AddPacketTypeRequest">
             <summary>
-            Instructs the paired <see cref="T:Network.Connection"/> to add all the
-            <see cref="T:System.Type"/>s in the given <see cref="T:System.Reflection.Assembly"/>.
+            Instructs the paired <see cref="T:Network.Connection"/> to add all the <see cref="T:System.Type"/>s in the given <see cref="T:System.Reflection.Assembly"/>.
             </summary>
         </member>
         <member name="M:Network.Packets.AddPacketTypeRequest.#ctor(System.String)">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Packets.AddPacketTypeRequest"/>
-            class, with the given <see cref="T:System.Reflection.Assembly"/>s name specified.
+            Constructs and returns a new instance of the <see cref="T:Network.Packets.AddPacketTypeRequest"/> class, with the given <see cref="T:System.Reflection.Assembly"/>s name specified.
             </summary>
-            <param name="assemblyName">Name of the assembly.</param>
+            <param name="assemblyName">Name of the assembly to add.</param>
         </member>
         <member name="P:Network.Packets.AddPacketTypeRequest.AssemblyName">
             <summary>
@@ -3592,8 +2816,8 @@
             <summary>
             Initializes a new instance of the <see cref="T:Network.Packets.AddPacketTypeResponse"/> class.
             </summary>
-            <param name="dictionary">The dictionary.</param>
-            <param name="request">The request.</param>
+            <param name="dictionary">All registered packet IDs for the currently registered <see cref="T:Network.Packets.Packet"/>s.</param>
+            <param name="request">The <see cref="T:Network.Packets.AddPacketTypeRequest"/>.</param>
         </member>
         <member name="P:Network.Packets.AddPacketTypeResponse.LocalDict">
             <summary>
@@ -3605,6 +2829,9 @@
             Closes the paired <see cref="T:Network.Connection"/>.
             </summary>
         </member>
+        <member name="M:Network.Packets.CloseRequest.#ctor(Network.Enums.CloseReason)">
+            <inheritdoc />
+        </member>
         <member name="P:Network.Packets.CloseRequest.CloseReason">
             <summary>
             The reason that the paired <see cref="T:Network.Connection"/> should close.
@@ -3615,6 +2842,9 @@
             Establishes a UDP connection with the paired <see cref="T:Network.Connection"/>.
             </summary>
         </member>
+        <member name="M:Network.Packets.EstablishUdpRequest.#ctor(System.Int32)">
+            <inheritdoc />
+        </member>
         <member name="P:Network.Packets.EstablishUdpRequest.UdpPort">
             <summary>
             The port that the UDP connection should use.
@@ -3624,6 +2854,9 @@
             <summary>
             Response packet for the <see cref="T:Network.Packets.EstablishUdpRequest"/> packet.
             </summary>
+        </member>
+        <member name="M:Network.Packets.EstablishUdpResponse.#ctor(System.Int32,Network.Packets.RequestPacket)">
+            <inheritdoc />
         </member>
         <member name="P:Network.Packets.EstablishUdpResponse.UdpPort">
             <summary>
@@ -3637,27 +2870,21 @@
         </member>
         <member name="T:Network.Packets.Packet">
             <summary>
-            Represents a packet that can be sent across a network. By default, all
-            properties of the packet will be serialised (this can be customised using
-            the <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>). Allowed property types
-            are listed here: http://www.indie-dev.at/?page_id=461. NOTE: Inheriting
-            classes should ALWAYS include the default parameter-less constructor. See
-            'remarks' for more information.
+            Represents a packet that can be sent across a network. By default, all properties of the packet will be serialised (this can be customised using
+            the <see cref="T:Network.Attributes.PacketIgnorePropertyAttribute"/>). Allowed property types are listed here: http://www.indie-dev.at/?page_id=461. NOTE: Inheriting
+            classes should ALWAYS include the default parameter-less constructor. See 'remarks' for more information.
             </summary>
             <remarks>
-            The default, parameter-less constructor is required to allow for dynamic
-            instantiation of an empty packet during deserialisation, whose properties
-            will be read from a <see cref="T:System.IO.MemoryStream"/>, deserialised and set
-            accordingly. See <see cref="T:Network.Converter.PacketConverter"/> for more on the
-            serialisation and deserialisation process.
+            The default, parameter-less constructor is required to allow for dynamic instantiation of an empty packet during deserialisation, whose properties
+            will be read from a <see cref="T:System.IO.MemoryStream"/>, deserialised and set accordingly. See <see cref="T:Network.Converter.PacketConverter"/> for more on the serialisation
+            and deserialisation process.
             </remarks>
             <seealso cref="T:Network.Packets.RequestPacket"/>
             <seealso cref="T:Network.Packets.ResponsePacket"/>
         </member>
         <member name="P:Network.Packets.Packet.ID">
             <summary>
-            The ID of the packet. DO NOT CHANGE! This is essential to the packet
-            recognition and handling process.
+            The ID of the packet. DO NOT CHANGE! This is essential to the packet recognition and handling process.
             </summary>
         </member>
         <member name="P:Network.Packets.Packet.State">
@@ -3674,20 +2901,16 @@
             <summary>
             How long it took to receive the packet, in milliseconds.
             </summary>
-            <exception cref="T:System.NotImplementedException">
-            This feature is not currently implemented.
-            </exception>
+            <exception cref="T:System.NotImplementedException">This feature is not currently implemented.</exception>
         </member>
         <member name="M:Network.Packets.Packet.BeforeSend">
             <summary>
-            This method is called immediately before serialisation and sending.
-            Use this to convert any properties to serialisable forms.
+            This method is called immediately before serialisation and sending. Use this to convert any properties to serialisable forms.
             </summary>
         </member>
         <member name="M:Network.Packets.Packet.BeforeReceive">
             <summary>
-            This method is called immediately after deserialisation and before
-            the packet is handled by the relevant <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>.
+            This method is called immediately after deserialisation and before the packet is handled by the relevant <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>.
             Use this to convert any properties to their final forms.
             </summary>
         </member>
@@ -3706,28 +2929,16 @@
             Sends a raw, primitive value across a network.
             </summary>
         </member>
-        <member name="M:Network.Packets.RawData.#ctor">
-            <summary>
-            Parameter-less constructor for packet instantiation, used during
-            serialisation and deserialisation.
-            </summary>
-        </member>
         <member name="M:Network.Packets.RawData.#ctor(System.String,System.Byte[])">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Packets.RawData"/>
-            packet, with the given key and data.
+            Constructs and returns a new instance of the <see cref="T:Network.Packets.RawData"/> packet, with the given key and data.
             </summary>
-            <param name="key">
-            The key that <see cref="T:Network.Packets.RawData"/> packet handlers are registered with.
-            </param>
-            <param name="data">
-            The serialised primitive value.
-            </param>
+            <param name="key">The key that <see cref="T:Network.Packets.RawData"/> packet handlers are registered with.</param>
+            <param name="data">The serialised primitive value.</param>
         </member>
         <member name="P:Network.Packets.RawData.Key">
             <summary>
-            The key both connections are able to register <see cref="T:Network.Packets.RawData"/>
-            packet handlers to.
+            The key both connections are able to register <see cref="T:Network.Packets.RawData"/> packet handlers to.
             </summary>
         </member>
         <member name="P:Network.Packets.RawData.Data">
@@ -3744,24 +2955,22 @@
             <summary>
             Represents a response to a <see cref="T:Network.Packets.RequestPacket"/>.
             </summary>
-            <remarks>
-            For the packet to be handled correctly, the handled
-            <see cref="T:Network.Packets.RequestPacket"/> must be given in the constructor.
-            </remarks>
+            <remarks>For the packet to be handled correctly, the handled <see cref="T:Network.Packets.RequestPacket"/> must be given in the constructor.</remarks>
         </member>
         <member name="M:Network.Packets.ResponsePacket.#ctor(Network.Packets.RequestPacket)">
             <summary>
             Default constructor for a response packet.
             </summary>
-            <param name="packet">
-            The <see cref="T:Network.Packets.RequestPacket"/> that is being handled.
-            </param>
+            <param name="packet">The <see cref="T:Network.Packets.RequestPacket"/> that is being handled.\\\</param>
         </member>
         <member name="T:Network.Packets.RSA.RSAKeyInformationRequest">
             <summary>
             Requests a RSA public key from the paired <see cref="T:Network.Connection"/>.
             </summary>
             <seealso cref="T:Network.Packets.Packet" />
+        </member>
+        <member name="M:Network.Packets.RSA.RSAKeyInformationRequest.#ctor(System.String,System.Int32)">
+            <inheritdoc />
         </member>
         <member name="P:Network.Packets.RSA.RSAKeyInformationRequest.PublicKey">
             <summary>
@@ -3777,6 +2986,9 @@
             <summary>
             Response packet for a <see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/>.
             </summary>
+        </member>
+        <member name="M:Network.Packets.RSA.RSAKeyInformationResponse.#ctor(System.String,System.Int32,Network.Packets.RSA.RSAKeyInformationRequest)">
+            <inheritdoc />
         </member>
         <member name="P:Network.Packets.RSA.RSAKeyInformationResponse.PublicKey">
             <summary>
@@ -3797,6 +3009,9 @@
             <summary>
             Response to a <see cref="T:Network.Packets.UDPPingRequest"/> packet.
             </summary>
+        </member>
+        <member name="M:Network.Packets.UDPPingResponse.#ctor(Network.Packets.UDPPingRequest)">
+            <inheritdoc />
         </member>
         <member name="T:Network.RSA.RSAConnection">
             <summary>
@@ -3910,6 +3125,18 @@
             The RSA encrypted bytes that represent the given packet.
             </returns>
         </member>
+        <member name="M:Network.RSA.RSAConnection.GetBytes(Network.Packets.Packet)">
+            <summary>
+            Serialises the given <see cref="T:Network.Packets.Packet"/>, and encrypts the resulting
+            bytes using the private RSA key and the <see cref="P:Network.RSA.RSAConnection.EncryptionProvider"/>.
+            </summary>
+            <param name="packet">
+            The <see cref="T:Network.Packets.Packet"/> object to serialise.
+            </param>
+            <returns>
+            The RSA encrypted bytes that represent the given packet.
+            </returns>
+        </member>
         <member name="M:Network.RSA.RSAConnection.SerialisePacket``1(``0)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/>, and encrypts the resulting
@@ -3926,6 +3153,21 @@
             </returns>
         </member>
         <member name="M:Network.RSA.RSAConnection.DeserialisePacket(System.Type,System.Byte[])">
+            <summary>
+            Deserialises the given encrypted bytes into a <see cref="T:Network.Packets.Packet"/>
+            of the given type.
+            </summary>
+            <param name="packetType">
+            The type of packet to deserialise the bytes to.
+            </param>
+            <param name="serialisedPacket">
+            The RSA encrypted bytes to deserialise.
+            </param>
+            <returns>
+            The deserialised <see cref="T:Network.Packets.Packet"/> object.
+            </returns>
+        </member>
+        <member name="M:Network.RSA.RSAConnection.GetPacket(System.Type,System.Byte[])">
             <summary>
             Deserialises the given encrypted bytes into a <see cref="T:Network.Packets.Packet"/>
             of the given type.
@@ -4477,7 +3719,6 @@
             <summary>
             Closes the socket.
             </summary>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:Network.UdpConnection">
             <summary>

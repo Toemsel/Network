@@ -10,21 +10,18 @@ namespace Network.Bluetooth
     /// Stores information about a Bluetooth device.
     /// </summary>
     /// <remarks>
-    /// This class is only applicable if the build is for the .NET Framework 4.6.
-    /// It is only compiled if the 'NET46' preprocessor variable is set.
+    /// This class is only applicable if the build is for the .NET Framework 4.6. It is only compiled if the 'NET46' preprocessor variable is set.
     /// </remarks>
     public class DeviceInfo
     {
         #region Constructors
 
         /// <summary>
-        /// Constructs and returns a new instance of the <see cref="DeviceInfo"/>,
-        /// mapping the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
+        /// Constructs and returns a new instance of the <see cref="DeviceInfo"/>, mapping the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>
         /// to the <see cref="DeviceInfo"/>.
         /// </summary>
         /// <param name="deviceInfo">
-        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties
-        /// to use for the new <see cref="DeviceInfo"/> instance.
+        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties to use for the new <see cref="DeviceInfo"/> instance.
         /// </param>
         internal DeviceInfo(BluetoothDeviceInfo deviceInfo)
         {
@@ -66,8 +63,7 @@ namespace Network.Bluetooth
         public DateTime LastUsed { get; }
 
         /// <summary>
-        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> for the
-        /// device.
+        /// The <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/> for the device.
         /// </summary>
         internal BluetoothDeviceInfo BluetoothDeviceInfo { get; }
 
@@ -76,17 +72,12 @@ namespace Network.Bluetooth
         #region Methods
 
         /// <summary>
-        /// For each of the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s,
-        /// generates a <see cref="DeviceInfo"/> and returns the generated array.
+        /// For each of the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, generates a <see cref="DeviceInfo"/> and returns the generated array.
         /// </summary>
         /// <param name="infos">
-        /// An array of <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s,
-        /// for each of which to generate the corresponding <see cref="DeviceInfo"/>.
+        /// An array of <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, for each of which to generate the corresponding <see cref="DeviceInfo"/>.
         /// </param>
-        /// <returns>
-        /// An array of <see cref="DeviceInfo"/>s, one for each of the given
-        /// <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s.
-        /// </returns>
+        /// <returns>An array of <see cref="DeviceInfo"/>s, one for each of the given <see cref="InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s.</returns>
         internal static DeviceInfo[] GenerateDeviceInfos(BluetoothDeviceInfo[] infos)
         {
             return infos.ToList().Select(info => new DeviceInfo(info)).ToArray();
