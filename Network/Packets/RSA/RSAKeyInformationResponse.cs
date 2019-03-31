@@ -10,9 +10,8 @@ namespace Network.Packets.RSA
     {
         #region Constructors
 
-        public RSAKeyInformationResponse(
-            string publicKey, int keySize, RSAKeyInformationRequest request)
-            : base(request)
+        /// <inheritdoc />
+        internal RSAKeyInformationResponse(string publicKey, int keySize, RSAKeyInformationRequest request) : base(request)
         {
             PublicKey = publicKey;
             KeySize = keySize;

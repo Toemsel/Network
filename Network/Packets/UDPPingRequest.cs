@@ -8,12 +8,5 @@ namespace Network.Packets
     [PacketType(8)]
     internal class UDPPingRequest : RequestPacket
     {
-        #region Constructors
-
-        public UDPPingRequest()
-        {
-        }
-
-        #endregion Constructors
     }
 }

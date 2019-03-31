@@ -10,7 +10,8 @@ namespace Network.Packets
     {
         #region Constructors
 
-        public UDPPingResponse(UDPPingRequest request) : base(request)
+        /// <inheritdoc />
+        internal UDPPingResponse(UDPPingRequest request) : base(request)
         {
         }
 

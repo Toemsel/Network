@@ -11,11 +11,8 @@ namespace Network.Packets.RSA
     {
         #region Constructors
 
-        public RSAKeyInformationRequest()
-        {
-        }
-
-        public RSAKeyInformationRequest(string publicKey, int keySize)
+        /// <inheritdoc />
+        internal RSAKeyInformationRequest(string publicKey, int keySize)
         {
             PublicKey = publicKey;
             KeySize = keySize;

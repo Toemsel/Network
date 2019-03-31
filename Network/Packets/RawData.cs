@@ -11,24 +11,11 @@ namespace Network.Packets
         #region Constructors
 
         /// <summary>
-        /// Parameter-less constructor for packet instantiation, used during
-        /// serialisation and deserialisation.
+        /// Constructs and returns a new instance of the <see cref="RawData"/> packet, with the given key and data.
         /// </summary>
-        public RawData()
-        {
-        }
-
-        /// <summary>
-        /// Constructs and returns a new instance of the <see cref="RawData"/>
-        /// packet, with the given key and data.
-        /// </summary>
-        /// <param name="key">
-        /// The key that <see cref="RawData"/> packet handlers are registered with.
-        /// </param>
-        /// <param name="data">
-        /// The serialised primitive value.
-        /// </param>
-        public RawData(string key, byte[] data)
+        /// <param name="key">The key that <see cref="RawData"/> packet handlers are registered with.</param>
+        /// <param name="data">The serialised primitive value.</param>
+        internal RawData(string key, byte[] data)
         {
             Key = key;
             Data = data;
@@ -39,8 +26,7 @@ namespace Network.Packets
         #region Properties
 
         /// <summary>
-        /// The key both connections are able to register <see cref="RawData"/>
-        /// packet handlers to.
+        /// The key both connections are able to register <see cref="RawData"/> packet handlers to.
         /// </summary>
         public string Key { get; set; }
 

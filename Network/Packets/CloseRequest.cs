@@ -11,11 +11,8 @@ namespace Network.Packets
     {
         #region Constructors
 
-        public CloseRequest()
-        {
-        }
-
-        public CloseRequest(CloseReason reason)
+        /// <inheritdoc />
+        internal CloseRequest(CloseReason reason)
         {
             CloseReason = reason;
         }
