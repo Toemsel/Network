@@ -379,7 +379,8 @@ namespace Network
 
             if (result.Item2 != ConnectionResult.Connected)
             {
-                Reconnect(); return;
+                Reconnect();
+                return;
             }
 
             tcpConnection = result.Item1;
@@ -443,7 +444,8 @@ namespace Network
 
             if (result.Item2 != ConnectionResult.Connected)
             {
-                Reconnect(); return;
+                Reconnect();
+                return;
             }
 
             udpConnection = result.Item1;
