@@ -376,7 +376,12 @@ namespace Network
         private async Task OpenNewTCPConnection()
         {
             Tuple<TcpConnection, ConnectionResult> result = await CreateTcpConnection();
-            if (result.Item2 != ConnectionResult.Connected) { Reconnect(); return; }
+
+            if (result.Item2 != ConnectionResult.Connected)
+            {
+                Reconnect(); return;
+            }
+
             tcpConnection = result.Item1;
 
             //Restore old state by adding old packets
@@ -435,7 +440,12 @@ namespace Network
         private async Task OpenNewUDPConnection()
         {
             Tuple<UdpConnection, ConnectionResult> result = await CreateUdpConnection();
-            if (result.Item2 != ConnectionResult.Connected) { Reconnect(); return; }
+
+            if (result.Item2 != ConnectionResult.Connected)
+            {
+                Reconnect(); return;
+            }
+
             udpConnection = result.Item1;
             //Restore old state by adding old packets
             udpConnection.RestorePacketHandler(udpPacketHandlerBackup);
