@@ -120,7 +120,7 @@ namespace Network.Logging
             {
                 monitoredConnection.GetType().Name,
                 message,
-                monitoredConnection.IPLocalEndPoint?.ToString(),
+                monitoredConnection.LocalIPEndPoint?.ToString(),
                 BuildException(exception)
             };
 
@@ -205,7 +205,7 @@ namespace Network.Logging
         private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, string direction)
         {
             object type = monitoredConnection.GetType().Name;
-            object local = monitoredConnection.IPLocalEndPoint?.ToString();
+            object local = monitoredConnection.LocalIPEndPoint?.ToString();
             object ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
             object packetName = packetObj.GetType().Name;
 

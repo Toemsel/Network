@@ -74,7 +74,7 @@ namespace Network
         /// <param name="tcpConnection">The TCP connection.</param>
         /// <param name="udpConnection">The UDP connection.</param>
         internal ClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection)
-            : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
+            : base(tcpConnection.RemoteIPEndPoint.Address.ToString(), tcpConnection.RemoteIPEndPoint.Port)
         {
             this.tcpConnection = tcpConnection;
             this.udpConnection = udpConnection;

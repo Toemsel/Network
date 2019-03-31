@@ -33,13 +33,13 @@ namespace Network
             tcpClient.NoDelay = true;
             tcpClient.SendTimeout = 0;
             tcpClient.ReceiveTimeout = 0;
-            tcpClient.LingerState = new LingerOption(true, TIMEOUT);
+            tcpClient.LingerState = new LingerOption(true, ReceiveTimeout);
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply
             //additional settings before starting the network comm.
             if (!skipInitializationProcess)
-                Init();
+                Initialise();
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Network
             RegisterPacketHandler<EstablishUdpResponse>((packet, connection) =>
             {
                 UnRegisterPacketHandler<EstablishUdpResponse>(this);
-                connectionEstablished.Invoke(udpEndPoint, new IPEndPoint(IPRemoteEndPoint.Address, packet.UdpPort));
+                connectionEstablished.Invoke(udpEndPoint, new IPEndPoint(RemoteIPEndPoint.Address, packet.UdpPort));
                 Send(new EstablishUdpResponseACK());
             }, this);
 
@@ -181,13 +181,13 @@ namespace Network
         /// Gets the ip address's local endpoint of this connection.
         /// </summary>
         /// <value>The ip end point.</value>
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+        public override IPEndPoint LocalIPEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
 
         /// <summary>
         /// Gets the ip address's remote endpoint of this connection.
         /// </summary>
         /// <value>The ip end point.</value>
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+        public override IPEndPoint RemoteIPEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
 
         /// <summary>
         /// Closes the socket.

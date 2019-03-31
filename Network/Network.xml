@@ -602,7 +602,7 @@
         </member>
         <member name="F:Network.Connection.nextPingStopWatch">
             <summary>
-            When this stopwatch reached the <see cref="P:Network.Connection.TIMEOUT"/> the instance is going to send a ping request.
+            When this stopwatch reached the <see cref="P:Network.Connection.ReceiveTimeout"/> the instance is going to send a ping request.
             </summary>
         </member>
         <member name="F:Network.Connection.receivedPackets">
@@ -663,7 +663,7 @@
             </summary>
             <value>Keep alive or not.</value>
         </member>
-        <member name="P:Network.Connection.TIMEOUT">
+        <member name="P:Network.Connection.ReceiveTimeout">
             <summary>
             Gets or sets the timeout. If the connection does not receive any packet within the specified timeout, the connection will timeout.
             </summary>
@@ -1004,13 +1004,13 @@
             Gets or sets if it should bypass hardware.
             </summary>
         </member>
-        <member name="P:Network.Connection.IPLocalEndPoint">
+        <member name="P:Network.Connection.LocalIPEndPoint">
             <summary>
             Gets the ip address's local endpoint of this connection.
             </summary>
             <value>The ip end point.</value>
         </member>
-        <member name="P:Network.Connection.IPRemoteEndPoint">
+        <member name="P:Network.Connection.RemoteIPEndPoint">
             <summary>
             Gets the ip address's remote endpoint of this connection.
             </summary>
@@ -1038,7 +1038,7 @@
             Logger for the connection and all protected classes.
             </summary>
         </member>
-        <member name="P:Network.Connection.IsMAC">
+        <member name="P:Network.Connection.IsOsx">
             <summary>
             Is the executing assembly on a MAC machine.
             </summary>
@@ -3703,13 +3703,13 @@
             This is not possible for the TCP connection, theoretically.
             </summary>
         </member>
-        <member name="P:Network.TcpConnection.IPLocalEndPoint">
+        <member name="P:Network.TcpConnection.LocalIPEndPoint">
             <summary>
             Gets the ip address's local endpoint of this connection.
             </summary>
             <value>The ip end point.</value>
         </member>
-        <member name="P:Network.TcpConnection.IPRemoteEndPoint">
+        <member name="P:Network.TcpConnection.RemoteIPEndPoint">
             <summary>
             Gets the ip address's remote endpoint of this connection.
             </summary>
@@ -3840,13 +3840,13 @@
             The packetHandlerMap has been refreshed.
             </summary>
         </member>
-        <member name="P:Network.UdpConnection.IPLocalEndPoint">
+        <member name="P:Network.UdpConnection.LocalIPEndPoint">
             <summary>
             Gets the ip address's local endpoint of this connection.
             </summary>
             <value>The ip end point.</value>
         </member>
-        <member name="P:Network.UdpConnection.IPRemoteEndPoint">
+        <member name="P:Network.UdpConnection.RemoteIPEndPoint">
             <summary>
             Gets the ip address's remote endpoint of this connection.
             </summary>

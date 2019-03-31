@@ -94,7 +94,7 @@ namespace Network.Async
                 if (receivedAsyncPacket == null)
                 {
                     await packetReceivedEvent.AsTask(
-                        TimeSpan.FromMilliseconds(connection.TIMEOUT));
+                        TimeSpan.FromMilliseconds(connection.ReceiveTimeout));
                 }
             }
             catch (OverflowException overflowException)

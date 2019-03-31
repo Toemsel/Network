@@ -27,7 +27,7 @@ namespace NetworkTestServer
             //2. Apply optional settings.
             #region Optional settings
 
-            serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
+            serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.RemoteIPEndPoint.Port}. Reason {c.ToString()}");
             serverConnectionContainer.ConnectionEstablished += connectionEstablished;
 #if NET46
             serverConnectionContainer.AllowBluetoothConnections = true;
@@ -50,7 +50,7 @@ namespace NetworkTestServer
         /// <param name="connection">The connection we got. (TCP or UDP)</param>
         private void connectionEstablished(Connection connection, ConnectionType type)
         {
-            Console.WriteLine($"{serverConnectionContainer.Count} {connection.GetType()} connected on port {connection.IPRemoteEndPoint.Port}");
+            Console.WriteLine($"{serverConnectionContainer.Count} {connection.GetType()} connected on port {connection.RemoteIPEndPoint.Port}");
 
             //3. Register packet listeners.
             connection.RegisterStaticPacketHandler<CalculationRequest>(calculationReceived);

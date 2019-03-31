@@ -34,7 +34,7 @@ namespace Network
         {
             Client = bluetoothClient;
             stream = Client.GetStream();
-            Init();
+            Initialise();
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Network
                 return ConnectionResult.Timeout;
             }
 
-            Init();
+            Initialise();
             return ConnectionResult.Connected;
         }
 
@@ -141,7 +141,7 @@ namespace Network
             }
         }
 
-        public override IPEndPoint IPLocalEndPoint
+        public override IPEndPoint LocalIPEndPoint
         {
             get
             {
@@ -149,7 +149,7 @@ namespace Network
             }
         }
 
-        public override IPEndPoint IPRemoteEndPoint
+        public override IPEndPoint RemoteIPEndPoint
         {
             get
             {

@@ -55,7 +55,7 @@ namespace Network
             //The caller of the constructor wants to apply
             //additional settings before starting the network comm.
             if (!skipInitializationProcess)
-                Init();
+                Initialise();
         }
 
         /// <summary>
@@ -219,13 +219,13 @@ namespace Network
         /// Gets the ip address's local endpoint of this connection.
         /// </summary>
         /// <value>The ip end point.</value>
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+        public override IPEndPoint LocalIPEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
 
         /// <summary>
         /// Gets the ip address's remote endpoint of this connection.
         /// </summary>
         /// <value>The ip end point.</value>
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+        public override IPEndPoint RemoteIPEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
 
         /// <summary>
         /// Closes the socket.

@@ -21,7 +21,7 @@ namespace Network.RSA
             base.PacketConverter = RSAConnection;
 
             //Since we did skip the initialization,... DO IT!
-            Init();
+            Initialise();
         }
 
         /// <summary>

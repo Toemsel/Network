@@ -24,7 +24,7 @@ namespace Network.RSA
         /// <param name="udpConnection">The UDP connection.</param>
         /// <param name="rsaPair">RSA-Pair.</param>
         internal SecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, RSAPair rsaPair)
-            : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
+            : base(tcpConnection.RemoteIPEndPoint.Address.ToString(), tcpConnection.RemoteIPEndPoint.Port)
         {
             RSAPair = rsaPair;
         }

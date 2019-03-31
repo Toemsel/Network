@@ -2,47 +2,75 @@
 using Network.Logging;
 using Network.Packets;
 using System;
+using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Network
 {
     /// <summary>
-    /// Partial class for the connection to offer some additional features.
+    /// Partial class which implements additional features for the <see cref="Connection"/> class.
     /// </summary>
     public abstract partial class Connection : IPacketHandler
     {
-        private NetworkLog logger;
+        #region Variables
 
         /// <summary>
-        /// Logger for the connection and all protected classes.
+        /// Whether the executing assembly is running on Windows.
         /// </summary>
-        internal NetworkLog Logger => logger;
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        internal readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         /// <summary>
-        /// Is the executing assembly on a MAC machine.
+        /// Whether the executing assembly is running on OSX.
         /// </summary>
-        /// <returns>[True] if on MAC. [False] if not.</returns>
-        internal bool IsMAC => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        internal readonly bool IsOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
         /// <summary>
-        /// Is the executing assembly on a Linux machine.
+        /// Whether the executing assembly is running on Linux.
         /// </summary>
-        /// <returns>[True] if on Linux. [False] if not.</returns>
-        internal bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        internal readonly bool IsLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        #endregion Variables
+
+        #region Properties
 
         /// <summary>
-        /// Is the executing assembly on a Windows machine.
+        /// The <see cref="NetworkLog"/> instance to which information should be logged.
         /// </summary>
-        /// <returns>[True] if on Windows. [False] if not.</returns>
-        internal bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        internal NetworkLog Logger { get; private set; }
 
         /// <summary>
-        /// Initializes all the addons.
+        /// Whether the <see cref="Connection"/> instance should automatically log information to the <see cref="Logger"/>s
+        /// output <see cref="Stream"/>s.
         /// </summary>
-        private void InitAddons()
+        public bool EnableLogging
         {
-            logger = new NetworkLog(this);
+            get { return Logger.EnableLogging; }
+            set { Logger.EnableLogging = value; }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Initialises this <see cref="Connection"/> instance's addons, setting up all required variables.
+        /// </summary>
+        partial void InitialiseAddons()
+        {
+            Logger = new NetworkLog(this);
         }
 
         /// <summary>
@@ -51,38 +79,8 @@ namespace Network
         /// and provide a null reference as stream. Stream hot swapping is supported.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
-        public void LogIntoStream(Stream stream) => logger.SetOutputStream(stream);
+        public void LogIntoStream(Stream stream) => Logger.SetOutputStream(stream);
 
-        /// <summary>
-        /// Indicates if the connection should automatically log.
-        /// Logging in DEBUG mode by default ON.
-        /// </summary>
-        public bool EnableLogging
-        {
-            get { return logger.EnableLogging; }
-            set { logger.EnableLogging = value; }
-        }
-
-        /// <summary>
-        /// Sends raw data.
-        /// </summary>
-        /// <param name="key">The identifying key.</param>
-        /// <param name="data">The data to send.</param>
-        public void SendRawData(string key, byte[] data)
-        {
-            if (data == null)
-            {
-                logger.Log("Can't send a null reference data byte array", new ArgumentException(), Enums.LogLevel.Information);
-                return;
-            }
-
-            Send(new RawData(key, data));
-        }
-
-        /// <summary>
-        /// Sends a raw data packet.
-        /// </summary>
-        /// <param name="rawData">The packet to send.</param>
-        public void SendRawData(RawData rawData) => Send(rawData);
+        #endregion Methods
     }
 }
