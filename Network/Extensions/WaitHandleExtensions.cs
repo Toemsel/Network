@@ -12,8 +12,8 @@ namespace Network.Extensions
         #region Methods
 
         /// <summary>
-        /// Returns a <see cref="Task"/> that represents asynchronously waiting for the <see cref="WaitHandle"/> instance to be set. There is no
-        /// timeout for the wait operation.
+        /// Returns a <see cref="Task"/> that represents asynchronously waiting for the <see cref="WaitHandle"/> instance
+        /// to be set. There is no timeout for the wait operation.
         /// </summary>
         /// <param name="handle">The <see cref="WaitHandle"/> instance this extension method affects.</param>
         /// <returns>The <see cref="Task"/> representing the asynchronous operation.</returns>
@@ -23,11 +23,13 @@ namespace Network.Extensions
         }
 
         /// <summary>
-        /// Returns a <see cref="Task"/> that represents asynchronously waiting for the <see cref="WaitHandle"/> instance to be set. Cancels the
-        /// <see cref="Task"/> if the given timeout is exceeded.
+        /// Returns a <see cref="Task"/> that represents asynchronously waiting for the <see cref="WaitHandle"/>
+        /// instance to be set. Cancels the <see cref="Task"/> if the given timeout is exceeded.
         /// </summary>
         /// <param name="handle">The <see cref="WaitHandle"/> instance this extension method affects.</param>
-        /// <param name="timeout">The <see cref="TimeSpan"/> to wait for the operation to complete before it is cancelled.</param>
+        /// <param name="timeout">
+        /// The <see cref="TimeSpan"/> to wait for the operation to complete before it is cancelled.
+        /// </param>
         /// <returns>The <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task AsTask(this WaitHandle handle, TimeSpan timeout)
         {

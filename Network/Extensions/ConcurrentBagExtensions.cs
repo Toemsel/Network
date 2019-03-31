@@ -5,7 +5,9 @@ namespace Network.Extensions
     /// <summary>
     /// Provides additional functionality to the <see cref="ConcurrentBag{T}"/> class.
     /// </summary>
-    /// <remarks>See https://stackoverflow.com/a/48861922/2934290 for the original question and the relevant code. </remarks>
+    /// <remarks>
+    /// See https://stackoverflow.com/a/48861922/2934290 for the original question and the relevant code.
+    /// </remarks>
     public static class ConcurrentBagExtensions
     {
         #region Methods

@@ -4,7 +4,8 @@ using System;
 namespace Network.Converter
 {
     /// <summary>
-    /// Describes the methods that a packet converter must implement in order to be able to serialise and deserialise packets to and from a binary form.
+    /// Describes the methods that a packet converter must implement in order to be able to serialise and deserialise
+    /// packets to and from a binary form.
     /// </summary>
     public interface IPacketConverter
     {
@@ -36,7 +37,9 @@ namespace Network.Converter
         /// <summary>
         /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <param name="packetType">The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.</param>
+        /// <param name="packetType">
+        /// The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.
+        /// </param>
         /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
         /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         Packet DeserialisePacket(Type packetType, byte[] serialisedPacket);
@@ -44,7 +47,9 @@ namespace Network.Converter
         /// <summary>
         /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <param name="packetType">The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.</param>
+        /// <param name="packetType">
+        /// The <see cref="Type"/> of <see cref="Packet"/> to deserialise the <see cref="byte"/> array to.
+        /// </param>
         /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
         /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         [Obsolete("Use 'DeserialisePacket' instead.")]
@@ -53,7 +58,9 @@ namespace Network.Converter
         /// <summary>
         /// Deserialises the given <see cref="byte"/> array into a <see cref="Packet"/> of the given <see cref="Type"/>.
         /// </summary>
-        /// <typeparam name = "P"> The < see cref="Type"/> of<see cref="Packet"/> to deserialise the<see cref= "byte" /> array to.</typeparam>
+        /// <typeparam name="P">
+        /// The <see cref="Type"/> of<see cref="Packet"/> to deserialise the<see cref= "byte"/> array to.
+        /// </typeparam>
         /// <param name="serialisedPacket">The <see cref="byte"/> array holding the serialised <see cref="Packet"/>.</param>
         /// <returns>The deserialised <see cref="Packet"/> object of the given type.</returns>
         P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet;

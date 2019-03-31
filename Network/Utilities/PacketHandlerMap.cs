@@ -8,23 +8,26 @@ using System.Reflection;
 namespace Network.Utilities
 {
     /// <summary>
-    /// Maps individual <see cref="Packet"/>s to their unique ID value, so that they can be sent across the network and then deserialised. Also maps the
-    /// <see cref="Packet"/>s IDs to the relevant <see cref="PacketReceivedHandler{P}"/>, should one be registered for that packet.
+    /// Maps individual <see cref="Packet"/>s to their unique ID value, so that they can be sent across the network and
+    /// then deserialised. Also maps the <see cref="Packet"/>s IDs to the relevant <see cref="PacketReceivedHandler{P}"/>,
+    /// should one be registered for that packet.
     /// </summary>
-    internal class PacketHandlerMap
+    public class PacketHandlerMap
     {
         #region Variables
 
         /// <summary>
-        /// Maps each packet type to a dictionary containing registered objects which want to receive packets (i.e. Handlers) of the given type and
-        /// their individual IDs.
+        /// Maps each packet type to a dictionary containing registered objects which want to receive packets
+        /// (i.e. Handlers) of the given type and their individual IDs.
         /// </summary>
-        private readonly Dictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap = new Dictionary<Type, Dictionary<object, int>>();
+        private readonly Dictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap =
+            new Dictionary<Type, Dictionary<object, int>>();
 
         /// <summary>
         /// Maps each packet id to a tuple, holding the packet handler method and the object on which the handler should be called.
         /// </summary>
-        private readonly Dictionary<int, (Delegate handlerDelegate, object handlerInstance)> packetIdToDelegateMethodMap = new Dictionary<int, (Delegate, object)>();
+        private readonly Dictionary<int, (Delegate handlerDelegate, object handlerInstance)> packetIdToDelegateMethodMap =
+            new Dictionary<int, (Delegate, object)>();
 
         /// <summary>
         /// Maps a <see cref="string"/> key to a <see cref="RawData"/> packet handler delegate method.
@@ -54,19 +57,26 @@ namespace Network.Utilities
             Type[] internalAssemblyTypes =
                 Assembly.GetAssembly(typeof(PacketHandlerMap)).GetTypes();
 
-            IEnumerable<Type> externalTypes = map.packetTypeToHandlerIdMap.Keys.ToList().Where(e => internalAssemblyTypes.All(i => i != e));
+            IEnumerable<Type> externalTypes =
+                map.packetTypeToHandlerIdMap.Keys.ToList().Where(e => internalAssemblyTypes.All(i => i != e));
 
             foreach (Type currentExternalType in externalTypes)
             {
                 if (!packetTypeToHandlerIdMap.ContainsKey(currentExternalType))
-                    packetTypeToHandlerIdMap.Add(currentExternalType, map.packetTypeToHandlerIdMap[currentExternalType]);
+                {
+                    packetTypeToHandlerIdMap.Add(currentExternalType,
+                        map.packetTypeToHandlerIdMap[currentExternalType]);
+                }
 
                 int[] externalIds = map.packetTypeToHandlerIdMap[currentExternalType].Values.ToArray();
 
                 foreach (int currentExternalId in externalIds)
                 {
                     if (!packetIdToDelegateMethodMap.ContainsKey(currentExternalId))
-                        packetIdToDelegateMethodMap.Add(currentExternalId, map.packetIdToDelegateMethodMap[currentExternalId]);
+                    {
+                        packetIdToDelegateMethodMap.Add(currentExternalId,
+                            map.packetIdToDelegateMethodMap[currentExternalId]);
+                    }
                 }
             }
         }
@@ -221,7 +231,8 @@ namespace Network.Utilities
         #region Indexers
 
         /// <summary>
-        /// Gets the <see cref="Delegate"/> method which handles <see cref="RawData"/> packets for the primitive type identified by the given key.
+        /// Gets the <see cref="Delegate"/> method which handles <see cref="RawData"/> packets for the primitive type
+        /// identified by the given key.
         /// </summary>
         /// <param name="key">The key for whose primitive type to get a handler delegate.</param>
         /// <returns>The handler delegate associated with the given key.</returns>

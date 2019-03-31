@@ -9,7 +9,8 @@ using System.Reflection;
 namespace Network.Converter
 {
     /// <summary>
-    /// Implements <see cref="IPacketConverter"/>, and provides methods to serialise and deserialise a <see cref="Packet"/> object to and from its binary form.
+    /// Implements <see cref="IPacketConverter"/>, and provides methods to serialise and deserialise a <see cref="Packet"/>
+    /// object to and from its binary form.
     /// </summary>
     internal class PacketConverter : IPacketConverter
     {
@@ -30,11 +31,14 @@ namespace Network.Converter
         #region Methods
 
         /// <summary>
-        /// Returns an array of the <see cref="PropertyInfo"/>s that need to be serialised on the given <see cref="Type"/>. If the given <see cref="Type"/>
-        /// has already been cached, it will use the cached <see cref="PropertyInfo"/> array, to save CPU time.
+        /// Returns an array of the <see cref="PropertyInfo"/>s that need to be serialised on the given <see cref="Type"/>.
+        /// If the given <see cref="Type"/> has already been cached, it will use the cached <see cref="PropertyInfo"/> array,
+        /// to save CPU time.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> whose serialisable properties to get.</param>
-        /// <returns>An array of all <see cref="PropertyInfo"/>s that should be serialised on the given <see cref="Type"/></returns>
+        /// <returns>
+        /// An array of all <see cref="PropertyInfo"/>s that should be serialised on the given <see cref="Type"/>
+        /// </returns>
         private PropertyInfo[] GetTypeProperties(Type type)
         {
             lock (packetPropertyCacheLock)
@@ -120,14 +124,19 @@ namespace Network.Converter
         #region Serialisation
 
         /// <summary>
-        /// Serialises all the properties on the given <see cref="object"/> that need to be serialised to the given <see cref="BinaryWriter"/>s
-        /// underlying <see cref="MemoryStream"/>.
+        /// Serialises all the properties on the given <see cref="object"/> that need to be serialised to the given
+        /// <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>.
         /// </summary>
-        /// <param name="obj">The <see cref="object"/> whose properties to serialise using the given <see cref="BinaryWriter"/>.</param>
-        /// <param name="binaryWriter">
-        /// The <see cref="BinaryWriter"/> to whose underlying <see cref="MemoryStream"/> to serialise the properties of the given <see cref="object"/>.
+        /// <param name="obj">
+        /// The <see cref="object"/> whose properties to serialise using the given <see cref="BinaryWriter"/>.
         /// </param>
-        /// <remarks>This method can only serialise properties that lack the custom <see cref="PacketIgnorePropertyAttribute"/>.</remarks>
+        /// <param name="binaryWriter">
+        /// The <see cref="BinaryWriter"/> to whose underlying <see cref="MemoryStream"/> to serialise the properties of
+        /// the given <see cref="object"/>.
+        /// </param>
+        /// <remarks>
+        /// This method can only serialise properties that lack the custom <see cref="PacketIgnorePropertyAttribute"/>.
+        /// </remarks>
         private void SerialiseObjectToWriter(object obj, BinaryWriter binaryWriter)
         {
             PropertyInfo[] propertiesToSerialise = GetTypeProperties(obj.GetType());
@@ -202,8 +211,9 @@ namespace Network.Converter
         }
 
         /// <summary>
-        /// Serialises the given <see cref="Array"/> to the given <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>. Uses
-        /// <see cref="SerialiseObjectToWriter(object,BinaryWriter)"/> to serialise each of the <see cref="Array"/>s elements to the stream.
+        /// Serialises the given <see cref="Array"/> to the given <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>.
+        /// Uses <see cref="SerialiseObjectToWriter(object,BinaryWriter)"/> to serialise each of the <see cref="Array"/>s
+        /// elements to the stream.
         /// </summary>
         /// <param name="obj">
         /// The <see cref="Array"/> to serialise to the given <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>.
@@ -213,7 +223,8 @@ namespace Network.Converter
         /// The <see cref="BinaryWriter"/> to whose underlying <see cref="MemoryStream"/> to serialise the given <see cref="PropertyInfo"/>.
         /// </param>
         /// <exception cref="NullReferenceException">
-        /// Thrown if the <see cref="Array"/> held in the given <see cref="PropertyInfo"/> is null, or if the <see cref="Array"/>s elements do not have a type.
+        /// Thrown if the <see cref="Array"/> held in the given <see cref="PropertyInfo"/> is null, or if the <see cref="Array"/>s
+        /// elements do not have a type.
         /// </exception>
         private void SerialiseArrayToWriter(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
         {
@@ -241,7 +252,8 @@ namespace Network.Converter
 
         /// <summary>
         /// Serialises the given <see cref="IList"/> to the given <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>.
-        /// Uses <see cref="SerialiseObjectToWriter(object,BinaryWriter)"/> to serialise each of the <see cref="IList"/>s elements to the stream.
+        /// Uses <see cref="SerialiseObjectToWriter(object,BinaryWriter)"/> to serialise each of the <see cref="IList"/>s
+        /// elements to the stream.
         /// </summary>
         /// <param name="obj">
         /// The <see cref="IList"/> to serialise to the given <see cref="BinaryWriter"/>s underlying <see cref="MemoryStream"/>.
@@ -251,7 +263,8 @@ namespace Network.Converter
         /// The <see cref="BinaryWriter"/> to whose underlying <see cref="MemoryStream"/> to serialise the given <see cref="PropertyInfo"/>.
         /// </param>
         /// <exception cref="NullReferenceException">
-        /// Thrown if the <see cref="IList"/> held in the given <see cref="PropertyInfo"/> is null, or if the <see cref="IList"/>s elements do not have a type.
+        /// Thrown if the <see cref="IList"/> held in the given <see cref="PropertyInfo"/> is null, or if the <see cref="IList"/>s
+        /// elements do not have a type.
         /// </exception>
         private void SerialiseListToWriter(object obj, PropertyInfo propertyInfo, BinaryWriter binaryWriter)
         {
@@ -290,17 +303,20 @@ namespace Network.Converter
         #region Deserialisation
 
         /// <summary>
-        /// Deserialises all the properties on the given <see cref="object"/> that can be deserialised from the given <see cref="BinaryReader"/>s
-        /// underlying <see cref="MemoryStream"/>.
+        /// Deserialises all the properties on the given <see cref="object"/> that can be deserialised from the given
+        /// <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
         /// </summary>
-        /// <param name="obj">The <see cref="object"/> whose properties to deserialise using the given <see cref="BinaryReader"/>.</param>
+        /// <param name="obj">
+        /// The <see cref="object"/> whose properties to deserialise using the given <see cref="BinaryReader"/>.
+        /// </param>
         /// <param name="binaryReader">
-        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the properties of the given <see cref="object"/>.
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the properties
+        /// of the given <see cref="object"/>.
         /// </param>
         /// <returns>The given <see cref="object"/> with all deserialisable properties set.</returns>
         /// <remarks>
-        /// This method can only deserialise properties that lack the custom <see cref="PacketIgnorePropertyAttribute"/>. Any other properties
-        /// will be left at their default values.
+        /// This method can only deserialise properties that lack the custom <see cref="PacketIgnorePropertyAttribute"/>.
+        /// Any other properties will be left at their default values.
         /// </remarks>
         private object DeserialiseObjectFromReader(object obj, BinaryReader binaryReader)
         {
@@ -315,18 +331,21 @@ namespace Network.Converter
         }
 
         /// <summary>
-        /// Deserialises the given <see cref="PropertyInfo"/> from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// Deserialises the given <see cref="PropertyInfo"/> from the given <see cref="BinaryReader"/>s underlying
+        /// <see cref="MemoryStream"/>.
         /// </summary>
         /// <param name="obj"> The <see cref="object"/> whose <see cref="PropertyInfo"/> value to deserialise.</param>
         /// <param name="propertyInfo">
-        /// The <see cref="PropertyInfo"/> to deserialise from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// The <see cref="PropertyInfo"/> to deserialise from the given <see cref="BinaryReader"/>s underlying
+        /// <see cref="MemoryStream"/>.
         /// </param>
         /// <param name="binaryReader">
-        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given <see cref="PropertyInfo"/>.
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given
+        /// <see cref="PropertyInfo"/>.
         /// </param>
         /// <returns>
-        /// The <see cref="object"/> deserialised from the <see cref="MemoryStream"/>. This can be null if the <see cref="ObjectState"/> is
-        /// <see cref="ObjectState.Null"/>.
+        /// The <see cref="object"/> deserialised from the <see cref="MemoryStream"/>. This can be null if the
+        /// <see cref="ObjectState"/> is <see cref="ObjectState.Null"/>.
         /// </returns>
         private object DeserialiseObjectFromReader(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
@@ -368,13 +387,17 @@ namespace Network.Converter
         }
 
         /// <summary>
-        /// Deserialises the given <see cref="Array"/> from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
-        /// Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/> to serialise each of the <see cref="Array"/>s elements to the stream.
+        /// Deserialises the given <see cref="Array"/> from the given <see cref="BinaryReader"/>s underlying
+        /// <see cref="MemoryStream"/>. Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/> to serialise
+        /// each of the <see cref="Array"/>s elements to the stream.
         /// </summary>
-        /// <param name="obj">The <see cref="Array"/> to deserialise from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.</param>
+        /// <param name="obj">
+        /// The <see cref="Array"/> to deserialise from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </param>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> holding the <see cref="Array"/>.</param>
         /// <param name="binaryReader">
-        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given <see cref="PropertyInfo"/>.
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given
+        /// <see cref="PropertyInfo"/>.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown if the <see cref="Array"/>s elements do not have a type.</exception>
         private Array ReadArrayFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
@@ -400,17 +423,21 @@ namespace Network.Converter
         }
 
         /// <summary>
-        /// Deserialises the given <see cref="IList"/> from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
-        /// Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/> to serialise each of the <see cref="IList"/>s elements to the stream.
+        /// Deserialises the given <see cref="IList"/> from the given <see cref="BinaryReader"/>s underlying
+        /// <see cref="MemoryStream"/>. Uses <see cref="DeserialiseObjectFromReader(object,BinaryReader)"/> to serialise
+        /// each of the <see cref="IList"/>s elements to the stream.
         /// </summary>
-        /// <param name="obj"> The <see cref="IList"/> to deserialise from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// <param name="obj"> The <see cref="IList"/> to deserialise from the given <see cref="BinaryReader"/>s underlying
+        /// <see cref="MemoryStream"/>.
         /// </param>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> holding the <see cref="IList"/>.</param>
         /// <param name="binaryReader">
-        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given <see cref="PropertyInfo"/>.
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to deserialise the given
+        /// <see cref="PropertyInfo"/>.
         /// </param>
         /// <exception cref="NullReferenceException">
-        /// Thrown if the <see cref="IList"/> held in the <see cref="MemoryStream"/> is null, or if the <see cref="IList"/>s elements do not have a type.
+        /// Thrown if the <see cref="IList"/> held in the <see cref="MemoryStream"/> is null, or if the <see cref="IList"/>s
+        /// elements do not have a type.
         /// </exception>
         private IList ReadListFromStream(object obj, PropertyInfo propertyInfo, BinaryReader binaryReader)
         {
@@ -436,14 +463,21 @@ namespace Network.Converter
         }
 
         /// <summary>
-        /// Reads a primitive type from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/> and returns it.
+        /// Reads a primitive type from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>
+        /// and returns it.
         /// </summary>
         /// <param name="type">
         /// The <see cref="Type"/> of the primitive to read from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
         /// </param>
-        /// <param name="binaryReader">The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to read the primitive.</param>
-        /// <returns>The primitive that was read from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown whenever a <see cref="Type"/> is passed to this method that is not a primitive.</exception>
+        /// <param name="binaryReader">
+        /// The <see cref="BinaryReader"/> from whose underlying <see cref="MemoryStream"/> to read the primitive.
+        /// </param>
+        /// <returns>
+        /// The primitive that was read from the given <see cref="BinaryReader"/>s underlying <see cref="MemoryStream"/>.
+        /// </returns>
+        /// <exception cref="NotSupportedException">
+        /// Thrown whenever a <see cref="Type"/> is passed to this method that is not a primitive.
+        /// </exception>
         private object ReadPrimitiveFromStream(Type type, BinaryReader binaryReader)
         {
             #region Reading Primitives From Stream

@@ -26,7 +26,8 @@ namespace Network.Logging
     }
 
     /// <summary>
-    /// Logs network traffic, events and connection states into a given <see cref="Stream"/>, be it a <see cref="FileStream"/> or the 'Output' window of Visual Studio.
+    /// Logs network traffic, events and connection states into a given <see cref="Stream"/>, be it a
+    /// <see cref="FileStream"/> or the 'Output' window of Visual Studio.
     /// </summary>
     internal class NetworkLog
     {
@@ -42,9 +43,12 @@ namespace Network.Logging
         #region Constructors
 
         /// <summary>
-        /// Constructs and returns a new instance of the <see cref="NetworkLog"/> class, that monitors the given <see cref="Connection"/>.
+        /// Constructs and returns a new instance of the <see cref="NetworkLog"/> class, that monitors the given
+        /// <see cref="Connection"/>.
         /// </summary>
-        /// <param name="connection">The <see cref="Connection"/> that the <see cref="NetworkLog"/> should monitor for traffic, events and states.</param>
+        /// <param name="connection">
+        /// The <see cref="Connection"/> that the <see cref="NetworkLog"/> should monitor for traffic, events and states.
+        /// </param>
         internal NetworkLog(Connection connection)
         {
             monitoredConnection = connection;
@@ -90,13 +94,15 @@ namespace Network.Logging
         }
 
         /// <summary>
-        /// Logs the given <see cref="string"/> message and <see cref="Exception"/>, with the given <see cref="Enums.LogLevel"/> to all output <see cref="Stream"/>s.
+        /// Logs the given <see cref="string"/> message and <see cref="Exception"/>, with the given
+        /// <see cref="Enums.LogLevel"/> to all output <see cref="Stream"/>s.
         /// </summary>
         /// <param name="message">The message to log to the output <see cref="Stream"/>s.</param>
         /// <param name="exception">The <see cref="Exception"/> to log to the output <see cref="Stream"/>s.</param>
         /// <param name="logLevel">The <see cref="Enums.LogLevel"/> of the log message.</param>
         /// <remarks>
-        /// If <see cref="EnableLogging"/> if set to <c>false</c> or the <see cref="StreamLogger"/> is <c>null</c>, then no message is logged.
+        /// If <see cref="EnableLogging"/> if set to <c>false</c> or the <see cref="StreamLogger"/> is <c>null</c>,
+        /// then no message is logged.
         /// </remarks>
         internal void Log(string message, Exception exception, LogLevel logLevel = LogLevel.Information)
         {
@@ -136,14 +142,16 @@ namespace Network.Logging
         }
 
         /// <summary>
-        /// Logs the given <see cref="Exception"/> with the given <see cref="Enums.LogLevel"/> to the output <see cref="Stream"/>s.
+        /// Logs the given <see cref="Exception"/> with the given <see cref="Enums.LogLevel"/> to the output
+        /// <see cref="Stream"/>s.
         /// </summary>
         /// <param name="exception">The <see cref="Exception"/> to log to the output <see cref="Stream"/>s.</param>
         /// <param name="logLevel">The <see cref="Network.Enums.LogLevel"/> of the log message.</param>
         internal void Log(Exception exception, LogLevel logLevel = LogLevel.Information) => Log(string.Empty, exception, logLevel);
 
         /// <summary>
-        /// Logs the given <see cref="string"/> message with the given <see cref="Enums.LogLevel"/> to the output <see cref="Stream"/>s.
+        /// Logs the given <see cref="string"/> message with the given <see cref="Enums.LogLevel"/> to the output
+        /// <see cref="Stream"/>s.
         /// </summary>
         /// <param name="message">The message to log to the output <see cref="Stream"/>s.</param>
         /// <param name="logLevel">The <see cref="Network.Enums.LogLevel"/> of the log message.</param>

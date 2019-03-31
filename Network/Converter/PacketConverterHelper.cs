@@ -15,8 +15,8 @@ namespace Network.Converter
         #region Variables
 
         /// <summary>
-        /// The <see cref="Type"/> of the custom property that will cause a property to be ignored during serialisation. See <see cref="PacketIgnorePropertyAttribute"/>
-        /// for more information regarding its usage.
+        /// The <see cref="Type"/> of the custom property that will cause a property to be ignored during serialisation.
+        /// See <see cref="PacketIgnorePropertyAttribute"/> for more information regarding its usage.
         /// </summary>
         public static readonly Type PropertyIgnoreAttributeType = typeof(PacketIgnorePropertyAttribute);
 
@@ -35,12 +35,14 @@ namespace Network.Converter
         public static bool TypeIsPrimitive(Type type) => type?.Namespace?.Equals("System") ?? false;
 
         /// <summary>
-        /// Checks whether the underlying <see cref="Type"/> of the given property is a primitive type. See <see cref="TypeIsPrimitive"/> for more
-        /// information regarding its usage.
+        /// Checks whether the underlying <see cref="Type"/> of the given property is a primitive type. See
+        /// <see cref="TypeIsPrimitive"/> for more information regarding its usage.
         /// </summary>
         /// <param name="property">The <see cref="PropertyInfo"/> to test.</param>
         /// <returns>Whether the given <see cref="PropertyInfo"/>s underlying <see cref="Type"/> is primitive.</returns>
-        /// <remarks>If the given properties underlying element <see cref="Type"/> is null, then the method will return false.</remarks>
+        /// <remarks>
+        /// If the given properties underlying element <see cref="Type"/> is null, then the method will return false.
+        /// </remarks>
         public static bool PropertyIsPrimitive(PropertyInfo property) => property.PropertyType?.Namespace?.Equals("System") ?? false;
 
         #endregion Type Checking
@@ -48,27 +50,33 @@ namespace Network.Converter
         #region Getting Properties Of An Object
 
         /// <summary>
-        /// Gets all the <see cref="PropertyInfo"/>s of the given <see cref="Type"/> that should be serialised (lack the <see cref="PacketIgnorePropertyAttribute"/>
-        /// attribute) and returns them as an array.
+        /// Gets all the <see cref="PropertyInfo"/>s of the given <see cref="Type"/> that should be serialised (lack the
+        /// <see cref="PacketIgnorePropertyAttribute"/> attribute) and returns them as an array.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> whose <see cref="PropertyInfo"/>s to read.</param>
         /// <returns>An array of all the <see cref="PropertyInfo"/>s on the given object.</returns>
         public static PropertyInfo[] GetTypeProperties(Type type)
         {
             //Returns all properties of the given type that lack the custom PacketIgnorePropertyAttribute
-            return type.GetProperties().Where(property => property.GetCustomAttribute(PropertyIgnoreAttributeType) == null).ToArray();
+            return type.GetProperties().Where(property =>
+            {
+                return property.GetCustomAttribute(PropertyIgnoreAttributeType) == null;
+            }).ToArray();
         }
 
         /// <summary>
-        /// Gets all the <see cref="PropertyInfo"/>s of the given <see cref="object"/> that should be serialised and returns them as an array. See
-        /// <see cref="GetTypeProperties"/> for more information.
+        /// Gets all the <see cref="PropertyInfo"/>s of the given <see cref="object"/> that should be serialised and
+        /// returns them as an array. See <see cref="GetTypeProperties"/> for more information.
         /// </summary>
         /// <param name="_object">The <see cref="object"/> whose <see cref="PropertyInfo"/>s to read.</param>
         /// <returns>An array of all the <see cref="PropertyInfo"/>s on the given object.</returns>
         public static PropertyInfo[] GetObjectProperties(object _object)
         {
             //Returns all properties of the given objects type that lack the custom PacketIgnorePropertyAttribute
-            return _object.GetType().GetProperties().Where(property => property.GetCustomAttribute(PropertyIgnoreAttributeType) == null).ToArray();
+            return _object.GetType().GetProperties().Where(property =>
+            {
+                return property.GetCustomAttribute(PropertyIgnoreAttributeType) == null;
+            }).ToArray();
         }
 
         #endregion Getting Properties Of An Object

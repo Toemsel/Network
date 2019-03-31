@@ -44,14 +44,16 @@ namespace Network.Utilities
         /// <typeparam name="T">The type whose ID to get.</typeparam>
         /// <returns>The unique ID.</returns>
         /// <exception cref="KeyNotFoundException">
-        /// Thrown if the method is called before an ID is present. This occurs if a previous call to <see cref="GenerateUid{T}"/> was not made
+        /// Thrown if the method is called before an ID is present. This occurs if a previous call to
+        /// <see cref="GenerateUid{T}"/> was not made
         /// for the given type, and thus no ID actually exists.
         /// </exception>
         internal static T LastGeneratedUid<T>()
         {
             Type type = typeof(T);
 
-            //If we call the LastGeneratedUid before we actually filled the dictionary, there was no last UID. Therefore exception.
+            //If we call the LastGeneratedUid before we actually filled the dictionary, there was no last UID.
+            //Therefore exception.
             if (!typeToIdMap.ContainsKey(type))
             {
                 throw new KeyNotFoundException();

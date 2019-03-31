@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 namespace Network.Utilities
 {
     /// <summary>
-    /// Provides a dictionary capable of looking up both a key or a value. Otherwise it is the same as a regular dictionary. See
-    /// https://en.wikipedia.org/wiki/Hash_table for a better explanation of the concepts behind the dictionary.
+    /// Provides a dictionary capable of looking up both a key or a value. Otherwise it is the same as a regular dictionary.
+    /// See https://en.wikipedia.org/wiki/Hash_table for a better explanation of the concepts behind the dictionary.
     /// </summary>
     /// <typeparam name="TKey">The type of the key stored in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the value stored in the dictionary.</typeparam>
@@ -116,7 +116,8 @@ namespace Network.Utilities
         }
 
         /// <summary>
-        /// Tries to set the value associated with the given key, returning 'true' if the value was set correctly, or 'false' if it wasn't.
+        /// Tries to set the value associated with the given key, returning 'true' if the value was set correctly, or
+        /// 'false' if it wasn't.
         /// </summary>
         /// <param name="key">The key whose value to set.</param>
         /// <param name="value">The value to set for the given key.</param>

@@ -13,9 +13,10 @@ namespace Network.Extensions
         /// A private thread-safe counter for generating unique hash codes.
         /// </summary>
         /// <remarks>
-        /// Increments are guaranteed to be atomic on all 32-bit and higher systems, as any single-cpu-instruction operation on a variable is
-        /// by definition atomic. Since an <see cref="int"/> is 32 bits long, it can be loaded with 1 instruction into a register on a 32-bit or
-        /// higher system. Likewise, addition is also atomic. This guarantees atomic behaviour for increments on an <see cref="int"/>.
+        /// Increments are guaranteed to be atomic on all 32-bit and higher systems, as any single-cpu-instruction
+        /// operation on a variable is by definition atomic. Since an <see cref="int"/> is 32 bits long, it can be loaded
+        /// with 1 instruction into a register on a 32-bit or higher system. Likewise, addition is also atomic. This
+        /// guarantees atomic behaviour for increments on an <see cref="int"/>.
         /// </remarks>
         private static int counter;
 
