@@ -480,8 +480,6 @@ namespace Network.Converter
         /// </exception>
         private object ReadPrimitiveFromStream(Type type, BinaryReader binaryReader)
         {
-            #region Reading Primitives From Stream
-
             //Handling the case where a nullable type gets sent
             Type underlyingNullableType = Nullable.GetUnderlyingType(type);
 
@@ -490,13 +488,12 @@ namespace Network.Converter
                 type = underlyingNullableType;
             }
 
+            #region Reading Primitives From Stream
+
             if (type == typeof(bool))
             {
                 return binaryReader.ReadBoolean();
             }
-
-            #region Unsigned
-
             else if (type == typeof(byte))
             {
                 return binaryReader.ReadByte();
@@ -513,11 +510,6 @@ namespace Network.Converter
             {
                 return binaryReader.ReadUInt64();
             }
-
-            #endregion Unsigned
-
-            #region Signed
-
             else if (type == typeof(sbyte))
             {
                 return binaryReader.ReadSByte();
@@ -534,11 +526,6 @@ namespace Network.Converter
             {
                 return binaryReader.ReadInt64();
             }
-
-            #endregion Signed
-
-            #region String
-
             else if (type == typeof(string))
             {
                 return binaryReader.ReadString();
@@ -547,11 +534,6 @@ namespace Network.Converter
             {
                 return binaryReader.ReadChar();
             }
-
-            #endregion String
-
-            #region Floating Point
-
             else if (type == typeof(float))
             {
                 return binaryReader.ReadSingle();
@@ -564,8 +546,6 @@ namespace Network.Converter
             {
                 return binaryReader.ReadDecimal();
             }
-
-            #endregion Floating Point
 
             #endregion Reading Primitives From Stream
 
