@@ -519,12 +519,9 @@ namespace Network
                 packetTypeToTypeIdMap[type] = packetId;
 
                 //Check to see if a response packet is being handled, and register it if it hasn't already been registered
-                Type requestPacketHandled = ((ResponsePacketForAttribute)requestPacketAttribute).RequestType;
+                Type requestPacketHandled = ((ResponsePacketForAttribute)requestPacketAttribute)?.RequestType;
 
-                if (requestPacketHandled == null)
-                    continue;
-
-                if (!requestPacketToResponsePacketMap.ContainsKey(requestPacketHandled))
+                if (requestPacketHandled != null && !requestPacketToResponsePacketMap.ContainsKey(requestPacketHandled))
                     requestPacketToResponsePacketMap[requestPacketHandled] = type;
             }
         }
