@@ -42,7 +42,7 @@ namespace Network
             socket = client.Client;
             localEndPoint = (IPEndPoint)client.Client.LocalEndPoint;
             client.Connect(remoteEndPoint);
-            ObjectMapRefreshed();
+            PacketHandlerMapRefreshed();
 
             KeepAlive = false;
             socket.SendTimeout = 0;
@@ -207,12 +207,12 @@ namespace Network
         /// <summary>
         /// The packetHandlerMap has been refreshed.
         /// </summary>
-        public override void ObjectMapRefreshed()
+        public override void PacketHandlerMapRefreshed()
         {
             //Register again the UDP default requests and responses.
             RegisterPacketHandler<UDPPingRequest>((u, c) => Send(new UDPPingResponse(u), this), this);
             RegisterPacketHandler<UDPPingResponse>(UDPPingResponse, this);
-            base.ObjectMapRefreshed();
+            base.PacketHandlerMapRefreshed();
         }
 
         /// <summary>

@@ -17,10 +17,10 @@ namespace NetworkTestClient
             //1. Establish a connection to the server.
             container = ConnectionFactory.CreateClientConnectionContainer("127.0.0.1", 1234);
             //2. Register what happens if we get a connection
-            container.ConnectionEstablished += connectionEstablished;
+            container.ConnectionEstablished += OnConnectionEstablished;
         }
 
-        private void connectionEstablished(Connection connection, ConnectionType type)
+        private void OnConnectionEstablished(Connection connection, ConnectionType type)
         {
             Console.WriteLine($"{type.ToString()} Connection established");
             //3. Register what happens if we receive a packet of type "CalculationResponse"
@@ -36,14 +36,15 @@ namespace NetworkTestClient
 
         private AddStudentToDatabaseRequest GenerateDataSet()
         {
-            Student student = new Student();
-            student.Birthday = new Date() { Day = 15, Month = 3, Year = 1991 };
-            student.FirstName = "Martin";
-            student.Lastname = "Mayer";
-            student.VisitedPlaces = GenerateVisitedPlaces();
+            Student student = new Student
+            {
+                Birthday = new Date() { Day = 15, Month = 3, Year = 1991 },
+                FirstName = "Martin",
+                Lastname = "Mayer",
+                VisitedPlaces = GenerateVisitedPlaces()
+            };
 
-            AddStudentToDatabaseRequest request = new AddStudentToDatabaseRequest(student);
-            request.Rooms = GenerateRooms();
+            AddStudentToDatabaseRequest request = new AddStudentToDatabaseRequest(student) { Rooms = GenerateRooms() };
             return request;
         }
 
@@ -52,9 +53,11 @@ namespace NetworkTestClient
             List<GeoCoordinate> geoCoordinates = new List<GeoCoordinate>();
             while (random.Next(0, 101) <= 95 && geoCoordinates.Count < 500)
             {
-                GeoCoordinate geoCoordinate = new GeoCoordinate();
-                geoCoordinate.Latitude = (float)random.NextDouble();
-                geoCoordinate.Longitude = (float)random.NextDouble();
+                GeoCoordinate geoCoordinate = new GeoCoordinate
+                {
+                    Latitude = (float)random.NextDouble(),
+                    Longitude = (float)random.NextDouble()
+                };
                 geoCoordinates.Add(geoCoordinate);
             }
             return geoCoordinates;

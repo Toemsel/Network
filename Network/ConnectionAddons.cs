@@ -1,8 +1,5 @@
 ﻿using Network.Interfaces;
 using Network.Logging;
-using Network.Packets;
-using System;
-using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -74,9 +71,8 @@ namespace Network
         }
 
         /// <summary>
-        /// Logs events, exceptions and messages into the given stream.
-        /// To disable logging into a previous provided stream, call this method again
-        /// and provide a null reference as stream. Stream hot swapping is supported.
+        /// Logs events, exceptions and messages into the given stream. To disable logging into a previous provided stream, call
+        /// this method again and provide a null reference as stream. Stream hot swapping is supported.
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
         public void LogIntoStream(Stream stream) => Logger.SetOutputStream(stream);

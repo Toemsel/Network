@@ -8,6 +8,7 @@ namespace Network.Attributes
     /// (must inherit from <see cref="ResponsePacket"/>) and the <see cref="Type"/> of the <see cref="RequestPacket"/> that
     /// it handles should be given.
     /// </summary>
+    [Obsolete("Use 'ResponsePacketForAttribute' instead.")]
     public class PacketRequestAttribute : Attribute
     {
         #region Constructors

@@ -33,10 +33,11 @@ ConnectionFactory (async) Bugfixes.</PackageReleaseNotes>
      <FileVersion>6.1.0.7</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
-    <DocumentationFile>.\.\Network.xml</DocumentationFile>
+    <DocumentationFile>Network.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>.\.\Network.xml</DocumentationFile>
+    <DocumentationFile>Network.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="packages\**" />
