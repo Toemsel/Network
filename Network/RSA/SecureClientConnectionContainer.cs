@@ -5,6 +5,8 @@ namespace Network.RSA
 {
     public class SecureClientConnectionContainer : ClientConnectionContainer
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecureClientConnectionContainer"/> class.
         /// </summary>
@@ -29,6 +31,10 @@ namespace Network.RSA
             RSAPair = rsaPair;
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
         /// Creates a new SecureTcpConnection.
         /// </summary>
@@ -40,5 +46,7 @@ namespace Network.RSA
         /// </summary>
         /// <returns>A UdpConnection.</returns>
         protected override async Task<Tuple<UdpConnection, ConnectionResult>> CreateUdpConnection() => await ConnectionFactory.CreateSecureUdpConnectionAsync(TcpConnection, RSAPair);
+
+        #endregion Methods
     }
 }

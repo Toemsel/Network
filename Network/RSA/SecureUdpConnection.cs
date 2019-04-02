@@ -12,6 +12,8 @@ namespace Network.RSA
     /// </summary>
     public class SecureUdpConnection : UdpConnection
     {
+        #region Constructors
+
         internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
             : base(udpClient, remoteEndPoint, writeLock, skipInitializationProcess: true)
         {
@@ -23,6 +25,10 @@ namespace Network.RSA
             //Since we did skip the initialization,... DO IT!
             Init();
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// The PublicKey of this instance.
@@ -68,5 +74,7 @@ namespace Network.RSA
         /// </summary>
         /// <value>The RSA connection.</value>
         private RSAConnection RSAConnection { get; set; }
+
+        #endregion Properties
     }
 }

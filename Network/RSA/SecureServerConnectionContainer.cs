@@ -9,6 +9,8 @@ namespace Network.RSA
     /// </summary>
     public class SecureServerConnectionContainer : ServerConnectionContainer
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecureServerConnectionContainer" /> class.
         /// </summary>
@@ -31,11 +33,17 @@ namespace Network.RSA
         internal SecureServerConnectionContainer(int port, RSAPair rsaPair, bool start = true)
             : this(System.Net.IPAddress.Any.ToString(), port, rsaPair, start) { }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
         /// Instead of a normal TcpConnection, a secure server connection demands a secureTcpConnection.
         /// </summary>
         /// <param name="tcpClient">The tcpClient to be wrapped.</param>
         /// <returns>A <see cref="SecureTcpConnection"/></returns>
         protected override TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateSecureTcpConnection(tcpClient, RSAPair);
+
+        #endregion Methods
     }
 }

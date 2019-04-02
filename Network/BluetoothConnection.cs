@@ -13,7 +13,13 @@ namespace Network
 {
     public class BluetoothConnection : Connection
     {
+        #region Variables
+
         private NetworkStream stream;
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BluetoothConnection"/> class.
@@ -45,27 +51,9 @@ namespace Network
             KeepAlive = true;
         }
 
-        /// <summary>
-        /// Tries to connect to the endpoint.
-        /// </summary>
-        /// <returns>Task&lt;ConnectionResult&gt;.</returns>
-        internal async Task<ConnectionResult> TryConnect()
-        {
-            Client = new BluetoothClient();
+        #endregion Constructors
 
-            try
-            {
-                await Task.Factory.FromAsync(Client.BeginConnect(DeviceInfo.DeviceAddress, ConnectionFactory.GUID, (f) => { }, null), Client.EndConnect);
-                stream = Client.GetStream();
-            }
-            catch
-            {
-                return ConnectionResult.Timeout;
-            }
-
-            Init();
-            return ConnectionResult.Connected;
-        }
+        #region Properties
 
         /// <summary>
         /// The device info of the connected device.
@@ -209,6 +197,32 @@ namespace Network
             }
         }
 
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Tries to connect to the endpoint.
+        /// </summary>
+        /// <returns>Task&lt;ConnectionResult&gt;.</returns>
+        internal async Task<ConnectionResult> TryConnect()
+        {
+            Client = new BluetoothClient();
+
+            try
+            {
+                await Task.Factory.FromAsync(Client.BeginConnect(DeviceInfo.DeviceAddress, ConnectionFactory.GUID, (f) => { }, null), Client.EndConnect);
+                stream = Client.GetStream();
+            }
+            catch
+            {
+                return ConnectionResult.Timeout;
+            }
+
+            Init();
+            return ConnectionResult.Connected;
+        }
+
         protected override void CloseHandler(CloseReason closeReason)
         {
             Close(closeReason, true);
@@ -241,6 +255,8 @@ namespace Network
             stream.Write(bytes, 0, bytes.Length);
             if (ForceFlush) stream.Flush();
         }
+
+        #endregion Methods
     }
 }
 

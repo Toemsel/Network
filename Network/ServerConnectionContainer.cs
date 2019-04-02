@@ -23,6 +23,8 @@ namespace Network
     /// </summary>
     public class ServerConnectionContainer : ConnectionContainer
     {
+        #region Variables
+
         private TcpListener tcpListener;
 
         private event Action<Connection, ConnectionType> connectionEstablished;
@@ -35,6 +37,10 @@ namespace Network
         private BluetoothListener bluetoothListener;
         private ConcurrentBag<BluetoothConnection> bluetoothConnections = new ConcurrentBag<BluetoothConnection>();
 #endif
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerConnectionContainer" /> class.
@@ -56,6 +62,10 @@ namespace Network
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         internal ServerConnectionContainer(int port, bool start = true)
             : this(System.Net.IPAddress.Any.ToString(), port, start) { }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the <see cref="List{UdpConnection}"/> with the specified TCP connection.
@@ -156,6 +166,10 @@ namespace Network
         public int Count { get { return connections.Count; } }
 #endif
 
+        #endregion Properties
+
+        #region Events
+
         /// <summary>
         /// Occurs when [connection closed]. This action will be called if a TCP or an UDP has been closed.
         /// If a TCP connection has been closed, all its attached UDP connections are lost as well.
@@ -175,6 +189,10 @@ namespace Network
             add { connectionEstablished += value; }
             remove { connectionEstablished -= value; }
         }
+
+        #endregion Events
+
+        #region Methods
 
         /// <summary>
         /// Starts to listen to tcp and bluetooth clients.
@@ -439,5 +457,7 @@ namespace Network
 #elif NETSTANDARD2_0
         public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. Connected TCP connections {connections.Count}.";
 #endif
+
+        #endregion Methods
     }
 }
