@@ -5,6 +5,8 @@ namespace Network.RSA
 {
     public static class RSAKeyGeneration
     {
+        #region Methods
+
         public static RSAPair Generate(int keySize = 2048)
         {
             using (RSACryptoServiceProvider cryptoServiceProvider = new RSACryptoServiceProvider(keySize))
@@ -16,5 +18,7 @@ namespace Network.RSA
                 return new RSAPair(keyParameters.ExtractPublicKey(), keyParameters.ExtractPrivateKey(), keySize);
             }
         }
+
+        #endregion Methods
     }
 }

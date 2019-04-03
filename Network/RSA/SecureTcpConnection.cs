@@ -12,6 +12,8 @@ namespace Network.RSA
     /// </summary>
     public class SecureTcpConnection : TcpConnection
     {
+        #region Constructors
+
         internal SecureTcpConnection(RSAPair rsaPair, TcpClient tcpClient)
             : base(tcpClient, skipInitializationProcess: true)
         {
@@ -23,6 +25,10 @@ namespace Network.RSA
             //Since we did skip the initialization,... DO IT!
             Init();
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// The PublicKey of this instance.
@@ -69,6 +75,10 @@ namespace Network.RSA
         /// <value>The RSA connection.</value>
         private RSAConnection RSAConnection { get; set; }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Instead of a normal UdpConnection, we create a secure-UdpConnection
         /// based on the configuration of our secure-TcpConnection. (Sharing private/public key)
@@ -77,6 +87,9 @@ namespace Network.RSA
         /// <param name="removeEndPoint">The removeEndPoint to connect to.</param>
         /// <param name="writeLock">The writeLock.</param>
         /// <returns>A Secure-UdpConnection.</returns>
-        protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) => new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, RSAPair, writeLock);
+        protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) =>
+            new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, RSAPair, writeLock);
+
+        #endregion Methods
     }
 }

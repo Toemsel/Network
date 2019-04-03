@@ -42,6 +42,8 @@ namespace Network
     /// </summary>
     public static class ConnectionFactory
     {
+        #region Variables
+
         /// <summary>
         /// The timeout of a connection attempt in [ms]
         /// </summary>
@@ -54,6 +56,14 @@ namespace Network
         /// </summary>
         internal static Guid GUID;
 
+#endif
+
+        #endregion Variables
+
+        #region Constructors
+
+#if NET46
+
         /// <summary>
         /// Set the GUID of this assembly.
         /// </summary>
@@ -61,6 +71,16 @@ namespace Network
         {
             GUID = Assembly.GetAssembly(typeof(Connection)).GetType().GUID;
         }
+
+#endif
+
+        #endregion Constructors
+
+        #region Methods
+
+        #region Bluetooth Connection Factory
+
+#if NET46
 
         /// <summary>
         /// Gets all the bluetooth devices in range.
@@ -112,6 +132,10 @@ namespace Network
         }
 
 #endif
+
+        #endregion Bluetooth Connection Factory
+
+        #region TCP Connection Factory
 
         /// <summary>
         /// Creates a new tcp connection and tries to connect to the given endpoint.
@@ -265,6 +289,10 @@ namespace Network
             return new SecureTcpConnection(rsaPair, tcpClient);
         }
 
+        #endregion TCP Connection Factory
+
+        #region UDP Connection Factory
+
         /// <summary>
         /// Creates a new instance of a udp connection.
         /// </summary>
@@ -369,6 +397,10 @@ namespace Network
             return new Tuple<UdpConnection, ConnectionResult>(udpConnection, connectionResult);
         }
 
+        #endregion UDP Connection Factory
+
+        #region Client Connection Container Factory
+
         /// <summary>
         /// Creates a new instance of a connection container.
         /// </summary>
@@ -467,6 +499,10 @@ namespace Network
             return secureClientConnectionContainer;
         }
 
+        #endregion Client Connection Container Factory
+
+        #region Server Connection Container Factory
+
         /// <summary>
         /// Creates the server connection container.
         /// </summary>
@@ -544,5 +580,9 @@ namespace Network
         /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
         /// <returns>ServerConnectionContainer.</returns>
         public static ServerConnectionContainer CreateSecureServerConnectionContainer(string ipAddress, int port, RSAPair rsaPair, bool start = true) => new SecureServerConnectionContainer(ipAddress, port, rsaPair);
+
+        #endregion Server Connection Container Factory
+
+        #endregion Methods
     }
 }

@@ -15,6 +15,8 @@ namespace Network
     /// </summary>
     public class UdpConnection : Connection
     {
+        #region Variables
+
         private Socket socket;
         private UdpClient client;
         private IPEndPoint localEndPoint;
@@ -28,6 +30,10 @@ namespace Network
         /// The received data cache.
         /// </summary>
         private List<byte> receivedBytes = new List<byte>();
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpConnection"/> class.
@@ -57,6 +63,10 @@ namespace Network
             if (!skipInitializationProcess)
                 Init();
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the time to live for the tcp connection.
@@ -124,10 +134,26 @@ namespace Network
         }
 
         /// <summary>
+        /// Gets the ip address's local endpoint of this connection.
+        /// </summary>
+        /// <value>The ip end point.</value>
+        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+
+        /// <summary>
+        /// Gets the ip address's remote endpoint of this connection.
+        /// </summary>
+        /// <value>The ip end point.</value>
+        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+
+        /// <summary>
         /// Gets or sets a value indicating whether [write lock].
         /// </summary>
         /// <value><c>true</c> if [write lock]; otherwise, <c>false</c>.</value>
         internal bool AcknowledgePending { get; set; }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Measures the RTT of the UDP connection.
@@ -216,18 +242,6 @@ namespace Network
         }
 
         /// <summary>
-        /// Gets the ip address's local endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
-
-        /// <summary>
-        /// Gets the ip address's remote endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
-
-        /// <summary>
         /// Closes the socket.
         /// </summary>
         /// <exception cref="System.NotImplementedException"></exception>
@@ -236,5 +250,7 @@ namespace Network
             socket.Close();
             client.Close();
         }
+
+        #endregion Methods
     }
 }

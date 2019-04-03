@@ -8,6 +8,8 @@ namespace Network
 {
     public abstract class ConnectionContainer : IRSACapability
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionContainer"/> class.
         /// </summary>
@@ -18,6 +20,10 @@ namespace Network
             IPAddress = ipAddress;
             Port = port;
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the ip address this container is connected to.
@@ -57,6 +63,10 @@ namespace Network
 
         protected List<Assembly> KnownTypes { get; private set; } = new List<Assembly>();
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Adds known types to the TCP and UDP connection as soon
         /// as a connection has been established. This is not essential, but will speed up the initial time.
@@ -79,5 +89,7 @@ namespace Network
             if (!KnownTypes.Contains(assembly)) return;
             KnownTypes.Remove(assembly);
         }
+
+        #endregion Methods
     }
 }

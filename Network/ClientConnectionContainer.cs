@@ -17,6 +17,8 @@ namespace Network
     /// </summary>
     public class ClientConnectionContainer : ConnectionContainer, IPacketHandler, IDisposable
     {
+        #region Variables
+
         /// <summary>
         /// The reconnect timer. Invoked if we lose the connection.
         /// </summary>
@@ -60,6 +62,10 @@ namespace Network
 
         private event Action<Connection, ConnectionType> connectionEstablished;
 
+        #endregion Variables
+
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
         /// </summary>
@@ -80,15 +86,9 @@ namespace Network
             this.udpConnection = udpConnection;
         }
 
-        /// <summary>
-        /// Initializes this instance and starts connecting to the endpoint.
-        /// </summary>
-        internal void Initialize()
-        {
-            reconnectTimer = new Timer();
-            reconnectTimer.Elapsed += TryToConnect;
-            TryConnect();
-        }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets if this container should automatically reconnect to the endpoint if the connection has been closed.
@@ -113,24 +113,6 @@ namespace Network
         /// </summary>
         /// <value>The UDP connections.</value>
         public UdpConnection UdpConnection { get { return udpConnection; } }
-
-        /// <summary>
-        /// Will be called if a TCP or an UDP connection has been successfully established.
-        /// </summary>
-        public event Action<Connection, ConnectionType> ConnectionEstablished
-        {
-            add { connectionEstablished += value; }
-            remove { connectionEstablished -= value; }
-        }
-
-        /// <summary>
-        /// Will be called if a TCP or an UDP connection has been lost.
-        /// </summary>
-        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
-        {
-            add { connectionLost += value; }
-            remove { connectionLost -= value; }
-        }
 
         /// <summary>
         /// Gets if the TCP connection is alive.
@@ -166,6 +148,42 @@ namespace Network
         /// <value>The is alive.</value>
         public bool IsAlive { get { return IsAlive_TCP && IsAlive_UDP; } }
 
+        #endregion Properties
+
+        #region Methods
+
+        #region Implmentation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void Dispose()
+        {
+            reconnectTimer.Dispose();
+        }
+
+        #endregion Implmentation of IDisposable
+
+        #region Overrides of Object
+
+        public override string ToString()
+        {
+            return $"ClientConnectionContainer. TCP is alive {IsAlive_TCP}. UDP is alive {IsAlive_UDP}. Server IPAddress {IPAddress} Port {Port.ToString()}";
+        }
+
+        #endregion Overrides of Object
+
+        /// <summary>
+        /// Initializes this instance and starts connecting to the endpoint.
+        /// </summary>
+        internal void Initialize()
+        {
+            reconnectTimer = new Timer();
+            reconnectTimer.Elapsed += TryToConnect;
+            TryConnect();
+        }
+
         /// <summary>
         /// Tries to connect to the given endpoint.
         /// </summary>
@@ -188,6 +206,8 @@ namespace Network
             if ((udpConnection == null || !udpConnection.IsAlive) && IsAlive_TCP)
                 await OpenNewUDPConnection();
         }
+
+        #region Implmentation of IPacketHandler for TCP and UDP
 
         /// <summary>
         /// Registers a packetHandler for TCP. This handler will be invoked if this connection
@@ -359,6 +379,8 @@ namespace Network
             DeregisterPacketHandler<P>(obj);
         }
 
+        #endregion Implmentation of IPacketHandler for TCP and UDP
+
         /// <summary>
         /// Closes all connections which are bound to this object.
         /// </summary>
@@ -369,6 +391,8 @@ namespace Network
             if (IsAlive_TCP) tcpConnection.Close(closeReason, callCloseEvent);
             if (IsAlive_UDP) udpConnection.Close(closeReason, callCloseEvent);
         }
+
+        #region Opening New Connections
 
         /// <summary>
         /// Opens the new TCP connection and applies the already registered packet handlers.
@@ -498,6 +522,10 @@ namespace Network
             if (!UdpConnection.IsAlive) return; //Connection could already be dead because of the prePackets.
             connectionEstablished?.Invoke(udpConnection, ConnectionType.UDP);
         }
+
+        #endregion Opening New Connections
+
+        #region Sending Packets
 
         /// <summary>
         /// Sends a ping over the TCP connection.
@@ -660,6 +688,8 @@ namespace Network
             else sendFastObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
         }
 
+        #endregion Sending Packets
+
         /// <summary>
         /// Reconnects the TCP and/or the udp connection.
         /// </summary>
@@ -685,18 +715,28 @@ namespace Network
         /// <returns>A UdpConnection.</returns>
         protected virtual async Task<Tuple<UdpConnection, ConnectionResult>> CreateUdpConnection() => await ConnectionFactory.CreateUdpConnectionAsync(tcpConnection);
 
-        public override string ToString()
+        #endregion Methods
+
+        #region Events
+
+        /// <summary>
+        /// Will be called if a TCP or an UDP connection has been successfully established.
+        /// </summary>
+        public event Action<Connection, ConnectionType> ConnectionEstablished
         {
-            return $"ClientConnectionContainer. TCP is alive {IsAlive_TCP}. UDP is alive {IsAlive_UDP}. Server IPAddress {IPAddress} Port {Port.ToString()}";
+            add { connectionEstablished += value; }
+            remove { connectionEstablished -= value; }
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Will be called if a TCP or an UDP connection has been lost.
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public void Dispose()
+        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
         {
-            reconnectTimer.Dispose();
+            add { connectionLost += value; }
+            remove { connectionLost -= value; }
         }
+
+        #endregion Events
     }
 }

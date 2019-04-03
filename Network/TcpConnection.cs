@@ -13,9 +13,15 @@ namespace Network
     /// </summary>
     public class TcpConnection : Connection
     {
+        #region Variables
+
         private TcpClient client;
         private NetworkStream stream;
         private Socket socket;
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TcpConnection"/> class.
@@ -41,6 +47,10 @@ namespace Network
             if (!skipInitializationProcess)
                 Init();
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the time to live for the tcp connection.
@@ -99,6 +109,18 @@ namespace Network
         }
 
         /// <summary>
+        /// Gets the ip address's local endpoint of this connection.
+        /// </summary>
+        /// <value>The ip end point.</value>
+        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+
+        /// <summary>
+        /// Gets the ip address's remote endpoint of this connection.
+        /// </summary>
+        /// <value>The ip end point.</value>
+        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+
+        /// <summary>
         /// Gets the local end point.
         /// </summary>
         /// <value>The local end point.</value>
@@ -109,6 +131,10 @@ namespace Network
         /// </summary>
         /// <value>The remote end point.</value>
         public EndPoint RemoteEndPoint { get { return socket.RemoteEndPoint; } }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Establishes a udp connection.
@@ -178,20 +204,10 @@ namespace Network
         }
 
         /// <summary>
-        /// Gets the ip address's local endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
-
-        /// <summary>
-        /// Gets the ip address's remote endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
-
-        /// <summary>
         /// Closes the socket.
         /// </summary>
         protected override void CloseSocket() => client.Close();
+
+        #endregion Methods
     }
 }

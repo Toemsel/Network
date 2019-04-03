@@ -12,7 +12,13 @@ namespace Network
     /// </summary>
     public abstract partial class Connection : IPacketHandler
     {
+        #region Variables
+
         private NetworkLog logger;
+
+        #endregion Variables
+
+        #region Properties
 
         /// <summary>
         /// Logger for the connection and all protected classes.
@@ -38,6 +44,20 @@ namespace Network
         internal bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         /// <summary>
+        /// Indicates if the connection should automatically log.
+        /// Logging in DEBUG mode by default ON.
+        /// </summary>
+        public bool EnableLogging
+        {
+            get { return logger.EnableLogging; }
+            set { logger.EnableLogging = value; }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
         /// Initializes all the addons.
         /// </summary>
         private void InitAddons()
@@ -52,16 +72,6 @@ namespace Network
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
         public void LogIntoStream(Stream stream) => logger.SetOutputStream(stream);
-
-        /// <summary>
-        /// Indicates if the connection should automatically log.
-        /// Logging in DEBUG mode by default ON.
-        /// </summary>
-        public bool EnableLogging
-        {
-            get { return logger.EnableLogging; }
-            set { logger.EnableLogging = value; }
-        }
 
         /// <summary>
         /// Sends raw data.
@@ -84,5 +94,7 @@ namespace Network
         /// </summary>
         /// <param name="rawData">The packet to send.</param>
         public void SendRawData(RawData rawData) => Send(rawData);
+
+        #endregion Methods
     }
 }

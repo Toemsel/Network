@@ -5,7 +5,13 @@
     /// </summary>
     public class RSAPair
     {
+        #region Variables
+
         private const string PRIVATE_KEY_UNKNOWN = "UNKNOWN";
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RSAPair"/> class.
@@ -34,6 +40,10 @@
             Public = publicKey;
             KeySize = keySize;
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the size of the key.
@@ -64,5 +74,7 @@
         /// </summary>
         /// <value><c>true</c> if this instance has a private key; otherwise, <c>false</c>.</value>
         public bool HasPrivateKey => !string.IsNullOrWhiteSpace(Private) && Private != PRIVATE_KEY_UNKNOWN;
+
+        #endregion Properties
     }
 }
