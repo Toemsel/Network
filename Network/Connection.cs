@@ -340,7 +340,7 @@ namespace Network
         /// <inheritdoc />
         public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
         {
-            packetHandlerMap.RegisterStaticPacketHandler(handler);
+            packetHandlerMap.RegisterStaticPacketHandler<T>(handler);
             SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
@@ -355,7 +355,7 @@ namespace Network
         public void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
         {
             packetHandlerMap.RegisterPacketHandler<T>(handler, obj);
-            SearchAndInvokeUnknownHandlerPackets(handler);
+            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
         /// <inheritdoc cref="RegisterPacketHandler{T}(PacketReceivedHandler{T}, object)"/>
@@ -380,7 +380,7 @@ namespace Network
         public void RegisterRawDataHandler(string key, PacketReceivedHandler<RawData> handler)
         {
             packetHandlerMap.RegisterStaticRawDataHandler(key, handler);
-            SearchAndInvokeUnknownHandlerPackets(handler);
+            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
         }
 
         /// <inheritdoc />
