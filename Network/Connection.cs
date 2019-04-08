@@ -20,98 +20,150 @@ using System.Threading.Tasks;
 namespace Network
 {
     /// <summary>
-    /// Provides the basic methods a connection has to implement.
-    /// It ensures the connectivity, is able to send pings and keeps track of the latency.
-    /// Every connection instance has 3 threads:
-    /// - (1) Send thread       -> Writes enqueued packets on the stream
-    /// - (2) Read thread       -> Read bytes from the stream
-    /// - (3) Invoke thread     -> Delegates the received packets to the given delegate.
-    /// All 3 threads will be automatically aborted if the connection has been closed.
-    /// After closing the connection, every packet in the send queue will be send before closing the connection.
+    /// Provides the basic methods that all <see cref="Connection"/> inheritors must implement. It ensures connectivity and
+    /// keeps tracks of statistics such as latency. Multi-threaded with 3 separate threads per connection. After calling the
+    /// <see cref="Close"/> method, every queued <see cref="Packet"/> will be sent before the <see cref="Connection"/> is fully
+    /// closed.
     /// </summary>
+    /// <remarks>
+    /// Every <see cref="Connection"/> instance has 3 threads:
+    /// - (1) Read thread   -> Reads <see cref="Packet"/> objects from the network.
+    /// - (2) Invoke thread -> Delegates the handling of received packets to the registered <see cref="PacketReceivedHandler{P}"/>.
+    /// - (3) Send thread   -> Writes queued <see cref="Packet"/> objects to the network.
+    /// </remarks>
     public abstract partial class Connection : IPacketHandler
     {
         #region Variables
 
         /// <summary>
-        /// Constants.
+        /// The time interval in milliseconds between ping packets.
         /// </summary>
         protected const int PING_INTERVALL = 10000;
 
         /// <summary>
-        /// True if this instance should send in a specific interval a keep alive packet, to ensure
-        /// whether there is a connection or not. If set to [false] <see cref="RTT"/> and <see cref="Ping"/> wont be enabled/refreshed.
-        /// </summary>
-        private bool keepAlive = false;
-
-        /// <summary>
-        /// A fix hashCode that does not change, even if the most objects changed their values.
+        /// A fixed hashcode that persists with the <see cref="Connection"/> instance for its entire lifetime.
         /// </summary>
         private int hashCode;
+
+        // TODO Remove all occurences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
 
         /// <summary>
         /// A handler which will be invoked if this connection is dead.
         /// </summary>
         private event Action<CloseReason, Connection> connectionClosed;
 
+        /// <summary>
+        /// A handler which will be invoked if a new connection is established.
+        /// </summary>
         private event Action<TcpConnection, UdpConnection> connectionEstablished;
 
-        /// <summary>
-        /// When this stopwatch reached the <see cref="TIMEOUT"/> the instance is going to send a ping request.
-        /// </summary>
-        private Stopwatch nextPingStopWatch = new Stopwatch();
+        #region Ping Variables
 
-        private Stopwatch currentPingStopWatch = new Stopwatch();
+        /// <summary>
+        /// Whether this instance should send out a keep alive packet at specific intervals, to ensure there is an alive remote connection.
+        /// If set to [false] <see cref="RTT"/> and <see cref="Ping"/> wont be enabled/refreshed.
+        /// </summary>
+        private bool keepAlive;
+
+        /// <summary>
+        /// Stopwatch to keep track of when to send out a new <see cref="PingRequest"/>.
+        /// </summary>
+        private readonly Stopwatch nextPingStopWatch = new Stopwatch();
+
+        /// <summary>
+        /// Stopwatch measuring elapsed time since the last <see cref="PingRequest"/> was sent to measure the RTT and ping to
+        /// the remote <see cref="Connection"/>.
+        /// </summary>
+        private readonly Stopwatch currentPingStopWatch = new Stopwatch();
+
+        #endregion Ping Variables
 
         #region Thread Variables
 
+        /// <summary>
+        /// Reads packets from the network and places them into the <see cref="receivedPackets"/> and
+        /// <see cref="receivedUnknownPacketHandlerPackets"/> queues.
+        /// </summary>
         private Thread readStreamThread;
 
         /// <summary>
-        /// Events to save CPU time.
+        /// An event set whenever a packet is received from the network. Used to save CPU time when waiting for a packet to be
+        /// received.
         /// </summary>
-        private AutoResetEvent dataAvailableEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent packetAvailableEvent = new AutoResetEvent(false);
 
+        /// <summary>
+        /// Handles received packets by invoked their respective <see cref="PacketReceivedHandler{P}"/>.
+        /// </summary>
         private Thread invokePacketThread;
 
+        /// <summary>
+        /// Sends pending packets to the network from the <see cref="sendPackets"/> queue.
+        /// </summary>
         private Thread writeStreamThread;
 
-        private AutoResetEvent packetAvailableEvent = new AutoResetEvent(false);
+        /// <summary>
+        /// An event set whenever a packet is available to be sent to the network. Used to save CPU time when waiting to
+        /// send a packet.
+        /// </summary>
+        private readonly AutoResetEvent dataAvailableEvent = new AutoResetEvent(false);
 
         #endregion Thread Variables
 
         #region Packet Variables
 
         /// <summary>
-        /// Is able to convert a packet into a byte array and back.
+        /// The packet converter used to serialise and deserialise outgoing and incoming packets.
         /// </summary>
         private IPacketConverter packetConverter = new PacketConverter();
 
+        /// <summary>
+        /// Holds all the <see cref="UdpConnection"/>s that are currently pending connection to this <see cref="Connection"/>.
+        /// </summary>
         private ConcurrentQueue<UdpConnection> pendingUDPConnections = new ConcurrentQueue<UdpConnection>();
+
+        /// <summary>
+        /// Holds all received <see cref="Packet"/>s whose <see cref="Packet.ID"/> is not known.
+        /// </summary>
         private ConcurrentQueue<Tuple<Packet, object>> pendingUnknownPackets = new ConcurrentQueue<Tuple<Packet, object>>();
 
         /// <summary>
-        /// This concurrent queue contains the received/send packets which we have to handle.
+        /// Holds all received <see cref="Packet"/>s with a known <see cref="PacketReceivedHandler{P}"/> that are yet to be
+        /// handled.
         /// </summary>
         private ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
 
-        private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
+        /// <summary>
+        /// Holds all received <see cref="Packet"/>s without a known <see cref="PacketReceivedHandler{P}"/> that are yet to be
+        /// handled.
+        /// </summary>
         private ConcurrentBag<Packet> receivedUnknownPacketHandlerPackets = new ConcurrentBag<Packet>();
 
         /// <summary>
-        /// Maps the type of a packet to their byte value.
+        /// Holds all <see cref="Packet"/>s that are handled and are now ready and waiting to be sent to the network.
+        /// </summary>
+        private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
+
+        /// <summary>
+        /// Maps a <see cref="Packet"/> <see cref="Type"/> to a unique <see cref="ushort"/> ID.
         /// </summary>
         private BiDictionary<Type, ushort> typeByte = new BiDictionary<Type, ushort>();
 
-        private int currentTypeByteIndex = 100; //The current index we are facing. Start with 100, since we have some network packets.
+        /// <summary>
+        /// The value from which new IDs for packet <see cref="Type"/>s will be calculated dynamically. Starts at 100
+        /// as the library already has built-in packets.
+        /// </summary>
+        private int currentTypeByteIndex = 100;
 
         /// <summary>
-        /// Maps a request to their response.
+        /// Maps a <see cref="RequestPacket"/> <see cref="Type"/> to the <see cref="Type"/> of the <see cref="ResponsePacket"/>
+        /// that handles it.
         /// </summary>
         private static Dictionary<Type, Type> requestResponseMap = new Dictionary<Type, Type>();
 
         /// <summary>
-        /// Has to map the objects to their unique id and back.
+        /// Maps <see cref="Packet"/> <see cref="Type"/>s to the <see cref="PacketReceivedHandler{P}"/> that should be used for
+        /// that <see cref="Packet"/>.
         /// </summary>
         private PacketHandlerMap packetHandlerMap = new PacketHandlerMap();
 
@@ -136,93 +188,93 @@ namespace Network
         #region Properties
 
         /// <summary>
-        /// Gets or sets the timeout. If the connection does not receive any packet within the specified timeout, the connection will timeout.
+        /// The timeout value in milliseconds. If the connection does not receive any packet within the specified timeout,
+        /// the connection will timeout and shutdown.
         /// </summary>
-        /// <value>The timeout.</value>
         public int TIMEOUT { get; protected set; } = 2500;
 
         /// <summary>
-        /// Gets or sets the packet buffer.
-        /// If we receive a packet which has no handler, it will be buffered
-        /// for future handler registrations. (RegisterPacketHandler)
-        /// This buffer indicates how many packets should be buffered.
+        /// The amount of <see cref="Packets"/> that are pending handling that this <see cref="Connection"/> will buffer.
+        /// If we receive a packet which has no handler, it will be buffered for future handler registrations (via
+        /// <see cref="RegisterStaticPacketHandler{P}(PacketReceivedHandler{P})"/>,
+        /// <see cref="RegisterPacketHandler{P}(PacketReceivedHandler{P}, object)"/>, and <see cref="RegisterRawDataHandler"/>
+        /// or their overloads). This value indicates the maximum amount of <see cref="Packet"/>s that will be buffered
+        /// before any are dropped.
         /// </summary>
         /// <value>The packet buffer.</value>
         public int PacketBuffer { get; set; } = 1000;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is alive and able to communicate with the endpoint.
+        /// Whether this <see cref="Connection"/> is alive and able to communicate with the <see cref="Connection"/> at
+        /// the <see cref="IPRemoteEndPoint"/>.
         /// </summary>
-        /// <value><c>true</c> if this instance is alive; otherwise, <c>false</c>.</value>
         public bool IsAlive { get { return readStreamThread.IsAlive && writeStreamThread.IsAlive && invokePacketThread.IsAlive; } }
 
         #region Socket Properties
 
         /// <summary>
-        /// Gets the ip address's local endpoint of this connection.
+        /// The local <see cref="IPEndPoint"/> for this <see cref="Connection"/> instance.
         /// </summary>
-        /// <value>The ip end point.</value>
         public abstract IPEndPoint IPLocalEndPoint { get; }
 
         /// <summary>
-        /// Gets the ip address's remote endpoint of this connection.
+        /// The remote <see cref="IPEndPoint"/> that this <see cref="Connection"/> instance communicates with.
         /// </summary>
-        /// <value>The ip end point.</value>
         public abstract IPEndPoint IPRemoteEndPoint { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [dual mode]. (Ipv6 + Ipv4)
+        /// Whether this <see cref="Connection"/> can operate in dual IPv4 / IPv6 mode.
         /// </summary>
-        /// <value><c>true</c> if [dual mode]; otherwise, <c>false</c>.</value>
         public abstract bool DualMode { get; set; }
 
         /// <summary>
-        /// Gets or sets whenever sending a packet to flush the stream immediately.
+        /// Whether sending a packet flushes underlying <see cref="NetworkStream"/>.
         /// </summary>
-        /// <value>Force to flush or not.</value>
+        /// <remarks>
+        /// This value is only used in a <see cref="TcpConnection"/> instance, which uses a <see cref="NetworkStream"/>
+        /// to send and receive data. A <see cref="UdpConnection"/> is unaffected by this value.
+        /// </remarks>
         public bool ForceFlush { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Connection"/> is allowed to fragment the frames.
+        /// Whether this <see cref="Connection"/> is allowed to fragment frames that are too large to send in one go.
         /// </summary>
-        /// <value><c>true</c> if fragment; otherwise, <c>false</c>.</value>
         public abstract bool Fragment { get; set; }
 
         /// <summary>
-        /// The hop limit. This is compareable to the Ipv4 TTL.
+        /// The hop limit for packets sent by this <see cref="Connection"/>. Comparable to IPv4s TTL (Time To Live).
         /// </summary>
         public abstract int HopLimit { get; set; }
 
         /// <summary>
-        /// Gets or sets if the packet should be sent directly to its destination or not.
+        /// Whether the packet should be sent directly to its destination or allowed to be routed through multiple destinations
+        /// first.
         /// </summary>
         public abstract bool IsRoutingEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets if the packet should be send with or without any delay.
-        /// If disabled, no data will be buffered at all and sent immediately to it's destination.
-        /// There is no guarantee that the network performance will be increased.
+        /// Whether the packet should be send with or without any delay. If disabled, no data will be buffered at all and
+        /// sent immediately to it's destination. There is no guarantee that the network performance will be increased.
         /// </summary>
         public abstract bool NoDelay { get; set; }
 
         /// <summary>
-        /// Gets or sets the time to live for the tcp connection.
+        /// The 'Time To Live' for this <see cref="Connection"/>.
         /// </summary>
-        /// <value>The TTL.</value>
         public abstract short TTL { get; set; }
 
         /// <summary>
-        /// Gets or sets if it should bypass hardware.
+        /// Whether this <see cref="Connection"/> should use a loopback address and bypass hardware.
         /// </summary>
         public abstract bool UseLoopback { get; set; }
 
         #endregion Socket Properties
 
         /// <summary>
-        /// Gets or sets if this instance should send in a specific interval a keep alive packet, to ensure
-        /// whether there is a connection or not. If set to [false] <see cref="RTT"/> and <see cref="Ping"/> wont be refreshed automatically.
+        /// Whether this <see cref="Connection"/> should send a keep alive packet to the <see cref="IPRemoteEndPoint"/> at
+        /// specific intervals, to ensure whether there is a remote <see cref="Connection"/> or not. If set to <c>false</c>
+        /// <see cref="RTT"/> and <see cref="Ping"/> won't be refreshed automatically.
         /// </summary>
-        /// <value>Keep alive or not.</value>
         public bool KeepAlive
         {
             get { return keepAlive; }
@@ -234,47 +286,47 @@ namespace Network
         }
 
         /// <summary>
-        /// Gets the round trip time.
+        /// The Round Trip Time for a packet.
         /// </summary>
-        /// <value>The RTT.</value>
         public virtual long RTT { get; protected set; } = 0;
 
         /// <summary>
-        /// Gets the ping.
+        /// The ping to the <see cref="IPRemoteEndPoint"/>.
         /// </summary>
-        /// <value>The ping.</value>
         public virtual long Ping { get; protected set; } = 0;
 
         /// <summary>
-        /// Gets or sets the performance of the network lib.
-        /// The higher the sleep intervals, the slower the connection.
+        /// Gets or sets the performance of this <see cref="Connection"/>. The higher the sleep intervals (the lower the performance),
+        /// the slower this <see cref="Connection"/> will handle incoming, pending handling, and outgoing <see cref="Packet"/>s.
         /// </summary>
-        /// <value>The performance.</value>
         public Performance Performance { get; set; } = Performance.Default;
 
         /// <summary>
-        /// Gets the performance as an integer.
+        /// The value of <see cref="Performance"/>, but simply cast to an <see cref="int"/>.
         /// </summary>
-        /// <value>The int performance.</value>
         public int IntPerformance { get { return (int)Performance; } }
 
         /// <summary>
-        /// Use your own packetConverter to serialize/deserialze objects.
-        /// Take care that the internal packet structure should still remain the same:
-        ///     1. [16bits]  packet type
-        ///     2. [32bits]  packet length
-        ///     3. [xxbits]  packet data
-        /// The default packetConverter uses reflection to get and set data within objects.
-        /// Using your own packetConverter could result in a higher throughput.
+        /// Allows the usage of a custom <see cref="IPacketConverter"/> implementation for serialisation and deserialisation.
+        /// However, the internal structure of the packet should stay the same:
+        ///     Packet Type     : 2  bytes (ushort)
+        ///     Packet Length   : 4  bytes (int)
+        ///     Packet Data     : xx bytes (actual serialised packet data)
         /// </summary>
+        /// <remarks>
+        /// The default <see cref="PacketConverter"/> uses reflection (with type property caching) for serialisation
+        /// and deserialisation. This allows good performance over the widest range of packets. Should you want to
+        /// handle only a specific set of packets, a custom <see cref="IPacketConverter"/> can allow more throughput (no slowdowns
+        /// due to relatively slow reflection).
+        /// </remarks>
         public virtual IPacketConverter PacketConverter
         {
-            get => packetConverter;
-            set => packetConverter = value;
+            get { return packetConverter; }
+            set { packetConverter = value; }
         }
 
         /// <summary>
-        /// Gets all the packets we are listening to.
+        /// All the currently registered <see cref="PacketReceivedHandler{T}"/>s.
         /// </summary>
         [Obsolete("Use 'BackupPacketHandler' instead")]
         internal PacketHandlerMap PacketHandlerMapper { get { return packetHandlerMap; } }
@@ -285,65 +337,50 @@ namespace Network
 
         #region Implementation of IPacketHandler
 
-        /// <summary>
-        /// Registers a packetHandler. This handler will be invoked if this connection
-        /// receives the given type.
-        /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
-        /// <param name="handler">The handler which should be invoked.</param>
+        /// <inheritdoc />
         public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
         {
-            packetHandlerMap.RegisterStaticPacketHandler<T>(handler);
+            packetHandlerMap.RegisterStaticPacketHandler(handler);
             SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
-        /// <summary>
-        /// Registers a packetHandler. This handler will be invoked if this connection
-        /// receives the given type.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="del">The delete.</param>
+        /// <inheritdoc cref="RegisterStaticPacketHandler{T}(PacketReceivedHandler{T})"/>
         internal void RegisterStaticPacketHandler<T>(Delegate del) where T : Packet
         {
             packetHandlerMap.RegisterStaticPacketHandler<T>(del);
             SearchAndInvokeUnknownHandlerPackets(del);
         }
 
-        /// <summary>
-        /// Registers a packetHandler. This handler will be invoked if this connection
-        /// receives the given type.
-        /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
-        /// <param name="handler">The handler which should be invoked.</param>
-        /// <param name="obj">The object which wants to receive the packet.</param>
+        /// <inheritdoc />
         public void RegisterPacketHandler<T>(PacketReceivedHandler<T> handler, object obj) where T : Packet
         {
             packetHandlerMap.RegisterPacketHandler<T>(handler, obj);
-            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
+            SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
-        /// <summary>
-        /// "RawData" packets will be forwarded to the desired delegate.
-        /// </summary>
-        /// <param name="key">A specific raw data key. Only raw data packets with the given key will be forwarded to the given delegate.</param>
-        /// <param name="handler">The delegate to forward the packet to.</param>
-        public void RegisterRawDataHandler(string key, PacketReceivedHandler<RawData> handler)
-        {
-            packetHandlerMap.RegisterStaticRawDataHandler(key, handler);
-            SearchAndInvokeUnknownHandlerPackets((Delegate)handler);
-        }
-
-        /// <summary>
-        /// Registers a packetHandler. This handler will be invoked if this connection
-        /// receives the given type.
-        /// </summary>
-        /// <typeparam name="T">The type we would like to receive.</typeparam>
-        /// <param name="del">The delegate.</param>
-        /// <param name="obj">The object which wants to receive the packet.</param>
+        /// <inheritdoc cref="RegisterPacketHandler{T}(PacketReceivedHandler{T}, object)"/>
         internal void RegisterPacketHandler<T>(Delegate del, object obj) where T : Packet
         {
             packetHandlerMap.RegisterPacketHandler<T>(del, obj);
             SearchAndInvokeUnknownHandlerPackets(del);
+        }
+
+        /// <summary>
+        /// Registers the given <see cref="PacketReceivedHandler{T}"/> for all <see cref="RawData"/> packets with the
+        /// given <see cref="string"/> key.
+        /// </summary>
+        /// <param name="key">
+        /// The <see cref="string"/> key whose <see cref="Packet"/> should be handled by the given
+        /// <see cref="PacketReceivedHandler{T}"/>.
+        /// </param>
+        /// <param name="handler">
+        /// The <see cref="PacketReceivedHandler{T}"/> delegate to be invoked for each received <see cref="RawData"/>
+        /// packet with the given key.
+        /// </param>
+        public void RegisterRawDataHandler(string key, PacketReceivedHandler<RawData> handler)
+        {
+            packetHandlerMap.RegisterStaticRawDataHandler(key, handler);
+            SearchAndInvokeUnknownHandlerPackets(handler);
         }
 
         /// <inheritdoc />
@@ -359,10 +396,12 @@ namespace Network
         }
 
         /// <summary>
-        /// UnRegisters a rawData delegate. If this connection will receive a raw data packet with the given key, it will be ignored,
-        /// because there is no handler to invoke anymore.
+        /// Deregisters the given <see cref="PacketReceivedHandler{T}"/> for all <see cref="RawData"/> packets with the
+        /// given <see cref="string"/> key.
         /// </summary>
-        /// <param name="key">The key who is representing a raw data packet.</param>
+        /// <param name="key">
+        /// The <see cref="string"/> key whose <see cref="PacketReceivedHandler{T}"/> delegate method to deregister.
+        /// </param>
         public void UnRegisterRawDataHandler(string key)
         {
             packetHandlerMap.DeregisterStaticRawDataHandler(key);
@@ -373,24 +412,22 @@ namespace Network
         #region Overrides of Object
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        /// Returns The unique hashcode of this <see cref="Connection"/> instance.
         /// </summary>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        /// <returns> A unique hashcode, suitable for use in hashing algorithms and data structures like a hash table. </returns>
         public override int GetHashCode() => hashCode;
 
         /// <summary>
-        /// Value of the connection.
+        /// Gets the <see cref="string"/> representation of this <see cref="Connection"/> instance.
         /// </summary>
-        /// <returns>Overall data about the connection.</returns>
+        /// <returns>The <see cref="string"/> representation of this <see cref="Connection"/> instance.</returns>
         public override string ToString() => $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
 
         #endregion Overrides of Object
 
         /// <summary>
-        /// Initializes the specified connection stream.
+        /// Initialises this <see cref="Connection"/> instance, setting up all required variables.
         /// </summary>
-        /// <param name="connectionStream">The connection stream.</param>
-        /// <param name="endPoint">The end point.</param>
         internal void Init()
         {
             InitAddons();
@@ -416,11 +453,16 @@ namespace Network
         }
 
         /// <summary>
-        /// External packets which also should be known by the network lib can be added with this function.
-        /// All packets in the network lib are included automatically. A call is not essential, even if the used packets
-        /// are not included in the network library. Manuell calls have to be invoked on the client and server side to avaid incompatible states.
+        /// Registers all <see cref="Packet"/> inheritors in the given <see cref="Assembly"/> with this <see cref="Connection"/>.
+        /// Should this method be called manually, it must be called on both the server and client so that all <see cref="Packet"/>s
+        /// in use are known to all parties (avoids incompatible states; exception thrown otherwise).
         /// </summary>
-        /// <param name="assembly">The assembly to search for included packets.</param>
+        /// <param name="assembly">The <see cref="Assembly"/> to search in for inheritors of <see cref="Packet"/>.</param>
+        /// <remarks>
+        /// All packets in the network lib are included by default. A manual call is not essential, even if the used packets
+        /// are not included, as the library will attempt to synchronise known <see cref="Packet"/>s between the server and client
+        /// automatically.
+        /// </remarks>
         internal void AddExternalPackets(Assembly assembly)
         {
             assembly.GetTypes().ToList().Where(c => c.IsSubclassOf(typeof(Packet))).ToList().ForEach(p =>
@@ -455,14 +497,14 @@ namespace Network
         public PacketHandlerMap BackupPacketHandler() => packetHandlerMap;
 
         /// <summary>
-        /// The packetHandlerMap has been refreshed.
+        /// Invoked whenever the <see cref="packetHandlerMap"/> gets refreshed.
         /// </summary>
         public virtual void ObjectMapRefreshed() { }
 
         /// <summary>
-        /// Restores the packetHandler. Can only be called if the internal packetHandler is empty.
+        /// Restores the <see cref="packetHandlerMap"/> to the given state.
         /// </summary>
-        /// <param name="packetHandlerMap">The object map to restore.</param>
+        /// <param name="packetHandlerMap">The state to which to restore the internal <see cref="Connection.packetHandlerMap"/>.</param>
         internal void RestorePacketHandler(PacketHandlerMap packetHandlerMap)
         {
             this.packetHandlerMap.Restore(packetHandlerMap);
@@ -472,8 +514,11 @@ namespace Network
         #endregion Packet Handler Manipulation
 
         /// <summary>
-        /// Configurations the ping and rtt timers.
+        /// Configures the <see cref="nextPingStopWatch"/> timer.
         /// </summary>
+        /// <param name="enable">
+        /// Whether the <see cref="nextPingStopWatch"/> should be enabled on reconfiguring.
+        /// </param>
         private void ConfigPing(bool enable)
         {
 #if !DEBUG
@@ -485,7 +530,7 @@ namespace Network
         #region Sending Packets
 
         /// <summary>
-        /// Sends a ping if there is no ping request already running.
+        /// Sends a <see cref="PingRequest"/>, if a <see cref="PingResponse"/> is not currently being awaited.
         /// </summary>
         public void SendPing()
         {
@@ -496,45 +541,47 @@ namespace Network
         }
 
         /// <summary>
-        /// Converts the given packet into a binary array and sends it to the client's endpoint.
-        /// You wont be able to receive an answer, because no calling object is given.
-        /// Suitable for static classes, response packets or basic packets without any inheritance.
+        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/>, and sends it to the network.
+        /// No response is possible as a sender instance is not provided. This method is suitable for static classes and basic packets
+        /// with no inheritance.
         /// </summary>
-        /// <param name="packet">The packet.</param>
+        /// <param name="packet">The <see cref="Packet"/> to serialise and send.</param>
         public void Send(Packet packet) => Send(packet, null);
 
         /// <summary>
-        /// Converts the given packet into a binary array and sends it to the client's endpoint.
-        /// You are able to receive an answer. Iff the packet you send is a request packet.
+        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/> and sends it to the network.
         /// </summary>
-        /// <param name="packet">The packet.</param>
-        /// <param name="instance">The instance who called this method.</param>
+        /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
+        /// <param name="instance">The <see cref="object"/> instance which sent the packet.</param>
         public void Send(Packet packet, object instance) => Send(packet, instance, false);
 
         /// <summary>
-        /// Converts the given packet into a binary array and sends it async to the client's endpoint.
-        /// You are able to receive an answer. Iff the packet you send is a request packet.
+        /// Sends the given <see cref="Packet"/> and asynchronously awaits the <see cref="ResponsePacket"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the expected answer.</typeparam>
-        /// <param name="packet">The packet to send.</param>
-        /// <returns>T.</returns>
+        /// <typeparam name="T">The <see cref="ResponsePacket"/> type to await.</typeparam>
+        /// <param name="packet">The <see cref="Packet"/> to send.</param>
+        /// <returns>
+        /// A <see cref="Task{T}"/> representing the asynchronous operation, with the promise of a <see cref="ResponsePacket"/> of
+        /// the given type upon completion.
+        /// </returns>
         public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket => await new ChickenReceiver().Send<T>(packet, this);
 
         /// <summary>
-        /// Converts the given packet into a binary array and sends it to the client's endpoint.
-        /// You wont be able to receive an answer, because no calling object is given.
-        /// Suitable for static classes, response packets or basic packets without any inheritance.
+        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/> and queues it to be sent
+        /// to the network. No response is possible as a sender instance is not provided. This method is suitable for static
+        /// classes and basic packets with no inheritance.
         /// </summary>
-        /// <param name="packet">The packet.</param>
-        /// <param name="ignoreWriteLock">if set to <c>true</c> [ignore write lock].</param>
+        /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
+        /// <param name="ignoreWriteLock">Currently unused. :(</param>
         internal void Send(Packet packet, bool ignoreWriteLock) => Send(packet, null, ignoreWriteLock);
 
         /// <summary>
-        /// Converts the given packet into a binary array and sends it to the client's endpoint.
+        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/> and queues it to be sent
+        /// to the network.
         /// </summary>
-        /// <param name="packet">The packet.</param>
-        /// <param name="instance">The instance.</param>
-        /// <param name="ignoreWriteLock">if set to <c>true</c> [ignore write lock].</param>
+        /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
+        /// <param name="instance">The <see cref="object"/> instance which sent the packet.</param>
+        /// <param name="ignoreWriteLock">Currently unused. :(</param>
         internal void Send(Packet packet, object instance, bool ignoreWriteLock)
         {
             //Ensure that everyone is aware of that packetType.
@@ -555,20 +602,20 @@ namespace Network
         #region Threads
 
         /// <summary>
-        /// Reads bytes from the stream.
+        /// Reads bytes from the network.
         /// </summary>
         /// <param name="amount">The amount of bytes we want to read.</param>
         /// <returns>The read bytes.</returns>
         protected abstract byte[] ReadBytes(int amount);
 
         /// <summary>
-        /// Writes bytes to the stream.
+        /// Writes bytes to the network.
         /// </summary>
         /// <param name="bytes">The bytes to write.</param>
         protected abstract void WriteBytes(byte[] bytes);
 
         /// <summary>
-        /// Reads the bytes from the stream.
+        /// Reads <see cref="Packet"/> objects from the network and queues them in the <see cref="receivedPackets"/> queue.
         /// </summary>
         private void ReadWork()
         {
@@ -608,8 +655,7 @@ namespace Network
         }
 
         /// <summary>
-        /// This thread checks for new packets in the queue and delegates them
-        /// to the desired delegates, if given.
+        /// Invokes the relevant <see cref="PacketReceivedHandler{P}"/> for each packet in the <see cref="receivedPackets"/> queue.
         /// </summary>
         private void InvokeWork()
         {
@@ -638,7 +684,7 @@ namespace Network
         }
 
         /// <summary>
-        /// Writes the packets to the stream.
+        /// Writes all queued <see cref="Packet"/> objects in the <see cref="sendPackets"/> queue to the network.
         /// </summary>
         private void WriteSubWork()
         {
@@ -677,7 +723,7 @@ namespace Network
         }
 
         /// <summary>
-        /// Writes the packets to the stream.
+        /// Writes any packets queued up in the <see cref="sendPackets"/> queue to the network.
         /// </summary>
         private void WriteWork()
         {
@@ -718,9 +764,9 @@ namespace Network
         #region Handling Packets
 
         /// <summary>
-        /// Handle the network's packets.
+        /// Handles all default <see cref="Packet"/>s that are in the library.
         /// </summary>
-        /// <param name="packet">The packet to handle.</param>
+        /// <param name="packet">The <see cref="Packet"/> to be handled.</param>
         private void HandleDefaultPackets(Packet packet)
         {
             if (packet.GetType().Equals(typeof(PingRequest)))
@@ -821,9 +867,9 @@ namespace Network
         }
 
         /// <summary>
-        /// Packets the without handler received.
+        /// Invoked for any received <see cref="Packet"/>s that don't have a registered <see cref="PacketReceivedHandler{P}"/>.
         /// </summary>
-        /// <param name="packet">The packet.</param>
+        /// <param name="packet">The received <see cref="Packet"/> without a handler.</param>
         protected virtual void PacketWithoutHandlerReceived(Packet packet)
         {
             Logger.Log($"Packet with no handler received: {packet.GetType().Name}.", LogLevel.Warning);
@@ -839,12 +885,10 @@ namespace Network
         protected abstract void HandleUnknownPacket();
 
         /// <summary>
-        /// If a packet has been received which has no receiver (delegate)
-        /// it will be stored till a receiver (delegate) joins the party.
-        /// This method searches for lonely, stored packets, which had
-        /// no receiver in the past, but may have a receiver now. In that
-        /// case, we immediately forward the packet to the subscriber
-        /// and remove it from the sad, lonely collection.
+        /// Whenever a <see cref="Packet"/> is received without a <see cref="PacketReceivedHandler{T}"/> already registered for
+        /// it, it is placed in a timeout in the sad, lonely corner that is <see cref="receivedUnknownPacketHandlerPackets"/>.
+        /// Whenever a <see cref="PacketReceivedHandler{P}"/> is registered via the 'Connection.RegisterXXX' methods, we need to
+        /// search for any lonely packets that can now be handled.
         /// </summary>
         private void SearchAndInvokeUnknownHandlerPackets(Delegate del)
         {
@@ -869,20 +913,20 @@ namespace Network
         #region Closing The Connection
 
         /// <summary>
-        /// Handles if the connection should be closed, based on the reason.
+        /// Handles a <see cref="Connection"/> closure, with the given <see cref="CloseReason"/>.
         /// </summary>
-        /// <param name="closeReason">The close reason.</param>
+        /// <param name="closeReason">The reason for the <see cref="Connection"/> closing.</param>
         protected abstract void CloseHandler(CloseReason closeReason);
 
         /// <summary>
-        /// Closes the socket.
+        /// Closes the socket and frees all associated resources.
         /// </summary>
         protected abstract void CloseSocket();
 
         /// <summary>
-        /// The remote endpoint closed the connection.
+        /// Handles a case where the remote <see cref="Connection"/> caused a closure for the given <see cref="CloseReason"/>.
         /// </summary>
-        /// <param name="closeReason">The close reason.</param>
+        /// <param name="closeReason">The reason for the <see cref="Connection"/> closing.</param>
         internal void ExternalClose(CloseReason closeReason)
         {
             writeStreamThread.AbortSave();
@@ -893,10 +937,12 @@ namespace Network
         }
 
         /// <summary>
-        /// Closes this connection, but still sends the data on the stream to the bound endpoint.
+        /// Closes this <see cref="Connection"/>, sends a <see cref="CloseRequest"/> to the remote <see cref="Connection"/>,
+        /// and writes all remaining queued <see cref="Packet"/>s to the network (they are received before the <see cref="CloseRequest"/>
+        /// will be handled).
         /// </summary>
-        /// <param name="closeReason">The close reason.</param>
-        /// <param name="callCloseEvent">If the instance should call the connectionLost event.</param>
+        /// <param name="closeReason">The reason for the <see cref="Connection"/> closing.</param>
+        /// <param name="callCloseEvent">If this <see cref="Connection"/> instance should call its <see cref="Connection"/> event.</param>
         public void Close(CloseReason closeReason, bool callCloseEvent = false)
         {
             //Check if this connection is already dead. If so, there is no need to
@@ -926,15 +972,15 @@ namespace Network
         #endregion Closing The Connection
 
         /// <summary>
-        /// Unlocks the remote connection so that he is able to send packets.
+        /// Unlocks the connection and allows for data to be sent and received.
         /// </summary>
         [Obsolete("Unlocking a connection isn't required anymore.")]
         public void UnlockRemoteConnection() => Logger.Log($"UnlockRemoteConnection will be removed in a future release.", LogLevel.Warning);
 
         /// <summary>
-        /// Gets the next free port.
+        /// Gets a free port that is currently not in use and returns it.
         /// </summary>
-        /// <returns>System.Int32.</returns>
+        /// <returns>The port found.</returns>
         protected int GetFreePort()
         {
             TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 0);
@@ -945,20 +991,21 @@ namespace Network
         }
 
         /// <summary>
-        /// Creates a new UdpConnection.
+        /// Creates and returns a new <see cref="UdpConnection"/>, with the given local endpoint, remote endpoint, and write lock state.
         /// </summary>
-        /// <param name="localEndPoint">The localEndPoint.</param>
-        /// <param name="remoteEndPoint">The removeEndPoint.</param>
-        /// <param name="writeLock">The writeLock.</param>
-        /// <returns>A UdpConnection.</returns>
-        protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock) => new UdpConnection(new UdpClient(localEndPoint), remoteEndPoint, writeLock);
+        /// <param name="localEndPoint">The local <see cref="IPEndPoint"/> that the <see cref="UdpConnection"/> binds to.</param>
+        /// <param name="remoteEndPoint">The remote <see cref="IPEndPoint"/> that the <see cref="UdpConnection"/> talks to.</param>
+        /// <param name="writeLock">Whether the <see cref="UdpConnection"/> has a write lock.</param>
+        /// <returns>The instantiated <see cref="UdpConnection"/>.</returns>
+        protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock) =>
+            new UdpConnection(new UdpClient(localEndPoint), remoteEndPoint, writeLock);
 
         #endregion Methods
 
         #region Events
 
         /// <summary>
-        /// Adds or removes an action which will be invoked if the network dies.
+        /// Event signifying that a connection was closed between this <see cref="Connection"/> instance and another <see cref="Connection"/>.
         /// </summary>
         public event Action<CloseReason, Connection> ConnectionClosed
         {
@@ -967,9 +1014,8 @@ namespace Network
         }
 
         /// <summary>
-        /// Adds or remove an action which will be invoked if the connection
-        /// created a new UDP connection. The delivered tcpConnection represents the tcp connection
-        /// which was in charge of the new establishment.
+        /// Event signifying that this <see cref="Connection"/> instance established a new connection with either a <see cref="TcpConnection"/>
+        /// or <see cref="UdpConnection"/> instance.
         /// </summary>
         public event Action<TcpConnection, UdpConnection> ConnectionEstablished
         {
