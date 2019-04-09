@@ -45,7 +45,7 @@ namespace Network
         /// </summary>
         private int hashCode;
 
-        // TODO Remove all occurences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
+        // TODO Remove all occurrences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
 
         /// <summary>
         /// A handler which will be invoked if this connection is dead.

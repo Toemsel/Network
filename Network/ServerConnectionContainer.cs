@@ -17,25 +17,50 @@ using Network.Packets;
 namespace Network
 {
     /// <summary>
-    /// Is able to open and close connections to clients.
-    /// Handles basic client connection requests and provides useful methods
-    /// to manage the existing connection.
+    /// Provides convenient methods to reduce the number of code lines which are needed to manage all connected clients.
     /// </summary>
     public class ServerConnectionContainer : ConnectionContainer
     {
         #region Variables
 
+        /// <summary>
+        /// Listens for TCP clients.
+        /// </summary>
+        /// <remarks>
+        /// UDP clients are accepted via TCP, as they require an existing TCP connection before they are accepted.
+        /// </remarks>
         private TcpListener tcpListener;
 
-        private event Action<Connection, ConnectionType> connectionEstablished;
+        // TODO Remove all occurrences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
 
+        /// <summary>
+        /// A handler which will be invoked if this connection is dead.
+        /// </summary>
         private event Action<Connection, ConnectionType, CloseReason> connectionLost;
 
+        /// <summary>
+        /// A handler which will be invoked if a new connection is established.
+        /// </summary>
+        private event Action<Connection, ConnectionType> connectionEstablished;
+
+        /// <summary>
+        /// Maps all <see cref="TcpConnection"/>s currently connected to the server to any <see cref="UdpConnection"/>s
+        /// they may own.
+        /// </summary>
         private ConcurrentDictionary<TcpConnection, List<UdpConnection>> connections = new ConcurrentDictionary<TcpConnection, List<UdpConnection>>();
 
 #if NET46
+
+        /// <summary>
+        /// Listens for Bluetooth clients.
+        /// </summary>
         private BluetoothListener bluetoothListener;
+
+        /// <summary>
+        /// List of all <see cref="BluetoothConnection"/>s currently connected to the server.
+        /// </summary>
         private ConcurrentBag<BluetoothConnection> bluetoothConnections = new ConcurrentBag<BluetoothConnection>();
+
 #endif
 
         #endregion Variables
@@ -45,9 +70,9 @@ namespace Network
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerConnectionContainer" /> class.
         /// </summary>
-        /// <param name="ipAddress">The ip address.</param>
-        /// <param name="port">The port.</param>
-        /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to tcp/udp/bluetooth clients.</param>
+        /// <param name="ipAddress">The local ip address.</param>
+        /// <param name="port">The local port.</param>
+        /// <param name="start">Whether to automatically start listening for clients after instantiation.</param>
         internal ServerConnectionContainer(string ipAddress, int port, bool start = true)
             : base(ipAddress, port)
         {
@@ -58,8 +83,8 @@ namespace Network
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerConnectionContainer" /> class.
         /// </summary>
-        /// <param name="port">The port.</param>
-        /// <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
+        /// <param name="port">The local port.</param>
+        /// <param name="start">Whether to automatically start listening for clients after instantiation.</param>
         internal ServerConnectionContainer(int port, bool start = true)
             : this(System.Net.IPAddress.Any.ToString(), port, start) { }
 
@@ -68,59 +93,34 @@ namespace Network
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="List{UdpConnection}"/> with the specified TCP connection.
+        /// Whether the TCP server is currently online.
         /// </summary>
-        /// <param name="tcpConnection">The TCP connection.</param>
-        /// <returns>List&lt;UdpConnection&gt;.</returns>
-        public List<UdpConnection> this[TcpConnection tcpConnection]
-        {
-            get
-            {
-                if (connections.ContainsKey(tcpConnection))
-                    return connections[tcpConnection];
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="TcpConnection"/> with the specified UDP connection.
-        /// </summary>
-        /// <param name="udpConnection">The UDP connection.</param>
-        /// <returns>TcpConnection.</returns>
-        public TcpConnection this[UdpConnection udpConnection]
-        {
-            get { return connections.SingleOrDefault(c => c.Value.Count(uc => uc.GetHashCode().Equals(udpConnection.GetHashCode())) > 0).Key; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the tcp server is online or not.
-        /// </summary>
-        /// <value><c>true</c> if this instance is online; otherwise, <c>false</c>.</value>
         public bool IsTCPOnline { get; private set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether [allow UDP connections].
+        /// Whether <see cref="UdpConnection"/>s are allowed to connect.
         /// </summary>
-        /// <value><c>true</c> if [allow UDP connections]; otherwise, <c>false</c>.</value>
         public bool AllowUDPConnections { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets how many UDP connection are accepted. If the client requests another
-        /// udp connection which exceeds this limit, the TCP connection and all the UDP connections will be closed.
+        /// The maximum amount of <see cref="UdpConnection"/>s that a single <see cref="TcpConnection"/> can own.
         /// </summary>
+        /// <remarks>
+        /// When a <see cref="ClientConnectionContainer"/> requests a <see cref="UdpConnection"/> once they have already
+        /// reached this limit, all existing connections (both <see cref="TcpConnection"/>s and <see cref="UdpConnection"/>s)
+        /// will be closed.
+        /// </remarks>
         public int UDPConnectionLimit { get; set; } = 1;
 
 #if NET46
 
         /// <summary>
-        /// Gets a value indicating whether the bluetooth server is online or not.
+        /// Whether the Bluetooth server is currently online.
         /// </summary>
         public bool IsBluetoothOnline { get; private set; } = false;
 
         /// <summary>
-        /// Gets or sets if the server is listening to bluetooth connections.
-        /// Existing bluetooth connections wont be closed if you toggle this property.
-        /// The server wont start or stop if you toggle this value.
+        /// Whether the server will listen for Bluetooth clients. NOTE: Existing connections are unaffected by this value.
         /// </summary>
         public bool AllowBluetoothConnections { get; set; } = false;
 
@@ -132,21 +132,19 @@ namespace Network
 #endif
 
         /// <summary>
-        /// Gets all the connected TCP connections.
+        /// Lists all currently connected <see cref="TcpConnection"/>s.
         /// </summary>
-        /// <value>The tc p_ connections.</value>
         public List<TcpConnection> TCP_Connections { get { return connections.Keys.ToList(); } }
 
         /// <summary>
-        /// Gets all the connected UDP connections.
+        /// Lists all currently connected <see cref="UdpConnection"/>s.
         /// </summary>
-        /// <value>The ud p_ connections.</value>
         public List<UdpConnection> UDP_Connections { get { return connections.Values.SelectMany(c => c).ToList(); } }
 
 #if NET46
 
         /// <summary>
-        /// Gets all the connected BLUETOOTH connections.
+        /// Lists all currently connected <see cref="BluetoothConnection"/>s.
         /// </summary>
         public List<BluetoothConnection> BLUETOOTH_Connections { get { return bluetoothConnections.ToList(); } }
 
@@ -155,47 +153,23 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Gets the connection count. (Clients)
+        /// The amount of currently connected clients. Includes Bluetooth, TCP, and UDP clients.
         /// </summary>
         public int Count { get { return connections.Count + bluetoothConnections.Count; } }
 
 #elif NETSTANDARD2_0
         /// <summary>
-        /// Gets the connection count. (Clients)
+        /// The amount of currently connected clients. Includes TCP and UDP clients.
         /// </summary>
         public int Count { get { return connections.Count; } }
 #endif
 
         #endregion Properties
 
-        #region Events
-
-        /// <summary>
-        /// Occurs when [connection closed]. This action will be called if a TCP or an UDP has been closed.
-        /// If a TCP connection has been closed, all its attached UDP connections are lost as well.
-        /// If a UDP connection has been closed, the attached TCP connection may still be alive.
-        /// </summary>
-        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
-        {
-            add { connectionLost += value; }
-            remove { connectionLost -= value; }
-        }
-
-        /// <summary>
-        /// Occurs when a TCP or an UDP connection has been established.
-        /// </summary>
-        public event Action<Connection, ConnectionType> ConnectionEstablished
-        {
-            add { connectionEstablished += value; }
-            remove { connectionEstablished -= value; }
-        }
-
-        #endregion Events
-
         #region Methods
 
         /// <summary>
-        /// Starts to listen to tcp and bluetooth clients.
+        /// Starts both a Bluetooth and TCP server, and listens for incoming connections.
         /// </summary>
         public void Start()
         {
@@ -207,7 +181,7 @@ namespace Network
         }
 
         /// <summary>
-        /// Starts to listen to the given port and ipAddress.
+        /// Starts a TCP server and listens for incoming <see cref="TcpConnection"/>s.
         /// </summary>
         public async void StartTCPListener()
         {
@@ -237,7 +211,7 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Starts to listen to available bluetooth connections.
+        /// Starts a Bluetooth server and listens for incoming <see cref="BluetoothConnection"/>s.
         /// </summary>
         public async void StartBluetoothListener()
         {
@@ -263,11 +237,10 @@ namespace Network
 #endif
 
         /// <summary>
-        /// A UDP connection has been established.
+        /// Handles when a <see cref="UdpConnection"/> successfully connects to the server.
         /// </summary>
-        /// <param name="arg1">The arg1.</param>
-        /// <param name="arg2">The arg2.</param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="tcpConnection">The parent <see cref="TcpConnection"/>.</param>
+        /// <param name="udpConnection">The connected <see cref="UdpConnection"/>.</param>
         private void udpConnectionReceived(TcpConnection tcpConnection, UdpConnection udpConnection)
         {
             if (!AllowUDPConnections || this[tcpConnection].Count >= UDPConnectionLimit)
@@ -288,10 +261,10 @@ namespace Network
         }
 
         /// <summary>
-        /// TCPs the or UDP connection closed.
+        /// Handles a connection closure.
         /// </summary>
-        /// <param name="closeReason">The close reason.</param>
-        /// <param name="connection">The connection.</param>
+        /// <param name="closeReason">The reason for the <see cref="Connection"/> being closed.</param>
+        /// <param name="connection">The <see cref="Connection"/> that closed.</param>
         private void connectionClosed(CloseReason closeReason, Connection connection)
         {
             if (connection.GetType().Equals(typeof(TcpConnection)))
@@ -335,7 +308,7 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Stops the Bluetooth listener. No new bluetooth clients are able to connect to the server anymore.
+        /// Stops the Bluetooth listener, so that no new <see cref="BluetoothConnection"/>s can connect.
         /// </summary>
         public void StopBluetoothListener()
         {
@@ -346,7 +319,7 @@ namespace Network
 #endif
 
         /// <summary>
-        /// Stops the TCP listener. No new tcp clients are able to connect to the server anymore.
+        /// Stops the TCP listener, so that no new <see cref="TcpConnection"/>s can connect.
         /// </summary>
         public void StopTCPListener()
         {
@@ -355,7 +328,7 @@ namespace Network
         }
 
         /// <summary>
-        /// Stops listening to bluetooth and tcp clients.
+        /// Stops both the Bluetooth and TCP listeners, so that no new connections can connect.
         /// </summary>
         public void Stop()
         {
@@ -366,8 +339,9 @@ namespace Network
         }
 
         /// <summary>
-        /// Closes all the tcp and udp connections.
+        /// Closes all currently connected <see cref="Connection"/>s (be it Bluetooth, TCP, or UDP).
         /// </summary>
+        /// <param name="reason">The reason for the connection closure.</param>
         public void CloseConnections(CloseReason reason)
         {
             CloseTCPConnections(reason);
@@ -382,18 +356,18 @@ namespace Network
         }
 
         /// <summary>
-        /// Closes all the tcp connections.
+        /// Closes all currently connected <see cref="TcpConnection"/>s.
         /// </summary>
-        /// <param name="reason">The reason.</param>
+        /// <param name="reason">The reason for the connection closure.</param>
         public void CloseTCPConnections(CloseReason reason)
         {
             connections.Keys.ToList().ForEach(c => c.Close(reason));
         }
 
         /// <summary>
-        /// Closes all the udp connections.
+        /// Closes all currently connected <see cref="UdpConnection"/>s.
         /// </summary>
-        /// <param name="reason">The reason.</param>
+        /// <param name="reason">The reason for the connection closure.</param>
         public void CloseUDPConnections(CloseReason reason)
         {
             connections.Values.ToList().ForEach(c => c.ForEach(b => b.Close(reason)));
@@ -402,9 +376,9 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Closes all the bluetooth connections.
+        /// Closes all currently connected <see cref="BluetoothConnection"/>s.
         /// </summary>
-        /// <param name="reason">The reason.</param>
+        /// <param name="reason">The reason for the connection closure.</param>
         public void CloseBluetoothConnections(CloseReason reason)
         {
             bluetoothConnections.ToList().ForEach(b => b.Close(reason));
@@ -413,18 +387,18 @@ namespace Network
 #endif
 
         /// <summary>
-        /// Sends a broadcast to all the connected tcp connections.
+        /// Sends the given <see cref="Packet"/> to all currently connected <see cref="TcpConnection"/>s.
         /// </summary>
-        /// <param name="packet">The packet.</param>
+        /// <param name="packet">The packet to send via broadcast.</param>
         public void TCP_BroadCast(Packet packet)
         {
             connections.Keys.ToList().ForEach(c => c.Send(packet));
         }
 
         /// <summary>
-        /// Sends a broadcast to all the connected udp connections.
+        /// Sends the given <see cref="Packet"/> to all currently connected <see cref="UdpConnection"/>s.
         /// </summary>
-        /// <param name="packet">The packet.</param>
+        /// <param name="packet">The packet to send via broadcast.</param>
         public void UDP_BroadCast(Packet packet)
         {
             connections.Values.ToList().ForEach(c => c.ForEach(b => b.Send(packet)));
@@ -433,9 +407,9 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Sends a broadcast to all the connected bluetooth connections.
+        /// Sends the given <see cref="Packet"/> to all currently connected <see cref="BluetoothConnection"/>s.
         /// </summary>
-        /// <param name="packet"></param>
+        /// <param name="packet">The packet to send via broadcast.</param>
         public void BLUETOOTH_BroadCast(Packet packet)
         {
             bluetoothConnections.ToList().ForEach(b => b.Send(packet));
@@ -444,20 +418,97 @@ namespace Network
 #endif
 
         /// <summary>
-        /// Creates a new TcpConnection instance.
+        /// Creates a new <see cref="TcpConnection"/> instance from the given <see cref="TcpClient"/>.
         /// </summary>
-        /// <param name="tcpClient">The TcpClient to connect to.</param>
-        /// <returns>A <see cref="TcpConnection" /> object.</returns>
+        /// <param name="tcpClient">The <see cref="TcpClient"/> to use for the <see cref="TcpConnection"/>.</param>
+        /// <returns>A <see cref="TcpConnection"/> that uses the given <see cref="TcpClient"/> to send data to and from the client.</returns>
         protected virtual TcpConnection CreateTcpConnection(TcpClient tcpClient) => ConnectionFactory.CreateTcpConnection(tcpClient);
 
 #if NET46
 
-        public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. AllowBluetoothConnections {AllowBluetoothConnections}. Connected TCP connections {connections.Count}.";
+        /// <inheritdoc />
+        public override string ToString() =>
+            $"ServerConnectionContainer. "+
+            $"IsOnline {IsTCPOnline}. "+
+            $"EnableUDPConnection {AllowUDPConnections}. "+
+            $"UDPConnectionLimit {UDPConnectionLimit}. "+
+            $"AllowBluetoothConnections {AllowBluetoothConnections}. "+
+            $"Connected TCP connections {connections.Count}.";
 
 #elif NETSTANDARD2_0
-        public override string ToString() => $"ServerConnectionContainer. IsOnline {IsTCPOnline}. EnableUDPConnection {AllowUDPConnections}. UDPConnectionLimit {UDPConnectionLimit}. Connected TCP connections {connections.Count}.";
+
+        /// <inheritdoc />
+        public override string ToString() =>
+            $"ServerConnectionContainer. IsOnline {IsTCPOnline}. " +
+            $"EnableUDPConnection {AllowUDPConnections}. " +
+            $"UDPConnectionLimit {UDPConnectionLimit}. " +
+            $"Connected TCP connections {connections.Count}.";
 #endif
 
         #endregion Methods
+
+        #region Indexers
+
+        /// <summary>
+        /// Returns all <see cref="UdpConnection"/>s that exist for the given <see cref="TcpConnection"/>.
+        /// </summary>
+        /// <param name="tcpConnection">The <see cref="TcpConnection"/> whose child <see cref="UdpConnection"/>s to return.</param>
+        /// <returns>
+        /// A <see cref="List{UdpConnection}"/> holding all child UDP connections of the given <see cref="TcpConnection"/>.
+        /// </returns>
+        public List<UdpConnection> this[TcpConnection tcpConnection]
+        {
+            get
+            {
+                if (connections.ContainsKey(tcpConnection))
+                    return connections[tcpConnection];
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the parent <see cref="TcpConnection"/> of the given <see cref="UdpConnection"/>.
+        /// </summary>
+        /// <param name="udpConnection">The <see cref="UdpConnection"/> whose parent <see cref="TcpConnection"/> to return.</param>
+        /// <returns>The <see cref="TcpConnection"/> which owns the given <see cref="UdpConnection"/>.</returns>
+        public TcpConnection this[UdpConnection udpConnection]
+        {
+            get { return connections.SingleOrDefault(c => c.Value.Count(uc => uc.GetHashCode().Equals(udpConnection.GetHashCode())) > 0).Key; }
+        }
+
+        #endregion Indexers
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when [connection closed]. This action will be called if a TCP or an UDP has been closed.
+        /// If a TCP connection has been closed, all its attached UDP connections are lost as well.
+        /// If a UDP connection has been closed, the attached TCP connection may still be alive.
+        /// </summary>
+        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
+        {
+            add { connectionLost += value; }
+            remove { connectionLost -= value; }
+        }
+
+#if NET46
+        /// <summary>
+        /// Signifies that a new <see cref="Connection"/> (i.e. <see cref="TcpConnection"/>, <see cref="UdpConnection"/>,
+        /// or <see cref="BluetoothConnection"/>) has connected successfully to the server.
+        /// </summary>
+#elif NETSTANDARD2_0
+        /// <summary>
+        /// Signifies that a new <see cref="Connection"/> (i.e. <see cref="TcpConnection"/> or <see cref="UdpConnection"/>)
+        /// has connected successfully to the server.
+        /// </summary>
+#endif
+
+        public event Action<Connection, ConnectionType> ConnectionEstablished
+        {
+            add { connectionEstablished += value; }
+            remove { connectionEstablished -= value; }
+        }
+
+        #endregion Events
     }
 }

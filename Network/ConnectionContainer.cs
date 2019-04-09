@@ -3,9 +3,15 @@ using Network.RSA;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Network.Packets;
 
 namespace Network
 {
+    /// <summary>
+    /// Holds a <see cref="Connection"/> instance and provides additional functionality. Holds <see cref="TcpConnection"/>s
+    /// and <see cref="UdpConnection"/>s. Base class for all other connection containers. Provides the basic methods that all
+    /// <see cref="ConnectionContainer"/> inheritors must implement.
+    /// </summary>
     public abstract class ConnectionContainer : IRSACapability
     {
         #region Constructors
@@ -13,9 +19,9 @@ namespace Network
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionContainer"/> class.
         /// </summary>
-        /// <param name="ipAddress">The ip address.</param>
-        /// <param name="port">The port.</param>
-        public ConnectionContainer(string ipAddress, int port)
+        /// <param name="ipAddress">The remote ip address.</param>
+        /// <param name="port">The remote port.</param>
+        protected ConnectionContainer(string ipAddress, int port)
         {
             IPAddress = ipAddress;
             Port = port;
@@ -26,41 +32,41 @@ namespace Network
         #region Properties
 
         /// <summary>
-        /// Gets the ip address this container is connected to.
+        /// The IP address of the remote <see cref="Connection"/> that this container is connected to.
         /// </summary>
-        /// <value>The ip address.</value>
         public string IPAddress { get; protected set; }
 
         /// <summary>
-        /// Gets the port this container is connected to.
+        /// The port of the remote <see cref="Connection"/> that this container is connected to.
         /// </summary>
-        /// <value>The port.</value>
         public int Port { get; protected set; }
 
         /// <summary>
-        /// The PublicKey of this instance.
+        /// The public RSA key for this <see cref="ConnectionContainer"/> instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
         public string PublicKey => RSAPair?.Public;
 
         /// <summary>
-        /// The PrivateKey of this instance.
+        /// The private RSA key for this <see cref="ConnectionContainer"/> instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
         public string PrivateKey => RSAPair?.Private;
 
         /// <summary>
-        /// The used KeySize of this instance.
+        /// The size of the RSA keys for this <see cref="ConnectionContainer"/> instance.
         /// </summary>
         [Obsolete("Use 'RSAPair' instead.")]
         public int KeySize => RSAPair?.KeySize ?? -1;
 
         /// <summary>
-        /// Gets or sets the RSA-Pair.
+        /// The RSA key-pair that is used for encryption and decryption of encrypted messages.
         /// </summary>
-        /// <value>The RSA pair.</value>
         public RSAPair RSAPair { get; set; }
 
+        /// <summary>
+        /// Holds all the <see cref="Assembly"/>s that are known by this <see cref="ConnectionContainer"/>.
+        /// </summary>
         protected List<Assembly> KnownTypes { get; private set; } = new List<Assembly>();
 
         #endregion Properties
@@ -68,12 +74,13 @@ namespace Network
         #region Methods
 
         /// <summary>
-        /// Adds known types to the TCP and UDP connection as soon
-        /// as a connection has been established. This is not essential, but will speed up the initial time.
-        /// Be aware that this method has te be called from the server and the clientConnectionContainer with the same parameter.
-        /// Else the server or the client will crash, because of unknown types.
+        /// Adds the given <see cref="Assembly"/> to the list of assemblies whose <see cref="Packet"/>s to register upon
+        /// establishing a connection. This is not essential, but can speed up performance if a lot of <see cref="Packet"/>s
+        /// must be registered on each connection (these are found using reflection). NOTE: To avoid incompatible states between
+        /// the server (<see cref="ServerConnectionContainer"/>) and client (<see cref="ClientConnectionContainer"/>), this method
+        /// must be called on both sides before a connection is established.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
+        /// <param name="assembly">The <see cref="Assembly"/> whose <see cref="Packet"/>s to add.</param>
         public void AddKownType(Assembly assembly)
         {
             if (KnownTypes.Contains(assembly)) return;
@@ -81,9 +88,11 @@ namespace Network
         }
 
         /// <summary>
-        /// Removes the known type from the init process.
+        /// Removes the given <see cref="Assembly"/> from the list of assemblies whose <see cref="Packet"/>s to register upon
+        /// establishing a connection.NOTE: To avoid incompatible states between the server (<see cref="ServerConnectionContainer"/>)
+        /// and client (<see cref="ClientConnectionContainer"/>), this method must be called on both sides before a connection is established.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
+        /// <param name="assembly">The <see cref="Assembly"/> whose <see cref="Packet"/>s to remove.</param>
         public void RemoveKnownType(Assembly assembly)
         {
             if (!KnownTypes.Contains(assembly)) return;
