@@ -159,7 +159,7 @@ namespace Network
         /// Maps a <see cref="RequestPacket"/> <see cref="Type"/> to the <see cref="Type"/> of the <see cref="ResponsePacket"/>
         /// that handles it.
         /// </summary>
-        private static ConcurrentDictionary<Type, Type> requestResponseMap = new ConcurrentDictionary<Type, Type>();
+        private Dictionary<Type, Type> requestResponseMap = new Dictionary<Type, Type>();
 
         /// <summary>
         /// Maps <see cref="Packet"/> <see cref="Type"/>s to the <see cref="PacketReceivedHandler{P}"/> that should be used for
@@ -483,7 +483,7 @@ namespace Network
                     // However, it turned out, that somehow the RequestType has been
                     // already added to the requestResponseMap. Hence, we can ignore the failure.
                     if (!requestResponseMap.ContainsKey(requestAttribute.RequestType))
-                        requestResponseMap.TryAdd(requestAttribute.RequestType, c);
+                        requestResponseMap.Add(requestAttribute.RequestType, c);
                 });
         }
 
