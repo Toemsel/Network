@@ -1,71 +1,70 @@
 ﻿using System;
-using System.Text;
-using Network;
-using Network.Converter;
-using Network.Enums;
-using Network.Extensions;
 
 namespace NetworkTestClient
 {
     public static class Program
     {
-            static void Main(string[] args)
-            {
-                RunServer();
-                RunClient();
-                Console.ReadLine();
-            }
+        public static void Main(string[] args)
+        {
+            int input = 0;
 
-            public static void RunClient()
+            while (input != 9)
             {
-                ConnectionResult connectionResult = ConnectionResult.TCPConnectionNotAlive;
-                //1. Establish a connection to the server.
-                var tcpConnection = ConnectionFactory.CreateSecureClientConnectionContainer("127.0.0.1", 1234);
-                tcpConnection.ConnectionEstablished += (c, b) =>
+                Console.WriteLine("<1> Async example");
+                Console.WriteLine("<2> Lambda example");
+                Console.WriteLine("<3> Delegate example");
+#if NET46
+                Console.WriteLine("<4> Bluetooth example");
+#endif
+                Console.WriteLine("<5> Object driven example");
+                Console.WriteLine("<6> TcpConnection only example");
+                Console.WriteLine("<7> RawData example");
+                Console.WriteLine("<8> RSA example");
+                Console.WriteLine("<9> Exit");
+                Console.Write("> ");
+
+                input = 0;
+                while (!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 8)
+                    Console.Write("> ");
+
+                switch (input)
                 {
-                        Console.WriteLine($"{tcpConnection.ToString()} Connection established");
+                    case 1:
+                        new AsyncExample().Demo();
+                        break;
 
-                        //3. Send a raw data packet request.
-                        c.SendRawData(RawDataConverter.FromUTF8String("HelloWorld", "Hello, this is the RawDataExample!"));
-                        c.SendRawData(RawDataConverter.FromBoolean("BoolValue", true));
-                        c.SendRawData(RawDataConverter.FromBoolean("BoolValue", false));
-                        c.SendRawData(RawDataConverter.FromDouble("DoubleValue", 32.99311325d));
-                        //4. Send a raw data packet request without any helper class
-                        c.SendRawData("HelloWorld", Encoding.UTF8.GetBytes("Hello, this is the RawDataExample!"));
-                        c.SendRawData("BoolValue", BitConverter.GetBytes(true));
-                        c.SendRawData("BoolValue", BitConverter.GetBytes(false));
-                        c.SendRawData("DoubleValue", BitConverter.GetBytes(32.99311325d));
+                    case 2:
+                        new LambdaExample().Demo();
+                        break;
 
-                };
-            }
+                    case 3:
+                        new DelegateExample().Demo();
+                        break;
+#if NET46
+                    case 4:
+                        new BluetoothExample().Demo();
+                        break;
+#endif
+                    case 5:
+                        new ObjectExample().Demo();
+                        break;
 
-            public static void RunServer()
-            {
-                //1. Start listen on a port
-                var serverConnectionContainer = ConnectionFactory.CreateSecureServerConnectionContainer(1234, start: false);
+                    case 6:
+                        new SingleConnectionExample().Demo();
+                        break;
 
-                //2. Apply optional settings.
-                serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
-                serverConnectionContainer.ConnectionEstablished += connectionEstablished;
-                // serverConnectionContainer.AllowBluetoothConnections = false;
-                serverConnectionContainer.AllowUDPConnections = true;
-                serverConnectionContainer.UDPConnectionLimit = 2;
+                    case 7:
+                        new RawDataExample().Demo();
+                        break;
 
-                serverConnectionContainer.Start();
-            }
+                    case 8:
+                        new RSAExample().Demo();
+                        break;
 
-            /// <summary>
-            /// We got a connection.
-            /// </summary>
-            /// <param name="connection">The connection we got. (TCP or UDP)</param>
-            private static void connectionEstablished(Connection connection, ConnectionType type)
-            {
-                //C//onsole.WriteLine($"{serverConnectionContainer.Count} {connection.GetType()} connected on port {connection.IPRemoteEndPoint.Port}");
-
-                //3. Register packet listeners.
-                connection.RegisterRawDataHandler("HelloWorld", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToUTF8String()}"));
-                connection.RegisterRawDataHandler("BoolValue", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToBoolean()}"));
-                connection.RegisterRawDataHandler("DoubleValue", (rawData, con) => Console.WriteLine($"RawDataPacket received. Data: {rawData.ToDouble()}"));
+                    default:
+                        throw new ArgumentException();
+                }
             }
         }
+    }
 }
