@@ -18,18 +18,17 @@ namespace Network.RSA
         #region Variables
 
         /// <summary>
-        /// The <see cref="Network.RSA.RSAPair"/> for the remote communication
-        /// partner.
+        /// Holds the RSA key-pair for the remote <see cref="Network.Connection"/>.
         /// </summary>
         private volatile RSAPair remoteRSAKeyPair;
 
         /// <summary>
-        /// The RSA encryption provider for encrypting packets.
+        /// The RSA encryption provider for encrypting and decrypting packets.
         /// </summary>
         private volatile RSACryptoServiceProvider encryptionProvider;
 
         /// <summary>
-        /// Whether RSA encryption is active on this connection.
+        /// Whether RSA encryption is currently active on this connection.
         /// </summary>
         private volatile bool isRSACommunicationActive = false;
 
@@ -37,6 +36,11 @@ namespace Network.RSA
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RSAConnection"/> class.
+        /// </summary>
+        /// <param name="connection">The base <see cref="Network.Connection"/> for sending and receiving data.</param>
+        /// <param name="rsaPair">The local RSA key-pair for this <see cref="RSAConnection"/>.</param>
         public RSAConnection(Connection connection, RSAPair rsaPair)
         {
             Connection = connection;
@@ -60,37 +64,38 @@ namespace Network.RSA
         #region Properties
 
         /// <summary>
-        /// The underlying <see cref="Network.Connection"/> object that allows
-        /// communication across the network.
+        /// The underlying <see cref="Network.Connection"/> object that allows communication across the network.
         /// </summary>
         private Connection Connection { get; set; }
 
         /// <summary>
-        /// Use your own packetConverter to serialize/deserialze objects.
-        /// Take care that the internal packet structure should still remain the same:
-        ///     1. [16bits]  packet type
-        ///     2. [32bits]  packet length
-        ///     3. [xxbits]  packet serialisedPacket
-        /// The default packetConverter uses reflection to get and set serialisedPacket within objects.
-        /// Using your own packetConverter could result in a higher throughput.
+        /// Allows the usage of a custom <see cref="IPacketConverter"/> implementation for serialisation and deserialisation.
+        /// However, the internal structure of the packet should stay the same:
+        ///     Packet Type     : 2  bytes (ushort)
+        ///     Packet Length   : 4  bytes (int)
+        ///     Packet Data     : xx bytes (actual serialised packet data)
         /// </summary>
+        /// <remarks>
+        /// The default <see cref="PacketConverter"/> uses reflection (with type property caching) for serialisation
+        /// and deserialisation. This allows good performance over the widest range of packets. Should you want to
+        /// handle only a specific set of packets, a custom <see cref="IPacketConverter"/> can allow more throughput (no slowdowns
+        /// due to relatively slow reflection).
+        /// </remarks>
         public IPacketConverter PacketConverter { get; set; }
 
         /// <summary>
-        /// Gets or sets the RSA pair.
+        /// The local RSA key-pair for encryption, decryption, and signing.
         /// </summary>
-        /// <value>The RSA pair.</value>
         public RSAPair RSAPair { get; set; }
 
         /// <summary>
-        /// Is this application running on windowsXP or higher?
+        /// Whether the <see cref="RSAConnection"/> is running on Windows XP or higher.
         /// </summary>
         public bool XPOrHigher { get; private set; }
 
         /// <summary>
-        /// Gets or sets the communication partner's RSA pair.
+        /// The remote RSA key-pair.
         /// </summary>
-        /// <value>The communication partner RSA pair.</value>
         public RSAPair CommunicationPartnerRSAPair
         {
             get => remoteRSAKeyPair;
@@ -98,9 +103,8 @@ namespace Network.RSA
         }
 
         /// <summary>
-        /// Gets or sets the encryption provider.
+        /// The <see cref="RSACryptoServiceProvider"/> to use for encryption.
         /// </summary>
-        /// <value>The encryption provider.</value>
         public RSACryptoServiceProvider EncryptionProvider
         {
             get => encryptionProvider;
@@ -108,18 +112,15 @@ namespace Network.RSA
         }
 
         /// <summary>
-        /// Gets or sets the decryption provider.
+        /// The <see cref="RSACryptoServiceProvider"/> to use for decryption.
         /// </summary>
-        /// <value>The decryption provider.</value>
         public RSACryptoServiceProvider DecryptionProvider { get; set; }
 
         /// <summary>
-        /// Indicates if the RSA en/decryption is active.
-        /// RSA encryption requires some an initialization process,
-        /// thus won't be available instantly after the connection has
-        /// been established. Once [True] (active) it won't toggle.
+        /// Whether the RSA functionality is active. RSA functionality requires an additional initialization process, thus
+        /// won't be available immediately after the connection has been established. It will never revert to <c>false</c>
+        /// once set.
         /// </summary>
-        /// <value><c>true</c> if RSA is active; otherwise, <c>false</c>.</value>
         public bool IsRSACommunicationActive
         {
             get => isRSACommunicationActive && (CommunicationPartnerRSAPair?.HasPublicKey ?? false);
@@ -129,44 +130,6 @@ namespace Network.RSA
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Initializes the RSA communication serialisedPacket.
-        /// Sends our information to the communication partner.
-        /// Subscribes to the RSA packet events.
-        /// </summary>
-        private async void ExchangePublicKeys()
-        {
-            Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
-            {
-                connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
-
-                CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
-                EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
-                Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
-
-                connection.Send(new RSAKeyInformationResponse(RSAPair.Public, RSAPair.KeySize, rsaKeyRequest));
-            });
-
-            RSAKeyInformationResponse keyInformationResponse = await Connection.SendAsync<RSAKeyInformationResponse>(new RSAKeyInformationRequest(RSAPair.Public, RSAPair.KeySize)).ConfigureAwait(false);
-
-            Connection.Logger.Log($"{Connection.GetType().Name} RSA Encryption active.", Enums.LogLevel.Information);
-            IsRSACommunicationActive = true;
-        }
-
-        /// <summary>
-        /// Decrypt bytes with the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The bytes to decrypt.</param>
-        /// <returns>The decrypted bytes.</returns>
-        public byte[] DecryptBytes(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
-
-        /// <summary>
-        /// Encrypts bytes with the <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider" />
-        /// </summary>
-        /// <param name="bytes">The Bytes to encrypt.</param>
-        /// <returns>The encrypted bytes.</returns>
-        public byte[] EncryptBytes(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
 
         #region Implementation of IPacketConverter
 
@@ -302,6 +265,43 @@ namespace Network.RSA
         }
 
         #endregion Implementation of IPacketConverter
+
+        /// <summary>
+        /// Initialises the <see cref="RSAConnection"/> fully, and enables RSA functionality once it returns.
+        /// </summary>
+        private async void ExchangePublicKeys()
+        {
+            Connection.RegisterStaticPacketHandler<RSAKeyInformationRequest>((rsaKeyRequest, connection) =>
+            {
+                connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
+
+                CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
+                EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
+                Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
+
+                connection.Send(new RSAKeyInformationResponse(RSAPair.Public, RSAPair.KeySize, rsaKeyRequest));
+            });
+
+            RSAKeyInformationResponse keyInformationResponse =
+                await Connection.SendAsync<RSAKeyInformationResponse>(new RSAKeyInformationRequest(RSAPair.Public, RSAPair.KeySize)).ConfigureAwait(false);
+
+            Connection.Logger.Log($"{Connection.GetType().Name} RSA Encryption active.", Enums.LogLevel.Information);
+            IsRSACommunicationActive = true;
+        }
+
+        /// <summary>
+        /// Decrypts the given bytes with the <see cref="DecryptionProvider"/>.
+        /// </summary>
+        /// <param name="bytes">The encrypted bytes to decrypt.</param>
+        /// <returns>The decrypted, plaintext bytes.</returns>
+        public byte[] DecryptBytes(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
+
+        /// <summary>
+        /// Encrypts the given bytes with the <see cref="EncryptionProvider"/>.
+        /// </summary>
+        /// <param name="bytes">The plaintext bytes to encrypt.</param>
+        /// <returns>The encrypted bytes.</returns>
+        public byte[] EncryptBytes(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
 
         #endregion Methods
     }
