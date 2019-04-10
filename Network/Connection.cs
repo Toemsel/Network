@@ -102,7 +102,7 @@ namespace Network
         /// <summary>
         /// Maps a request to their response.
         /// </summary>
-        private static Dictionary<Type, Type> requestResponseMap = new Dictionary<Type, Type>();
+        private static ConcurrentDictionary<Type, Type> requestResponseMap = new ConcurrentDictionary<Type, Type>();
 
         /// <summary>
         /// Has to map the objects to their unique id and back.
@@ -170,8 +170,11 @@ namespace Network
                 ForEach(c =>
                 {
                     PacketRequestAttribute requestAttribute = ((PacketRequestAttribute)c.GetCustomAttribute(typeof(PacketRequestAttribute)));
+                    // TryAdd will fail if another thread investigates the object.
+                    // However, it turned out, that somehow the RequestType has been
+                    // already added to the requestResponseMap. Hence, we can ignore the failure.
                     if (!requestResponseMap.ContainsKey(requestAttribute.RequestType))
-                        requestResponseMap.Add(requestAttribute.RequestType, c);
+                        requestResponseMap.TryAdd(requestAttribute.RequestType, c);
                 });
         }
 
