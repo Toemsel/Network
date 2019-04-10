@@ -38,7 +38,7 @@
      "compounds": [
          {
              "name": ".NET Core Client + Server",
-             "configurations": [".NET Core Client", ".NET Core Server"]
+             "configurations": [".NET Core Client"]
          }
      ]
  }

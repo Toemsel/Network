@@ -8,21 +8,41 @@ using System.Threading;
 namespace Network
 {
     /// <summary>
-    /// This class contains a tcp connection to the given tcp client.
-    /// It provides convenient methods to send and receive objects with a minimal serialization header.
+    /// Builds upon the <see cref="Connection"/> class, implementing TCP and allowing for messages to be conveniently
+    /// sent without a large serialisation header.
     /// </summary>
     public class TcpConnection : Connection
     {
+        #region Variables
+
+        /// <summary>
+        /// The <see cref="TcpClient"/> for this <see cref="TcpConnection"/> instance.
+        /// </summary>
         private TcpClient client;
+
+        /// <summary>
+        /// The <see cref="NetworkStream"/> on which to send and receive data.
+        /// </summary>
         private NetworkStream stream;
+
+        /// <summary>
+        /// The <see cref="Socket"/> for this <see cref="TcpConnection"/> instance.
+        /// </summary>
         private Socket socket;
+
+        #endregion Variables
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TcpConnection"/> class.
         /// </summary>
-        /// <param name="tcpClient">The TCP client.</param>
-        internal TcpConnection(TcpClient tcpClient, bool skipInitializationProcess = false)
-            : base()
+        /// <param name="tcpClient">The TCP client to use.</param>
+        /// <param name="skipInitializationProcess">
+        /// Whether to skip the initialisation process for the underlying <see cref="Connection"/>. If <c>true</c>
+        /// <see cref="Connection.Init()"/> will have to be manually called later.
+        /// </param>
+        internal TcpConnection(TcpClient tcpClient, bool skipInitializationProcess = false) : base()
         {
             client = tcpClient;
             socket = tcpClient.Client;
@@ -42,78 +62,71 @@ namespace Network
                 Init();
         }
 
-        /// <summary>
-        /// Gets or sets the time to live for the tcp connection.
-        /// </summary>
-        /// <value>The TTL.</value>
-        public override short TTL { get { return socket.Ttl; } set { socket.Ttl = value; } }
+        #endregion Constructors
+
+        #region Properties
+
+        /// <inheritdoc />
+        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [dual mode]. (Ipv6 + Ipv4)
+        /// The local <see cref="EndPoint"/> for the <see cref="socket"/>.
         /// </summary>
-        /// <value><c>true</c> if [dual mode]; otherwise, <c>false</c>.</value>
+        public EndPoint LocalEndPoint { get { return socket.LocalEndPoint; } }
+
+        /// <inheritdoc />
+        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+
+        /// <summary>
+        /// The remote <see cref="EndPoint"/> for the <see cref="socket"/>.
+        /// </summary>
+        public EndPoint RemoteEndPoint { get { return socket.RemoteEndPoint; } }
+
+        /// <inheritdoc />
         public override bool DualMode { get { return socket.DualMode; } set { socket.DualMode = value; } }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="TcpConnection"/> is allowed to fragment the frames.
-        /// </summary>
-        /// <value><c>true</c> if fragment; otherwise, <c>false</c>.</value>
+        /// <inheritdoc />
         public override bool Fragment { get { return !socket.DontFragment; } set { socket.DontFragment = !value; } }
 
-        /// <summary>
-        /// The hop limit. This is compareable to the Ipv4 TTL.
-        /// </summary>
+        /// <inheritdoc />
         public override int HopLimit
         {
             get { return (int)socket.GetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.HopLimit); }
             set { socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.HopLimit, value); }
         }
 
-        /// <summary>
-        /// Gets or sets if the packet should be send with or without any delay.
-        /// If disabled, no data will be buffered at all and sent immediately to it's destination.
-        /// There is no guarantee that the network performance will be increased.
-        /// </summary>
-        public override bool NoDelay
-        {
-            get { return client.Client.NoDelay; }
-            set { client.Client.NoDelay = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets if it should bypass hardware.
-        /// </summary>
-        public override bool UseLoopback
-        {
-            get { return (bool)socket.GetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.UseLoopback); }
-            set { socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.UseLoopback, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets if the packet should be sent directly to its destination or not.
-        /// </summary>
+        /// <inheritdoc />
         public override bool IsRoutingEnabled
         {
             get { return !(bool)socket.GetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.DontRoute); }
             set { socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.DontRoute, !value); }
         }
 
-        /// <summary>
-        /// Gets the local end point.
-        /// </summary>
-        /// <value>The local end point.</value>
-        public EndPoint LocalEndPoint { get { return socket.LocalEndPoint; } }
+        /// <inheritdoc />
+        public override bool NoDelay
+        {
+            get { return client.Client.NoDelay; }
+            set { client.Client.NoDelay = value; }
+        }
+
+        /// <inheritdoc />
+        public override short TTL { get { return socket.Ttl; } set { socket.Ttl = value; } }
+
+        /// <inheritdoc />
+        public override bool UseLoopback
+        {
+            get { return (bool)socket.GetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.UseLoopback); }
+            set { socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.UseLoopback, value); }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
-        /// Gets the remote end point.
+        /// Establishes a <see cref="UdpConnection"/> with the remote endpoint.
         /// </summary>
-        /// <value>The remote end point.</value>
-        public EndPoint RemoteEndPoint { get { return socket.RemoteEndPoint; } }
-
-        /// <summary>
-        /// Establishes a udp connection.
-        /// </summary>
-        /// <returns>The EndPoint of the udp connection.</returns>
+        /// <param name="connectionEstablished">The action to perform upon connection.</param>
         internal void EstablishUdpConnection(Action<IPEndPoint, IPEndPoint> connectionEstablished)
         {
             IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
@@ -127,11 +140,7 @@ namespace Network
             Send(new EstablishUdpRequest(udpEndPoint.Port), this);
         }
 
-        /// <summary>
-        /// Reads bytes from the stream.
-        /// </summary>
-        /// <param name="amount">The amount of bytes we want to read.</param>
-        /// <returns>The read bytes.</returns>
+        /// <inheritdoc />
         protected override byte[] ReadBytes(int amount)
         {
             if (amount == 0) return new byte[0];
@@ -150,48 +159,31 @@ namespace Network
             return requestedBytes;
         }
 
-        /// <summary>
-        /// Writes bytes to the stream.
-        /// </summary>
-        /// <param name="bytes">The bytes to write.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <inheritdoc />
         protected override void WriteBytes(byte[] bytes)
         {
             stream.Write(bytes, 0, bytes.Length);
             if (ForceFlush) stream.Flush();
         }
 
-        /// <summary>
-        /// Handles if the connection should be closed, based on the reason.
-        /// </summary>
-        /// <param name="closeReason">The close reason.</param>
-        protected override void CloseHandler(CloseReason closeReason) => Close(closeReason, true);
-
-        /// <summary>
-        /// Handles the case if we receive an unknown packet.
-        /// This is not possible for the TCP connection, theoretically.
-        /// </summary>
+        /// <inheritdoc />
+        /// <remarks>
+        /// Since TCP ensures the ordering of packets, we will always receive the <see cref="AddPacketTypeRequest"/> before
+        /// a <see cref="Packet"/> of the unknown type. Thus, it is theoretically impossible that this method is called for
+        /// a <see cref="TcpConnection"/> instance. Still gotta handle it though :),
+        /// </remarks>
         protected override void HandleUnknownPacket()
         {
-            Logger.Log($"Connection can't handle the received packet. No listener defined.", LogLevel.Error);
+            Logger.Log("Connection can't handle the received packet. No listener defined.", LogLevel.Error);
             CloseHandler(CloseReason.ReadPacketThreadException);
         }
 
-        /// <summary>
-        /// Gets the ip address's local endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+        /// <inheritdoc />
+        protected override void CloseHandler(CloseReason closeReason) => Close(closeReason, true);
 
-        /// <summary>
-        /// Gets the ip address's remote endpoint of this connection.
-        /// </summary>
-        /// <value>The ip end point.</value>
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
-
-        /// <summary>
-        /// Closes the socket.
-        /// </summary>
+        /// <inheritdoc />
         protected override void CloseSocket() => client.Close();
+
+        #endregion Methods
     }
 }

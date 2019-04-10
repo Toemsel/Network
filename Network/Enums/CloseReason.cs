@@ -1,7 +1,7 @@
 ﻿namespace Network.Enums
 {
     /// <summary>
-    /// Enumerates the possible reasons for a <see cref="Connection"/> closing/
+    /// Enumerates the possible reasons for a <see cref="Connection"/> closing.
     /// </summary>
     public enum CloseReason
     {
@@ -66,8 +66,7 @@
         InvokePacketThreadException = 11,
 
         /// <summary>
-        /// The assembly for the incoming packet is not available.
-        /// Make sure that every project is including that assembly.
+        /// The assembly for the incoming packet is not available. Make sure that every project is including that assembly.
         /// </summary>
         AssemblyDoesNotExist = 12
     }

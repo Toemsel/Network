@@ -3,8 +3,7 @@
 namespace Network.Interfaces
 {
     /// <summary>
-    /// Describes the properties and methods that a class must implement to be
-    /// capable of RSA encryption.
+    /// Describes the properties and methods that a class must implement to be capable of RSA encryption.
     /// </summary>
     internal interface IRSACapability
     {

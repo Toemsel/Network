@@ -4,25 +4,18 @@ using System.Security.Cryptography;
 namespace Network.Extensions
 {
     /// <summary>
-    /// Provides additional functionality to the <see cref="RSAParameters"/>
-    /// struct.
+    /// Provides additional functionality to the <see cref="RSAParameters"/> struct.
     /// </summary>
     internal static class RSAParametersExtensions
     {
         #region Methods
 
         /// <summary>
-        /// Extracts the private key from the given <see cref="RSAParameters"/>
-        /// and returns it as an XML string.
+        /// Extracts the private key from the given <see cref="RSAParameters"/> and returns it as an XML string.
         /// </summary>
-        /// <param name="rsaParameter">
-        /// The <see cref="RSAParameters"/> instance that the extension method
-        /// affects.
-        /// </param>
-        /// <returns>
-        /// The XML string with the private key.
-        /// </returns>
-        public static string ExtractPrivateKey(this RSAParameters rsaParameter)
+        /// <param name="rsaParameter">The <see cref="RSAParameters"/> instance that the extension method affects.</param>
+        /// <returns>The XML <see cref="string"/> with the private key.</returns>
+        internal static string ExtractPrivateKey(this RSAParameters rsaParameter)
         {
             return
                 $"<RSAKeyValue>" +
@@ -38,17 +31,11 @@ namespace Network.Extensions
         }
 
         /// <summary>
-        /// Extracts the public key from the given <see cref="RSAParameters"/>
-        /// and returns it as an XML string.
+        /// Extracts the public key from the given <see cref="RSAParameters"/> and returns it as an XML string.
         /// </summary>
-        /// <param name="rsaParameter">
-        /// The <see cref="RSAParameters"/> instance that the extension method
-        /// affects.
-        /// </param>
-        /// <returns>
-        /// The XML string with the public key.
-        /// </returns>
-        public static string ExtractPublicKey(this RSAParameters rsaParameter)
+        /// <param name="rsaParameter">The <see cref="RSAParameters"/> instance that the extension method affects.</param>
+        /// <returns>The XML <see cref="string"/> with the public key.</returns>
+        internal static string ExtractPublicKey(this RSAParameters rsaParameter)
         {
             return
                 $"<RSAKeyValue>" +

@@ -11,15 +11,31 @@ using System.Threading.Tasks;
 
 namespace Network
 {
+    /// <summary>
+    /// Builds upon the <see cref="Connection"/> class, implementing Bluetooth and allowing for messages to be conveniently
+    /// sent without a large serialisation header.
+    /// </summary>
+    /// <remarks>
+    /// This class is only available for .NET Framework 4.6 and above. This class is not compiled for .NET Standard, as a
+    /// key dependency is only available for the .NET Framework.
+    /// </remarks>
     public class BluetoothConnection : Connection
     {
+#region Variables
+
+        /// <summary>
+        /// The <see cref="Stream"/> for reading and writing data.
+        /// </summary>
         private NetworkStream stream;
+
+#endregion Variables
+
+#region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BluetoothConnection"/> class.
-        /// The client would like to establish a connection.
         /// </summary>
-        /// <param name="deviceInfo">The device information.</param>
+        /// <param name="deviceInfo">The device Bluetooth information.</param>
         internal BluetoothConnection(DeviceInfo deviceInfo) : this()
         {
             DeviceInfo = deviceInfo.BluetoothDeviceInfo;
@@ -27,7 +43,6 @@ namespace Network
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BluetoothConnection"/> class.
-        /// The server received a request.
         /// </summary>
         /// <param name="bluetoothClient">The bluetooth client.</param>
         internal BluetoothConnection(BluetoothClient bluetoothClient) : this()
@@ -45,10 +60,170 @@ namespace Network
             KeepAlive = true;
         }
 
+#endregion Constructors
+
+#region Properties
+
         /// <summary>
-        /// Tries to connect to the endpoint.
+        /// The device info of the connected device.
         /// </summary>
-        /// <returns>Task&lt;ConnectionResult&gt;.</returns>
+        private BluetoothDeviceInfo DeviceInfo { get; set; }
+
+        /// <summary>
+        /// The bluetooth client that sends and receives data.
+        /// </summary>
+        private BluetoothClient Client { get; set; }
+
+        /// <summary>
+        /// The signal strength of the paired device.
+        /// </summary>
+        public int SignalStrength { get { return DeviceInfo.Rssi; } }
+
+        /// <summary>
+        /// Whether Bluetooth is supported by the current device.
+        /// </summary>
+        public static bool IsBluetoothSupported
+        {
+            get
+            {
+                try
+                {
+                    new BluetoothClient();
+                }
+                catch (PlatformNotSupportedException)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        /// <inheritdoc />
+        public override IPEndPoint IPLocalEndPoint
+        {
+            get
+            {
+                return new IPEndPoint(IPAddress.None, 0);
+            }
+        }
+
+        /// <inheritdoc />
+        public override IPEndPoint IPRemoteEndPoint
+        {
+            get
+            {
+                return new IPEndPoint(IPAddress.None, 0);
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool DualMode
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool Fragment
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override int HopLimit
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool IsRoutingEnabled
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool NoDelay
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override short TTL
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool UseLoopback
+        {
+            get
+            {
+                throw new NotSupportedException();
+            }
+
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+#endregion Properties
+
+#region Methods
+
+        /// <summary>
+        /// Attempts to connect to the remote endpoint asynchronously.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation, with the promise of a <see cref="ConnectionResult"/> on completion.
+        /// </returns>
         internal async Task<ConnectionResult> TryConnect()
         {
             Client = new BluetoothClient();
@@ -67,157 +242,19 @@ namespace Network
             return ConnectionResult.Connected;
         }
 
-        /// <summary>
-        /// The device info of the connected device.
-        /// </summary>
-        private BluetoothDeviceInfo DeviceInfo { get; set; }
-
-        /// <summary>
-        /// The bluetooth client connected to.
-        /// </summary>
-        private BluetoothClient Client { get; set; }
-
-        /// <summary>
-        /// Gets the signal strength of the paired device.
-        /// </summary>
-        public int SignalStrength { get { return DeviceInfo.Rssi; } }
-
-        /// <summary>
-        /// Gets if Bluetooth is supported by the current device.
-        /// [True] if Bluetooth is supported. [False] if not.
-        /// </summary>
-        public static bool IsBluetoothSupported
-        {
-            get
-            {
-                try
-                {
-                    new BluetoothClient();
-                }
-                catch (PlatformNotSupportedException)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
-
-        public override bool DualMode
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override bool Fragment
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override int HopLimit
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override IPEndPoint IPLocalEndPoint
-        {
-            get
-            {
-                return new IPEndPoint(IPAddress.None, 0);
-            }
-        }
-
-        public override IPEndPoint IPRemoteEndPoint
-        {
-            get
-            {
-                return new IPEndPoint(IPAddress.None, 0);
-            }
-        }
-
-        public override bool IsRoutingEnabled
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override bool NoDelay
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override short TTL
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public override bool UseLoopback
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
+        /// <inheritdoc />
         protected override void CloseHandler(CloseReason closeReason)
         {
             Close(closeReason, true);
         }
 
+        /// <inheritdoc />
         protected override void CloseSocket() => Client.Close();
 
+        /// <inheritdoc />
         protected override void HandleUnknownPacket() => Close(CloseReason.UnknownPacket, true);
 
+        /// <inheritdoc />
         protected override byte[] ReadBytes(int amount)
         {
             if (amount == 0) return new byte[0];
@@ -236,11 +273,14 @@ namespace Network
             return requestedBytes;
         }
 
+        /// <inheritdoc />
         protected override void WriteBytes(byte[] bytes)
         {
             stream.Write(bytes, 0, bytes.Length);
             if (ForceFlush) stream.Flush();
         }
+
+#endregion Methods
     }
 }
 

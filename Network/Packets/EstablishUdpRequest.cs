@@ -10,11 +10,8 @@ namespace Network.Packets
     {
         #region Constructors
 
-        public EstablishUdpRequest()
-        {
-        }
-
-        public EstablishUdpRequest(int udpPort)
+        /// <inheritdoc />
+        internal EstablishUdpRequest(int udpPort)
         {
             UdpPort = udpPort;
         }

@@ -5,8 +5,7 @@ using System.Security.Cryptography;
 namespace Network.Interfaces
 {
     /// <summary>
-    /// Describes the properties and methods that a class must implement to be
-    /// able to communicate via secure, RSA encrypted messages.
+    /// Describes the properties and methods that a class must implement to be able to communicate via secure, RSA encrypted messages.
     /// </summary>
     internal interface IRSAConnection : IRSACapability
     {
@@ -30,27 +29,17 @@ namespace Network.Interfaces
         #region Methods
 
         /// <summary>
-        /// Encrypts the given byte array using the <see cref="EncryptionProvider"/>
-        /// and returns the encrypted version.
+        /// Encrypts the given byte array using the <see cref="EncryptionProvider"/> and returns the encrypted version.
         /// </summary>
-        /// <param name="bytes">
-        /// The original, plaintext byte array.
-        /// </param>
-        /// <returns>
-        /// The encrypted byte array.
-        /// </returns>
+        /// <param name="bytes">The original, plaintext byte array.</param>
+        /// <returns>The encrypted byte array.</returns>
         byte[] EncryptBytes(byte[] bytes);
 
         /// <summary>
-        /// Decrypts the given byte array using the <see cref="DecryptionProvider"/>
-        /// and returns the plaintext version.
+        /// Decrypts the given byte array using the <see cref="DecryptionProvider"/> and returns the plaintext version.
         /// </summary>
-        /// <param name="bytes">
-        /// The encrypted byte array.
-        /// </param>
-        /// <returns>
-        /// The original, plaintext byte array.
-        /// </returns>
+        /// <param name="bytes">The encrypted byte array.</param>
+        /// <returns>The original, plaintext byte array.</returns>
         byte[] DecryptBytes(byte[] bytes);
 
         #endregion Methods
