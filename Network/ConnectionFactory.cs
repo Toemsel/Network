@@ -35,9 +35,18 @@ namespace Network
         TCPConnectionNotAlive
     }
 
+#if NET46
     /// <summary>
-    /// This factory creates instances of Tcp and Udp connections.
+    /// Factory for instantiating <see cref="TcpConnection"/>s, <see cref="UdpConnection"/>s, and <see cref="BluetoothConnection"/>s
+    /// as well as <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
     /// </summary>
+#elif NETSTANDARD2_0
+    /// <summary>
+    /// Factory for instantiating <see cref="TcpConnection"/>s and <see cref="UdpConnection"/>s as well as
+    /// <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
+    /// </summary>
+#endif
+
     public static class ConnectionFactory
     {
         #region Variables
