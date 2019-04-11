@@ -11,7 +11,7 @@ namespace Network.Packets
         #region Constructors
 
         /// <summary>
-        /// Constructs and returns a new instance of the <see cref="RawData"/> packet, with the given key and data.
+        /// Initializes a new instance of the <see cref="RawData"/> class.
         /// </summary>
         /// <param name="key">The key that <see cref="RawData"/> packet handlers are registered with.</param>
         /// <param name="data">The serialised primitive value.</param>

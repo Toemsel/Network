@@ -10,7 +10,10 @@ namespace Network.Packets
     {
         #region Constructors
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UDPPingRequest"/> class.
+        /// </summary>
+        /// <param name="request">The handled <see cref="UDPPingRequest"/>.</param>
         internal UDPPingResponse(UDPPingRequest request) : base(request)
         {
         }
