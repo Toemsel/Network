@@ -20,19 +20,17 @@ namespace Network
     public enum ConnectionResult
     {
         /// <summary>
-        /// A connection could be established
+        /// A connection was established successfully.
         /// </summary>
         Connected,
 
         /// <summary>
-        /// A connection couldn't be established.
-        /// IP + Port correct? Firewall rules?
+        /// A connection couldn't be established. The IP, port and firewall might have to be checked.
         /// </summary>
         Timeout,
 
         /// <summary>
-        /// Could not establish a UDP connection.
-        /// The depending TCP connection is not alive.
+        /// Could not establish a UDP connection as the parent TCP connection is not alive.
         /// </summary>
         TCPConnectionNotAlive
     }
@@ -45,7 +43,7 @@ namespace Network
         #region Variables
 
         /// <summary>
-        /// The timeout of a connection attempt in [ms]
+        /// Timeout interval in milliseconds.
         /// </summary>
         public const int CONNECTION_TIMEOUT = 8000;
 
@@ -65,7 +63,7 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Set the GUID of this assembly.
+        /// Initializes a new instance of the static <see cref="ConnectionFactory"/> class. Sets the <see cref="GUID"/>.
         /// </summary>
         static ConnectionFactory()
         {
@@ -83,49 +81,54 @@ namespace Network
 #if NET46
 
         /// <summary>
-        /// Gets all the bluetooth devices in range.
+        /// Finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
         /// </summary>
-        /// <returns>The bluetooth devices in range.</returns>
+        /// <returns>All discoverable Bluetooth devices.</returns>
         public static DeviceInfo[] GetBluetoothDevices() { return DeviceInfo.GenerateDeviceInfos(new BluetoothClient().DiscoverDevicesInRange()); }
 
         /// <summary>
-        /// Gets all the bluetooth devices in range async.
+        /// Asynchronously finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
         /// </summary>
-        /// <returns></returns>
-        public async static Task<DeviceInfo[]> GetBluetoothDevicesAsync()
+        /// <returns>
+        /// A <see cref="Task{T}"/> representing the asynchronous operation, with the promise of a <see cref="DeviceInfo"/> array on completion.
+        /// </returns>
+        public static async Task<DeviceInfo[]> GetBluetoothDevicesAsync()
         {
             return await Task.Factory.StartNew(() => DeviceInfo.GenerateDeviceInfos(new BluetoothClient().DiscoverDevices()));
         }
 
         /// <summary>
-        /// Creates a new instance of the BluetoothConnection with the given device info.
+        /// Creates a <see cref="BluetoothConnection"/> and connects it.
         /// </summary>
-        /// <param name="bluetoothDeviceInfo">The device to pair with.</param>
-        /// <returns>The connection to send and receive data.</returns>
+        /// <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
+        /// <returns>A tuple with the <see cref="ConnectionResult"/> and created <see cref="BluetoothConnection"/>.</returns>
         public static Tuple<ConnectionResult, BluetoothConnection> CreateBluetoothConnection(DeviceInfo bluetoothDeviceInfo)
         {
             BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDeviceInfo);
-            var result = bluetoothConnection.TryConnect().Result;
+            ConnectionResult result = bluetoothConnection.TryConnect().Result;
             return new Tuple<ConnectionResult, BluetoothConnection>(result, bluetoothConnection);
         }
 
         /// <summary>
-        /// Creates a new instance of the BluetoothConnection with the given device info.
+        /// Asynchronously creates a <see cref="BluetoothConnection"/> and connects it.
         /// </summary>
-        /// <param name="bluetoothDeviceInfo">The device to pair with.</param>
-        /// <returns>The connection to send and receive data.</returns>
-        public async static Task<Tuple<ConnectionResult, BluetoothConnection>> CreateBluetoothConnectionAsync(DeviceInfo bluetoothDeviceInfo)
+        /// <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
+        /// <returns>
+        /// A <see cref="Task{T}"/> representing the asynchronous operation, with the promise of a tuple with the
+        /// <see cref="ConnectionResult"/> and created <see cref="BluetoothConnection"/> on completion.
+        /// </returns>
+        public static async Task<Tuple<ConnectionResult, BluetoothConnection>> CreateBluetoothConnectionAsync(DeviceInfo bluetoothDeviceInfo)
         {
             BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDeviceInfo);
-            var result = await bluetoothConnection.TryConnect();
+            ConnectionResult result = await bluetoothConnection.TryConnect();
             return new Tuple<ConnectionResult, BluetoothConnection>(result, bluetoothConnection);
         }
 
         /// <summary>
-        /// Creates a new instance of the BluetoothConnection with the given client.
+        /// Creates a new instance of the <see cref="BluetoothConnection"/> with the given client.
         /// </summary>
         /// <param name="bluetoothClient">The client to create a connection with.</param>
-        /// <returns>The result.</returns>
+        /// <returns>The created <see cref="BluetoothConnection"/>.</returns>
         internal static BluetoothConnection CreateBluetoothConnection(BluetoothClient bluetoothClient)
         {
             return new BluetoothConnection(bluetoothClient);
@@ -138,7 +141,7 @@ namespace Network
         #region TCP Connection Factory
 
         /// <summary>
-        /// Creates a new tcp connection and tries to connect to the given endpoint.
+        /// Creates a <see cref="TcpConnection"/> and connects it to the given IP address and port.
         /// </summary>
         /// <param name="ipAddress">The ip address to connect to.</param>
         /// <param name="port">The port to connect to.</param>

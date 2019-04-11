@@ -11,7 +11,7 @@
         #region Constructors
 
         /// <summary>
-        /// Default constructor for a response packet.
+        /// Initializes a new instance of the <see cref="ResponsePacket"/> class.
         /// </summary>
         /// <param name="packet">The <see cref="RequestPacket"/> that is being handled.</param>
         public ResponsePacket(RequestPacket packet)

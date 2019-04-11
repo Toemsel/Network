@@ -13,8 +13,7 @@ namespace Network.Packets
         #region Constructors
 
         /// <summary>
-        /// Constructs and returns a new instance of the <see cref="AddPacketTypeRequest"/> class, with the given
-        /// <see cref="Assembly"/>s name specified.
+        /// Initializes a new instance of the <see cref="AddPacketTypeRequest"/> class.
         /// </summary>
         /// <param name="assemblyName">Name of the assembly to add.</param>
         internal AddPacketTypeRequest(string assemblyName)

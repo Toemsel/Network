@@ -10,7 +10,11 @@ namespace Network.Packets
     {
         #region Constructors
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EstablishUdpResponse"/> class.
+        /// </summary>
+        /// <param name="udpPort">The port to use for UDP communication.</param>
+        /// <param name="request">The handled <see cref="EstablishUdpRequest"/>.</param>
         internal EstablishUdpResponse(int udpPort, RequestPacket request) : base(request)
         {
             UdpPort = udpPort;

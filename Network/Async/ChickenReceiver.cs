@@ -59,6 +59,16 @@ namespace Network.Async
 
         #region Methods
 
+        #region Implementation of IDisposable
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            packetReceivedEvent.Dispose();
+        }
+
+        #endregion Implementation of IDisposable
+
         /// <summary>
         /// Sends the given <see cref="Packet"/> to the network, via the given <see cref="Connection"/> and waits
         /// asynchronously for the response, returning it.
@@ -113,16 +123,6 @@ namespace Network.Async
 
             return (R)receivedAsyncPacket;
         }
-
-        #region Implementation of IDisposable
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            packetReceivedEvent.Dispose();
-        }
-
-        #endregion Implementation of IDisposable
 
         #endregion Methods
     }

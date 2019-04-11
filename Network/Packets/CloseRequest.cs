@@ -11,7 +11,10 @@ namespace Network.Packets
     {
         #region Constructors
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CloseRequest"/> class.
+        /// </summary>
+        /// <param name="reason">The reason for which the receiving <see cref="Connection"/> should close.</param>
         internal CloseRequest(CloseReason reason)
         {
             CloseReason = reason;
