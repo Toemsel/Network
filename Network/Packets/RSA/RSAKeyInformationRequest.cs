@@ -11,7 +11,11 @@ namespace Network.Packets.RSA
     {
         #region Constructors
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RSAKeyInformationRequest"/> class.
+        /// </summary>
+        /// <param name="publicKey">The public key to share.</param>
+        /// <param name="keySize">The size of the public key.</param>
         internal RSAKeyInformationRequest(string publicKey, int keySize)
         {
             PublicKey = publicKey;

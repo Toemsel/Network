@@ -30,29 +30,6 @@ namespace Network.Converter
 
         #region Methods
 
-        /// <summary>
-        /// Returns an array of the <see cref="PropertyInfo"/>s that need to be serialised on the given <see cref="Type"/>.
-        /// If the given <see cref="Type"/> has already been cached, it will use the cached <see cref="PropertyInfo"/> array,
-        /// to save CPU time.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> whose serialisable properties to get.</param>
-        /// <returns>
-        /// An array of all <see cref="PropertyInfo"/>s that should be serialised on the given <see cref="Type"/>
-        /// </returns>
-        private PropertyInfo[] GetTypeProperties(Type type)
-        {
-            lock (packetPropertyCacheLock)
-            {
-                //Cache the properties to serialise if we haven't already
-                if (!packetPropertyCache.ContainsKey(type))
-                {
-                    packetPropertyCache[type] = PacketConverterHelper.GetTypeProperties(type);
-                }
-
-                return packetPropertyCache[type];
-            }
-        }
-
         #region Implementation of IPacketConverter
 
         /// <inheritdoc />
@@ -120,6 +97,29 @@ namespace Network.Converter
         }
 
         #endregion Implementation of IPacketConverter
+
+        /// <summary>
+        /// Returns an array of the <see cref="PropertyInfo"/>s that need to be serialised on the given <see cref="Type"/>.
+        /// If the given <see cref="Type"/> has already been cached, it will use the cached <see cref="PropertyInfo"/> array,
+        /// to save CPU time.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> whose serialisable properties to get.</param>
+        /// <returns>
+        /// An array of all <see cref="PropertyInfo"/>s that should be serialised on the given <see cref="Type"/>
+        /// </returns>
+        private PropertyInfo[] GetTypeProperties(Type type)
+        {
+            lock (packetPropertyCacheLock)
+            {
+                //Cache the properties to serialise if we haven't already
+                if (!packetPropertyCache.ContainsKey(type))
+                {
+                    packetPropertyCache[type] = PacketConverterHelper.GetTypeProperties(type);
+                }
+
+                return packetPropertyCache[type];
+            }
+        }
 
         #region Serialisation
 

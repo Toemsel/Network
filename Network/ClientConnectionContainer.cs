@@ -374,7 +374,7 @@ namespace Network
         #region Opening New Connections
 
         /// <summary>
-        /// Opens the new TCP connection and applies the already registered packet handlers.
+        /// Opens the new TCP connection and applies any buffered (i.e. already registered) packet handlers.
         /// </summary>
         private async Task OpenNewTCPConnection()
         {
@@ -439,7 +439,7 @@ namespace Network
         }
 
         /// <summary>
-        /// Opens the new UDP connection and applies the already registered packet handlers.
+        /// Opens the new UDP connection and applies any buffered (i.e. already registered) packet handlers.
         /// </summary>
         private async Task OpenNewUDPConnection()
         {
@@ -517,79 +517,8 @@ namespace Network
         }
 
         /// <summary>
-        /// Sends and receives the packet async over TCP.
-        /// </summary>
-        /// <typeparam name="T">The type of the answer.</typeparam>
-        /// <param name="packet">The packet to send.</param>
-        /// <returns>Task&lt;T&gt;.</returns>
-        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket
-        {
-            return await SendAsync<T>(packet, ConnectionType.TCP);
-        }
-
-        /// <summary>
-        /// Sends and receives the packet async.
-        /// </summary>
-        /// <typeparam name="T">The type of the answer.</typeparam>
-        /// <param name="packet">The packet to send.</param>
-        /// <param name="connectionType">Type of the connection to send it over.</param>
-        /// <returns>Task&lt;T&gt;.</returns>
-        /// <exception cref="System.ArgumentException">The given enum doesn't exist</exception>
-        public async Task<T> SendAsync<T>(Packet packet, ConnectionType connectionType) where T : ResponsePacket
-        {
-            if (connectionType == ConnectionType.TCP)
-                return await SendSlowAsync<T>(packet);
-            else if (connectionType == ConnectionType.UDP)
-                return await SendFastAsync<T>(packet);
-            else throw new ArgumentException("The given enum doesn't exist");
-        }
-
-        /// <summary>
-        /// Sends and receives the packet async over TCP.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="packet">The packet.</param>
-        /// <returns>Task&lt;T&gt;.</returns>
-        public async Task<T> SendSlowAsync<T>(Packet packet) where T : ResponsePacket
-        {
-            if (IsAlive_TCP) return await tcpConnection.SendAsync<T>(packet);
-            T response = Activator.CreateInstance<T>();
-            response.State = PacketState.ConnectionNotAlive;
-            return response;
-        }
-
-        /// <summary>
-        /// Sends and receives the packet async over UDP.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="packet">The packet.</param>
-        /// <returns>Task&lt;T&gt;.</returns>
-        public async Task<T> SendFastAsync<T>(Packet packet) where T : ResponsePacket
-        {
-            if (IsAlive_UDP) return await udpConnection.SendAsync<T>(packet);
-            T response = Activator.CreateInstance<T>();
-            response.State = PacketState.ConnectionNotAlive;
-            return response;
-        }
-
-        /// <summary>
-        /// Sends a packet via. TCP or UDP depending on the type.
-        /// The server wont be able to send an answer, since no instance object is given.
-        /// </summary>
-        /// <param name="packet">The packet to send.</param>
-        /// <param name="type">The transmission type.</param>
-        public void Send(Packet packet, ConnectionType type)
-        {
-            if (type == ConnectionType.TCP)
-                SendSlow(packet);
-            else if (type == ConnectionType.UDP)
-                SendFast(packet);
-            else throw new ArgumentException("The given enum doesn't exist");
-        }
-
-        /// <summary>
-        /// Sends a packet via. TCP by default.
-        /// The server wont be able to send an answer, since no instance object is given.
+        /// Sends the given <see cref="Packet"/> to the network via TCP. The sender will not receive an answer, due to
+        /// no sender instance being given.
         /// </summary>
         /// <param name="packet">The packet to send.</param>
         public void Send(Packet packet)
@@ -598,8 +527,92 @@ namespace Network
         }
 
         /// <summary>
-        /// Sends the given packet over the TCP connection.
-        /// The server wont be able to send an answer, since no instance object is given.
+        /// Sends the given <see cref="Packet"/> to the network, via the given <see cref="ConnectionType"/>.
+        /// </summary>
+        /// <param name="packet">The packet to send.</param>
+        /// <param name="type">The connection type to use.</param>
+        /// <exception cref="ArgumentException">Thrown when the given <see cref="ConnectionType"/> value is an invalid cast.</exception>
+        public void Send(Packet packet, ConnectionType type)
+        {
+            if (type == ConnectionType.TCP)
+                SendSlow(packet);
+            else if (type == ConnectionType.UDP)
+                SendFast(packet);
+            else
+                throw new ArgumentException("The given enum doesn't exist");
+        }
+
+        /// <summary>
+        /// Sends the given <see cref="Packet"/> over the network via TCP and awaits a <see cref="ResponsePacket"/> on the
+        /// given <see cref="object"/> instance.
+        /// </summary>
+        /// <param name="packet">The packet to send.</param>
+        /// <param name="instance">The sender instance to receive a response.</param>
+        public void Send(Packet packet, object instance)
+        {
+            SendSlow(packet, instance);
+        }
+
+        /// <summary>
+        /// Asynchronously sends the given <see cref="Packet"/> over the network via TCP and awaits a <see cref="ResponsePacket"/>
+        /// of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ResponsePacket"/> to await.</typeparam>
+        /// <param name="packet">The packet to send.</param>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation, with the promise of the received
+        /// <see cref="ResponsePacket"/> on completion.
+        /// </returns>
+        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket
+        {
+            return await SendAsync<T>(packet, ConnectionType.TCP);
+        }
+
+        /// <summary>
+        /// Sends the given <see cref="Packet"/> over the network via the given <see cref="ConnectionType"/>
+        /// and awaits a <see cref="ResponsePacket"/> on the given <see cref="object"/> instance.
+        /// </summary>
+        /// <param name="packet">The packet to send.</param>
+        /// <param name="instance">The sender instance to receive a response.</param>
+        /// <param name="type">The connection type to use.</param>
+        /// <exception cref="ArgumentException">Thrown when the given <see cref="ConnectionType"/> value is an invalid cast.</exception>
+        public void Send(Packet packet, object instance, ConnectionType type)
+        {
+            if (type == ConnectionType.TCP)
+                SendSlow(packet, instance);
+            else if (type == ConnectionType.UDP)
+                SendFast(packet, instance);
+            else
+                throw new ArgumentException("The given enum doesn't exist");
+        }
+
+        /// <summary>
+        /// Asynchronously sends the given <see cref="Packet"/> over the network via the given <see cref="ConnectionType"/>
+        /// and awaits a <see cref="ResponsePacket"/> of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ResponsePacket"/> to await.</typeparam>
+        /// <param name="packet">The packet to send.</param>
+        /// <param name="connectionType">The connection type to use.</param>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation, with the promise of the received
+        /// <see cref="ResponsePacket"/> on completion.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the given <see cref="ConnectionType"/> value is an invalid cast.</exception>
+        public async Task<T> SendAsync<T>(Packet packet, ConnectionType connectionType) where T : ResponsePacket
+        {
+            if (connectionType == ConnectionType.TCP)
+                return await SendSlowAsync<T>(packet);
+            else if (connectionType == ConnectionType.UDP)
+                return await SendFastAsync<T>(packet);
+            else
+                throw new ArgumentException("The given enum doesn't exist");
+        }
+
+        #region Sending via TCP
+
+        /// <summary>
+        /// Sends the given <see cref="Packet"/> to the network via TCP. The sender will not receive an answer, due to
+        /// no sender instance being given.
         /// </summary>
         /// <param name="packet">The packet to send.</param>
         public void SendSlow(Packet packet)
@@ -610,8 +623,42 @@ namespace Network
         }
 
         /// <summary>
-        /// Sends the given packet over the UDP connection.
-        /// The server wont be able to send an answer, since no instance object is given.
+        /// Sends the given <see cref="Packet"/> over the network via TCP and awaits a <see cref="ResponsePacket"/> on the
+        /// given <see cref="object"/> instance.
+        /// </summary>
+        /// <param name="packet">The packet to send.</param>
+        /// <param name="instance">The sender instance to receive a response.</param>
+        public void SendSlow(Packet packet, object instance)
+        {
+            if (IsAlive_TCP) tcpConnection.Send(packet, instance);
+            else sendSlowObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
+        }
+
+        /// <summary>
+        /// Asynchronously sends the given <see cref="Packet"/> over the network via TCP and awaits a <see cref="ResponsePacket"/>
+        /// of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ResponsePacket"/> to await.</typeparam>
+        /// <param name="packet">The packet to send.</param>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation, with the promise of the received
+        /// <see cref="ResponsePacket"/> on completion.
+        /// </returns>
+        public async Task<T> SendSlowAsync<T>(Packet packet) where T : ResponsePacket
+        {
+            if (IsAlive_TCP) return await tcpConnection.SendAsync<T>(packet);
+            T response = Activator.CreateInstance<T>();
+            response.State = PacketState.ConnectionNotAlive;
+            return response;
+        }
+
+        #endregion Sending via TCP
+
+        #region Sending via UDP
+
+        /// <summary>
+        /// Sends the given <see cref="Packet"/> to the network via UDP. The sender will not receive an answer, due to
+        /// no sender instance being given.
         /// </summary>
         /// <param name="packet">The packet to send.</param>
         public void SendFast(Packet packet)
@@ -622,50 +669,36 @@ namespace Network
         }
 
         /// <summary>
-        /// Sends a packet via. TCP or UDP depending on the type.
+        /// Sends the given <see cref="Packet"/> over the network via UDP and awaits a <see cref="ResponsePacket"/> on the
+        /// given <see cref="object"/> instance.
         /// </summary>
         /// <param name="packet">The packet to send.</param>
-        /// <param name="instance">The instance to receive an answer.</param>
-        /// <param name="type">The transmission type.</param>
-        /// <exception cref="System.ArgumentException">The given enum doesn't exist</exception>
-        public void Send(Packet packet, object instance, ConnectionType type)
-        {
-            if (type == ConnectionType.TCP)
-                SendSlow(packet, instance);
-            else if (type == ConnectionType.UDP)
-                SendFast(packet, instance);
-            else throw new ArgumentException("The given enum doesn't exist");
-        }
-
-        /// <summary>
-        /// Sends a packet via. TCP by default.
-        /// </summary>
-        /// <param name="packet">The packet to send.</param>
-        /// <param name="instance">The instance to receive an answer.</param>
-        public void Send(Packet packet, object instance)
-        {
-            SendSlow(packet, instance);
-        }
-
-        /// <summary>
-        /// Sends the given packet over the TCP connection.
-        /// </summary>
-        /// <param name="packet">The packet to send.</param>
-        public void SendSlow(Packet packet, object instance)
-        {
-            if (IsAlive_TCP) tcpConnection.Send(packet, instance);
-            else sendSlowObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
-        }
-
-        /// <summary>
-        /// Sends the given packet over the UDP connection.
-        /// </summary>
-        /// <param name="packet">The packet to send.</param>
+        /// <param name="instance">The sender instance to receive a response.</param>
         public void SendFast(Packet packet, object instance)
         {
             if (IsAlive_UDP) udpConnection.Send(packet, instance);
             else sendFastObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
         }
+
+        /// <summary>
+        /// Asynchronously sends the given <see cref="Packet"/> over the network via UDP and awaits a <see cref="ResponsePacket"/>
+        /// of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ResponsePacket"/> to await.</typeparam>
+        /// <param name="packet">The packet to send.</param>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation, with the promise of the received
+        /// <see cref="ResponsePacket"/> on completion.
+        /// </returns>
+        public async Task<T> SendFastAsync<T>(Packet packet) where T : ResponsePacket
+        {
+            if (IsAlive_UDP) return await udpConnection.SendAsync<T>(packet);
+            T response = Activator.CreateInstance<T>();
+            response.State = PacketState.ConnectionNotAlive;
+            return response;
+        }
+
+        #endregion Sending via UDP
 
         #endregion Sending Packets
 

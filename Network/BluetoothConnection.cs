@@ -4,6 +4,7 @@ using InTheHand.Net.Sockets;
 using Network.Bluetooth;
 using Network.Enums;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -17,20 +18,20 @@ namespace Network
     /// </summary>
     /// <remarks>
     /// This class is only available for .NET Framework 4.6 and above. This class is not compiled for .NET Standard, as a
-    /// key dependency is only available for the .NET Framework.
+    /// key dependency is only available for the .NET Framework (looking at you, InTheHand).
     /// </remarks>
     public class BluetoothConnection : Connection
     {
-#region Variables
+        #region Variables
 
         /// <summary>
         /// The <see cref="Stream"/> for reading and writing data.
         /// </summary>
         private NetworkStream stream;
 
-#endregion Variables
+        #endregion Variables
 
-#region Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BluetoothConnection"/> class.
@@ -60,9 +61,9 @@ namespace Network
             KeepAlive = true;
         }
 
-#endregion Constructors
+        #endregion Constructors
 
-#region Properties
+        #region Properties
 
         /// <summary>
         /// The device info of the connected device.
@@ -214,9 +215,9 @@ namespace Network
             }
         }
 
-#endregion Properties
+        #endregion Properties
 
-#region Methods
+        #region Methods
 
         /// <summary>
         /// Attempts to connect to the remote endpoint asynchronously.
@@ -280,7 +281,7 @@ namespace Network
             if (ForceFlush) stream.Flush();
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }
 
