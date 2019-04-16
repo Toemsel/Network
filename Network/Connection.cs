@@ -426,6 +426,11 @@ namespace Network
         #endregion Overrides of Object
 
         /// <summary>
+        /// Partial initialisation method to be overriden in later class implementations.
+        /// </summary>
+        partial void InitAddons();
+
+        /// <summary>
         /// Initialises this <see cref="Connection"/> instance, setting up all required variables.
         /// </summary>
         internal void Init()

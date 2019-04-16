@@ -84,7 +84,7 @@ namespace Network
         /// <summary>
         /// Initialises this <see cref="Connection"/> instance's addons, setting up all required variables.
         /// </summary>
-        private void InitAddons()
+        partial void InitAddons()
         {
             logger = new NetworkLog(this);
         }
