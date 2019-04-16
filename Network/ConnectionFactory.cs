@@ -61,7 +61,7 @@ namespace Network
         /// <summary>
         /// The GUID of this assembly, needed for bluetooth connections.
         /// </summary>
-        internal static Guid GUID;
+        internal static readonly Guid GUID;
 
 #endif
 

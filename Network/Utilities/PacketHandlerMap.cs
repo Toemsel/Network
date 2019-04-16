@@ -20,8 +20,7 @@ namespace Network.Utilities
         /// Maps each packet type to a dictionary containing registered objects which want to receive packets
         /// (i.e. Handlers) of the given type and their individual IDs.
         /// </summary>
-        private readonly Dictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap =
-            new Dictionary<Type, Dictionary<object, int>>();
+        private readonly Dictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap = new Dictionary<Type, Dictionary<object, int>>();
 
         /// <summary>
         /// Maps each packet id to a tuple, holding the packet handler method and the object on which the handler should be called.

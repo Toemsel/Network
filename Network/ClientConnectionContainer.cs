@@ -38,13 +38,13 @@ namespace Network
         /// <summary>
         /// Buffer for all messages to be sent via TCP to the remote <see cref="Connection"/>, once the connection is established.
         /// </summary>
-        private List<Packet> sendSlowBuffer = new List<Packet>();
+        private readonly List<Packet> sendSlowBuffer = new List<Packet>();
 
         /// <summary>
         /// Buffer for all messages to be sent via TCP to the remote <see cref="Connection"/>, once the connection is established, that
         /// have a sender instance who is waiting for a response.
         /// </summary>
-        private List<Tuple<Packet, object>> sendSlowObjectBuffer = new List<Tuple<Packet, object>>();
+        private readonly List<Tuple<Packet, object>> sendSlowObjectBuffer = new List<Tuple<Packet, object>>();
 
         /// <summary>
         /// Cache of all the <see cref="PacketReceivedHandler{P}"/>s to register on the remote <see cref="Network.TcpConnection"/>
@@ -56,25 +56,25 @@ namespace Network
         /// Buffer for all the static packet handlers to register on the remote <see cref="Network.TcpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, Delegate>> tcpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
+        private readonly List<Tuple<Type, Delegate>> tcpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
 
         /// <summary>
         /// Buffer for all the static packet handlers to deregister on the remote <see cref="Network.TcpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Type> tcpStaticUnPacketHandlerBuffer = new List<Type>();
+        private readonly List<Type> tcpStaticUnPacketHandlerBuffer = new List<Type>();
 
         /// <summary>
         /// Buffer for all the packet handlers to register on the remote <see cref="Network.TcpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, Delegate, object>> tcpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
+        private readonly List<Tuple<Type, Delegate, object>> tcpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
 
         /// <summary>
         /// Buffer for all the packet handlers to deregister on the remote <see cref="Network.TcpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, object>> tcpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
+        private readonly List<Tuple<Type, object>> tcpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
 
         #endregion TCP Transmission Variables
 
@@ -83,13 +83,13 @@ namespace Network
         /// <summary>
         /// Buffer for all messages to be sent via UDP to the remote <see cref="Connection"/>, once the connection is established.
         /// </summary>
-        private List<Packet> sendFastBuffer = new List<Packet>();
+        private readonly List<Packet> sendFastBuffer = new List<Packet>();
 
         /// <summary>
         /// Buffer for all messages to be sent via UDP to the remote <see cref="Connection"/>, once the connection is established, that
         /// have a sender instance who is waiting for a response.
         /// </summary>
-        private List<Tuple<Packet, object>> sendFastObjectBuffer = new List<Tuple<Packet, object>>();
+        private readonly List<Tuple<Packet, object>> sendFastObjectBuffer = new List<Tuple<Packet, object>>();
 
         /// <summary>
         /// Cache of all the <see cref="PacketReceivedHandler{P}"/>s to register on the remote <see cref="Network.UdpConnection"/>
@@ -101,25 +101,25 @@ namespace Network
         /// Buffer for all the static packet handlers to register on the remote <see cref="Network.UdpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, Delegate>> udpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
+        private readonly List<Tuple<Type, Delegate>> udpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
 
         /// <summary>
         /// Buffer for all the static packet handlers to deregister on the remote <see cref="Network.UdpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Type> udpStaticUnPacketHandlerBuffer = new List<Type>();
+        private readonly List<Type> udpStaticUnPacketHandlerBuffer = new List<Type>();
 
         /// <summary>
         /// Buffer for all the packet handlers to register on the remote <see cref="Network.UdpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, Delegate, object>> udpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
+        private readonly List<Tuple<Type, Delegate, object>> udpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
 
         /// <summary>
         /// Buffer for all the packet handlers to deregister on the remote <see cref="Network.UdpConnection"/> once
         /// a connection is established.
         /// </summary>
-        private List<Tuple<Type, object>> udpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
+        private readonly List<Tuple<Type, object>> udpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
 
         #endregion UDP Transmission Variables
 

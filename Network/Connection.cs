@@ -640,7 +640,7 @@ namespace Network
                         continue;
                     }
 
-                    Packet receivedPacket = packetConverter.DeserialisePacket(typeByte[packetType], packetData);
+                    Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;
                     packetAvailableEvent.Set();
@@ -711,7 +711,7 @@ namespace Network
                                 2. [32bits] packet length
                                 3. [xxbits] packet data                 */
 
-                byte[] packetData = packetConverter.SerialisePacket(packet);
+                byte[] packetData = packetConverter.GetBytes(packet);
                 byte[] packetLength = BitConverter.GetBytes(packetData.Length);
                 byte[] packetByte = new byte[2 + packetLength.Length + packetData.Length];
 

@@ -18,17 +18,17 @@ namespace Network
         /// <summary>
         /// The <see cref="TcpClient"/> for this <see cref="TcpConnection"/> instance.
         /// </summary>
-        private TcpClient client;
+        private readonly TcpClient client;
 
         /// <summary>
         /// The <see cref="NetworkStream"/> on which to send and receive data.
         /// </summary>
-        private NetworkStream stream;
+        private readonly NetworkStream stream;
 
         /// <summary>
         /// The <see cref="Socket"/> for this <see cref="TcpConnection"/> instance.
         /// </summary>
-        private Socket socket;
+        private readonly Socket socket;
 
         #endregion Variables
 
