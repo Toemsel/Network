@@ -20,12 +20,12 @@ namespace Network
         /// <summary>
         /// The <see cref="UdpClient"/> for this <see cref="TcpConnection"/> instance.
         /// </summary>
-        private UdpClient client;
+        private readonly UdpClient client;
 
         /// <summary>
         /// The <see cref="Socket"/> for this <see cref="TcpConnection"/> instance.
         /// </summary>
-        private Socket socket;
+        private readonly Socket socket;
 
         /// <summary>
         /// The local endpoint for the <see cref="client"/>.
@@ -35,12 +35,12 @@ namespace Network
         /// <summary>
         /// Stopwatch to measure the RTT for ping packets.
         /// </summary>
-        private Stopwatch rttStopWatch = new Stopwatch();
+        private readonly Stopwatch rttStopWatch = new Stopwatch();
 
         /// <summary>
         /// Cache of all received bytes.
         /// </summary>
-        private List<byte> receivedBytes = new List<byte>();
+        private readonly List<byte> receivedBytes = new List<byte>();
 
         #endregion Variables
 

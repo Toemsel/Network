@@ -33,25 +33,18 @@ namespace Network.Converter
         #region Implementation of IPacketConverter
 
         /// <inheritdoc />
-        public byte[] SerialisePacket(Packet packet)
-        {
-            MemoryStream memoryStream = new MemoryStream();
-            BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
-
-            SerialiseObjectToWriter(packet, binaryWriter);
-
-            return memoryStream.ToArray();
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Use 'SerialisePacket' instead.")]
         public byte[] GetBytes(Packet packet)
         {
-            return SerialisePacket(packet);
+            MemoryStream memoryStream = new MemoryStream();
+            BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
+
+            SerialiseObjectToWriter(packet, binaryWriter);
+
+            return memoryStream.ToArray();
         }
 
         /// <inheritdoc />
-        public byte[] SerialisePacket<P>(P packet) where P : Packet
+        public byte[] GetBytes<P>(P packet) where P : Packet
         {
             MemoryStream memoryStream = new MemoryStream();
             BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
@@ -62,7 +55,7 @@ namespace Network.Converter
         }
 
         /// <inheritdoc />
-        public Packet DeserialisePacket(Type packetType, byte[] serialisedPacket)
+        public Packet GetPacket(Type packetType, byte[] serialisedPacket)
         {
             MemoryStream memoryStream = new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
@@ -76,14 +69,7 @@ namespace Network.Converter
         }
 
         /// <inheritdoc />
-        [Obsolete("Use 'DeserialisePacket' instead.")]
-        public Packet GetPacket(Type packetType, byte[] serialisedPacket)
-        {
-            return DeserialisePacket(packetType, serialisedPacket);
-        }
-
-        /// <inheritdoc />
-        public P DeserialisePacket<P>(byte[] serialisedPacket) where P : Packet
+        public P GetPacket<P>(byte[] serialisedPacket) where P : Packet
         {
             MemoryStream memoryStream = new MemoryStream(serialisedPacket, 0, serialisedPacket.Length);
             BinaryReader binaryReader = new BinaryReader(memoryStream);

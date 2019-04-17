@@ -73,6 +73,8 @@ namespace Network
 
         #region Methods
 
+        //TODO Fix spelling mistake?
+
         /// <summary>
         /// Adds the given <see cref="Assembly"/> to the list of assemblies whose <see cref="Packet"/>s to register upon
         /// establishing a connection. This is not essential, but can speed up performance if a lot of <see cref="Packet"/>s

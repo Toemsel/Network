@@ -47,7 +47,7 @@ namespace Network
         /// Maps all <see cref="TcpConnection"/>s currently connected to the server to any <see cref="UdpConnection"/>s
         /// they may own.
         /// </summary>
-        private ConcurrentDictionary<TcpConnection, List<UdpConnection>> connections = new ConcurrentDictionary<TcpConnection, List<UdpConnection>>();
+        private readonly ConcurrentDictionary<TcpConnection, List<UdpConnection>> connections = new ConcurrentDictionary<TcpConnection, List<UdpConnection>>();
 
 #if NET46
 
@@ -428,11 +428,11 @@ namespace Network
 
         /// <inheritdoc />
         public override string ToString() =>
-            $"ServerConnectionContainer. "+
-            $"IsOnline {IsTCPOnline}. "+
-            $"EnableUDPConnection {AllowUDPConnections}. "+
-            $"UDPConnectionLimit {UDPConnectionLimit}. "+
-            $"AllowBluetoothConnections {AllowBluetoothConnections}. "+
+            $"ServerConnectionContainer. " +
+            $"IsOnline {IsTCPOnline}. " +
+            $"EnableUDPConnection {AllowUDPConnections}. " +
+            $"UDPConnectionLimit {UDPConnectionLimit}. " +
+            $"AllowBluetoothConnections {AllowBluetoothConnections}. " +
             $"Connected TCP connections {connections.Count}.";
 
 #elif NETSTANDARD2_0
