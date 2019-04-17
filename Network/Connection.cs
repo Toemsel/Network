@@ -605,30 +605,6 @@ namespace Network
             dataAvailableEvent.Set();
         }
 
-        /// <summary>
-        /// Sends the given <see cref="RawData"/> packet to the network.
-        /// </summary>
-        /// <param name="rawData">The <see cref="RawData"/> packet to send to the network.</param>
-        public void SendRawData(RawData rawData) => Send(rawData);
-
-        /// <summary>
-        /// Sends the given raw, serialised primitive to the network.
-        /// </summary>
-        /// <param name="key">
-        /// The <see cref="string"/> key which identifies the raw data <see cref="PacketReceivedHandler{P}"/> to use for the data.
-        /// </param>
-        /// <param name="data">The serialised raw primitive, as a <see cref="byte"/> array.</param>
-        public void SendRawData(string key, byte[] data)
-        {
-            if (data == null)
-            {
-                logger.Log("Can't send a null reference data byte array", new ArgumentException(), Enums.LogLevel.Information);
-                return;
-            }
-
-            Send(new RawData(key, data));
-        }
-
         #endregion Sending Packets
 
         #region Threads
