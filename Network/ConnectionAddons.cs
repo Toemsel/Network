@@ -19,6 +19,33 @@ namespace Network
         /// </summary>
         private NetworkLog logger;
 
+        /// <summary>
+        /// Backing field for <see cref="IsWindows"/>. Caches the value one for later use.
+        /// </summary>
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        private readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        /// <summary>
+        /// Backing field for <see cref="IsMAC"/>. Caches the value one for later use.
+        /// </summary>
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        private readonly bool isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        /// <summary>
+        /// Backing field for <see cref="IsLinux"/>. Caches the value one for later use.
+        /// </summary>
+        /// <remarks>
+        /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+        /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
+        /// </remarks>
+        private readonly bool isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
         #endregion Variables
 
         #region Properties
@@ -40,7 +67,7 @@ namespace Network
         /// </remarks>
         internal bool IsMAC
         {
-            get { return RuntimeInformation.IsOSPlatform(OSPlatform.Linux); }
+            get { return isOsx; }
         }
 
         /// <summary>
@@ -52,7 +79,7 @@ namespace Network
         /// </remarks>
         internal bool IsLinux
         {
-            get { return RuntimeInformation.IsOSPlatform(OSPlatform.Linux); }
+            get { return isLinux; }
         }
 
         /// <summary>
@@ -64,7 +91,7 @@ namespace Network
         /// </remarks>
         internal bool IsWindows
         {
-            get { return RuntimeInformation.IsOSPlatform(OSPlatform.Windows); }
+            get { return isWindows; }
         }
 
         /// <summary>
@@ -84,7 +111,7 @@ namespace Network
         /// <summary>
         /// Initialises this <see cref="Connection"/> instance's addons, setting up all required variables.
         /// </summary>
-        private void InitAddons()
+        partial void InitAddons()
         {
             logger = new NetworkLog(this);
         }
@@ -95,6 +122,12 @@ namespace Network
         /// </summary>
         /// <param name="stream">The stream to log into.</param>
         public void LogIntoStream(Stream stream) => logger.SetOutputStream(stream);
+
+        /// <summary>
+        /// Sends the given <see cref="RawData"/> packet to the network.
+        /// </summary>
+        /// <param name="rawData">The <see cref="RawData"/> packet to send to the network.</param>
+        public void SendRawData(RawData rawData) => Send(rawData);
 
         /// <summary>
         /// Sends the given raw, serialised primitive to the network.
@@ -113,12 +146,6 @@ namespace Network
 
             Send(new RawData(key, data));
         }
-
-        /// <summary>
-        /// Sends the given <see cref="RawData"/> packet to the network.
-        /// </summary>
-        /// <param name="rawData">The <see cref="RawData"/> packet to send to the network.</param>
-        public void SendRawData(RawData rawData) => Send(rawData);
 
         #endregion Methods
     }

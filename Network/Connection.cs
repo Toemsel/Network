@@ -43,7 +43,7 @@ namespace Network
         /// <summary>
         /// A fixed hashcode that persists with the <see cref="Connection"/> instance for its entire lifetime.
         /// </summary>
-        private int hashCode;
+        private readonly int hashCode;
 
         // TODO Remove all occurrences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
 
@@ -120,34 +120,34 @@ namespace Network
         /// <summary>
         /// Holds all the <see cref="UdpConnection"/>s that are currently pending connection to this <see cref="Connection"/>.
         /// </summary>
-        private ConcurrentQueue<UdpConnection> pendingUDPConnections = new ConcurrentQueue<UdpConnection>();
+        private readonly ConcurrentQueue<UdpConnection> pendingUDPConnections = new ConcurrentQueue<UdpConnection>();
 
         /// <summary>
         /// Holds all received <see cref="Packet"/>s whose <see cref="Packet.ID"/> is not known.
         /// </summary>
-        private ConcurrentQueue<Tuple<Packet, object>> pendingUnknownPackets = new ConcurrentQueue<Tuple<Packet, object>>();
+        private readonly ConcurrentQueue<Tuple<Packet, object>> pendingUnknownPackets = new ConcurrentQueue<Tuple<Packet, object>>();
 
         /// <summary>
         /// Holds all received <see cref="Packet"/>s with a known <see cref="PacketReceivedHandler{P}"/> that are yet to be
         /// handled.
         /// </summary>
-        private ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
+        private readonly ConcurrentQueue<Packet> receivedPackets = new ConcurrentQueue<Packet>();
 
         /// <summary>
         /// Holds all received <see cref="Packet"/>s without a known <see cref="PacketReceivedHandler{P}"/> that are yet to be
         /// handled.
         /// </summary>
-        private ConcurrentBag<Packet> receivedUnknownPacketHandlerPackets = new ConcurrentBag<Packet>();
+        private readonly ConcurrentBag<Packet> receivedUnknownPacketHandlerPackets = new ConcurrentBag<Packet>();
 
         /// <summary>
         /// Holds all <see cref="Packet"/>s that are handled and are now ready and waiting to be sent to the network.
         /// </summary>
-        private ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
+        private readonly ConcurrentQueue<Tuple<Packet, object>> sendPackets = new ConcurrentQueue<Tuple<Packet, object>>();
 
         /// <summary>
         /// Maps a <see cref="Packet"/> <see cref="Type"/> to a unique <see cref="ushort"/> ID.
         /// </summary>
-        private BiDictionary<Type, ushort> typeByte = new BiDictionary<Type, ushort>();
+        private readonly BiDictionary<Type, ushort> typeByte = new BiDictionary<Type, ushort>();
 
         /// <summary>
         /// The value from which new IDs for packet <see cref="Type"/>s will be calculated dynamically. Starts at 100
@@ -159,13 +159,13 @@ namespace Network
         /// Maps a <see cref="RequestPacket"/> <see cref="Type"/> to the <see cref="Type"/> of the <see cref="ResponsePacket"/>
         /// that handles it.
         /// </summary>
-        private Dictionary<Type, Type> requestResponseMap = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> requestResponseMap = new Dictionary<Type, Type>();
 
         /// <summary>
         /// Maps <see cref="Packet"/> <see cref="Type"/>s to the <see cref="PacketReceivedHandler{P}"/> that should be used for
         /// that <see cref="Packet"/>.
         /// </summary>
-        private PacketHandlerMap packetHandlerMap = new PacketHandlerMap();
+        private readonly PacketHandlerMap packetHandlerMap = new PacketHandlerMap();
 
         #endregion Packet Variables
 
@@ -424,6 +424,11 @@ namespace Network
         public override string ToString() => $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
 
         #endregion Overrides of Object
+
+        /// <summary>
+        /// Partial initialisation method to be overriden in later class implementations.
+        /// </summary>
+        partial void InitAddons();
 
         /// <summary>
         /// Initialises this <see cref="Connection"/> instance, setting up all required variables.
