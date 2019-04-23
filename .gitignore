@@ -370,4 +370,5 @@ MigrationBackup/
 /Examples/TestServerClientPackets/obj
 
 *.Cache
+*.dbtcache  # design time build cache file. not used (?)
 ########
