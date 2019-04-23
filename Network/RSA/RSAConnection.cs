@@ -1,8 +1,10 @@
-﻿using Network.Converter;
+﻿using System.Linq;
+using Network.Converter;
 using Network.Interfaces;
 using Network.Packets;
 using Network.Packets.RSA;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace Network.RSA
@@ -31,6 +33,20 @@ namespace Network.RSA
         /// Whether RSA encryption is currently active on this connection.
         /// </summary>
         private volatile bool isRSACommunicationActive = false;
+
+        /// <summary>
+        /// RSA is only capable of encrypting byte array of this size.
+        /// The max encryption size isn't abitrary; but indirectly set by
+        /// the <see chref="RSACryptoServiceProvider" />
+        /// </summary>
+        private const int MAX_ENCRYPTION_BYTE_SIZE = 128;
+        
+        /// <summary>
+        /// RSA is only capable of encrypting byte array of this size.
+        /// The max encryption size isn't abitrary; but indirectly set by
+        /// the <see chref="RSACryptoServiceProvider" />
+        /// </summary>
+        private const int MAX_DECRYPTION_BYTE_SIZE = 256;
 
         #endregion Variables
 
@@ -259,14 +275,30 @@ namespace Network.RSA
         /// </summary>
         /// <param name="bytes">The encrypted bytes to decrypt.</param>
         /// <returns>The decrypted, plaintext bytes.</returns>
-        public byte[] DecryptBytes(byte[] bytes) => DecryptionProvider.Decrypt(bytes, XPOrHigher);
+        public byte[] DecryptBytes(byte[] bytes) 
+        {
+            List<byte[]> chunkData = new List<byte[]>();
+
+            for(int currentIndex = 0; currentIndex < bytes.Length / MAX_DECRYPTION_BYTE_SIZE; currentIndex++)
+                chunkData.Add(bytes.Skip(currentIndex * MAX_DECRYPTION_BYTE_SIZE).Take(MAX_DECRYPTION_BYTE_SIZE).ToArray());
+
+            return chunkData.SelectMany(data => DecryptionProvider.Decrypt(data, XPOrHigher)).ToArray();
+        }
 
         /// <summary>
         /// Encrypts the given bytes with the <see cref="EncryptionProvider"/>.
         /// </summary>
         /// <param name="bytes">The plaintext bytes to encrypt.</param>
         /// <returns>The encrypted bytes.</returns>
-        public byte[] EncryptBytes(byte[] bytes) => EncryptionProvider.Encrypt(bytes, XPOrHigher);
+        public byte[] EncryptBytes(byte[] bytes)
+        {
+            List<byte[]> chunkData = new List<byte[]>();
+
+            for(int currentIndex = 0; currentIndex <= bytes.Length / MAX_ENCRYPTION_BYTE_SIZE; currentIndex++)
+                chunkData.Add(bytes.Skip(currentIndex * MAX_ENCRYPTION_BYTE_SIZE).Take(MAX_ENCRYPTION_BYTE_SIZE).ToArray());
+
+            return chunkData.SelectMany(data => EncryptionProvider.Encrypt(data, XPOrHigher)).ToArray();
+        }
 
         #endregion Methods
     }
