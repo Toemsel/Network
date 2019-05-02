@@ -28,9 +28,9 @@ namespace Network.XUnit
             UdpConnection udpConnectionh = ConnectionFactory.CreateSecureUdpConnection(tcpConnection, out ConnectionResult udpConnectionResult);
             var simpleDataTypesResponse = await udpConnectionh.SendAsync<SimpleDataTypesResponse>(new SimpleDataTypesRequest());
 
-            Assert.Equal(tcpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(udpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(simpleDataTypesResponse.State, PacketState.Success);
+            Assert.Equal(ConnectionResult.Connected, tcpConnectionResult);
+            Assert.Equal(ConnectionResult.Connected, udpConnectionResult);
+            Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
 
         public async Task TcpSendNullablePrimitivesTest()
@@ -48,9 +48,9 @@ namespace Network.XUnit
             UdpConnection udpConnectionh = ConnectionFactory.CreateSecureUdpConnection(tcpConnection, out ConnectionResult udpConnectionResult);
             var simpleDataTypesResponse = await udpConnectionh.SendAsync<NullableSimpleDataTypesResponse>(new NullableSimpleDataTypesRequest());
 
-            Assert.Equal(tcpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(udpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(simpleDataTypesResponse.State, PacketState.Success);
+            Assert.Equal(ConnectionResult.Connected, tcpConnectionResult);
+            Assert.Equal(ConnectionResult.Connected, udpConnectionResult);
+            Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
 
         public async Task TcpSendObjectDataTest()
@@ -68,9 +68,9 @@ namespace Network.XUnit
             UdpConnection udpConnectionh = ConnectionFactory.CreateSecureUdpConnection(tcpConnection, out ConnectionResult udpConnectionResult);
             var simpleDataTypesResponse = await udpConnectionh.SendAsync<ObjectDataResponse>(new ObjectDataRequest());
 
-            Assert.Equal(tcpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(udpConnectionResult, ConnectionResult.Connected);
-            Assert.Equal(simpleDataTypesResponse.State, PacketState.Success);
+            Assert.Equal(ConnectionResult.Connected, tcpConnectionResult);
+            Assert.Equal(ConnectionResult.Connected, udpConnectionResult);
+            Assert.Equal(PacketState.Success, simpleDataTypesResponse.State);
         }
     }
 }
