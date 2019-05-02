@@ -191,21 +191,26 @@ namespace Network
             IsTCPOnline = !IsTCPOnline;
             tcpListener.Start();
 
-            while (IsTCPOnline)
+            try
             {
-                TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
-                TcpConnection tcpConnection = CreateTcpConnection(tcpClient);
-                tcpConnection.ConnectionClosed += connectionClosed;
-                tcpConnection.ConnectionEstablished += udpConnectionReceived;
-                connections.GetOrAdd(tcpConnection, new List<UdpConnection>());
+                while (IsTCPOnline)
+                {
+                    TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
+                    TcpConnection tcpConnection = CreateTcpConnection(tcpClient);
+                    tcpConnection.ConnectionClosed += connectionClosed;
+                    tcpConnection.ConnectionEstablished += udpConnectionReceived;
+                    connections.GetOrAdd(tcpConnection, new List<UdpConnection>());
 
-                //Inform all subscribers.
-                if (connectionEstablished != null &&
-                    connectionEstablished.GetInvocationList().Length > 0)
-                    connectionEstablished(tcpConnection, ConnectionType.TCP);
+                    //Inform all subscribers.
+                    if (connectionEstablished != null &&
+                        connectionEstablished.GetInvocationList().Length > 0)
+                        connectionEstablished(tcpConnection, ConnectionType.TCP);
 
-                KnownTypes.ForEach(tcpConnection.AddExternalPackets);
+                    KnownTypes.ForEach(tcpConnection.AddExternalPackets);
+                }
             }
+            //The TCP-Listener has been shut down.
+            catch(ObjectDisposedException) { }
         }
 
 #if NET46

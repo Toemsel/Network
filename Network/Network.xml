@@ -18,6 +18,9 @@
             A <see cref="T:System.Threading.ManualResetEvent"/> that allows for the instance to wait until the <see cref="T:Network.Packets.ResponsePacket"/> for a sent packet is received.
             </summary>
         </member>
+        <member name="M:Network.Async.ChickenReceiver.Dispose">
+            <inheritdoc />
+        </member>
         <member name="M:Network.Async.ChickenReceiver.Send``1(Network.Packets.Packet,Network.Connection)">
             <summary>
             Sends the given <see cref="T:Network.Packets.Packet"/> to the network, via the given <see cref="T:Network.Connection"/> and waits
@@ -32,9 +35,6 @@
             A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, that promises a <see cref="T:Network.Packets.ResponsePacket"/> of
             the given type upon completion.
             </returns>
-        </member>
-        <member name="M:Network.Async.ChickenReceiver.Dispose">
-            <inheritdoc />
         </member>
         <member name="T:Network.Attributes.PacketIgnorePropertyAttribute">
             <summary>
@@ -108,12 +108,12 @@
             </summary>
             <remarks>
             This class is only available for .NET Framework 4.6 and above. This class is not compiled for .NET Standard, as a
-            key dependency is only available for the .NET Framework.
+            key dependency is only available for the .NET Framework (looking at you, InTheHand).
             </remarks>
         </member>
         <member name="F:Network.BluetoothConnection.stream">
             <summary>
-            The <see cref="!:Stream"/> for reading and writing data.
+            The <see cref="T:System.IO.Stream"/> for reading and writing data.
             </summary>
         </member>
         <member name="M:Network.BluetoothConnection.#ctor(Network.Bluetooth.DeviceInfo)">
@@ -496,12 +496,12 @@
         </member>
         <member name="M:Network.ClientConnectionContainer.OpenNewTCPConnection">
             <summary>
-            Opens the new TCP connection and applies the already registered packet handlers.
+            Opens the new TCP connection and applies any buffered (i.e. already registered) packet handlers.
             </summary>
         </member>
         <member name="M:Network.ClientConnectionContainer.OpenNewUDPConnection">
             <summary>
-            Opens the new UDP connection and applies the already registered packet handlers.
+            Opens the new UDP connection and applies any buffered (i.e. already registered) packet handlers.
             </summary>
         </member>
         <member name="M:Network.ClientConnectionContainer.SendPing">
@@ -509,96 +509,118 @@
             Sends a ping over the TCP connection.
             </summary>
         </member>
-        <member name="M:Network.ClientConnectionContainer.SendAsync``1(Network.Packets.Packet)">
+        <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet)">
             <summary>
-            Sends and receives the packet async over TCP.
+            Sends the given <see cref="T:Network.Packets.Packet"/> to the network via TCP. The sender will not receive an answer, due to
+            no sender instance being given.
             </summary>
-            <typeparam name="T">The type of the answer.</typeparam>
             <param name="packet">The packet to send.</param>
-            <returns>Task&lt;T&gt;.</returns>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.SendAsync``1(Network.Packets.Packet,Network.Enums.ConnectionType)">
-            <summary>
-            Sends and receives the packet async.
-            </summary>
-            <typeparam name="T">The type of the answer.</typeparam>
-            <param name="packet">The packet to send.</param>
-            <param name="connectionType">Type of the connection to send it over.</param>
-            <returns>Task&lt;T&gt;.</returns>
-            <exception cref="T:System.ArgumentException">The given enum doesn't exist</exception>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.SendSlowAsync``1(Network.Packets.Packet)">
-            <summary>
-            Sends and receives the packet async over TCP.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="packet">The packet.</param>
-            <returns>Task&lt;T&gt;.</returns>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.SendFastAsync``1(Network.Packets.Packet)">
-            <summary>
-            Sends and receives the packet async over UDP.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="packet">The packet.</param>
-            <returns>Task&lt;T&gt;.</returns>
         </member>
         <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet,Network.Enums.ConnectionType)">
             <summary>
-            Sends a packet via. TCP or UDP depending on the type.
-            The server wont be able to send an answer, since no instance object is given.
+            Sends the given <see cref="T:Network.Packets.Packet"/> to the network, via the given <see cref="T:Network.Enums.ConnectionType"/>.
             </summary>
             <param name="packet">The packet to send.</param>
-            <param name="type">The transmission type.</param>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet)">
-            <summary>
-            Sends a packet via. TCP by default.
-            The server wont be able to send an answer, since no instance object is given.
-            </summary>
-            <param name="packet">The packet to send.</param>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.SendSlow(Network.Packets.Packet)">
-            <summary>
-            Sends the given packet over the TCP connection.
-            The server wont be able to send an answer, since no instance object is given.
-            </summary>
-            <param name="packet">The packet to send.</param>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.SendFast(Network.Packets.Packet)">
-            <summary>
-            Sends the given packet over the UDP connection.
-            The server wont be able to send an answer, since no instance object is given.
-            </summary>
-            <param name="packet">The packet to send.</param>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet,System.Object,Network.Enums.ConnectionType)">
-            <summary>
-            Sends a packet via. TCP or UDP depending on the type.
-            </summary>
-            <param name="packet">The packet to send.</param>
-            <param name="instance">The instance to receive an answer.</param>
-            <param name="type">The transmission type.</param>
-            <exception cref="T:System.ArgumentException">The given enum doesn't exist</exception>
+            <param name="type">The connection type to use.</param>
+            <exception cref="T:System.ArgumentException">Thrown when the given <see cref="T:Network.Enums.ConnectionType"/> value is an invalid cast.</exception>
         </member>
         <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet,System.Object)">
             <summary>
-            Sends a packet via. TCP by default.
+            Sends the given <see cref="T:Network.Packets.Packet"/> over the network via TCP and awaits a <see cref="T:Network.Packets.ResponsePacket"/> on the
+            given <see cref="T:System.Object"/> instance.
             </summary>
             <param name="packet">The packet to send.</param>
-            <param name="instance">The instance to receive an answer.</param>
+            <param name="instance">The sender instance to receive a response.</param>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendAsync``1(Network.Packets.Packet)">
+            <summary>
+            Asynchronously sends the given <see cref="T:Network.Packets.Packet"/> over the network via TCP and awaits a <see cref="T:Network.Packets.ResponsePacket"/>
+            of the given type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Network.Packets.ResponsePacket"/> to await.</typeparam>
+            <param name="packet">The packet to send.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, with the promise of the received
+            <see cref="T:Network.Packets.ResponsePacket"/> on completion.
+            </returns>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet,System.Object,Network.Enums.ConnectionType)">
+            <summary>
+            Sends the given <see cref="T:Network.Packets.Packet"/> over the network via the given <see cref="T:Network.Enums.ConnectionType"/>
+            and awaits a <see cref="T:Network.Packets.ResponsePacket"/> on the given <see cref="T:System.Object"/> instance.
+            </summary>
+            <param name="packet">The packet to send.</param>
+            <param name="instance">The sender instance to receive a response.</param>
+            <param name="type">The connection type to use.</param>
+            <exception cref="T:System.ArgumentException">Thrown when the given <see cref="T:Network.Enums.ConnectionType"/> value is an invalid cast.</exception>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendAsync``1(Network.Packets.Packet,Network.Enums.ConnectionType)">
+            <summary>
+            Asynchronously sends the given <see cref="T:Network.Packets.Packet"/> over the network via the given <see cref="T:Network.Enums.ConnectionType"/>
+            and awaits a <see cref="T:Network.Packets.ResponsePacket"/> of the given type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Network.Packets.ResponsePacket"/> to await.</typeparam>
+            <param name="packet">The packet to send.</param>
+            <param name="connectionType">The connection type to use.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, with the promise of the received
+            <see cref="T:Network.Packets.ResponsePacket"/> on completion.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when the given <see cref="T:Network.Enums.ConnectionType"/> value is an invalid cast.</exception>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendSlow(Network.Packets.Packet)">
+            <summary>
+            Sends the given <see cref="T:Network.Packets.Packet"/> to the network via TCP. The sender will not receive an answer, due to
+            no sender instance being given.
+            </summary>
+            <param name="packet">The packet to send.</param>
         </member>
         <member name="M:Network.ClientConnectionContainer.SendSlow(Network.Packets.Packet,System.Object)">
             <summary>
-            Sends the given packet over the TCP connection.
+            Sends the given <see cref="T:Network.Packets.Packet"/> over the network via TCP and awaits a <see cref="T:Network.Packets.ResponsePacket"/> on the
+            given <see cref="T:System.Object"/> instance.
+            </summary>
+            <param name="packet">The packet to send.</param>
+            <param name="instance">The sender instance to receive a response.</param>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendSlowAsync``1(Network.Packets.Packet)">
+            <summary>
+            Asynchronously sends the given <see cref="T:Network.Packets.Packet"/> over the network via TCP and awaits a <see cref="T:Network.Packets.ResponsePacket"/>
+            of the given type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Network.Packets.ResponsePacket"/> to await.</typeparam>
+            <param name="packet">The packet to send.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, with the promise of the received
+            <see cref="T:Network.Packets.ResponsePacket"/> on completion.
+            </returns>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendFast(Network.Packets.Packet)">
+            <summary>
+            Sends the given <see cref="T:Network.Packets.Packet"/> to the network via UDP. The sender will not receive an answer, due to
+            no sender instance being given.
             </summary>
             <param name="packet">The packet to send.</param>
         </member>
         <member name="M:Network.ClientConnectionContainer.SendFast(Network.Packets.Packet,System.Object)">
             <summary>
-            Sends the given packet over the UDP connection.
+            Sends the given <see cref="T:Network.Packets.Packet"/> over the network via UDP and awaits a <see cref="T:Network.Packets.ResponsePacket"/> on the
+            given <see cref="T:System.Object"/> instance.
             </summary>
             <param name="packet">The packet to send.</param>
+            <param name="instance">The sender instance to receive a response.</param>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.SendFastAsync``1(Network.Packets.Packet)">
+            <summary>
+            Asynchronously sends the given <see cref="T:Network.Packets.Packet"/> over the network via UDP and awaits a <see cref="T:Network.Packets.ResponsePacket"/>
+            of the given type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Network.Packets.ResponsePacket"/> to await.</typeparam>
+            <param name="packet">The packet to send.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, with the promise of the received
+            <see cref="T:Network.Packets.ResponsePacket"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ClientConnectionContainer.Reconnect(System.Boolean)">
             <summary>
@@ -950,6 +972,11 @@
             </summary>
             <returns>The <see cref="T:System.String"/> representation of this <see cref="T:Network.Connection"/> instance.</returns>
         </member>
+        <member name="M:Network.Connection.InitAddons">
+            <summary>
+            Initialises this <see cref="T:Network.Connection"/> instance's addons, setting up all required variables.
+            </summary>
+        </member>
         <member name="M:Network.Connection.Init">
             <summary>
             Initialises this <see cref="T:Network.Connection"/> instance, setting up all required variables.
@@ -1166,6 +1193,33 @@
             Backing field for <see cref="P:Network.Connection.Logger"/>.
             </summary>
         </member>
+        <member name="F:Network.Connection.isWindows">
+            <summary>
+            Backing field for <see cref="P:Network.Connection.IsWindows"/>. Caches the value one for later use.
+            </summary>
+            <remarks>
+            Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+            upon instantiation and it is valid for the lifetime of this <see cref="T:Network.Connection"/> instance.
+            </remarks>
+        </member>
+        <member name="F:Network.Connection.isOsx">
+            <summary>
+            Backing field for <see cref="P:Network.Connection.IsMAC"/>. Caches the value one for later use.
+            </summary>
+            <remarks>
+            Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+            upon instantiation and it is valid for the lifetime of this <see cref="T:Network.Connection"/> instance.
+            </remarks>
+        </member>
+        <member name="F:Network.Connection.isLinux">
+            <summary>
+            Backing field for <see cref="P:Network.Connection.IsLinux"/>. Caches the value one for later use.
+            </summary>
+            <remarks>
+            Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
+            upon instantiation and it is valid for the lifetime of this <see cref="T:Network.Connection"/> instance.
+            </remarks>
+        </member>
         <member name="P:Network.Connection.Logger">
             <summary>
             The <see cref="T:Network.Logging.NetworkLog"/> instance to which information should be logged.
@@ -1204,17 +1258,18 @@
             output <see cref="T:System.IO.Stream"/>s.
             </summary>
         </member>
-        <member name="M:Network.Connection.InitAddons">
-            <summary>
-            Initialises this <see cref="T:Network.Connection"/> instance's addons, setting up all required variables.
-            </summary>
-        </member>
         <member name="M:Network.Connection.LogIntoStream(System.IO.Stream)">
             <summary>
             Logs events, exceptions and messages into the given stream. To disable logging into a previous provided stream, call
             this method again and provide a null reference as stream. Stream hot swapping is supported.
             </summary>
             <param name="stream">The stream to log into.</param>
+        </member>
+        <member name="M:Network.Connection.SendRawData(Network.Packets.RawData)">
+            <summary>
+            Sends the given <see cref="T:Network.Packets.RawData"/> packet to the network.
+            </summary>
+            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet to send to the network.</param>
         </member>
         <member name="M:Network.Connection.SendRawData(System.String,System.Byte[])">
             <summary>
@@ -1224,12 +1279,6 @@
             The <see cref="T:System.String"/> key which identifies the raw data <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> to use for the data.
             </param>
             <param name="data">The serialised raw primitive, as a <see cref="T:System.Byte"/> array.</param>
-        </member>
-        <member name="M:Network.Connection.SendRawData(Network.Packets.RawData)">
-            <summary>
-            Sends the given <see cref="T:Network.Packets.RawData"/> packet to the network.
-            </summary>
-            <param name="rawData">The <see cref="T:Network.Packets.RawData"/> packet to send to the network.</param>
         </member>
         <member name="T:Network.ConnectionContainer">
             <summary>
@@ -1305,29 +1354,28 @@
         </member>
         <member name="F:Network.ConnectionResult.Connected">
             <summary>
-            A connection could be established
+            A connection was established successfully.
             </summary>
         </member>
         <member name="F:Network.ConnectionResult.Timeout">
             <summary>
-            A connection couldn't be established.
-            IP + Port correct? Firewall rules?
+            A connection couldn't be established. The IP, port and firewall might have to be checked.
             </summary>
         </member>
         <member name="F:Network.ConnectionResult.TCPConnectionNotAlive">
             <summary>
-            Could not establish a UDP connection.
-            The depending TCP connection is not alive.
+            Could not establish a UDP connection as the parent TCP connection is not alive.
             </summary>
         </member>
         <member name="T:Network.ConnectionFactory">
             <summary>
-            This factory creates instances of Tcp and Udp connections.
+            Factory for instantiating <see cref="T:Network.TcpConnection"/>s, <see cref="T:Network.UdpConnection"/>s, and <see cref="T:Network.BluetoothConnection"/>s
+            as well as <see cref="T:Network.ClientConnectionContainer"/>s and <see cref="T:Network.ServerConnectionContainer"/>s (and their secure variants).
             </summary>
         </member>
         <member name="F:Network.ConnectionFactory.CONNECTION_TIMEOUT">
             <summary>
-            The timeout of a connection attempt in [ms]
+            Timeout interval in milliseconds.
             </summary>
         </member>
         <member name="F:Network.ConnectionFactory.GUID">
@@ -1337,380 +1385,412 @@
         </member>
         <member name="M:Network.ConnectionFactory.#cctor">
             <summary>
-            Set the GUID of this assembly.
+            Initializes a new instance of the static <see cref="T:Network.ConnectionFactory"/> class. Sets the <see cref="F:Network.ConnectionFactory.GUID"/>.
             </summary>
         </member>
         <member name="M:Network.ConnectionFactory.GetBluetoothDevices">
             <summary>
-            Gets all the bluetooth devices in range.
+            Finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
             </summary>
-            <returns>The bluetooth devices in range.</returns>
+            <returns>All discoverable Bluetooth devices.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.GetBluetoothDevicesAsync">
             <summary>
-            Gets all the bluetooth devices in range async.
+            Asynchronously finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
             </summary>
-            <returns></returns>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation, with the promise of a <see cref="T:Network.Bluetooth.DeviceInfo"/> array on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateBluetoothConnection(Network.Bluetooth.DeviceInfo)">
             <summary>
-            Creates a new instance of the BluetoothConnection with the given device info.
+            Creates a <see cref="T:Network.BluetoothConnection"/> and connects it.
             </summary>
-            <param name="bluetoothDeviceInfo">The device to pair with.</param>
-            <returns>The connection to send and receive data.</returns>
+            <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
+            <returns>A tuple with the <see cref="T:Network.ConnectionResult"/> and created <see cref="T:Network.BluetoothConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateBluetoothConnectionAsync(Network.Bluetooth.DeviceInfo)">
             <summary>
-            Creates a new instance of the BluetoothConnection with the given device info.
+            Asynchronously creates a <see cref="T:Network.BluetoothConnection"/> and connects it.
             </summary>
-            <param name="bluetoothDeviceInfo">The device to pair with.</param>
-            <returns>The connection to send and receive data.</returns>
+            <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation, with the promise of a tuple with the
+            <see cref="T:Network.ConnectionResult"/> and created <see cref="T:Network.BluetoothConnection"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateBluetoothConnection(InTheHand.Net.Sockets.BluetoothClient)">
             <summary>
-            Creates a new instance of the BluetoothConnection with the given client.
+            Creates a new instance of the <see cref="T:Network.BluetoothConnection"/> with the given client.
             </summary>
             <param name="bluetoothClient">The client to create a connection with.</param>
-            <returns>The result.</returns>
+            <returns>The created <see cref="T:Network.BluetoothConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateTcpConnection(System.String,System.Int32,Network.ConnectionResult@)">
             <summary>
-            Creates a new tcp connection and tries to connect to the given endpoint.
+            Creates a <see cref="T:Network.TcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
             <param name="connectionResult">The connection result.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <returns>The created <see cref="T:Network.TcpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnection(System.String,System.Int32,Network.ConnectionResult@,System.Int32)">
             <summary>
-            Creates a new tcp secure connection and tries to connect to the given endpoint.
+            Creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="keySize">The keySize for the RSA en/decryption.</param>
             <param name="connectionResult">The connection result.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <param name="keySize">The size to use for the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureTcpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnection(System.String,System.Int32,System.String,System.String,Network.ConnectionResult@,System.Int32)">
             <summary>
-            Creates a new tcp secure connection and tries to connect to the given endpoint.
+            Creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
             <param name="connectionResult">The connection result.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <param name="keySize">The size to use for the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureTcpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnection(System.String,System.Int32,Network.RSA.RSAPair,Network.ConnectionResult@)">
             <summary>
-            Creates a new tcp secure connection and tries to connect to the given endpoint.
+            Creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="rsaPair">RSA-Pair.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
             <param name="connectionResult">The connection result.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <returns>The created <see cref="T:Network.RSA.SecureTcpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateTcpConnectionAsync(System.String,System.Int32)">
             <summary>
-            Creates a new tcp connection and tries to connect to the given endpoint async.
+            Asynchronously creates a <see cref="T:Network.TcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnectionAsync(System.String,System.Int32,System.Int32)">
             <summary>
-            Creates a new secure tcp connection and tries to connect to the given endpoint async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="keySize">The keySize.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureTcpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnectionAsync(System.String,System.Int32,System.String,System.String,System.Int32)">
             <summary>
-            Creates a new secure tcp connection and tries to connect to the given endpoint async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureTcpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnectionAsync(System.String,System.Int32,Network.RSA.RSAPair)">
             <summary>
-            Creates a new secure tcp connection and tries to connect to the given endpoint async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureTcpConnection"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The ip address to connect to.</param>
+            <param name="ipAddress">The IP address to connect to.</param>
             <param name="port">The port to connect to.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>A tcp connection object if the successfully connected. Else null.</returns>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureTcpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateTcpConnection(System.Net.Sockets.TcpClient)">
             <summary>
-            Wraps the given tcpClient into the networks tcp connection.
+            Creates a <see cref="T:Network.TcpConnection"/> from the given <see cref="T:System.Net.Sockets.TcpClient"/>.
             </summary>
-            <param name="tcpClient">The connected tcp client.</param>
-            <returns>The TcpConnection.</returns>
-            <exception cref="T:System.ArgumentException">Socket is not connected.</exception>
+            <param name="tcpClient">The <see cref="T:System.Net.Sockets.TcpClient"/> to wrap.</param>
+            <returns>The created <see cref="T:Network.TcpConnection"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:System.Net.Sockets.TcpClient"/>s socket is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnection(System.Net.Sockets.TcpClient,System.String,System.String,System.Int32)">
             <summary>
-            Wraps the given tcpClient into the networks tcp connection.
+            Creates a <see cref="T:Network.RSA.SecureTcpConnection"/> from the given <see cref="T:System.Net.Sockets.TcpClient"/>.
             </summary>
-            <param name="tcpClient">The connected tcp client.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>The TcpConnection.</returns>
-            <exception cref="T:System.ArgumentException">Socket is not connected.</exception>
+            <param name="tcpClient">The <see cref="T:System.Net.Sockets.TcpClient"/> to wrap.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureTcpConnection"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:System.Net.Sockets.TcpClient"/>s socket is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureTcpConnection(System.Net.Sockets.TcpClient,Network.RSA.RSAPair)">
             <summary>
-            Wraps the given tcpClient into the networks tcp connection.
+            Creates a <see cref="T:Network.RSA.SecureTcpConnection"/> from the given <see cref="T:System.Net.Sockets.TcpClient"/>.
             </summary>
-            <param name="tcpClient">The connected tcp client.</param>
-            <param name="rsaPair">The RSA-Pair.</param>
-            <returns>The TcpConnection.</returns>
-            <exception cref="T:System.ArgumentException">Socket is not connected.</exception>
+            <param name="tcpClient">The <see cref="T:System.Net.Sockets.TcpClient"/> to wrap.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureTcpConnection"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:System.Net.Sockets.TcpClient"/>s socket is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateUdpConnection(Network.TcpConnection,Network.ConnectionResult@)">
             <summary>
-            Creates a new instance of a udp connection.
+            Creates a <see cref="T:Network.UdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <returns>The UdpConnection.</returns>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.UdpConnection"/>.</param>
+            <param name="connectionResult">The connection result.</param>
+            <returns>The created <see cref="T:Network.UdpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnection(Network.TcpConnection,Network.ConnectionResult@,System.Int32)">
             <summary>
-            Creates a new instance of a secure udp connection.
+            Creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="keySize">The keySize.</param>
-            <returns>The UdpConnection.</returns>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="connectionResult">The connection result.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureUdpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnection(Network.TcpConnection,System.String,System.String,Network.ConnectionResult@,System.Int32)">
             <summary>
-            Creates a new instance of a secure udp connection.
+            Creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>The UdpConnection.</returns>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="connectionResult">The connection result.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureUdpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnection(Network.TcpConnection,Network.RSA.RSAPair,Network.ConnectionResult@)">
             <summary>
-            Creates a new instance of a secure udp connection.
+            Creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>The UdpConnection.</returns>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <param name="connectionResult">The connection result.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureUdpConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateUdpConnectionAsync(Network.TcpConnection)">
             <summary>
-            Creates a new instance of a udp connection async.
+            Asynchronously creates a <see cref="T:Network.UdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <returns>Task&lt;UdpConnection&gt;.</returns>
-            <exception cref="T:System.ArgumentException">TcpConnection is not connected to the endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.UdpConnection"/>.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.UdpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
+            <exception cref="T:System.ArgumentException">The given <see cref="T:Network.TcpConnection"/> isn't connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnectionAsync(Network.TcpConnection,System.Int32)">
             <summary>
-            Creates a new instance of a udp connection async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="keySize">The keySize.</param>
-            <returns>Task&lt;UdpConnection&gt;.</returns>
-            <exception cref="T:System.ArgumentException">TcpConnection is not connected to the endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureUdpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
+            <exception cref="T:System.ArgumentException">The given <see cref="T:Network.TcpConnection"/> isn't connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnectionAsync(Network.TcpConnection,System.String,System.String,System.Int32)">
             <summary>
-            Creates a new instance of a udp connection async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>Task&lt;UdpConnection&gt;.</returns>
-            <exception cref="T:System.ArgumentException">TcpConnection is not connected to the endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureUdpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
+            <exception cref="T:System.ArgumentException">The given <see cref="T:Network.TcpConnection"/> isn't connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureUdpConnectionAsync(Network.TcpConnection,Network.RSA.RSAPair)">
             <summary>
-            Creates a new instance of a udp connection async.
+            Asynchronously creates a <see cref="T:Network.RSA.SecureUdpConnection"/> with the given parent <see cref="T:Network.TcpConnection"/>.
             </summary>
-            <param name="tcpConnection">The tcp connection to establish the udp connection.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>Task&lt;UdpConnection&gt;.</returns>
-            <exception cref="T:System.ArgumentException">TcpConnection is not connected to the endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> via which to connect the <see cref="T:Network.RSA.SecureUdpConnection"/>.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation with the promise of a tuple holding the created
+            <see cref="T:Network.RSA.SecureUdpConnection"/> and <see cref="T:Network.ConnectionResult"/> on completion.
+            </returns>
+            <exception cref="T:System.ArgumentException">The given <see cref="T:Network.TcpConnection"/> isn't connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateClientConnectionContainer(System.String,System.Int32)">
             <summary>
-            Creates a new instance of a connection container.
+            Creates a <see cref="T:Network.ClientConnectionContainer"/> and connects it to the given IP address and port.
             </summary>
-            <returns>ConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to connect to.</param>
+            <param name="port">The port to connect to.</param>
+            <returns>The created <see cref="T:Network.ClientConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(System.String,System.Int32,System.Int32)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
-            <param name="keySize">The keySize.</param>
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> and connects it to the given IP address and port.
             </summary>
-            <returns>ConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to connect to.</param>
+            <param name="port">The port to connect to.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(System.String,System.Int32,System.String,System.String,System.Int32)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> and connects it to the given IP address and port.
             </summary>
-            <returns>ConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to connect to.</param>
+            <param name="port">The port to connect to.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(System.String,System.Int32,Network.RSA.RSAPair)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> and connects it to the given IP address and port.
             </summary>
-            <param name="ipAddress">The IP-Address.</param>
-            <param name="port">The Port.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>ConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to connect to.</param>
+            <param name="port">The port to connect to.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateClientConnectionContainer(Network.TcpConnection,Network.UdpConnection)">
             <summary>
-            Creates a new instance of a connection container.
+            Creates a <see cref="T:Network.ClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
             </summary>
-            <param name="tcpConnection">The TCP connection.</param>
-            <param name="udpConnection">The UDP connection.</param>
-            <returns>ConnectionContainer.</returns>
-            <exception cref="T:System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
+            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
+            <returns>The created <see cref="T:Network.ClientConnectionContainer"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,System.Int32)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
             </summary>
-            <param name="tcpConnection">The TCP connection.</param>
-            <param name="udpConnection">The UDP connection.</param>
-            <param name="keySize">The keySize.</param>
-            <returns>ConnectionContainer.</returns>
-            <exception cref="T:System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
+            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,System.String,System.String,System.Int32)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
             </summary>
-            <param name="tcpConnection">The TCP connection.</param>
-            <param name="udpConnection">The UDP connection.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>ConnectionContainer.</returns>
-            <exception cref="T:System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
+            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,Network.RSA.RSAPair)">
             <summary>
-            Creates a new instance of a secure-connection container. (RSA Encryption)
+            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
             </summary>
-            <param name="tcpConnection">The TCP connection.</param>
-            <param name="udpConnection">The UDP connection.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>ConnectionContainer.</returns>
-            <exception cref="T:System.ArgumentException">TCP and UDP connection must be connected to an endpoint.</exception>
+            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
+            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
         </member>
         <member name="M:Network.ConnectionFactory.CreateServerConnectionContainer(System.Int32,System.Boolean)">
             <summary>
-            Creates the server connection container.
+            Creates a <see cref="T:Network.ServerConnectionContainer"/> listening on the given port.
             </summary>
-            <param name="port">The port.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="port">The port to listen on.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.ServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.Int32,System.Int32,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> listening on the given port.
             </summary>
-            <param name="port">The port.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <param name="keySize">The keySize.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="port">The port to listen on.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.Int32,System.String,System.String,System.Int32,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> listening on the given port.
             </summary>
-            <param name="port">The port.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="port">The port to listen on.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.Int32,Network.RSA.RSAPair,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> listening on the given port.
             </summary>
-            <param name="port">The port.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="port">The port to listen on.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateServerConnectionContainer(System.String,System.Int32,System.Boolean)">
             <summary>
-            Creates the server connection container.
+            Creates a <see cref="T:Network.ServerConnectionContainer"/> with the given IP address, listening on the given port.
             </summary>
-            <param name="ipAddress">The ip address.</param>
-            <param name="port">The port.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to run at.</param>
+            <param name="port">The port to listen on.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.ServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.String,System.Int32,System.Int32,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> with the given IP address, listening on the given port.
             </summary>
-            <param name="ipAddress">The ip address.</param>
-            <param name="port">The port.</param>
-            <param name="keySize">The keySize.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to run at.</param>
+            <param name="port">The port to listen on.</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.String,System.Int32,System.String,System.String,System.Int32,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> with the given IP address, listening on the given port.
             </summary>
-            <param name="ipAddress">The ip address.</param>
-            <param name="port">The port.</param>
-            <param name="publicKey">The public key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The keySize.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to run at.</param>
+            <param name="port">The port to listen on.</param>
+            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
+            <param name="keySize">The size of the RSA keys.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateSecureServerConnectionContainer(System.String,System.Int32,Network.RSA.RSAPair,System.Boolean)">
             <summary>
-            Creates a secure server connection container.
+            Creates a <see cref="T:Network.RSA.SecureServerConnectionContainer"/> with the given IP address, listening on the given port.
             </summary>
-            <param name="ipAddress">The ip address.</param>
-            <param name="port">The port.</param>
-            <param name="rsaPair">RSA-Pair.</param>
-            <param name="start">if set to <c>true</c> then the instance automatically starts to listen to clients.</param>
-            <returns>ServerConnectionContainer.</returns>
+            <param name="ipAddress">The IP address to run at.</param>
+            <param name="port">The port to listen on.</param>
+            <param name="rsaPair">The RSA key-pair to use.</param>
+            <param name="start">Whether to start the server after instantiation.</param>
+            <returns>The created <see cref="T:Network.RSA.SecureServerConnectionContainer"/>.</returns>
         </member>
         <member name="T:Network.Converter.IPacketConverter">
             <summary>
             Describes the methods that a packet converter must implement in order to be able to serialise and deserialise
             packets to and from a binary form.
             </summary>
-        </member>
-        <member name="M:Network.Converter.IPacketConverter.SerialisePacket(Network.Packets.Packet)">
-            <summary>
-            Serialises the given <see cref="T:Network.Packets.Packet"/> object to a <see cref="T:System.Byte"/> array.
-            </summary>
-            <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
-            <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
         </member>
         <member name="M:Network.Converter.IPacketConverter.GetBytes(Network.Packets.Packet)">
             <summary>
@@ -1719,23 +1799,13 @@
             <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
             <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
         </member>
-        <member name="M:Network.Converter.IPacketConverter.SerialisePacket``1(``0)">
+        <member name="M:Network.Converter.IPacketConverter.GetBytes``1(``0)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/> object to a <see cref="T:System.Byte"/> array.
             </summary>
             <typeparam name="P">The <see cref="T:System.Type"/> of packet to serialise.</typeparam>
             <param name="packet">The <see cref="T:Network.Packets.Packet"/> object to serialise into a <see cref="T:System.Byte"/> array.</param>
             <returns>A <see cref="T:System.Byte"/> array that holds the serialised packet.</returns>
-        </member>
-        <member name="M:Network.Converter.IPacketConverter.DeserialisePacket(System.Type,System.Byte[])">
-            <summary>
-            Deserialises the given <see cref="T:System.Byte"/> array into a <see cref="T:Network.Packets.Packet"/> of the given <see cref="T:System.Type"/>.
-            </summary>
-            <param name="packetType">
-            The <see cref="T:System.Type"/> of <see cref="T:Network.Packets.Packet"/> to deserialise the <see cref="T:System.Byte"/> array to.
-            </param>
-            <param name="serialisedPacket">The <see cref="T:System.Byte"/> array holding the serialised <see cref="T:Network.Packets.Packet"/>.</param>
-            <returns>The deserialised <see cref="T:Network.Packets.Packet"/> object of the given type.</returns>
         </member>
         <member name="M:Network.Converter.IPacketConverter.GetPacket(System.Type,System.Byte[])">
             <summary>
@@ -1747,7 +1817,7 @@
             <param name="serialisedPacket">The <see cref="T:System.Byte"/> array holding the serialised <see cref="T:Network.Packets.Packet"/>.</param>
             <returns>The deserialised <see cref="T:Network.Packets.Packet"/> object of the given type.</returns>
         </member>
-        <member name="M:Network.Converter.IPacketConverter.DeserialisePacket``1(System.Byte[])">
+        <member name="M:Network.Converter.IPacketConverter.GetPacket``1(System.Byte[])">
             <summary>
             Deserialises the given <see cref="T:System.Byte"/> array into a <see cref="T:Network.Packets.Packet"/> of the given <see cref="T:System.Type"/>.
             </summary>
@@ -1798,6 +1868,18 @@
             An object to synchronise multi-threaded access to the <see cref="F:Network.Converter.PacketConverter.packetPropertyCache"/>.
             </summary>
         </member>
+        <member name="M:Network.Converter.PacketConverter.GetBytes(Network.Packets.Packet)">
+            <inheritdoc />
+        </member>
+        <member name="M:Network.Converter.PacketConverter.GetBytes``1(``0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Network.Converter.PacketConverter.GetPacket(System.Type,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Network.Converter.PacketConverter.GetPacket``1(System.Byte[])">
+            <inheritdoc />
+        </member>
         <member name="M:Network.Converter.PacketConverter.GetTypeProperties(System.Type)">
             <summary>
             Returns an array of the <see cref="T:System.Reflection.PropertyInfo"/>s that need to be serialised on the given <see cref="T:System.Type"/>.
@@ -1808,24 +1890,6 @@
             <returns>
             An array of all <see cref="T:System.Reflection.PropertyInfo"/>s that should be serialised on the given <see cref="T:System.Type"/>
             </returns>
-        </member>
-        <member name="M:Network.Converter.PacketConverter.SerialisePacket(Network.Packets.Packet)">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.Converter.PacketConverter.GetBytes(Network.Packets.Packet)">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.Converter.PacketConverter.SerialisePacket``1(``0)">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.Converter.PacketConverter.DeserialisePacket(System.Type,System.Byte[])">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.Converter.PacketConverter.GetPacket(System.Type,System.Byte[])">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.Converter.PacketConverter.DeserialisePacket``1(System.Byte[])">
-            <inheritdoc />
         </member>
         <member name="M:Network.Converter.PacketConverter.SerialiseObjectToWriter(System.Object,System.IO.BinaryWriter)">
             <summary>
@@ -2592,138 +2656,66 @@
             <summary>
             Provides additional functionality to the <see cref="T:Network.Packets.RawData"/> class.
             </summary>
+            <remarks>
+            The methods in this class function as shortcuts to calling the relevant <see cref="T:Network.Converter.RawDataConverter"/> method.
+            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToBoolean(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToBoolean(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt8(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt8(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt16(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt16(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt32(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt32(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUInt64(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUInt64(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt8(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt8(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt16(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt16(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt32(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt32(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToInt64(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToInt64(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF16_BigEndian_String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF16_BigEndian_String(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF16_LittleEndian_String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF16_LittleEndian_String(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUnicodeString(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUnicodeString(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/> method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF32String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF32String(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF8String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF8String(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToUTF7String(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToUTF7String(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToASCIIString(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToASCIIString(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToChar(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToChar(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToSingle(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToSingle(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="M:Network.Extensions.RawDataExtension.ToDouble(Network.Packets.RawData)">
             <inheritdoc cref="M:Network.Converter.RawDataConverter.ToDouble(Network.Packets.RawData)"/>
-            <remarks>
-            This method should probably not be used, it would be preferable to use the relevant <see cref="T:Network.Converter.RawDataConverter"/>
-            method instead.
-            </remarks>
         </member>
         <member name="T:Network.Extensions.RSACryptoServiceProviderExtensions">
             <summary>
@@ -3047,8 +3039,7 @@
         </member>
         <member name="M:Network.Packets.AddPacketTypeRequest.#ctor(System.String)">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Packets.AddPacketTypeRequest"/> class, with the given
-            <see cref="T:System.Reflection.Assembly"/>s name specified.
+            Initializes a new instance of the <see cref="T:Network.Packets.AddPacketTypeRequest"/> class.
             </summary>
             <param name="assemblyName">Name of the assembly to add.</param>
         </member>
@@ -3080,7 +3071,10 @@
             </summary>
         </member>
         <member name="M:Network.Packets.CloseRequest.#ctor(Network.Enums.CloseReason)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.CloseRequest"/> class.
+            </summary>
+            <param name="reason">The reason for which the receiving <see cref="T:Network.Connection"/> should close.</param>
         </member>
         <member name="P:Network.Packets.CloseRequest.CloseReason">
             <summary>
@@ -3093,7 +3087,10 @@
             </summary>
         </member>
         <member name="M:Network.Packets.EstablishUdpRequest.#ctor(System.Int32)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.EstablishUdpRequest"/> class.
+            </summary>
+            <param name="udpPort">The port to use for UDP communication.</param>
         </member>
         <member name="P:Network.Packets.EstablishUdpRequest.UdpPort">
             <summary>
@@ -3106,7 +3103,11 @@
             </summary>
         </member>
         <member name="M:Network.Packets.EstablishUdpResponse.#ctor(System.Int32,Network.Packets.RequestPacket)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.EstablishUdpResponse"/> class.
+            </summary>
+            <param name="udpPort">The port to use for UDP communication.</param>
+            <param name="request">The handled <see cref="T:Network.Packets.EstablishUdpRequest"/>.</param>
         </member>
         <member name="P:Network.Packets.EstablishUdpResponse.UdpPort">
             <summary>
@@ -3184,7 +3185,7 @@
         </member>
         <member name="M:Network.Packets.RawData.#ctor(System.String,System.Byte[])">
             <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Packets.RawData"/> packet, with the given key and data.
+            Initializes a new instance of the <see cref="T:Network.Packets.RawData"/> class.
             </summary>
             <param name="key">The key that <see cref="T:Network.Packets.RawData"/> packet handlers are registered with.</param>
             <param name="data">The serialised primitive value.</param>
@@ -3214,7 +3215,7 @@
         </member>
         <member name="M:Network.Packets.ResponsePacket.#ctor(Network.Packets.RequestPacket)">
             <summary>
-            Default constructor for a response packet.
+            Initializes a new instance of the <see cref="T:Network.Packets.ResponsePacket"/> class.
             </summary>
             <param name="packet">The <see cref="T:Network.Packets.RequestPacket"/> that is being handled.</param>
         </member>
@@ -3225,7 +3226,11 @@
             <seealso cref="T:Network.Packets.Packet" />
         </member>
         <member name="M:Network.Packets.RSA.RSAKeyInformationRequest.#ctor(System.String,System.Int32)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/> class.
+            </summary>
+            <param name="publicKey">The public key to share.</param>
+            <param name="keySize">The size of the public key.</param>
         </member>
         <member name="P:Network.Packets.RSA.RSAKeyInformationRequest.PublicKey">
             <summary>
@@ -3243,7 +3248,12 @@
             </summary>
         </member>
         <member name="M:Network.Packets.RSA.RSAKeyInformationResponse.#ctor(System.String,System.Int32,Network.Packets.RSA.RSAKeyInformationRequest)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.RSA.RSAKeyInformationResponse"/> class.
+            </summary>
+            <param name="publicKey">The public key to share.</param>
+            <param name="keySize">The size of the public key.</param>
+            <param name="request">The handled <see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/>.</param>
         </member>
         <member name="P:Network.Packets.RSA.RSAKeyInformationResponse.PublicKey">
             <summary>
@@ -3266,7 +3276,10 @@
             </summary>
         </member>
         <member name="M:Network.Packets.UDPPingResponse.#ctor(Network.Packets.UDPPingRequest)">
-            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Packets.UDPPingRequest"/> class.
+            </summary>
+            <param name="request">The handled <see cref="T:Network.Packets.UDPPingRequest"/>.</param>
         </member>
         <member name="T:Network.RSA.RSAConnection">
             <summary>
@@ -3289,6 +3302,20 @@
         <member name="F:Network.RSA.RSAConnection.isRSACommunicationActive">
             <summary>
             Whether RSA encryption is currently active on this connection.
+            </summary>
+        </member>
+        <member name="F:Network.RSA.RSAConnection.MAX_ENCRYPTION_BYTE_SIZE">
+            <summary>
+            RSA is only capable of encrypting byte array of this size.
+            The max encryption size isn't abitrary; but indirectly set by
+            the <see chref="RSACryptoServiceProvider" />
+            </summary>
+        </member>
+        <member name="F:Network.RSA.RSAConnection.MAX_DECRYPTION_BYTE_SIZE">
+            <summary>
+            RSA is only capable of encrypting byte array of this size.
+            The max encryption size isn't abitrary; but indirectly set by
+            the <see chref="RSACryptoServiceProvider" />
             </summary>
         </member>
         <member name="M:Network.RSA.RSAConnection.#ctor(Network.Connection,Network.RSA.RSAPair)">
@@ -3350,18 +3377,6 @@
             once set.
             </summary>
         </member>
-        <member name="M:Network.RSA.RSAConnection.SerialisePacket(Network.Packets.Packet)">
-            <summary>
-            Serialises the given <see cref="T:Network.Packets.Packet"/>, and encrypts the resulting
-            bytes using the private RSA key and the <see cref="P:Network.RSA.RSAConnection.EncryptionProvider"/>.
-            </summary>
-            <param name="packet">
-            The <see cref="T:Network.Packets.Packet"/> object to serialise.
-            </param>
-            <returns>
-            The RSA encrypted bytes that represent the given packet.
-            </returns>
-        </member>
         <member name="M:Network.RSA.RSAConnection.GetBytes(Network.Packets.Packet)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/>, and encrypts the resulting
@@ -3374,7 +3389,7 @@
             The RSA encrypted bytes that represent the given packet.
             </returns>
         </member>
-        <member name="M:Network.RSA.RSAConnection.SerialisePacket``1(``0)">
+        <member name="M:Network.RSA.RSAConnection.GetBytes``1(``0)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/>, and encrypts the resulting
             bytes using the private RSA key and the <see cref="P:Network.RSA.RSAConnection.EncryptionProvider"/>.
@@ -3387,21 +3402,6 @@
             </param>
             <returns>
             The RSA encrypted bytes that represent the given packet.
-            </returns>
-        </member>
-        <member name="M:Network.RSA.RSAConnection.DeserialisePacket(System.Type,System.Byte[])">
-            <summary>
-            Deserialises the given encrypted bytes into a <see cref="T:Network.Packets.Packet"/>
-            of the given type.
-            </summary>
-            <param name="packetType">
-            The type of packet to deserialise the bytes to.
-            </param>
-            <param name="serialisedPacket">
-            The RSA encrypted bytes to deserialise.
-            </param>
-            <returns>
-            The deserialised <see cref="T:Network.Packets.Packet"/> object.
             </returns>
         </member>
         <member name="M:Network.RSA.RSAConnection.GetPacket(System.Type,System.Byte[])">
@@ -3419,7 +3419,7 @@
             The deserialised <see cref="T:Network.Packets.Packet"/> object.
             </returns>
         </member>
-        <member name="M:Network.RSA.RSAConnection.DeserialisePacket``1(System.Byte[])">
+        <member name="M:Network.RSA.RSAConnection.GetPacket``1(System.Byte[])">
             <summary>
             Deserialises the given encrypted bytes into a <see cref="T:Network.Packets.Packet"/>
             of the given type.
