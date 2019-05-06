@@ -46,12 +46,8 @@
         UdpLimitExceeded = 7,
 
         /// <summary>
-        /// An internal handled exception.
-        /// </summary>
-        InternalException = 8,
-
-        /// <summary>
         /// An exception in the writePacketThread occured.
+        /// Indicates, that the endpoint couldn't be reached and is offline.
         /// </summary>
         WritePacketThreadException = 9,
 
@@ -62,6 +58,7 @@
 
         /// <summary>
         /// An exception in the invokePacketThread occured.
+        /// Indicates, that an exception has been thrown in the packet-handling subscriber.
         /// </summary>
         InvokePacketThreadException = 11,
 
