@@ -146,6 +146,7 @@ namespace Network
             if (amount == 0) return new byte[0];
             byte[] requestedBytes = new byte[amount];
             int receivedIndex = 0;
+
             while (receivedIndex < amount)
             {
                 while (client.Available == 0)

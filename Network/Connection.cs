@@ -740,7 +740,7 @@ namespace Network
                 while (true)
                 {
                     //Wait till we have something to send.
-                    dataAvailableEvent.WaitOne();
+                    dataAvailableEvent.WaitOne(TIMEOUT);
 
                     WriteSubWork();
 
