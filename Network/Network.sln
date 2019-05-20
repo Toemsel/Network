@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Network", "Network.csproj", "{793945C4-2E9B-4B9E-A3D6-2D49F1E6DA38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestClient", "..\Examples\NetworkTestClient\NetworkTestClient.csproj", "{B1C6802F-573F-4976-95BA-9CD163170DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkTestClient", "..\Examples\NetworkTestClient\NetworkTestClient.csproj", "{B1C6802F-573F-4976-95BA-9CD163170DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestServer", "..\Examples\NetworkTestServer\NetworkTestServer.csproj", "{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkTestServer", "..\Examples\NetworkTestServer\NetworkTestServer.csproj", "{3DA8F6ED-CDAB-45C4-9C2D-D55313ACDFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServerClientPackets", "..\Examples\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServerClientPackets", "..\Examples\TestServerClientPackets\TestServerClientPackets.csproj", "{53832142-B075-4828-A922-BDE5EC842277}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network.XUnit", "..\Network.XUnit\Network.XUnit.csproj", "{53832142-B075-4828-A922-BDE5EC842278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Network.XUnit", "..\Network.XUnit\Network.XUnit.csproj", "{53832142-B075-4828-A922-BDE5EC842278}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

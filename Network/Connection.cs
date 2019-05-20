@@ -686,7 +686,10 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
-            catch (Exception) { }
+            catch (Exception exception)
+            {
+                Logger.Log($"Delegating packet to subscribers.", exception, LogLevel.Exception);
+            }
 
             CloseHandler(CloseReason.InvokePacketThreadException);
         }

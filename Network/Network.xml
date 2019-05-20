@@ -427,8 +427,15 @@
             Whether both the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> and <see cref="P:Network.ClientConnectionContainer.UdpConnection"/> are currently alive.
             </summary>
         </member>
-        <member name="M:Network.ClientConnectionContainer.Dispose">
-            <inheritdoc />
+        <member name="E:Network.ClientConnectionContainer.ConnectionEstablished">
+            <summary>
+            Signifies that a connection has been made on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
+            </summary>
+        </member>
+        <member name="E:Network.ClientConnectionContainer.ConnectionLost">
+            <summary>
+            Signifies that a connection has been lost on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
+            </summary>
         </member>
         <member name="M:Network.ClientConnectionContainer.ToString">
             <inheritdoc />
@@ -640,15 +647,8 @@
             </summary>
             <returns>The created <see cref="T:Network.UdpConnection"/>.</returns>
         </member>
-        <member name="E:Network.ClientConnectionContainer.ConnectionEstablished">
-            <summary>
-            Signifies that a connection has been made on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
-            </summary>
-        </member>
-        <member name="E:Network.ClientConnectionContainer.ConnectionLost">
-            <summary>
-            Signifies that a connection has been lost on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
-            </summary>
+        <member name="M:Network.ClientConnectionContainer.Dispose">
+            <inheritdoc />
         </member>
         <member name="T:Network.Connection">
             <summary>
@@ -2464,14 +2464,10 @@
             The client requested too many UDP connections.
             </summary>
         </member>
-        <member name="F:Network.Enums.CloseReason.InternalException">
-            <summary>
-            An internal handled exception.
-            </summary>
-        </member>
         <member name="F:Network.Enums.CloseReason.WritePacketThreadException">
             <summary>
             An exception in the writePacketThread occured.
+            Indicates, that the endpoint couldn't be reached and is offline.
             </summary>
         </member>
         <member name="F:Network.Enums.CloseReason.ReadPacketThreadException">
@@ -2482,6 +2478,7 @@
         <member name="F:Network.Enums.CloseReason.InvokePacketThreadException">
             <summary>
             An exception in the invokePacketThread occured.
+            Indicates, that an exception has been thrown in the packet-handling subscriber.
             </summary>
         </member>
         <member name="F:Network.Enums.CloseReason.AssemblyDoesNotExist">

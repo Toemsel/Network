@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.1.10</Version>
+     <Version>6.1.1.11</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -29,8 +29,8 @@ Sending Enums Bugfix
 ServerConnectionContainer CloseTcpConnection Bugfix
 Comments and refactorings</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.1.10</AssemblyVersion>
-     <FileVersion>6.1.1.10</FileVersion>
+     <AssemblyVersion>6.1.1.11</AssemblyVersion>
+     <FileVersion>6.1.1.11</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>

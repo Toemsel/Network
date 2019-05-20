@@ -4,6 +4,7 @@ using Network.Packets;
 using Network.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
@@ -171,7 +172,11 @@ namespace Network
         /// <summary>
         /// The interval in milliseconds between reconnect attempts.
         /// </summary>
-        public int ReconnectInterval { get; set; } = 2500;
+        public int ReconnectInterval
+        {
+            get => (int)reconnectTimer.Interval;
+            set => reconnectTimer.Interval = value;
+        }
 
         /// <summary>
         /// The current <see cref="Network.TcpConnection"/> for this instance.
@@ -216,17 +221,29 @@ namespace Network
 
         #endregion Properties
 
-        #region Methods
+        #region Events
 
-        #region Implmentation of IDisposable
-
-        /// <inheritdoc />
-        public void Dispose()
+        /// <summary>
+        /// Signifies that a connection has been made on either the <see cref="TcpConnection"/> or <see cref="UdpConnection"/>.
+        /// </summary>
+        public event Action<Connection, ConnectionType> ConnectionEstablished
         {
-            reconnectTimer.Dispose();
+            add { connectionEstablished += value; }
+            remove { connectionEstablished -= value; }
         }
 
-        #endregion Implmentation of IDisposable
+        /// <summary>
+        /// Signifies that a connection has been lost on either the <see cref="TcpConnection"/> or <see cref="UdpConnection"/>.
+        /// </summary>
+        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
+        {
+            add { connectionLost += value; }
+            remove { connectionLost -= value; }
+        }
+
+        #endregion Events
+
+        #region Methods
 
         #region Overrides of Object
 
@@ -244,6 +261,7 @@ namespace Network
         internal void Initialize()
         {
             reconnectTimer = new Timer();
+            reconnectTimer.Interval = ReconnectInterval;
             reconnectTimer.Elapsed += TryToConnect;
             TryConnect();
         }
@@ -709,7 +727,6 @@ namespace Network
         public void Reconnect(bool forceReconnect = false)
         {
             reconnectTimer.Stop();
-            reconnectTimer.Interval = ReconnectInterval;
 
             if (forceReconnect || AutoReconnect)
                 reconnectTimer.Start();
@@ -731,26 +748,16 @@ namespace Network
 
         #endregion Methods
 
-        #region Events
+        #region Implmentation of IDisposable
 
-        /// <summary>
-        /// Signifies that a connection has been made on either the <see cref="TcpConnection"/> or <see cref="UdpConnection"/>.
-        /// </summary>
-        public event Action<Connection, ConnectionType> ConnectionEstablished
+        /// <inheritdoc />
+        public void Dispose()
         {
-            add { connectionEstablished += value; }
-            remove { connectionEstablished -= value; }
+            reconnectTimer.Elapsed -= TryToConnect;
+            reconnectTimer.Stop();
+            reconnectTimer.Dispose();
         }
 
-        /// <summary>
-        /// Signifies that a connection has been lost on either the <see cref="TcpConnection"/> or <see cref="UdpConnection"/>.
-        /// </summary>
-        public event Action<Connection, ConnectionType, CloseReason> ConnectionLost
-        {
-            add { connectionLost += value; }
-            remove { connectionLost -= value; }
-        }
-
-        #endregion Events
+        #endregion Implmentation of IDisposable
     }
 }

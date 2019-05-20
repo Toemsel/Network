@@ -250,7 +250,11 @@ namespace Network
         }
 
         /// <inheritdoc />
-        protected override void CloseSocket() => Client.Close();
+        protected override void CloseSocket()
+        {
+            stream.Close();
+            Client.Close();
+        }
 
         /// <inheritdoc />
         protected override void HandleUnknownPacket() => Close(CloseReason.UnknownPacket, true);

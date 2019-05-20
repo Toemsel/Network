@@ -53,7 +53,7 @@ namespace Network
             tcpClient.NoDelay = true;
             tcpClient.SendTimeout = 0;
             tcpClient.ReceiveTimeout = 0;
-            tcpClient.LingerState = new LingerOption(true, TIMEOUT);
+            tcpClient.LingerState = new LingerOption(false, 0);
 
             //The initialization has to be done elsewhere.
             //The caller of the constructor wants to apply
@@ -183,7 +183,11 @@ namespace Network
         protected override void CloseHandler(CloseReason closeReason) => Close(closeReason, true);
 
         /// <inheritdoc />
-        protected override void CloseSocket() => client.Close();
+        protected override void CloseSocket()
+        {
+            stream.Close();
+            client.Close();
+        }
 
         #endregion Methods
     }
