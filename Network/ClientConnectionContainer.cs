@@ -4,7 +4,6 @@ using Network.Packets;
 using Network.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
