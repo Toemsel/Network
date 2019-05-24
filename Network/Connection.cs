@@ -302,6 +302,13 @@ namespace Network
         public Performance Performance { get; set; } = Performance.Default;
 
         /// <summary>
+        /// Gets why the connection has been closed.
+        /// <see cref="Enums.CloseReason.Unknown"/> if the connection is still alive.
+        /// </summary>
+        /// <value><see cref="Enums.CloseReason"/>.</value>
+        internal CloseReason CloseReason { get; private set; } = CloseReason.Unknown;
+
+        /// <summary>
         /// The value of <see cref="Performance"/>, but simply cast to an <see cref="int"/>.
         /// </summary>
         public int IntPerformance { get { return (int)Performance; } }
@@ -659,7 +666,7 @@ namespace Network
                 Logger.Log("Reading packet from stream", exception, LogLevel.Exception);
             }
 
-            CloseHandler(CloseReason.ReadPacketThreadException);
+            CloseHandler(Enums.CloseReason.ReadPacketThreadException);
         }
 
         /// <summary>
@@ -691,7 +698,7 @@ namespace Network
                 Logger.Log($"Delegating packet to subscribers.", exception, LogLevel.Exception);
             }
 
-            CloseHandler(CloseReason.InvokePacketThreadException);
+            CloseHandler(Enums.CloseReason.InvokePacketThreadException);
         }
 
         /// <summary>
@@ -757,7 +764,7 @@ namespace Network
                     {
                         ConfigPing(KeepAlive);
                         currentPingStopWatch.Reset();
-                        CloseHandler(CloseReason.Timeout);
+                        CloseHandler(Enums.CloseReason.Timeout);
                     }
                 }
             }
@@ -767,7 +774,7 @@ namespace Network
                 Logger.Log("Write object on stream", exception, LogLevel.Exception);
             }
 
-            CloseHandler(CloseReason.WritePacketThreadException);
+            CloseHandler(Enums.CloseReason.WritePacketThreadException);
         }
 
         #endregion Threads
@@ -823,7 +830,7 @@ namespace Network
             else if (packet.GetType().Equals(typeof(AddPacketTypeRequest)))
             {
                 Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == ((AddPacketTypeRequest)packet).AssemblyName).SingleOrDefault();
-                if (assembly == null) CloseHandler(CloseReason.AssemblyDoesNotExist);
+                if (assembly == null) CloseHandler(Enums.CloseReason.AssemblyDoesNotExist);
                 else AddExternalPackets(assembly);
                 Send(new AddPacketTypeResponse(typeByte.Values.ToList(), (AddPacketTypeRequest)packet));
                 return;
@@ -974,6 +981,7 @@ namespace Network
             if (callCloseEvent)
                 connectionClosed?.Invoke(closeReason, this);
 
+            CloseReason = closeReason;
             writeStreamThread.AbortSave();
             readStreamThread.AbortSave();
             invokePacketThread.AbortSave();

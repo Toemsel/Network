@@ -65,6 +65,10 @@
         /// <summary>
         /// The assembly for the incoming packet is not available. Make sure that every project is including that assembly.
         /// </summary>
-        AssemblyDoesNotExist = 12
+        AssemblyDoesNotExist = 12,
+        /// <summary>
+        /// The actual reason why the connection has been terminated is not known.
+        /// </summary>
+        Unknown = 13
     }
 }

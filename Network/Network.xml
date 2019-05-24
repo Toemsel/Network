@@ -894,6 +894,13 @@
             the slower this <see cref="T:Network.Connection"/> will handle incoming, pending handling, and outgoing <see cref="T:Network.Packets.Packet"/>s.
             </summary>
         </member>
+        <member name="P:Network.Connection.CloseReason">
+            <summary>
+            Gets why the connection has been closed.
+            <see cref="F:Network.Enums.CloseReason.Unknown"/> if the connection is still alive.
+            </summary>
+            <value><see cref="T:Network.Enums.CloseReason"/>.</value>
+        </member>
         <member name="P:Network.Connection.IntPerformance">
             <summary>
             The value of <see cref="P:Network.Connection.Performance"/>, but simply cast to an <see cref="T:System.Int32"/>.
@@ -1133,7 +1140,7 @@
         </member>
         <member name="M:Network.Connection.CloseHandler(Network.Enums.CloseReason)">
             <summary>
-            Handles a <see cref="T:Network.Connection"/> closure, with the given <see cref="T:Network.Enums.CloseReason"/>.
+            Handles a <see cref="T:Network.Connection"/> closure, with the given <see cref="P:Network.Connection.CloseReason"/>.
             </summary>
             <param name="closeReason">The reason for the <see cref="T:Network.Connection"/> closing.</param>
         </member>
@@ -1144,7 +1151,7 @@
         </member>
         <member name="M:Network.Connection.ExternalClose(Network.Enums.CloseReason)">
             <summary>
-            Handles a case where the remote <see cref="T:Network.Connection"/> caused a closure for the given <see cref="T:Network.Enums.CloseReason"/>.
+            Handles a case where the remote <see cref="T:Network.Connection"/> caused a closure for the given <see cref="P:Network.Connection.CloseReason"/>.
             </summary>
             <param name="closeReason">The reason for the <see cref="T:Network.Connection"/> closing.</param>
         </member>
@@ -2484,6 +2491,11 @@
         <member name="F:Network.Enums.CloseReason.AssemblyDoesNotExist">
             <summary>
             The assembly for the incoming packet is not available. Make sure that every project is including that assembly.
+            </summary>
+        </member>
+        <member name="F:Network.Enums.CloseReason.Unknown">
+            <summary>
+            The actual reason why the connection has been terminated is not known.
             </summary>
         </member>
         <member name="T:Network.Enums.ConnectionType">

@@ -410,34 +410,29 @@ namespace Network
             //Restore new state by adding packets the user wanted to register while the connection was dead.
             tcpPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod("RegisterPacketHandler", BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(tcpConnection, new object[] { t.Item2, t.Item3 });
             });
             tcpStaticPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod("RegisterStaticPacketHandler", BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterStaticPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
             });
-            tcpConnection.ConnectionClosed += (c, cc) =>
-            {
-                tcpPacketHandlerBackup = cc.BackupPacketHandler();
-                connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
-                Reconnect();
-            };
+
             sendSlowBuffer.ForEach(tcpConnection.Send);
             sendSlowObjectBuffer.ForEach(p => tcpConnection.Send(p.Item1, p.Item2));
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
             tcpUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("DeregisterPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
                 unRegisterPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
             });
             tcpStaticUnPacketHandlerBuffer.ForEach(t =>
             {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod("DeregisterStaticPacketHandler");
+                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterStaticPacketHandler));
                 unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
                 unRegisterPacketHandler.Invoke(tcpConnection, null);
             });
@@ -451,8 +446,24 @@ namespace Network
             tcpStaticPacketHandlerBuffer.Clear();
             tcpStaticUnPacketHandlerBuffer.Clear();
 
-            if (!tcpConnection.IsAlive) return; //Connection could already be dead because of the prePackets.
-            connectionEstablished?.Invoke(tcpConnection, ConnectionType.TCP);
+            //Connection could already be dead because of the prePackets.
+            if (!tcpConnection.IsAlive)
+            {
+                tcpPacketHandlerBackup = tcpConnection.BackupPacketHandler();
+                connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, tcpConnection.CloseReason);
+                Reconnect();
+            }
+            else
+            {
+                tcpConnection.ConnectionClosed += (c, cc) =>
+                {
+                    tcpPacketHandlerBackup = cc.BackupPacketHandler();
+                    connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
+                    Reconnect();
+                };
+
+                connectionEstablished?.Invoke(tcpConnection, ConnectionType.TCP);
+            }
         }
 
         /// <summary>
@@ -484,12 +495,7 @@ namespace Network
                 registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
                 registerPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
             });
-            udpConnection.ConnectionClosed += (c, cc) =>
-            {
-                udpPacketHandlerBackup = cc.BackupPacketHandler();
-                connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
-                Reconnect();
-            };
+
             sendFastBuffer.ForEach(udpConnection.Send);
             sendFastObjectBuffer.ForEach(p => udpConnection.Send(p.Item1, p.Item2));
             //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
@@ -515,8 +521,24 @@ namespace Network
             udpStaticPacketHandlerBuffer.Clear();
             udpStaticUnPacketHandlerBuffer.Clear();
 
-            if (!UdpConnection.IsAlive) return; //Connection could already be dead because of the prePackets.
-            connectionEstablished?.Invoke(udpConnection, ConnectionType.UDP);
+            //Connection could already be dead because of the prePackets.
+            if (!UdpConnection.IsAlive)
+            {
+                udpPacketHandlerBackup = udpConnection.BackupPacketHandler();
+                connectionLost?.Invoke(udpConnection, ConnectionType.UDP, udpConnection.CloseReason);
+                Reconnect();
+            }
+            else
+            {
+                udpConnection.ConnectionClosed += (c, cc) =>
+                {
+                    udpPacketHandlerBackup = cc.BackupPacketHandler();
+                    connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
+                    Reconnect();
+                };
+
+                connectionEstablished?.Invoke(udpConnection, ConnectionType.UDP);
+            }
         }
 
         #endregion Opening New Connections
