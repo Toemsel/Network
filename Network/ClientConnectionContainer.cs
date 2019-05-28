@@ -259,6 +259,7 @@ namespace Network
         /// </summary>
         internal void Initialize()
         {
+            ReconnectInterval = 2500;
             reconnectTimer = new Timer();
             reconnectTimer.Interval = ReconnectInterval;
             reconnectTimer.Elapsed += TryToConnect;
@@ -270,10 +271,7 @@ namespace Network
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">Any event arguments.</param>
-        private void TryToConnect(object sender, ElapsedEventArgs e)
-        {
-            TryConnect();
-        }
+        private void TryToConnect(object sender, ElapsedEventArgs e) => TryConnect();
 
         /// <summary>
         /// Tries to connect to the current <see cref="Connection.IPRemoteEndPoint"/>.
@@ -282,6 +280,7 @@ namespace Network
         {
             if (reconnectTimer != null)
                 reconnectTimer.Stop();
+
             if (tcpConnection == null || !tcpConnection.IsAlive)
                 await OpenNewTCPConnection();
             if ((udpConnection == null || !udpConnection.IsAlive) && IsAlive_TCP)

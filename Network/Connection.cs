@@ -620,7 +620,7 @@ namespace Network
         /// Reads bytes from the network.
         /// </summary>
         /// <param name="amount">The amount of bytes we want to read.</param>
-        /// <returns>The read bytes.</returns>
+        /// <returns>The read <see cref="byte"/>s</returns>
         protected abstract byte[] ReadBytes(int amount);
 
         /// <summary>
