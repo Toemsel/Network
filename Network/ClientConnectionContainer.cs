@@ -259,8 +259,8 @@ namespace Network
         /// </summary>
         internal void Initialize()
         {
-            ReconnectInterval = 2500;
             reconnectTimer = new Timer();
+            ReconnectInterval = 2500;
             reconnectTimer.Interval = ReconnectInterval;
             reconnectTimer.Elapsed += TryToConnect;
             TryConnect();

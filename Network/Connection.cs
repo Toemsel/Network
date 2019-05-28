@@ -666,7 +666,7 @@ namespace Network
                 Logger.Log("Reading packet from stream", exception, LogLevel.Exception);
             }
 
-            CloseHandler(Enums.CloseReason.ReadPacketThreadException);
+            CloseHandler(CloseReason.ReadPacketThreadException);
         }
 
         /// <summary>

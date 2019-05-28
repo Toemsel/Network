@@ -1085,7 +1085,7 @@
             Reads bytes from the network.
             </summary>
             <param name="amount">The amount of bytes we want to read.</param>
-            <returns>The read bytes.</returns>
+            <returns>The read <see cref="T:System.Byte"/>s</returns>
         </member>
         <member name="M:Network.Connection.WriteBytes(System.Byte[])">
             <summary>
@@ -4154,94 +4154,36 @@
         <member name="M:Network.UdpConnection.CloseSocket">
             <inheritdoc />
         </member>
-        <member name="T:Network.Utilities.BiDictionary`2">
+        <member name="T:Network.BiDictionary`2">
             <summary>
-            Provides a dictionary capable of looking up both a key or a value. Otherwise it is the same as a regular dictionary.
-            See https://en.wikipedia.org/wiki/Hash_table for a better explanation of the concepts behind the dictionary.
+            Same as a .net dictionary. But just working in both directions.
             </summary>
-            <typeparam name="TKey">The type of the key stored in the dictionary.</typeparam>
-            <typeparam name="TValue">The type of the value stored in the dictionary.</typeparam>
+            <typeparam name="T">The type of the first dictionary.</typeparam>
+            <typeparam name="U">The type of the second dictionary.</typeparam>
         </member>
-        <member name="F:Network.Utilities.BiDictionary`2.dictionary">
+        <member name="P:Network.BiDictionary`2.Item(`1)">
             <summary>
-            The internal dictionary, storing the keys and values for the bi-directional dictionary.
+            Gets the ElementA
             </summary>
+            <param name="u">ElementB</param>
+            <returns>ElementA</returns>
         </member>
-        <member name="M:Network.Utilities.BiDictionary`2.#ctor">
+        <member name="P:Network.BiDictionary`2.Item(`0)">
             <summary>
-            Constructs an empty dictionary.
+            Gets the ElementB
             </summary>
+            <param name="t">ElementA</param>
+            <returns>ElementB</returns>
         </member>
-        <member name="P:Network.Utilities.BiDictionary`2.Keys">
+        <member name="P:Network.BiDictionary`2.Keys">
             <summary>
             The keys held in the dictionary.
             </summary>
         </member>
-        <member name="P:Network.Utilities.BiDictionary`2.Values">
+        <member name="P:Network.BiDictionary`2.Values">
             <summary>
             The values held in the dictionary.
             </summary>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.ContainsKey(`0)">
-            <summary>
-            Checks whether or not the dictionary contains the given key.
-            </summary>
-            <param name="key">The key to check for.</param>
-            <returns>Whether or not the key exists.</returns>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.ContainsValue(`1)">
-            <summary>
-            Checks whether or not the dictionary contains the given value.
-            </summary>
-            <param name="value">The value to check for.</param>
-            <returns>Whether or not the value exists.</returns>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.TryGetValue(`0,`1@)">
-            <summary>
-            Tries to get the value associated with the given key, returning 'true' if a value was found, or 'false' if it wasn't.
-            </summary>
-            <param name="key">The key for whose value to search.</param>
-            <param name="value">The value, if it was found. Otherwise the default for its type.</param>
-            <returns>Whether or not the given key had a value.</returns>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.TrySetValue(`0,`1)">
-            <summary>
-            Tries to set the value associated with the given key, returning 'true' if the value was set correctly, or
-            'false' if it wasn't.
-            </summary>
-            <param name="key">The key whose value to set.</param>
-            <param name="value">The value to set for the given key.</param>
-            <returns>Whether or not the given key was set to the given value.</returns>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.TryGetKey(`1,`0@)">
-            <summary>
-            Tries to get the key associated with the given value, returning 'true' if a value was found, or 'false' if it wasn't.
-            </summary>
-            <param name="value">The value for whose key to search.</param>
-            <param name="key">The key, if it was found. Otherwise the default for its type.</param>
-            <returns>Whether or not the given value had a key.</returns>
-        </member>
-        <member name="M:Network.Utilities.BiDictionary`2.TrySetKey(`1,`0)">
-            <summary>
-            Tries to set the key associated with the given value, returning 'true' if the key was set correctly, or 'false' if it wasn't.
-            </summary>
-            <param name="key">The value whose key to set.</param>
-            <param name="value">The key to set for the given value.</param>
-            <returns>Whether or not the given value had its key set to the given key.</returns>
-        </member>
-        <member name="P:Network.Utilities.BiDictionary`2.Item(`0)">
-            <summary>
-            Allows for the getting and setting of a value via its key.
-            </summary>
-            <param name="key_">The key whose value to get or set.</param>
-            <returns>The value of the specified key.</returns>
-        </member>
-        <member name="P:Network.Utilities.BiDictionary`2.Item(`1)">
-            <summary>
-            Allows for the getting and setting of a key via its value.
-            </summary>
-            <param name="value_">The value whose key to get or set.</param>
-            <returns>The key of the specified value.</returns>
         </member>
         <member name="T:Network.Utilities.PacketHandlerMap">
             <summary>
