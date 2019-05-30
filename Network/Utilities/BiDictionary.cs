@@ -28,6 +28,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ***********************************************************************
 #endregion Licence - LGPLv3
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Network
@@ -39,14 +40,9 @@ namespace Network
     /// <typeparam name="U">The type of the second dictionary.</typeparam>
     internal class BiDictionary<T, U>
     {
-        private Dictionary<T, U> dictOne = new Dictionary<T, U>();
-        private Dictionary<U, T> dictTwo = new Dictionary<U, T>();
+        private ConcurrentDictionary<T, U> dictOne = new ConcurrentDictionary<T, U>();
+        private ConcurrentDictionary<U, T> dictTwo = new ConcurrentDictionary<U, T>();
 
-        /// <summary>
-        /// Gets the ElementA
-        /// </summary>
-        /// <param name="u">ElementB</param>
-        /// <returns>ElementA</returns>
         public T this[U u]
         {
             get
@@ -59,20 +55,15 @@ namespace Network
             set
             {
                 if (!dictTwo.ContainsKey(u))
-                    dictTwo.Add(u, value);
+                    dictTwo.AddOrUpdate(u, value, (ou, t) => value);
                 if (!dictOne.ContainsKey(value))
-                    dictOne.Add(value, u);
+                    dictOne.AddOrUpdate(value, u, (t, ou) => u);
 
                 dictOne[value] = u;
                 dictTwo[u] = value;
             }
         }
 
-        /// <summary>
-        /// Gets the ElementB
-        /// </summary>
-        /// <param name="t">ElementA</param>
-        /// <returns>ElementB</returns>
         public U this[T t]
         {
             get
@@ -85,9 +76,9 @@ namespace Network
             set
             {
                 if (!dictOne.ContainsKey(t))
-                    dictOne.Add(t, value);
+                    dictOne.AddOrUpdate(t, value, (ot, u) => value);
                 if (!dictTwo.ContainsKey(value))
-                    dictTwo.Add(value, t);
+                    dictTwo.AddOrUpdate(value, t, (u, ot) => t);
 
                 dictTwo[value] = t;
                 dictOne[t] = value;
@@ -108,8 +99,8 @@ namespace Network
 
         public bool ContainsKey(U u) => dictTwo.ContainsKey(u);
 
-        public bool ContainsValue(U u) => dictOne.ContainsValue(u);
+        public bool ContainsValue(U u) => dictOne.Values.Contains(u);
 
-        public bool ContainsValue(T t) => dictTwo.ContainsValue(t);
+        public bool ContainsValue(T t) => dictTwo.Values.Contains(t);
     }
 }

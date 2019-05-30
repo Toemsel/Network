@@ -23,12 +23,10 @@ namespace Network
         /// A connection was established successfully.
         /// </summary>
         Connected,
-
         /// <summary>
         /// A connection couldn't be established. The IP, port and firewall might have to be checked.
         /// </summary>
         Timeout,
-
         /// <summary>
         /// Could not establish a UDP connection as the parent TCP connection is not alive.
         /// </summary>

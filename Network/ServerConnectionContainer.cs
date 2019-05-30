@@ -99,6 +99,10 @@ namespace Network
 
         /// <summary>
         /// Whether <see cref="UdpConnection"/>s are allowed to connect.
+        /// If <c>False</c> the client's can't use the <see cref="ClientConnectionContainer" />,
+        /// since the <see cref="ClientConnectionContainer" /> automatically tries to establish a <see cref="UdpConnection" />.
+        /// When a client requests a <see cref="UdpConnection" /> while <see cref="AllowUDPConnections"/> is set to false,
+        /// the client's <see cref="TcpConnection" /> will be killed automatically, due to an inappropriate request.
         /// </summary>
         public bool AllowUDPConnections { get; set; } = true;
 

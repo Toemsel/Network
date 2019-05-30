@@ -12,7 +12,7 @@ namespace Network.Utilities
     /// then deserialised. Also maps the <see cref="Packet"/>s IDs to the relevant <see cref="PacketReceivedHandler{P}"/>,
     /// should one be registered for that packet.
     /// </summary>
-    public class PacketHandlerMap
+    internal class PacketHandlerMap
     {
         #region Variables
 
@@ -35,6 +35,55 @@ namespace Network.Utilities
 
         #endregion Variables
 
+        #region Indexers
+
+        /// <summary>
+        /// Gets the <see cref="Delegate"/> method which handles <see cref="RawData"/> packets for the primitive type
+        /// identified by the given key.
+        /// </summary>
+        /// <param name="key">The key for whose primitive type to get a handler delegate.</param>
+        /// <returns>The handler delegate associated with the given key.</returns>
+        internal Delegate this[string key] => keyToDelegateMethodMap[key];
+
+        /// <summary>
+        /// Gets the <see cref="Delegate"/> method which handles packets with the given ID.
+        /// </summary>
+        /// <param name="packetId">The ID of the packet whose handler delegate to return.</param>
+        /// <returns>The handler delegate associated with packets of the given id.</returns>
+        internal Delegate this[int packetId] => packetIdToDelegateMethodMap[packetId].handlerDelegate;
+
+        /// <summary>
+        /// Gets the <see cref="Delegate"/> method which handles packets of the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="packetType">The type of packet whose handler delegate to return.</param>
+        /// <returns>The handler delegate registered for the given type.</returns>
+        internal Delegate this[Type packetType]
+        {
+            get
+            {
+                //There are no registered packet handlers for the given type
+                if (!packetTypeToHandlerIdMap.ContainsKey(packetType))
+                    return null;
+
+                //Gets the first ID of the handlers that are registered for the given packet type
+                int typeHandlerId = packetTypeToHandlerIdMap[packetType].Values.First();
+
+                return packetIdToDelegateMethodMap.ContainsKey(typeHandlerId)
+                    ? packetIdToDelegateMethodMap[typeHandlerId].handlerDelegate
+                    : null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ID associated with the given packet type and handler instance.
+        /// </summary>
+        /// <param name="packetType">The packet type whose handler ID to return.</param>
+        /// <param name="handlerInstance">The handler whose ID to return.</param>
+        /// <returns>The ID associated with the given handler of the given packet type.</returns>
+        internal int this[Type packetType, object handlerInstance] => packetTypeToHandlerIdMap[packetType][handlerInstance];
+
+        #endregion Indexers
+
         #region Methods
 
         /// <summary>
@@ -42,10 +91,7 @@ namespace Network.Utilities
         /// </summary>
         /// <param name="packet">The packet for which to search for handler delegate methods.</param>
         /// <returns>Whether any delegate methods have been registered for the packet.</returns>
-        internal bool HasRegisteredHandler(Packet packet)
-        {
-            return packetIdToDelegateMethodMap.ContainsKey(packet.ID);
-        }
+        internal bool HasRegisteredHandler(Packet packet) => packetIdToDelegateMethodMap.ContainsKey(packet.ID);
 
         /// <summary>
         /// Restores the <see cref="PacketHandlerMap"/> to the state of the given packet handler map.
@@ -53,30 +99,20 @@ namespace Network.Utilities
         /// <param name="map">The <see cref="PacketHandlerMap"/> whose state to restore to.</param>
         internal void Restore(PacketHandlerMap map)
         {
-            Type[] internalAssemblyTypes =
-                Assembly.GetAssembly(typeof(PacketHandlerMap)).GetTypes();
+            Type[] internalAssemblyTypes = Assembly.GetAssembly(typeof(PacketHandlerMap)).GetTypes();
 
-            IEnumerable<Type> externalTypes =
-                map.packetTypeToHandlerIdMap.Keys.ToList().Where(e => internalAssemblyTypes.All(i => i != e));
+            IEnumerable<Type> externalTypes = map.packetTypeToHandlerIdMap.Keys.ToList().Where(e => internalAssemblyTypes.All(i => i != e));
 
             foreach (Type currentExternalType in externalTypes)
             {
                 if (!packetTypeToHandlerIdMap.ContainsKey(currentExternalType))
-                {
-                    packetTypeToHandlerIdMap.Add(currentExternalType,
-                        map.packetTypeToHandlerIdMap[currentExternalType]);
-                }
+                    packetTypeToHandlerIdMap.Add(currentExternalType, map.packetTypeToHandlerIdMap[currentExternalType]);
 
                 int[] externalIds = map.packetTypeToHandlerIdMap[currentExternalType].Values.ToArray();
 
                 foreach (int currentExternalId in externalIds)
-                {
                     if (!packetIdToDelegateMethodMap.ContainsKey(currentExternalId))
-                    {
-                        packetIdToDelegateMethodMap.Add(currentExternalId,
-                            map.packetIdToDelegateMethodMap[currentExternalId]);
-                    }
-                }
+                        packetIdToDelegateMethodMap.Add(currentExternalId, map.packetIdToDelegateMethodMap[currentExternalId]);
             }
         }
 
@@ -117,10 +153,7 @@ namespace Network.Utilities
         /// <typeparam name="P">The type of packet for which the delegate method will be used.</typeparam>
         /// <param name="handlerDelegate">The delegate method to be invoked when the given packet is received.</param>
         /// <param name="handlerInstance">The handler object instance on which the delegate method will be invoked.</param>
-        internal void RegisterPacketDelegate<P>(PacketReceivedHandler<P> handlerDelegate, object handlerInstance) where P : Packet
-        {
-            RegisterPacketHandler<P>((Delegate)handlerDelegate, handlerInstance);
-        }
+        internal void RegisterPacketDelegate<P>(PacketReceivedHandler<P> handlerDelegate, object handlerInstance) where P : Packet => RegisterPacketHandler<P>((Delegate)handlerDelegate, handlerInstance);
 
         /// <summary>
         /// Registers the given static delegate method to be used for all packets of the given packet type.
@@ -128,20 +161,14 @@ namespace Network.Utilities
         /// <typeparam name="P">The type of packet for which the delegate method will be used.</typeparam>
         /// <param name="handlerDelegate">The static delegate method to be invoked when the given packet is received.
         /// </param>
-        internal void RegisterStaticPacketHandler<P>(Delegate handlerDelegate) where P : Packet
-        {
-            RegisterPacketHandler<P>(handlerDelegate, new object());
-        }
+        internal void RegisterStaticPacketHandler<P>(Delegate handlerDelegate) where P : Packet => RegisterPacketHandler<P>(handlerDelegate, new object());
 
         /// <summary>
         /// Registers the given <see cref="PacketReceivedHandler{P}"/> method to be used for all packets of the given packet type.
         /// </summary>
         /// <typeparam name="P">The type of packet for which the delegate method will be used.</typeparam>
         /// <param name="handlerDelegate">The static delegate method to be invoked when the given packet is received.</param>
-        internal void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handlerDelegate) where P : Packet
-        {
-            RegisterStaticPacketHandler<P>((Delegate)handlerDelegate);
-        }
+        internal void RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handlerDelegate) where P : Packet => RegisterStaticPacketHandler<P>((Delegate)handlerDelegate);
 
         /// <summary>
         /// Registers the given <see cref="Delegate"/> method to be used for all <see cref="RawData"/> packets that arrive with the given key.
@@ -161,14 +188,12 @@ namespace Network.Utilities
 
         #endregion Registering Packet Handlers
 
-        #region Deregistering Packet Handlers
-
         /// <summary>
         /// Deregisters packet handlers for the given packet type, on the given packet handler instance.
         /// </summary>
         /// <typeparam name="P">The type of packet for which to deregister any packet handlers.</typeparam>
         /// <param name="handlerInstance">The handler instance for which to deregisters packet handlers.</param>
-        internal void DeregisterPacketHandler<P>(object handlerInstance) where P : Packet
+        internal void UnRegisterPacketHandler<P>(object handlerInstance) where P : Packet
         {
             Type packetType = typeof(P);
 
@@ -203,87 +228,21 @@ namespace Network.Utilities
         /// Deregisters all static packet handlers for the given packet type.
         /// </summary>
         /// <typeparam name="P">The packet type for which to deregister all packet handlers.</typeparam>
-        internal void DeregisterStaticPacketHandler<P>() where P : Packet
-        {
-            DeregisterPacketHandler<P>(null);
-        }
+        internal void UnRegisterStaticPacketHandler<P>() where P : Packet => UnRegisterPacketHandler<P>(null);
 
         /// <summary>
         /// Deregisters all static <see cref="RawData"/> packet handlers for the given key.
         /// </summary>
         /// <param name="key">The key for which to deregister packet handlers.</param>
-        internal void DeregisterStaticRawDataHandler(string key)
+        internal void UnRegisterStaticRawDataHandler(string key)
         {
+            //No delegates for the given key exist
             if (!keyToDelegateMethodMap.ContainsKey(key))
-            {
-                //No delegates for the given key exist
                 return;
-            }
 
             keyToDelegateMethodMap.Remove(key);
         }
 
-        #endregion Deregistering Packet Handlers
-
         #endregion Methods
-
-        #region Indexers
-
-        /// <summary>
-        /// Gets the <see cref="Delegate"/> method which handles <see cref="RawData"/> packets for the primitive type
-        /// identified by the given key.
-        /// </summary>
-        /// <param name="key">The key for whose primitive type to get a handler delegate.</param>
-        /// <returns>The handler delegate associated with the given key.</returns>
-        internal Delegate this[string key]
-        {
-            get { return keyToDelegateMethodMap[key]; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Delegate"/> method which handles packets with the given ID.
-        /// </summary>
-        /// <param name="packetId">The ID of the packet whose handler delegate to return.</param>
-        /// <returns>The handler delegate associated with packets of the given id.</returns>
-        internal Delegate this[int packetId]
-        {
-            get { return packetIdToDelegateMethodMap[packetId].handlerDelegate; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Delegate"/> method which handles packets of the given <see cref="Type"/>.
-        /// </summary>
-        /// <param name="packetType">The type of packet whose handler delegate to return.</param>
-        /// <returns>The handler delegate registered for the given type.</returns>
-        internal Delegate this[Type packetType]
-        {
-            get
-            {
-                //There are no registered packet handlers for the given type
-                if (!packetTypeToHandlerIdMap.ContainsKey(packetType))
-                    return null;
-
-                //Gets the first ID of the handlers that are registered for the given packet type
-                int typeHandlerId =
-                    packetTypeToHandlerIdMap[packetType].Values.First();
-
-                return packetIdToDelegateMethodMap.ContainsKey(typeHandlerId)
-                    ? packetIdToDelegateMethodMap[typeHandlerId].handlerDelegate
-                    : null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ID associated with the given packet type and handler instance.
-        /// </summary>
-        /// <param name="packetType">The packet type whose handler ID to return.</param>
-        /// <param name="handlerInstance">The handler whose ID to return.</param>
-        /// <returns>The ID associated with the given handler of the given packet type.</returns>
-        internal int this[Type packetType, object handlerInstance]
-        {
-            get { return packetTypeToHandlerIdMap[packetType][handlerInstance]; }
-        }
-
-        #endregion Indexers
     }
 }

@@ -286,88 +286,6 @@
             The <see cref="T:Network.UdpConnection"/> for this <see cref="T:Network.ClientConnectionContainer"/>.
             </summary>
         </member>
-        <member name="F:Network.ClientConnectionContainer.sendSlowBuffer">
-            <summary>
-            Buffer for all messages to be sent via TCP to the remote <see cref="T:Network.Connection"/>, once the connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.sendSlowObjectBuffer">
-            <summary>
-            Buffer for all messages to be sent via TCP to the remote <see cref="T:Network.Connection"/>, once the connection is established, that
-            have a sender instance who is waiting for a response.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.tcpPacketHandlerBackup">
-            <summary>
-            Cache of all the <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s to register on the remote <see cref="T:Network.TcpConnection"/>
-            once a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.tcpStaticPacketHandlerBuffer">
-            <summary>
-            Buffer for all the static packet handlers to register on the remote <see cref="T:Network.TcpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.tcpStaticUnPacketHandlerBuffer">
-            <summary>
-            Buffer for all the static packet handlers to deregister on the remote <see cref="T:Network.TcpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.tcpPacketHandlerBuffer">
-            <summary>
-            Buffer for all the packet handlers to register on the remote <see cref="T:Network.TcpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.tcpUnPacketHandlerBuffer">
-            <summary>
-            Buffer for all the packet handlers to deregister on the remote <see cref="T:Network.TcpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.sendFastBuffer">
-            <summary>
-            Buffer for all messages to be sent via UDP to the remote <see cref="T:Network.Connection"/>, once the connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.sendFastObjectBuffer">
-            <summary>
-            Buffer for all messages to be sent via UDP to the remote <see cref="T:Network.Connection"/>, once the connection is established, that
-            have a sender instance who is waiting for a response.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.udpPacketHandlerBackup">
-            <summary>
-            Cache of all the <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s to register on the remote <see cref="T:Network.UdpConnection"/>
-            once a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.udpStaticPacketHandlerBuffer">
-            <summary>
-            Buffer for all the static packet handlers to register on the remote <see cref="T:Network.UdpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.udpStaticUnPacketHandlerBuffer">
-            <summary>
-            Buffer for all the static packet handlers to deregister on the remote <see cref="T:Network.UdpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.udpPacketHandlerBuffer">
-            <summary>
-            Buffer for all the packet handlers to register on the remote <see cref="T:Network.UdpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
-        <member name="F:Network.ClientConnectionContainer.udpUnPacketHandlerBuffer">
-            <summary>
-            Buffer for all the packet handlers to deregister on the remote <see cref="T:Network.UdpConnection"/> once
-            a connection is established.
-            </summary>
-        </member>
         <member name="E:Network.ClientConnectionContainer.connectionLost">
             <summary>
             A handler which will be invoked if this connection is dead.
@@ -378,19 +296,19 @@
             A handler which will be invoked if a new connection is established.
             </summary>
         </member>
-        <member name="M:Network.ClientConnectionContainer.#ctor(System.String,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Network.ClientConnectionContainer"/> class.
-            </summary>
-            <param name="ipAddress">The remote ip address.</param>
-            <param name="port">The remote port.</param>
-        </member>
         <member name="M:Network.ClientConnectionContainer.#ctor(Network.TcpConnection,Network.UdpConnection)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.ClientConnectionContainer"/> class.
             </summary>
             <param name="tcpConnection">The TCP connection to use.</param>
             <param name="udpConnection">The UDP connection to use.</param>
+        </member>
+        <member name="M:Network.ClientConnectionContainer.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.ClientConnectionContainer"/> class.
+            </summary>
+            <param name="ipAddress">The remote ip address.</param>
+            <param name="port">The remote port.</param>
         </member>
         <member name="P:Network.ClientConnectionContainer.AutoReconnect">
             <summary>
@@ -427,6 +345,15 @@
             Whether both the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> and <see cref="P:Network.ClientConnectionContainer.UdpConnection"/> are currently alive.
             </summary>
         </member>
+        <member name="P:Network.ClientConnectionContainer.ThrowExceptionOnUndeliverablePackets">
+            <summary>
+            If the <see cref="M:Network.ClientConnectionContainer.Send(Network.Packets.Packet)"/> (or any other sending related method) gets called
+            and the corresponding connection isn't alive, the <see cref="T:Network.Packets.Packet" /> can't be sent to the endpoint.
+            Hence, the <see cref="T:Network.Packets.Packet" /> is undeliverable. In such a chase, this property indicates
+            whether to throw an <see cref="T:Network.Exceptions.ConnectionNotAliveException" />.
+            </summary>
+            <value><c>true</c> throws <see cref="T:Network.Exceptions.ConnectionNotAliveException" /> on a dead connection.</value>
+        </member>
         <member name="E:Network.ClientConnectionContainer.ConnectionEstablished">
             <summary>
             Signifies that a connection has been made on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
@@ -436,9 +363,6 @@
             <summary>
             Signifies that a connection has been lost on either the <see cref="P:Network.ClientConnectionContainer.TcpConnection"/> or <see cref="P:Network.ClientConnectionContainer.UdpConnection"/>.
             </summary>
-        </member>
-        <member name="M:Network.ClientConnectionContainer.ToString">
-            <inheritdoc />
         </member>
         <member name="M:Network.ClientConnectionContainer.Initialize">
             <summary>
@@ -650,6 +574,9 @@
         <member name="M:Network.ClientConnectionContainer.Dispose">
             <inheritdoc />
         </member>
+        <member name="M:Network.ClientConnectionContainer.ToString">
+            <inheritdoc />
+        </member>
         <member name="T:Network.Connection">
             <summary>
             Provides the basic methods that all <see cref="T:Network.Connection"/> inheritors must implement. It ensures connectivity and
@@ -792,6 +719,16 @@
             Initializes a new instance of the <see cref="T:Network.Connection"/> class.
             </summary>
         </member>
+        <member name="M:Network.Connection.InitAddons">
+            <summary>
+            Initialises this <see cref="T:Network.Connection"/> instance's addons, setting up all required variables.
+            </summary>
+        </member>
+        <member name="M:Network.Connection.Init">
+            <summary>
+            Initialises this <see cref="T:Network.Connection"/> instance, setting up all required variables.
+            </summary>
+        </member>
         <member name="P:Network.Connection.TIMEOUT">
             <summary>
             The timeout value in milliseconds. If the connection does not receive any packet within the specified timeout,
@@ -921,9 +858,15 @@
             due to relatively slow reflection).
             </remarks>
         </member>
-        <member name="P:Network.Connection.PacketHandlerMapper">
+        <member name="E:Network.Connection.ConnectionClosed">
             <summary>
-            All the currently registered <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/>s.
+            Event signifying that a connection was closed between this <see cref="T:Network.Connection"/> instance and another <see cref="T:Network.Connection"/>.
+            </summary>
+        </member>
+        <member name="E:Network.Connection.ConnectionEstablished">
+            <summary>
+            Event signifying that this <see cref="T:Network.Connection"/> instance established a new connection with either a <see cref="T:Network.TcpConnection"/>
+            or <see cref="T:Network.UdpConnection"/> instance.
             </summary>
         </member>
         <member name="M:Network.Connection.RegisterStaticPacketHandler``1(Network.Interfaces.PacketReceivedHandler{``0})">
@@ -966,28 +909,6 @@
             <param name="key">
             The <see cref="T:System.String"/> key whose <see cref="T:Network.Interfaces.PacketReceivedHandler`1"/> delegate method to deregister.
             </param>
-        </member>
-        <member name="M:Network.Connection.GetHashCode">
-            <summary>
-            Returns The unique hashcode of this <see cref="T:Network.Connection"/> instance.
-            </summary>
-            <returns> A unique hashcode, suitable for use in hashing algorithms and data structures like a hash table. </returns>
-        </member>
-        <member name="M:Network.Connection.ToString">
-            <summary>
-            Gets the <see cref="T:System.String"/> representation of this <see cref="T:Network.Connection"/> instance.
-            </summary>
-            <returns>The <see cref="T:System.String"/> representation of this <see cref="T:Network.Connection"/> instance.</returns>
-        </member>
-        <member name="M:Network.Connection.InitAddons">
-            <summary>
-            Initialises this <see cref="T:Network.Connection"/> instance's addons, setting up all required variables.
-            </summary>
-        </member>
-        <member name="M:Network.Connection.Init">
-            <summary>
-            Initialises this <see cref="T:Network.Connection"/> instance, setting up all required variables.
-            </summary>
         </member>
         <member name="M:Network.Connection.AddExternalPackets(System.Reflection.Assembly)">
             <summary>
@@ -1036,21 +957,6 @@
             Sends a <see cref="T:Network.Packets.PingRequest"/>, if a <see cref="T:Network.Packets.PingResponse"/> is not currently being awaited.
             </summary>
         </member>
-        <member name="M:Network.Connection.Send(Network.Packets.Packet)">
-            <summary>
-            Serialises the given <see cref="T:Network.Packets.Packet"/> using the current <see cref="P:Network.Connection.PacketConverter"/>, and sends it to the network.
-            No response is possible as a sender instance is not provided. This method is suitable for static classes and basic packets
-            with no inheritance.
-            </summary>
-            <param name="packet">The <see cref="T:Network.Packets.Packet"/> to serialise and send.</param>
-        </member>
-        <member name="M:Network.Connection.Send(Network.Packets.Packet,System.Object)">
-            <summary>
-            Serialises the given <see cref="T:Network.Packets.Packet"/> using the current <see cref="P:Network.Connection.PacketConverter"/> and sends it to the network.
-            </summary>
-            <param name="packet">The <see cref="T:Network.Packets.Packet"/> to be sent across the network.</param>
-            <param name="instance">The <see cref="T:System.Object"/> instance which sent the packet.</param>
-        </member>
         <member name="M:Network.Connection.SendAsync``1(Network.Packets.Packet)">
             <summary>
             Sends the given <see cref="T:Network.Packets.Packet"/> and asynchronously awaits the <see cref="T:Network.Packets.ResponsePacket"/>.
@@ -1062,23 +968,21 @@
             the given type upon completion.
             </returns>
         </member>
-        <member name="M:Network.Connection.Send(Network.Packets.Packet,System.Boolean)">
+        <member name="M:Network.Connection.Send(Network.Packets.Packet)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/> using the current <see cref="P:Network.Connection.PacketConverter"/> and queues it to be sent
             to the network. No response is possible as a sender instance is not provided. This method is suitable for static
             classes and basic packets with no inheritance.
             </summary>
             <param name="packet">The <see cref="T:Network.Packets.Packet"/> to be sent across the network.</param>
-            <param name="ignoreWriteLock">Currently unused. :(</param>
         </member>
-        <member name="M:Network.Connection.Send(Network.Packets.Packet,System.Object,System.Boolean)">
+        <member name="M:Network.Connection.Send(Network.Packets.Packet,System.Object)">
             <summary>
             Serialises the given <see cref="T:Network.Packets.Packet"/> using the current <see cref="P:Network.Connection.PacketConverter"/> and queues it to be sent
             to the network.
             </summary>
             <param name="packet">The <see cref="T:Network.Packets.Packet"/> to be sent across the network.</param>
             <param name="instance">The <see cref="T:System.Object"/> instance which sent the packet.</param>
-            <param name="ignoreWriteLock">Currently unused. :(</param>
         </member>
         <member name="M:Network.Connection.ReadBytes(System.Int32)">
             <summary>
@@ -1184,16 +1088,17 @@
             <param name="writeLock">Whether the <see cref="T:Network.UdpConnection"/> has a write lock.</param>
             <returns>The instantiated <see cref="T:Network.UdpConnection"/>.</returns>
         </member>
-        <member name="E:Network.Connection.ConnectionClosed">
+        <member name="M:Network.Connection.GetHashCode">
             <summary>
-            Event signifying that a connection was closed between this <see cref="T:Network.Connection"/> instance and another <see cref="T:Network.Connection"/>.
+            Returns The unique hashcode of this <see cref="T:Network.Connection"/> instance.
             </summary>
+            <returns> A unique hashcode, suitable for use in hashing algorithms and data structures like a hash table. </returns>
         </member>
-        <member name="E:Network.Connection.ConnectionEstablished">
+        <member name="M:Network.Connection.ToString">
             <summary>
-            Event signifying that this <see cref="T:Network.Connection"/> instance established a new connection with either a <see cref="T:Network.TcpConnection"/>
-            or <see cref="T:Network.UdpConnection"/> instance.
+            Gets the <see cref="T:System.String"/> representation of this <see cref="T:Network.Connection"/> instance.
             </summary>
+            <returns>The <see cref="T:System.String"/> representation of this <see cref="T:Network.Connection"/> instance.</returns>
         </member>
         <member name="F:Network.Connection.logger">
             <summary>
@@ -2608,6 +2513,27 @@
             Identical to <see cref="F:Network.Enums.Performance.SoftRealtime"/>.
             </summary>
         </member>
+        <member name="T:Network.Exceptions.ConnectionNotAliveException">
+            <summary>
+            Indicates that a <see cref="P:Network.Exceptions.ConnectionNotAliveException.Connection"/> isn't alive.
+            Implements the <see cref="T:System.Exception" />
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Network.Exceptions.ConnectionNotAliveException.#ctor(Network.Connection,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.Exceptions.ConnectionNotAliveException"/> class.
+            </summary>
+            <param name="connection">The connection.</param>
+            <param name="message">The message.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="P:Network.Exceptions.ConnectionNotAliveException.Connection">
+            <summary>
+            The affected <see cref="P:Network.Exceptions.ConnectionNotAliveException.Connection" />
+            </summary>
+            <value>The connection.</value>
+        </member>
         <member name="T:Network.Extensions.ConcurrentBagExtensions">
             <summary>
             Provides additional functionality to the <see cref="T:System.Collections.Concurrent.ConcurrentBag`1"/> class.
@@ -3770,6 +3696,10 @@
         <member name="P:Network.ServerConnectionContainer.AllowUDPConnections">
             <summary>
             Whether <see cref="T:Network.UdpConnection"/>s are allowed to connect.
+            If <c>False</c> the client's can't use the <see cref="T:Network.ClientConnectionContainer" />,
+            since the <see cref="T:Network.ClientConnectionContainer" /> automatically tries to establish a <see cref="T:Network.UdpConnection" />.
+            When a client requests a <see cref="T:Network.UdpConnection" /> while <see cref="P:Network.ServerConnectionContainer.AllowUDPConnections"/> is set to false,
+            the client's <see cref="T:Network.TcpConnection" /> will be killed automatically, due to an inappropriate request.
             </summary>
         </member>
         <member name="P:Network.ServerConnectionContainer.UDPConnectionLimit">
@@ -4161,20 +4091,6 @@
             <typeparam name="T">The type of the first dictionary.</typeparam>
             <typeparam name="U">The type of the second dictionary.</typeparam>
         </member>
-        <member name="P:Network.BiDictionary`2.Item(`1)">
-            <summary>
-            Gets the ElementA
-            </summary>
-            <param name="u">ElementB</param>
-            <returns>ElementA</returns>
-        </member>
-        <member name="P:Network.BiDictionary`2.Item(`0)">
-            <summary>
-            Gets the ElementB
-            </summary>
-            <param name="t">ElementA</param>
-            <returns>ElementB</returns>
-        </member>
         <member name="P:Network.BiDictionary`2.Keys">
             <summary>
             The keys held in the dictionary.
@@ -4207,6 +4123,36 @@
             <summary>
             Maps a <see cref="T:System.String"/> key to a <see cref="T:Network.Packets.RawData"/> packet handler delegate method.
             </summary>
+        </member>
+        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:System.Delegate"/> method which handles <see cref="T:Network.Packets.RawData"/> packets for the primitive type
+            identified by the given key.
+            </summary>
+            <param name="key">The key for whose primitive type to get a handler delegate.</param>
+            <returns>The handler delegate associated with the given key.</returns>
+        </member>
+        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:System.Delegate"/> method which handles packets with the given ID.
+            </summary>
+            <param name="packetId">The ID of the packet whose handler delegate to return.</param>
+            <returns>The handler delegate associated with packets of the given id.</returns>
+        </member>
+        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Type)">
+            <summary>
+            Gets the <see cref="T:System.Delegate"/> method which handles packets of the given <see cref="T:System.Type"/>.
+            </summary>
+            <param name="packetType">The type of packet whose handler delegate to return.</param>
+            <returns>The handler delegate registered for the given type.</returns>
+        </member>
+        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Type,System.Object)">
+            <summary>
+            Gets the ID associated with the given packet type and handler instance.
+            </summary>
+            <param name="packetType">The packet type whose handler ID to return.</param>
+            <param name="handlerInstance">The handler whose ID to return.</param>
+            <returns>The ID associated with the given handler of the given packet type.</returns>
         </member>
         <member name="M:Network.Utilities.PacketHandlerMap.HasRegisteredHandler(Network.Packets.Packet)">
             <summary>
@@ -4259,54 +4205,24 @@
             <param name="key">The key that identifies the primitive type.</param>
             <param name="handlerDelegate">The delegate method to invoke for incoming <see cref="T:Network.Packets.RawData"/> packets with the given key.</param>
         </member>
-        <member name="M:Network.Utilities.PacketHandlerMap.DeregisterPacketHandler``1(System.Object)">
+        <member name="M:Network.Utilities.PacketHandlerMap.UnRegisterPacketHandler``1(System.Object)">
             <summary>
             Deregisters packet handlers for the given packet type, on the given packet handler instance.
             </summary>
             <typeparam name="P">The type of packet for which to deregister any packet handlers.</typeparam>
             <param name="handlerInstance">The handler instance for which to deregisters packet handlers.</param>
         </member>
-        <member name="M:Network.Utilities.PacketHandlerMap.DeregisterStaticPacketHandler``1">
+        <member name="M:Network.Utilities.PacketHandlerMap.UnRegisterStaticPacketHandler``1">
             <summary>
             Deregisters all static packet handlers for the given packet type.
             </summary>
             <typeparam name="P">The packet type for which to deregister all packet handlers.</typeparam>
         </member>
-        <member name="M:Network.Utilities.PacketHandlerMap.DeregisterStaticRawDataHandler(System.String)">
+        <member name="M:Network.Utilities.PacketHandlerMap.UnRegisterStaticRawDataHandler(System.String)">
             <summary>
             Deregisters all static <see cref="T:Network.Packets.RawData"/> packet handlers for the given key.
             </summary>
             <param name="key">The key for which to deregister packet handlers.</param>
-        </member>
-        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.String)">
-            <summary>
-            Gets the <see cref="T:System.Delegate"/> method which handles <see cref="T:Network.Packets.RawData"/> packets for the primitive type
-            identified by the given key.
-            </summary>
-            <param name="key">The key for whose primitive type to get a handler delegate.</param>
-            <returns>The handler delegate associated with the given key.</returns>
-        </member>
-        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Int32)">
-            <summary>
-            Gets the <see cref="T:System.Delegate"/> method which handles packets with the given ID.
-            </summary>
-            <param name="packetId">The ID of the packet whose handler delegate to return.</param>
-            <returns>The handler delegate associated with packets of the given id.</returns>
-        </member>
-        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Type)">
-            <summary>
-            Gets the <see cref="T:System.Delegate"/> method which handles packets of the given <see cref="T:System.Type"/>.
-            </summary>
-            <param name="packetType">The type of packet whose handler delegate to return.</param>
-            <returns>The handler delegate registered for the given type.</returns>
-        </member>
-        <member name="P:Network.Utilities.PacketHandlerMap.Item(System.Type,System.Object)">
-            <summary>
-            Gets the ID associated with the given packet type and handler instance.
-            </summary>
-            <param name="packetType">The packet type whose handler ID to return.</param>
-            <param name="handlerInstance">The handler whose ID to return.</param>
-            <returns>The ID associated with the given handler of the given packet type.</returns>
         </member>
         <member name="T:Network.Utilities.UidGenerator">
             <summary>

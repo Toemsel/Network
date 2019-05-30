@@ -185,6 +185,38 @@ namespace Network
 
         #endregion Constructors
 
+        /// <summary>
+        /// Partial initialisation method to be overriden in later class implementations.
+        /// </summary>
+        partial void InitAddons();
+
+        /// <summary>
+        /// Initialises this <see cref="Connection"/> instance, setting up all required variables.
+        /// </summary>
+        internal void Init()
+        {
+            InitAddons();
+
+            readStreamThread = new Thread(ReadWork);
+            readStreamThread.Priority = ThreadPriority.Normal;
+            readStreamThread.Name = $"Read Thread {IPLocalEndPoint.AddressFamily.ToString()}";
+            readStreamThread.IsBackground = true;
+
+            writeStreamThread = new Thread(WriteWork);
+            writeStreamThread.Priority = ThreadPriority.Normal;
+            writeStreamThread.Name = $"Write Thread {IPLocalEndPoint.AddressFamily.ToString()}";
+            writeStreamThread.IsBackground = true;
+
+            invokePacketThread = new Thread(InvokeWork);
+            invokePacketThread.Priority = ThreadPriority.Normal;
+            invokePacketThread.Name = $"Invoke Thread {IPLocalEndPoint.AddressFamily.ToString()}";
+            invokePacketThread.IsBackground = true;
+
+            readStreamThread.Start();
+            writeStreamThread.Start();
+            invokePacketThread.Start();
+        }
+
         #region Properties
 
         /// <summary>
@@ -333,10 +365,23 @@ namespace Network
         }
 
         /// <summary>
-        /// All the currently registered <see cref="PacketReceivedHandler{T}"/>s.
+        /// Event signifying that a connection was closed between this <see cref="Connection"/> instance and another <see cref="Connection"/>.
         /// </summary>
-        [Obsolete("Use 'BackupPacketHandler' instead")]
-        internal PacketHandlerMap PacketHandlerMapper { get { return packetHandlerMap; } }
+        public event Action<CloseReason, Connection> ConnectionClosed
+        {
+            add { connectionClosed += value; }
+            remove { connectionClosed -= value; }
+        }
+
+        /// <summary>
+        /// Event signifying that this <see cref="Connection"/> instance established a new connection with either a <see cref="TcpConnection"/>
+        /// or <see cref="UdpConnection"/> instance.
+        /// </summary>
+        public event Action<TcpConnection, UdpConnection> ConnectionEstablished
+        {
+            add { connectionEstablished += value; }
+            remove { connectionEstablished -= value; }
+        }
 
         #endregion Properties
 
@@ -391,16 +436,10 @@ namespace Network
         }
 
         /// <inheritdoc />
-        public void UnRegisterStaticPacketHandler<T>() where T : Packet
-        {
-            packetHandlerMap.DeregisterStaticPacketHandler<T>();
-        }
+        public void UnRegisterStaticPacketHandler<T>() where T : Packet => packetHandlerMap.UnRegisterStaticPacketHandler<T>();
 
         /// <inheritdoc />
-        public void UnRegisterPacketHandler<T>(object obj) where T : Packet
-        {
-            packetHandlerMap.DeregisterPacketHandler<T>(obj);
-        }
+        public void UnRegisterPacketHandler<T>(object obj) where T : Packet => packetHandlerMap.UnRegisterPacketHandler<T>(obj);
 
         /// <summary>
         /// Deregisters the given <see cref="PacketReceivedHandler{T}"/> for all <see cref="RawData"/> packets with the
@@ -409,60 +448,9 @@ namespace Network
         /// <param name="key">
         /// The <see cref="string"/> key whose <see cref="PacketReceivedHandler{T}"/> delegate method to deregister.
         /// </param>
-        public void UnRegisterRawDataHandler(string key)
-        {
-            packetHandlerMap.DeregisterStaticRawDataHandler(key);
-        }
+        public void UnRegisterRawDataHandler(string key) => packetHandlerMap.UnRegisterStaticRawDataHandler(key);
 
         #endregion Implementation of IPacketHandler
-
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns The unique hashcode of this <see cref="Connection"/> instance.
-        /// </summary>
-        /// <returns> A unique hashcode, suitable for use in hashing algorithms and data structures like a hash table. </returns>
-        public override int GetHashCode() => hashCode;
-
-        /// <summary>
-        /// Gets the <see cref="string"/> representation of this <see cref="Connection"/> instance.
-        /// </summary>
-        /// <returns>The <see cref="string"/> representation of this <see cref="Connection"/> instance.</returns>
-        public override string ToString() => $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
-
-        #endregion Overrides of Object
-
-        /// <summary>
-        /// Partial initialisation method to be overriden in later class implementations.
-        /// </summary>
-        partial void InitAddons();
-
-        /// <summary>
-        /// Initialises this <see cref="Connection"/> instance, setting up all required variables.
-        /// </summary>
-        internal void Init()
-        {
-            InitAddons();
-
-            readStreamThread = new Thread(ReadWork);
-            readStreamThread.Priority = ThreadPriority.Normal;
-            readStreamThread.Name = $"Read Thread {IPLocalEndPoint.AddressFamily.ToString()}";
-            readStreamThread.IsBackground = true;
-
-            writeStreamThread = new Thread(WriteWork);
-            writeStreamThread.Priority = ThreadPriority.Normal;
-            writeStreamThread.Name = $"Write Thread {IPLocalEndPoint.AddressFamily.ToString()}";
-            writeStreamThread.IsBackground = true;
-
-            invokePacketThread = new Thread(InvokeWork);
-            invokePacketThread.Priority = ThreadPriority.Normal;
-            invokePacketThread.Name = $"Invoke Thread {IPLocalEndPoint.AddressFamily.ToString()}";
-            invokePacketThread.IsBackground = true;
-
-            readStreamThread.Start();
-            writeStreamThread.Start();
-            invokePacketThread.Start();
-        }
 
         /// <summary>
         /// Registers all <see cref="Packet"/> inheritors in the given <see cref="Assembly"/> with this <see cref="Connection"/>.
@@ -509,7 +497,7 @@ namespace Network
         /// The current <see cref="PacketHandlerMap"/> instance used by this
         /// connection.
         /// </returns>
-        public PacketHandlerMap BackupPacketHandler() => packetHandlerMap;
+        internal PacketHandlerMap BackupPacketHandler() => packetHandlerMap;
 
         /// <summary>
         /// Invoked whenever the <see cref="packetHandlerMap"/> gets refreshed.
@@ -556,21 +544,6 @@ namespace Network
         }
 
         /// <summary>
-        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/>, and sends it to the network.
-        /// No response is possible as a sender instance is not provided. This method is suitable for static classes and basic packets
-        /// with no inheritance.
-        /// </summary>
-        /// <param name="packet">The <see cref="Packet"/> to serialise and send.</param>
-        public void Send(Packet packet) => Send(packet, null);
-
-        /// <summary>
-        /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/> and sends it to the network.
-        /// </summary>
-        /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
-        /// <param name="instance">The <see cref="object"/> instance which sent the packet.</param>
-        public void Send(Packet packet, object instance) => Send(packet, instance, false);
-
-        /// <summary>
         /// Sends the given <see cref="Packet"/> and asynchronously awaits the <see cref="ResponsePacket"/>.
         /// </summary>
         /// <typeparam name="T">The <see cref="ResponsePacket"/> type to await.</typeparam>
@@ -587,8 +560,7 @@ namespace Network
         /// classes and basic packets with no inheritance.
         /// </summary>
         /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
-        /// <param name="ignoreWriteLock">Currently unused. :(</param>
-        internal void Send(Packet packet, bool ignoreWriteLock) => Send(packet, null, ignoreWriteLock);
+        public void Send(Packet packet) => Send(packet, null);
 
         /// <summary>
         /// Serialises the given <see cref="Packet"/> using the current <see cref="PacketConverter"/> and queues it to be sent
@@ -596,8 +568,7 @@ namespace Network
         /// </summary>
         /// <param name="packet">The <see cref="Packet"/> to be sent across the network.</param>
         /// <param name="instance">The <see cref="object"/> instance which sent the packet.</param>
-        /// <param name="ignoreWriteLock">Currently unused. :(</param>
-        internal void Send(Packet packet, object instance, bool ignoreWriteLock)
+        public void Send(Packet packet, object instance)
         {
             //Ensure that everyone is aware of that packetType.
             if (!typeByte.ContainsKey(packet.GetType()) || pendingUnknownPackets.Any(p => p.Item1.GetType().Assembly.Equals(packet.GetType().Assembly)))
@@ -698,7 +669,7 @@ namespace Network
                 Logger.Log($"Delegating packet to subscribers.", exception, LogLevel.Exception);
             }
 
-            CloseHandler(Enums.CloseReason.InvokePacketThreadException);
+            CloseHandler(CloseReason.InvokePacketThreadException);
         }
 
         /// <summary>
@@ -1021,27 +992,16 @@ namespace Network
 
         #endregion Methods
 
-        #region Events
+        /// <summary>
+        /// Returns The unique hashcode of this <see cref="Connection"/> instance.
+        /// </summary>
+        /// <returns> A unique hashcode, suitable for use in hashing algorithms and data structures like a hash table. </returns>
+        public override int GetHashCode() => hashCode;
 
         /// <summary>
-        /// Event signifying that a connection was closed between this <see cref="Connection"/> instance and another <see cref="Connection"/>.
+        /// Gets the <see cref="string"/> representation of this <see cref="Connection"/> instance.
         /// </summary>
-        public event Action<CloseReason, Connection> ConnectionClosed
-        {
-            add { connectionClosed += value; }
-            remove { connectionClosed -= value; }
-        }
-
-        /// <summary>
-        /// Event signifying that this <see cref="Connection"/> instance established a new connection with either a <see cref="TcpConnection"/>
-        /// or <see cref="UdpConnection"/> instance.
-        /// </summary>
-        public event Action<TcpConnection, UdpConnection> ConnectionEstablished
-        {
-            add { connectionEstablished += value; }
-            remove { connectionEstablished -= value; }
-        }
-
-        #endregion Events
+        /// <returns>The <see cref="string"/> representation of this <see cref="Connection"/> instance.</returns>
+        public override string ToString() => $"Local: {IPLocalEndPoint?.ToString()} Remote: {IPRemoteEndPoint?.ToString()}";
     }
 }

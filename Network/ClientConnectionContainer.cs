@@ -1,10 +1,10 @@
 ﻿using Network.Enums;
+using Network.Exceptions;
 using Network.Interfaces;
 using Network.Packets;
 using Network.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -21,7 +21,7 @@ namespace Network
         /// <summary>
         /// The reconnect timer. Invoked if we lose the connection.
         /// </summary>
-        private Timer reconnectTimer;
+        private Timer reconnectTimer = new Timer();
 
         /// <summary>
         /// The <see cref="Network.TcpConnection"/> for this <see cref="ClientConnectionContainer"/>.
@@ -31,99 +31,7 @@ namespace Network
         /// <summary>
         /// The <see cref="Network.UdpConnection"/> for this <see cref="ClientConnectionContainer"/>.
         /// </summary>
-        private UdpConnection udpConnection;
-
-        #region TCP Transmission Variables
-
-        /// <summary>
-        /// Buffer for all messages to be sent via TCP to the remote <see cref="Connection"/>, once the connection is established.
-        /// </summary>
-        private readonly List<Packet> sendSlowBuffer = new List<Packet>();
-
-        /// <summary>
-        /// Buffer for all messages to be sent via TCP to the remote <see cref="Connection"/>, once the connection is established, that
-        /// have a sender instance who is waiting for a response.
-        /// </summary>
-        private readonly List<Tuple<Packet, object>> sendSlowObjectBuffer = new List<Tuple<Packet, object>>();
-
-        /// <summary>
-        /// Cache of all the <see cref="PacketReceivedHandler{P}"/>s to register on the remote <see cref="Network.TcpConnection"/>
-        /// once a connection is established.
-        /// </summary>
-        private PacketHandlerMap tcpPacketHandlerBackup = new PacketHandlerMap();
-
-        /// <summary>
-        /// Buffer for all the static packet handlers to register on the remote <see cref="Network.TcpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, Delegate>> tcpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
-
-        /// <summary>
-        /// Buffer for all the static packet handlers to deregister on the remote <see cref="Network.TcpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Type> tcpStaticUnPacketHandlerBuffer = new List<Type>();
-
-        /// <summary>
-        /// Buffer for all the packet handlers to register on the remote <see cref="Network.TcpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, Delegate, object>> tcpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
-
-        /// <summary>
-        /// Buffer for all the packet handlers to deregister on the remote <see cref="Network.TcpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, object>> tcpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
-
-        #endregion TCP Transmission Variables
-
-        #region UDP Transmission Variables
-
-        /// <summary>
-        /// Buffer for all messages to be sent via UDP to the remote <see cref="Connection"/>, once the connection is established.
-        /// </summary>
-        private readonly List<Packet> sendFastBuffer = new List<Packet>();
-
-        /// <summary>
-        /// Buffer for all messages to be sent via UDP to the remote <see cref="Connection"/>, once the connection is established, that
-        /// have a sender instance who is waiting for a response.
-        /// </summary>
-        private readonly List<Tuple<Packet, object>> sendFastObjectBuffer = new List<Tuple<Packet, object>>();
-
-        /// <summary>
-        /// Cache of all the <see cref="PacketReceivedHandler{P}"/>s to register on the remote <see cref="Network.UdpConnection"/>
-        /// once a connection is established.
-        /// </summary>
-        private PacketHandlerMap udpPacketHandlerBackup = new PacketHandlerMap();
-
-        /// <summary>
-        /// Buffer for all the static packet handlers to register on the remote <see cref="Network.UdpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, Delegate>> udpStaticPacketHandlerBuffer = new List<Tuple<Type, Delegate>>();
-
-        /// <summary>
-        /// Buffer for all the static packet handlers to deregister on the remote <see cref="Network.UdpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Type> udpStaticUnPacketHandlerBuffer = new List<Type>();
-
-        /// <summary>
-        /// Buffer for all the packet handlers to register on the remote <see cref="Network.UdpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, Delegate, object>> udpPacketHandlerBuffer = new List<Tuple<Type, Delegate, object>>();
-
-        /// <summary>
-        /// Buffer for all the packet handlers to deregister on the remote <see cref="Network.UdpConnection"/> once
-        /// a connection is established.
-        /// </summary>
-        private readonly List<Tuple<Type, object>> udpUnPacketHandlerBuffer = new List<Tuple<Type, object>>();
-
-        #endregion UDP Transmission Variables
-
-        // TODO Remove all occurrences of backing fields for events in favor of new, cleaner 'event?.Invoke(args)' syntax
+        private UdpConnection udpConnection;     
 
         /// <summary>
         /// A handler which will be invoked if this connection is dead.
@@ -135,6 +43,9 @@ namespace Network
         /// </summary>
         private event Action<Connection, ConnectionType> connectionEstablished;
 
+        private PacketHandlerMap tcpPacketHandlerBackup = new PacketHandlerMap();
+        private PacketHandlerMap udpPacketHandlerBackup = new PacketHandlerMap();
+
         #endregion Variables
 
         #region Constructors
@@ -142,22 +53,21 @@ namespace Network
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
         /// </summary>
-        /// <param name="ipAddress">The remote ip address.</param>
-        /// <param name="port">The remote port.</param>
-        internal ClientConnectionContainer(string ipAddress, int port)
-            : base(ipAddress, port) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
-        /// </summary>
         /// <param name="tcpConnection">The TCP connection to use.</param>
         /// <param name="udpConnection">The UDP connection to use.</param>
         internal ClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection)
-            : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
+            : this(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
         {
             this.tcpConnection = tcpConnection;
             this.udpConnection = udpConnection;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
+        /// </summary>
+        /// <param name="ipAddress">The remote ip address.</param>
+        /// <param name="port">The remote port.</param>
+        internal ClientConnectionContainer(string ipAddress, int port) : base(ipAddress, port) => ReconnectInterval = 2500;
 
         #endregion Constructors
 
@@ -218,6 +128,15 @@ namespace Network
         /// </summary>
         public bool IsAlive { get { return IsAlive_TCP && IsAlive_UDP; } }
 
+        /// <summary>
+        /// If the <see cref="Send(Packet)"/> (or any other sending related method) gets called
+        /// and the corresponding connection isn't alive, the <see cref="Packet" /> can't be sent to the endpoint.
+        /// Hence, the <see cref="Packet" /> is undeliverable. In such a chase, this property indicates
+        /// whether to throw an <see cref="ConnectionNotAliveException" />.
+        /// </summary>
+        /// <value><c>true</c> throws <see cref="ConnectionNotAliveException" /> on a dead connection.</value>
+        public bool ThrowExceptionOnUndeliverablePackets { get; set; } = false;
+
         #endregion Properties
 
         #region Events
@@ -244,24 +163,11 @@ namespace Network
 
         #region Methods
 
-        #region Overrides of Object
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"ClientConnectionContainer. TCP is alive {IsAlive_TCP}. UDP is alive {IsAlive_UDP}. Server IPAddress {IPAddress} Port {Port.ToString()}";
-        }
-
-        #endregion Overrides of Object
-
         /// <summary>
         /// Initialises this <see cref="ClientConnectionContainer"/> instance and attempts to connect to the current <see cref="Connection.IPRemoteEndPoint"/>.
         /// </summary>
         internal void Initialize()
         {
-            reconnectTimer = new Timer();
-            ReconnectInterval = 2500;
-            reconnectTimer.Interval = ReconnectInterval;
             reconnectTimer.Elapsed += TryToConnect;
             TryConnect();
         }
@@ -305,56 +211,56 @@ namespace Network
         public void TCP_RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet
         {
             if (IsAlive_TCP) tcpConnection.RegisterStaticPacketHandler<P>(handler);
-            else tcpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(P), handler));
+            else tcpPacketHandlerBackup.RegisterStaticPacketHandler<P>(handler);
         }
 
         /// <inheritdoc cref="IPacketHandler.UnRegisterStaticPacketHandler{P}"/>
         public void TCP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
             if (IsAlive_TCP) tcpConnection.UnRegisterStaticPacketHandler<P>();
-            else tcpStaticUnPacketHandlerBuffer.Add(typeof(P));
+            else tcpPacketHandlerBackup.UnRegisterStaticPacketHandler<P>();
         }
 
         /// <inheritdoc cref="IPacketHandler.RegisterPacketHandler{P}"/>
         public void TCP_RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet
         {
             if (IsAlive_TCP) tcpConnection.RegisterPacketHandler<P>(handler, obj);
-            else tcpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(P), handler, obj));
+            else tcpPacketHandlerBackup.RegisterPacketHandler<P>(handler, obj);
         }
 
         /// <inheritdoc cref="IPacketHandler.UnRegisterPacketHandler{P}"/>
         public void TCP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
             if (IsAlive_TCP) tcpConnection.UnRegisterPacketHandler<P>(obj);
-            else tcpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
+            else tcpPacketHandlerBackup.UnRegisterPacketHandler<P>(obj);
         }
 
         /// <inheritdoc cref="IPacketHandler.RegisterStaticPacketHandler{P}"/>
         public void UDP_RegisterStaticPacketHandler<P>(PacketReceivedHandler<P> handler) where P : Packet
         {
             if (IsAlive_UDP) udpConnection.RegisterStaticPacketHandler<P>(handler);
-            else udpStaticPacketHandlerBuffer.Add(new Tuple<Type, Delegate>(typeof(P), handler));
+            else udpPacketHandlerBackup.RegisterStaticPacketHandler<P>(handler);
         }
 
         /// <inheritdoc cref="IPacketHandler.UnRegisterStaticPacketHandler{P}"/>
         public void UDP_UnRegisterStaticPacketHandler<P>() where P : Packet
         {
             if (IsAlive_UDP) udpConnection.UnRegisterStaticPacketHandler<P>();
-            else udpStaticUnPacketHandlerBuffer.Add(typeof(P));
+            else udpPacketHandlerBackup.UnRegisterStaticPacketHandler<P>();
         }
 
         /// <inheritdoc cref="IPacketHandler.RegisterPacketHandler{P}"/>
         public void UDP_RegisterPacketHandler<P>(PacketReceivedHandler<P> handler, object obj) where P : Packet
         {
             if (IsAlive_UDP) udpConnection.RegisterPacketHandler<P>(handler, obj);
-            else udpPacketHandlerBuffer.Add(new Tuple<Type, Delegate, object>(typeof(P), handler, obj));
+            else udpPacketHandlerBackup.RegisterPacketHandler<P>(handler, obj);
         }
 
         /// <inheritdoc cref="IPacketHandler.UnRegisterPacketHandler{P}"/>
         public void UDP_UnRegisterPacketHandler<P>(object obj) where P : Packet
         {
             if (IsAlive_UDP) udpConnection.UnRegisterPacketHandler<P>(obj);
-            else udpUnPacketHandlerBuffer.Add(new Tuple<Type, object>(typeof(P), obj));
+            else udpPacketHandlerBackup.UnRegisterPacketHandler<P>(obj);
         }
 
         /// <inheritdoc />
@@ -404,65 +310,21 @@ namespace Network
 
             tcpConnection = result.Item1;
 
-            //Restore old state by adding old packets
-            tcpConnection.RestorePacketHandler(tcpPacketHandlerBackup);
-            //Restore new state by adding packets the user wanted to register while the connection was dead.
-            tcpPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
-                registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
-                registerPacketHandler.Invoke(tcpConnection, new object[] { t.Item2, t.Item3 });
-            });
-            tcpStaticPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterStaticPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
-                registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
-                registerPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
-            });
-
-            sendSlowBuffer.ForEach(tcpConnection.Send);
-            sendSlowObjectBuffer.ForEach(p => tcpConnection.Send(p.Item1, p.Item2));
-            //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
-            tcpUnPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterPacketHandler));
-                unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
-                unRegisterPacketHandler.Invoke(tcpConnection, new object[] { t.Item2 });
-            });
-            tcpStaticUnPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterStaticPacketHandler));
-                unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
-                unRegisterPacketHandler.Invoke(tcpConnection, null);
-            });
-
+            // add pre-existing known types and the previous internal packet
+            // delegate invoke structure. Hence, the new connection
+            // is able to pick up the state of the previous TCP-Connection.
             KnownTypes.ForEach(TcpConnection.AddExternalPackets);
-            //Clear the buffers since we added and removed the packet types.
-            sendSlowBuffer.Clear();
-            sendSlowObjectBuffer.Clear();
-            tcpPacketHandlerBuffer.Clear();
-            tcpUnPacketHandlerBuffer.Clear();
-            tcpStaticPacketHandlerBuffer.Clear();
-            tcpStaticUnPacketHandlerBuffer.Clear();
+            tcpConnection.RestorePacketHandler(tcpPacketHandlerBackup);
 
-            //Connection could already be dead because of the prePackets.
-            if (!tcpConnection.IsAlive)
+            // add the internal ClientConnectionContainer close event.
+            tcpConnection.ConnectionClosed += (closeReason, connection) =>
             {
-                tcpPacketHandlerBackup = tcpConnection.BackupPacketHandler();
-                connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, tcpConnection.CloseReason);
+                tcpPacketHandlerBackup = connection.BackupPacketHandler();
+                connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, closeReason);
                 Reconnect();
-            }
-            else
-            {
-                tcpConnection.ConnectionClosed += (c, cc) =>
-                {
-                    tcpPacketHandlerBackup = cc.BackupPacketHandler();
-                    connectionLost?.Invoke(tcpConnection, ConnectionType.TCP, c);
-                    Reconnect();
-                };
+            };
 
-                connectionEstablished?.Invoke(tcpConnection, ConnectionType.TCP);
-            }
+            connectionEstablished?.Invoke(tcpConnection, ConnectionType.TCP);
         }
 
         /// <summary>
@@ -479,65 +341,22 @@ namespace Network
             }
 
             udpConnection = result.Item1;
-            //Restore old state by adding old packets
-            udpConnection.RestorePacketHandler(udpPacketHandlerBackup);
-            //Restore new state by adding packets the user wanted to register while the connection was dead.
-            udpPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
-                registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
-                registerPacketHandler.Invoke(udpConnection, new object[2] { t.Item2, t.Item3 });
-            });
-            udpStaticPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo registerPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.RegisterStaticPacketHandler), BindingFlags.NonPublic | BindingFlags.Instance);
-                registerPacketHandler = registerPacketHandler.MakeGenericMethod(t.Item1);
-                registerPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
-            });
 
-            sendFastBuffer.ForEach(udpConnection.Send);
-            sendFastObjectBuffer.ForEach(p => udpConnection.Send(p.Item1, p.Item2));
-            //Restore new state by removing the packets the user wanted to unregister while the connection was dead.
-            udpUnPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterPacketHandler));
-                unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t.Item1);
-                unRegisterPacketHandler.Invoke(udpConnection, new object[] { t.Item2 });
-            });
-            udpStaticUnPacketHandlerBuffer.ForEach(t =>
-            {
-                MethodInfo unRegisterPacketHandler = typeof(Connection).GetMethod(nameof(IPacketHandler.UnRegisterStaticPacketHandler));
-                unRegisterPacketHandler = unRegisterPacketHandler.MakeGenericMethod(t);
-                unRegisterPacketHandler.Invoke(udpConnection, null);
-            });
-
+            // add pre-existing known types and the previous internal packet
+            // delegate invoke structure. Hence, the new connection
+            // is able to pick up the state of the previous UDP-Connection.
             KnownTypes.ForEach(UdpConnection.AddExternalPackets);
-            //Clear the buffers since we added and removed the packet types.
-            sendFastBuffer.Clear();
-            sendFastObjectBuffer.Clear();
-            udpPacketHandlerBuffer.Clear();
-            udpUnPacketHandlerBuffer.Clear();
-            udpStaticPacketHandlerBuffer.Clear();
-            udpStaticUnPacketHandlerBuffer.Clear();
+            udpConnection.RestorePacketHandler(udpPacketHandlerBackup);
 
-            //Connection could already be dead because of the prePackets.
-            if (!UdpConnection.IsAlive)
+            // add the internal ClientConnectionContainer close event.
+            udpConnection.ConnectionClosed += (closeReason, connection) =>
             {
-                udpPacketHandlerBackup = udpConnection.BackupPacketHandler();
-                connectionLost?.Invoke(udpConnection, ConnectionType.UDP, udpConnection.CloseReason);
+                udpPacketHandlerBackup = connection.BackupPacketHandler();
+                connectionLost?.Invoke(this.udpConnection, ConnectionType.UDP, closeReason);
                 Reconnect();
-            }
-            else
-            {
-                udpConnection.ConnectionClosed += (c, cc) =>
-                {
-                    udpPacketHandlerBackup = cc.BackupPacketHandler();
-                    connectionLost?.Invoke(udpConnection, ConnectionType.UDP, c);
-                    Reconnect();
-                };
+            };
 
-                connectionEstablished?.Invoke(udpConnection, ConnectionType.UDP);
-            }
+            connectionEstablished?.Invoke(udpConnection, ConnectionType.UDP);
         }
 
         #endregion Opening New Connections
@@ -550,7 +369,8 @@ namespace Network
         public void SendPing()
         {
             if (tcpConnection != null && !tcpConnection.IsAlive)
-                sendSlowBuffer.Add(new PingRequest());
+                if(ThrowExceptionOnUndeliverablePackets)
+                    throw new ConnectionNotAliveException(tcpConnection, $"Can't send a ping, while the connection isn't alive.");
             else tcpConnection.SendPing();
         }
 
@@ -559,10 +379,7 @@ namespace Network
         /// no sender instance being given.
         /// </summary>
         /// <param name="packet">The packet to send.</param>
-        public void Send(Packet packet)
-        {
-            SendSlow(packet);
-        }
+        public void Send(Packet packet) => SendSlow(packet);
 
         /// <summary>
         /// Sends the given <see cref="Packet"/> to the network, via the given <see cref="ConnectionType"/>.
@@ -586,10 +403,7 @@ namespace Network
         /// </summary>
         /// <param name="packet">The packet to send.</param>
         /// <param name="instance">The sender instance to receive a response.</param>
-        public void Send(Packet packet, object instance)
-        {
-            SendSlow(packet, instance);
-        }
+        public void Send(Packet packet, object instance) => SendSlow(packet, instance);
 
         /// <summary>
         /// Asynchronously sends the given <see cref="Packet"/> over the network via TCP and awaits a <see cref="ResponsePacket"/>
@@ -601,10 +415,7 @@ namespace Network
         /// A <see cref="Task"/> representing the asynchronous operation, with the promise of the received
         /// <see cref="ResponsePacket"/> on completion.
         /// </returns>
-        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket
-        {
-            return await SendAsync<T>(packet, ConnectionType.TCP);
-        }
+        public async Task<T> SendAsync<T>(Packet packet) where T : ResponsePacket => await SendAsync<T>(packet, ConnectionType.TCP);
 
         /// <summary>
         /// Sends the given <see cref="Packet"/> over the network via the given <see cref="ConnectionType"/>
@@ -621,7 +432,7 @@ namespace Network
             else if (type == ConnectionType.UDP)
                 SendFast(packet, instance);
             else
-                throw new ArgumentException("The given enum doesn't exist");
+                throw new ArgumentException($"{nameof(ConnectionType)} '{type.ToString()}' isn't supported yet.");
         }
 
         /// <summary>
@@ -643,7 +454,7 @@ namespace Network
             else if (connectionType == ConnectionType.UDP)
                 return await SendFastAsync<T>(packet);
             else
-                throw new ArgumentException("The given enum doesn't exist");
+                throw new ArgumentException($"{nameof(ConnectionType)} '{connectionType.ToString()}' isn't supported yet.");
         }
 
         #region Sending via TCP
@@ -656,7 +467,8 @@ namespace Network
         public void SendSlow(Packet packet)
         {
             if (tcpConnection == null || !tcpConnection.IsAlive)
-                sendSlowBuffer.Add(packet);
+                if(ThrowExceptionOnUndeliverablePackets)
+                    throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
             else tcpConnection.Send(packet);
         }
 
@@ -669,7 +481,7 @@ namespace Network
         public void SendSlow(Packet packet, object instance)
         {
             if (IsAlive_TCP) tcpConnection.Send(packet, instance);
-            else sendSlowObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
+            else if(ThrowExceptionOnUndeliverablePackets) throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
         }
 
         /// <summary>
@@ -702,7 +514,8 @@ namespace Network
         public void SendFast(Packet packet)
         {
             if (udpConnection == null || !udpConnection.IsAlive)
-                sendFastBuffer.Add(packet);
+                if(ThrowExceptionOnUndeliverablePackets)
+                    throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
             else udpConnection.Send(packet);
         }
 
@@ -715,7 +528,7 @@ namespace Network
         public void SendFast(Packet packet, object instance)
         {
             if (IsAlive_UDP) udpConnection.Send(packet, instance);
-            else sendFastObjectBuffer.Add(new Tuple<Packet, object>(packet, instance));
+            else if(ThrowExceptionOnUndeliverablePackets) throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
         }
 
         /// <summary>
@@ -768,8 +581,6 @@ namespace Network
 
         #endregion Methods
 
-        #region Implmentation of IDisposable
-
         /// <inheritdoc />
         public void Dispose()
         {
@@ -778,6 +589,10 @@ namespace Network
             reconnectTimer.Dispose();
         }
 
-        #endregion Implmentation of IDisposable
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{nameof(ClientConnectionContainer)}. TCP is alive {IsAlive_TCP}. UDP is alive {IsAlive_UDP}. Server IPAddress {IPAddress} Port {Port.ToString()}";
+        }
     }
 }
