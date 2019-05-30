@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.1.13</Version>
+     <Version>6.1.2.14</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -24,13 +24,16 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>RSA is capable of sending/receiving larger packets. ( &gt; 128 bytes)
-Sending Enums Bugfix
-ServerConnectionContainer CloseTcpConnection Bugfix
-Comments and refactorings</PackageReleaseNotes>
+     <PackageReleaseNotes>ThrowExceptionOnUndeliverablePackets property within the ClientConnectionContainer added.
+ClientConnectionContainer refactorings. Sending packets with a broken connection isn't possible anymore.
+Bugfixes within the TcpConnection. (Reading bytes and resolving packet-types)
+Performance improvements within the packet response resolution.
+Some, as in previous versions obsolete marked, methods removed.
+PacketHandler switched to "internal" to avoid unintended modifications. 
+CloseReason "Unknown" removed.</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.1.13</AssemblyVersion>
-     <FileVersion>6.1.1.13</FileVersion>
+     <AssemblyVersion>6.1.2.14</AssemblyVersion>
+     <FileVersion>6.1.2.14</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>
