@@ -334,13 +334,6 @@ namespace Network
         public Performance Performance { get; set; } = Performance.Default;
 
         /// <summary>
-        /// Gets why the connection has been closed.
-        /// <see cref="Enums.CloseReason.Unknown"/> if the connection is still alive.
-        /// </summary>
-        /// <value><see cref="Enums.CloseReason"/>.</value>
-        internal CloseReason CloseReason { get; private set; } = CloseReason.Unknown;
-
-        /// <summary>
         /// The value of <see cref="Performance"/>, but simply cast to an <see cref="int"/>.
         /// </summary>
         public int IntPerformance { get { return (int)Performance; } }
@@ -941,7 +934,7 @@ namespace Network
 
             try
             {
-                Send(new CloseRequest(closeReason), true);
+                Send(new CloseRequest(closeReason));
                 WriteSubWork(); //Force to write the remaining packets.
             }
             catch (Exception exception)
@@ -952,7 +945,6 @@ namespace Network
             if (callCloseEvent)
                 connectionClosed?.Invoke(closeReason, this);
 
-            CloseReason = closeReason;
             writeStreamThread.AbortSave();
             readStreamThread.AbortSave();
             invokePacketThread.AbortSave();

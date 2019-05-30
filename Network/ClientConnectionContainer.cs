@@ -369,8 +369,10 @@ namespace Network
         public void SendPing()
         {
             if (tcpConnection != null && !tcpConnection.IsAlive)
+            {
                 if(ThrowExceptionOnUndeliverablePackets)
                     throw new ConnectionNotAliveException(tcpConnection, $"Can't send a ping, while the connection isn't alive.");
+            }
             else tcpConnection.SendPing();
         }
 
@@ -467,8 +469,10 @@ namespace Network
         public void SendSlow(Packet packet)
         {
             if (tcpConnection == null || !tcpConnection.IsAlive)
+            {
                 if(ThrowExceptionOnUndeliverablePackets)
                     throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
+            }
             else tcpConnection.Send(packet);
         }
 
@@ -514,8 +518,10 @@ namespace Network
         public void SendFast(Packet packet)
         {
             if (udpConnection == null || !udpConnection.IsAlive)
+            {
                 if(ThrowExceptionOnUndeliverablePackets)
                     throw new ConnectionNotAliveException(tcpConnection, $"Can't send a {nameof(Packet)}, while the connection isn't alive.");
+            }
             else udpConnection.Send(packet);
         }
 
