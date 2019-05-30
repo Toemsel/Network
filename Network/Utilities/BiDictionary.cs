@@ -43,6 +43,11 @@ namespace Network
         private ConcurrentDictionary<T, U> dictOne = new ConcurrentDictionary<T, U>();
         private ConcurrentDictionary<U, T> dictTwo = new ConcurrentDictionary<U, T>();
 
+        /// <summary>
+        /// Gets or sets the <see cref="T"/> with the specified u.
+        /// </summary>
+        /// <param name="u">The u.</param>
+        /// <returns>T.</returns>
         public T this[U u]
         {
             get
@@ -64,6 +69,11 @@ namespace Network
             }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="U"/> with the specified t.
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <returns>U.</returns>
         public U this[T t]
         {
             get
