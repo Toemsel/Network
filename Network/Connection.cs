@@ -517,7 +517,7 @@ namespace Network
         /// </param>
         private void ConfigPing(bool enable)
         {
-#if DEBUG
+#if !DEBUG
             if (enable) nextPingStopWatch.Restart();
             else nextPingStopWatch.Reset();
 #endif
@@ -728,7 +728,7 @@ namespace Network
                     {
                         ConfigPing(KeepAlive);
                         currentPingStopWatch.Reset();
-                        CloseHandler(Enums.CloseReason.Timeout);
+                        CloseHandler(CloseReason.Timeout);
                     }
                 }
             }
