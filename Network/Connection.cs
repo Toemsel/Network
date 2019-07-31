@@ -223,7 +223,7 @@ namespace Network
         /// The timeout value in milliseconds. If the connection does not receive any packet within the specified timeout,
         /// the connection will timeout and shutdown.
         /// </summary>
-        public int TIMEOUT { get; protected set; } = 2500;
+        public int TIMEOUT { get; set; } = 2500;
 
         /// <summary>
         /// The amount of <see cref="Packets"/> that are pending handling that this <see cref="Connection"/> will buffer.
