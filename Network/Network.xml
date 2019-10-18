@@ -1162,6 +1162,13 @@
             upon instantiation and it is valid for the lifetime of this <see cref="T:Network.Connection"/> instance.
             </remarks>
         </member>
+        <member name="P:Network.Connection.IsXpOrHigher">
+            <summary>
+            Whether the executing assembly is running on Windows.
+            and the operating system is higher or equal to Windows XP.
+            </summary>
+            <value><c>true</c> if this instance is windows and xp or higher; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:Network.Connection.EnableLogging">
             <summary>
             Whether the <see cref="T:Network.Connection"/> instance should automatically log information to the <see cref="P:Network.Connection.Logger"/>s

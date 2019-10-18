@@ -625,6 +625,9 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
+#if !NET46
+            catch (ObjectDisposedException) { return; }
+#endif
             catch (Exception exception)
             {
                 Logger.Log("Reading packet from stream", exception, LogLevel.Exception);
@@ -657,6 +660,9 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
+#if !NET46
+            catch (ObjectDisposedException) { return; }
+#endif
             catch (Exception exception)
             {
                 Logger.Log($"Delegating packet to subscribers.", exception, LogLevel.Exception);
@@ -733,12 +739,15 @@ namespace Network
                 }
             }
             catch (ThreadAbortException) { return; }
+#if !NET46
+            catch (ObjectDisposedException) { return; }
+#endif
             catch (Exception exception)
             {
                 Logger.Log("Write object on stream", exception, LogLevel.Exception);
             }
 
-            CloseHandler(Enums.CloseReason.WritePacketThreadException);
+            CloseHandler(CloseReason.WritePacketThreadException);
         }
 
         #endregion Threads
@@ -794,7 +803,7 @@ namespace Network
             else if (packet.GetType().Equals(typeof(AddPacketTypeRequest)))
             {
                 Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == ((AddPacketTypeRequest)packet).AssemblyName).SingleOrDefault();
-                if (assembly == null) CloseHandler(Enums.CloseReason.AssemblyDoesNotExist);
+                if (assembly == null) CloseHandler(CloseReason.AssemblyDoesNotExist);
                 else AddExternalPackets(assembly);
                 Send(new AddPacketTypeResponse(typeByte.Values.ToList(), (AddPacketTypeRequest)packet));
                 return;
