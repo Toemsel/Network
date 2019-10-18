@@ -26,7 +26,7 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        private readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         /// <summary>
         /// Backing field for <see cref="IsMAC"/>. Caches the value one for later use.
@@ -35,7 +35,7 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        private readonly bool isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        private static readonly bool isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
         /// <summary>
         /// Backing field for <see cref="IsLinux"/>. Caches the value one for later use.
@@ -44,7 +44,14 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        private readonly bool isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        private static readonly bool isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        /// <summary>
+        /// Determins whether the running client has windows xp or higher installed.
+        /// </summary>
+        private static readonly bool isXpOrHigher = (Environment.OSVersion.Platform == PlatformID.Win32NT) &&
+            ((Environment.OSVersion.Version.Major > 5) || ((Environment.OSVersion.Version.Major == 5) &&
+            (Environment.OSVersion.Version.Minor >= 1)));
 
         #endregion Variables
 
@@ -65,10 +72,7 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        internal bool IsMAC
-        {
-            get { return isOsx; }
-        }
+        internal static bool IsMAC => isOsx;
 
         /// <summary>
         /// Whether the executing assembly is running on Linux.
@@ -77,10 +81,7 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        internal bool IsLinux
-        {
-            get { return isLinux; }
-        }
+        internal static bool IsLinux => isLinux;
 
         /// <summary>
         /// Whether the executing assembly is running on Windows.
@@ -89,10 +90,14 @@ namespace Network
         /// Since an assembly cannot be transferred across an OS during runtime, this is a variable that can be set
         /// upon instantiation and it is valid for the lifetime of this <see cref="Connection"/> instance.
         /// </remarks>
-        internal bool IsWindows
-        {
-            get { return isWindows; }
-        }
+        internal static bool IsWindows => isWindows;
+
+        /// <summary>
+        /// Whether the executing assembly is running on Windows.
+        /// and the operating system is higher or equal to Windows XP.
+        /// </summary>
+        /// <value><c>true</c> if this instance is windows and xp or higher; otherwise, <c>false</c>.</value>
+        internal static bool IsXpOrHigher => IsWindows && isXpOrHigher;
 
         /// <summary>
         /// Whether the <see cref="Connection"/> instance should automatically log information to the <see cref="Logger"/>s

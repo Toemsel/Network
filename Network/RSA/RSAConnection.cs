@@ -6,6 +6,7 @@ using Network.Packets.RSA;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 namespace Network.RSA
 {
@@ -34,20 +35,6 @@ namespace Network.RSA
         /// </summary>
         private volatile bool isRSACommunicationActive = false;
 
-        /// <summary>
-        /// RSA is only capable of encrypting byte array of this size.
-        /// The max encryption size isn't abitrary; but indirectly set by
-        /// the <see chref="RSACryptoServiceProvider" />
-        /// </summary>
-        private const int MAX_ENCRYPTION_BYTE_SIZE = 128;
-        
-        /// <summary>
-        /// RSA is only capable of encrypting byte array of this size.
-        /// The max encryption size isn't abitrary; but indirectly set by
-        /// the <see chref="RSACryptoServiceProvider" />
-        /// </summary>
-        private const int MAX_DECRYPTION_BYTE_SIZE = 256;
-
         #endregion Variables
 
         #region Constructors
@@ -64,12 +51,6 @@ namespace Network.RSA
             RSAPair = rsaPair;
             DecryptionProvider = new RSACryptoServiceProvider(RSAPair.KeySize);
             Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(DecryptionProvider, RSAPair.Private);
-
-            //Are we running on WinXP or higher?
-            OperatingSystem operatingSystem = Environment.OSVersion;
-            XPOrHigher = (operatingSystem.Platform == PlatformID.Win32NT) &&
-                ((operatingSystem.Version.Major > 5) || ((operatingSystem.Version.Major == 5) &&
-                (operatingSystem.Version.Minor >= 1)));
 
             //Setup RSA related packets.
             ExchangePublicKeys();
@@ -105,11 +86,6 @@ namespace Network.RSA
         public RSAPair RSAPair { get; set; }
 
         /// <summary>
-        /// Whether the <see cref="RSAConnection"/> is running on Windows XP or higher.
-        /// </summary>
-        public bool XPOrHigher { get; private set; }
-
-        /// <summary>
         /// The remote RSA key-pair.
         /// </summary>
         public RSAPair CommunicationPartnerRSAPair
@@ -135,7 +111,7 @@ namespace Network.RSA
         /// <summary>
         /// Whether the RSA functionality is active. RSA functionality requires an additional initialization process, thus
         /// won't be available immediately after the connection has been established. It will never revert to <c>false</c>
-        /// once set.
+        /// once set to <c>true</c>.
         /// </summary>
         public bool IsRSACommunicationActive
         {
@@ -256,7 +232,7 @@ namespace Network.RSA
             {
                 connection.UnRegisterStaticPacketHandler<RSAKeyInformationRequest>();
 
-                CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize);
+                CommunicationPartnerRSAPair = new RSAPair(rsaKeyRequest.PublicKey, rsaKeyRequest.KeySize, rsaKeyRequest.UseOAEPadding);
                 EncryptionProvider = new RSACryptoServiceProvider(CommunicationPartnerRSAPair.KeySize);
                 Extensions.RSACryptoServiceProviderExtensions.ImportParametersFromXmlString(EncryptionProvider, CommunicationPartnerRSAPair.Public);
 
@@ -264,7 +240,7 @@ namespace Network.RSA
             });
 
             RSAKeyInformationResponse keyInformationResponse =
-                await Connection.SendAsync<RSAKeyInformationResponse>(new RSAKeyInformationRequest(RSAPair.Public, RSAPair.KeySize)).ConfigureAwait(false);
+                await Connection.SendAsync<RSAKeyInformationResponse>(new RSAKeyInformationRequest(RSAPair.Public, RSAPair.KeySize, RSAPair.EnableOAEPadding)).ConfigureAwait(false);
 
             Connection.Logger.Log($"{Connection.GetType().Name} RSA Encryption active.", Enums.LogLevel.Information);
             IsRSACommunicationActive = true;
@@ -275,14 +251,14 @@ namespace Network.RSA
         /// </summary>
         /// <param name="bytes">The encrypted bytes to decrypt.</param>
         /// <returns>The decrypted, plaintext bytes.</returns>
-        public byte[] DecryptBytes(byte[] bytes) 
+        public byte[] DecryptBytes(byte[] bytes)
         {
             List<byte[]> chunkData = new List<byte[]>();
 
-            for(int currentIndex = 0; currentIndex < bytes.Length / MAX_DECRYPTION_BYTE_SIZE; currentIndex++)
-                chunkData.Add(bytes.Skip(currentIndex * MAX_DECRYPTION_BYTE_SIZE).Take(MAX_DECRYPTION_BYTE_SIZE).ToArray());
+            for(int currentIndex = 0; currentIndex < bytes.Length / RSAPair.DecryptionByteSize; currentIndex++)
+                chunkData.Add(bytes.Skip(currentIndex * RSAPair.DecryptionByteSize).Take(RSAPair.DecryptionByteSize).ToArray());
 
-            return chunkData.SelectMany(data => DecryptionProvider.Decrypt(data, XPOrHigher)).ToArray();
+            return chunkData.SelectMany(data => DecryptionProvider.Decrypt(data, RSAPair.EnableOAEPadding)).ToArray();
         }
 
         /// <summary>
@@ -294,10 +270,10 @@ namespace Network.RSA
         {
             List<byte[]> chunkData = new List<byte[]>();
 
-            for(int currentIndex = 0; currentIndex <= bytes.Length / MAX_ENCRYPTION_BYTE_SIZE; currentIndex++)
-                chunkData.Add(bytes.Skip(currentIndex * MAX_ENCRYPTION_BYTE_SIZE).Take(MAX_ENCRYPTION_BYTE_SIZE).ToArray());
+            for(int currentIndex = 0; currentIndex <= bytes.Length / remoteRSAKeyPair.EncryptionByteSize; currentIndex++)
+                chunkData.Add(bytes.Skip(currentIndex * remoteRSAKeyPair.EncryptionByteSize).Take(remoteRSAKeyPair.EncryptionByteSize).ToArray());
 
-            return chunkData.SelectMany(data => EncryptionProvider.Encrypt(data, XPOrHigher)).ToArray();
+            return chunkData.SelectMany(data => EncryptionProvider.Encrypt(data, remoteRSAKeyPair.EnableOAEPadding)).ToArray();
         }
 
         #endregion Methods

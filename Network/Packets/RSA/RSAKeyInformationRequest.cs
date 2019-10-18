@@ -16,8 +16,10 @@ namespace Network.Packets.RSA
         /// </summary>
         /// <param name="publicKey">The public key to share.</param>
         /// <param name="keySize">The size of the public key.</param>
-        internal RSAKeyInformationRequest(string publicKey, int keySize)
+        /// <param name="enableOAEPadding">Use OAE Padding.</param>
+        internal RSAKeyInformationRequest(string publicKey, int keySize, bool enableOAEPadding)
         {
+            UseOAEPadding = enableOAEPadding;
             PublicKey = publicKey;
             KeySize = keySize;
         }
@@ -35,6 +37,12 @@ namespace Network.Packets.RSA
         /// The size of the RSA key.
         /// </summary>
         public int KeySize { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the use OAE Padding.
+        /// </summary>
+        /// <value><c>true</c> if [use oae padding]; otherwise, <c>false</c>.</value>
+        public bool UseOAEPadding { get; set; }
 
         #endregion Properties
     }

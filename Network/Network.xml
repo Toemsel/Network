@@ -1125,6 +1125,11 @@
             upon instantiation and it is valid for the lifetime of this <see cref="T:Network.Connection"/> instance.
             </remarks>
         </member>
+        <member name="F:Network.Connection.isXpOrHigher">
+            <summary>
+            Determins whether the running client has windows xp or higher installed.
+            </summary>
+        </member>
         <member name="P:Network.Connection.Logger">
             <summary>
             The <see cref="T:Network.Logging.NetworkLog"/> instance to which information should be logged.
@@ -3148,12 +3153,13 @@
             </summary>
             <seealso cref="T:Network.Packets.Packet" />
         </member>
-        <member name="M:Network.Packets.RSA.RSAKeyInformationRequest.#ctor(System.String,System.Int32)">
+        <member name="M:Network.Packets.RSA.RSAKeyInformationRequest.#ctor(System.String,System.Int32,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.Packets.RSA.RSAKeyInformationRequest"/> class.
             </summary>
             <param name="publicKey">The public key to share.</param>
             <param name="keySize">The size of the public key.</param>
+            <param name="enableOAEPadding">Use OAE Padding.</param>
         </member>
         <member name="P:Network.Packets.RSA.RSAKeyInformationRequest.PublicKey">
             <summary>
@@ -3164,6 +3170,12 @@
             <summary>
             The size of the RSA key.
             </summary>
+        </member>
+        <member name="P:Network.Packets.RSA.RSAKeyInformationRequest.UseOAEPadding">
+            <summary>
+            Gets or sets a value indicating whether the use OAE Padding.
+            </summary>
+            <value><c>true</c> if [use oae padding]; otherwise, <c>false</c>.</value>
         </member>
         <member name="T:Network.Packets.RSA.RSAKeyInformationResponse">
             <summary>
@@ -3227,20 +3239,6 @@
             Whether RSA encryption is currently active on this connection.
             </summary>
         </member>
-        <member name="F:Network.RSA.RSAConnection.MAX_ENCRYPTION_BYTE_SIZE">
-            <summary>
-            RSA is only capable of encrypting byte array of this size.
-            The max encryption size isn't abitrary; but indirectly set by
-            the <see chref="RSACryptoServiceProvider" />
-            </summary>
-        </member>
-        <member name="F:Network.RSA.RSAConnection.MAX_DECRYPTION_BYTE_SIZE">
-            <summary>
-            RSA is only capable of encrypting byte array of this size.
-            The max encryption size isn't abitrary; but indirectly set by
-            the <see chref="RSACryptoServiceProvider" />
-            </summary>
-        </member>
         <member name="M:Network.RSA.RSAConnection.#ctor(Network.Connection,Network.RSA.RSAPair)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.RSA.RSAConnection"/> class.
@@ -3273,11 +3271,6 @@
             The local RSA key-pair for encryption, decryption, and signing.
             </summary>
         </member>
-        <member name="P:Network.RSA.RSAConnection.XPOrHigher">
-            <summary>
-            Whether the <see cref="T:Network.RSA.RSAConnection"/> is running on Windows XP or higher.
-            </summary>
-        </member>
         <member name="P:Network.RSA.RSAConnection.CommunicationPartnerRSAPair">
             <summary>
             The remote RSA key-pair.
@@ -3297,7 +3290,7 @@
             <summary>
             Whether the RSA functionality is active. RSA functionality requires an additional initialization process, thus
             won't be available immediately after the connection has been established. It will never revert to <c>false</c>
-            once set.
+            once set to <c>true</c>.
             </summary>
         </member>
         <member name="M:Network.RSA.RSAConnection.GetBytes(Network.Packets.Packet)">
@@ -3393,6 +3386,16 @@
             Stores an RSA public/private key-pair.
             </summary>
         </member>
+        <member name="F:Network.RSA.RSAPair.encryptionByteSize">
+            <summary>
+            The max packet size to encrypt.
+            </summary>
+        </member>
+        <member name="F:Network.RSA.RSAPair.decryptionByteSize">
+            <summary>
+            The max packet size to decrypt.
+            </summary>
+        </member>
         <member name="F:Network.RSA.RSAPair.PRIVATE_KEY_UNKNOWN">
             <summary>
             Replacement value to be used if the private key is unknown, i.e. when receiving an <see cref="T:Network.RSA.RSAPair"/> from
@@ -3408,13 +3411,24 @@
             <param name="privateKey">The private key (https://superdry.apphb.com/tools/online-rsa-key-converter).</param>
             <param name="keySize">The size of the key.</param>
         </member>
-        <member name="M:Network.RSA.RSAPair.#ctor(System.String,System.Int32)">
+        <member name="M:Network.RSA.RSAPair.#ctor(System.String,System.Int32,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.RSA.RSAPair"/> class. Used for internal purposes. The communication
             partner only sends us his public key to encrypt.
             </summary>
             <param name="publicKey">The public key.</param>
             <param name="keySize">The size of the key.</param>
+            <param name="eanbleOAEPadding">Use OAE Padding.</param>
+        </member>
+        <member name="M:Network.RSA.RSAPair.#ctor(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Network.RSA.RSAPair"/> class. Used for internal purposes. The communication
+            partner only sends us his public key to encrypt.
+            </summary>
+            <param name="publicKey">The public key (https://superdry.apphb.com/tools/online-rsa-key-converter).</param>
+            <param name="privateKey">The private key (https://superdry.apphb.com/tools/online-rsa-key-converter).</param>
+            <param name="keySize">The size of the key.</param>
+            <param name="eanbleOAEPadding">Use OAE Padding.</param>
         </member>
         <member name="P:Network.RSA.RSAPair.KeySize">
             <summary>
@@ -3430,6 +3444,24 @@
             <summary>
             The private RSA key.
             </summary>
+        </member>
+        <member name="P:Network.RSA.RSAPair.EnableOAEPadding">
+            <summary>
+            Gets a value indicating whether OAE Padding is enabled.
+            </summary>
+            <value><c>true</c> if [enable oae padding]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Network.RSA.RSAPair.DecryptionByteSize">
+            <summary>
+            Gets the max size of an decrypted packet.
+            </summary>
+            <value>The size of the decryption byte.</value>
+        </member>
+        <member name="P:Network.RSA.RSAPair.EncryptionByteSize">
+            <summary>
+            Gets the max size of an encrypted packet.
+            </summary>
+            <value>The size of the encryption byte.</value>
         </member>
         <member name="P:Network.RSA.RSAPair.HasPublicKey">
             <summary>
