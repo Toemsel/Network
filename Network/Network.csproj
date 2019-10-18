@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.2.16</Version>
+     <Version>6.1.3.17</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -24,16 +24,12 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>ThrowExceptionOnUndeliverablePackets property within the ClientConnectionContainer added.
-ClientConnectionContainer refactorings. Sending packets with a broken connection isn't possible anymore.
-Bugfixes within the TcpConnection. (Reading bytes and resolving packet-types)
-Performance improvements within the packet response resolution.
-Some, as in previous versions obsolete marked, methods removed.
-PacketHandler switched to "internal" to avoid unintended modifications. 
-CloseReason "Unknown" removed.</PackageReleaseNotes>
+     <PackageReleaseNotes>Server and Client may have their own RSA key size configuration.
+Custom RSA key sizes won't lead to an exception anymore.
+Bugfix for the "Connection.Close" implementation for .NET Core</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.2.16</AssemblyVersion>
-     <FileVersion>6.1.2.16</FileVersion>
+     <AssemblyVersion>6.1.3.17</AssemblyVersion>
+     <FileVersion>6.1.3.17</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>
