@@ -619,9 +619,10 @@ namespace Network
                     Packet receivedPacket = packetConverter.GetPacket(typeByte[packetType], packetData);
                     receivedPackets.Enqueue(receivedPacket);
                     receivedPacket.Size = packetLength;
-                    packetAvailableEvent.Set();
 
                     Logger.LogInComingPacket(packetData, receivedPacket);
+
+                    packetAvailableEvent.Set();
                 }
             }
             catch (ThreadAbortException) { return; }
