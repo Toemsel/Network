@@ -71,8 +71,8 @@ namespace Network
             ObjectMapRefreshed();
 
             KeepAlive = false;
-            socket.SendTimeout = 0;
-            socket.ReceiveTimeout = 0;
+            socket.SendTimeout = -1;
+            socket.ReceiveTimeout = -1;
 
             if (IsWindows)
                 socket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
@@ -89,20 +89,20 @@ namespace Network
         #region Properties
 
         /// <inheritdoc />
-        public override IPEndPoint IPLocalEndPoint { get { return localEndPoint; } }
+        public override IPEndPoint IPLocalEndPoint => localEndPoint;
 
         /// <summary>
         /// The local <see cref="EndPoint"/> for the <see cref="socket"/>.
         /// </summary>
-        public EndPoint LocalEndPoint { get { return socket.LocalEndPoint; } }
+        public EndPoint LocalEndPoint => localEndPoint;
 
         /// <inheritdoc />
-        public override IPEndPoint IPRemoteEndPoint { get { return localEndPoint; } }
+        public override IPEndPoint IPRemoteEndPoint => localEndPoint;
 
         /// <summary>
         /// The remote <see cref="EndPoint"/> for the <see cref="socket"/>.
         /// </summary>
-        public EndPoint RemoteEndPoint { get { return remoteEndPoint; } }
+        public EndPoint RemoteEndPoint => remoteEndPoint;
 
         /// <inheritdoc />
         public override bool DualMode { get { return socket.DualMode; } set { socket.DualMode = value; } }
@@ -226,10 +226,7 @@ namespace Network
         }
 
         /// <inheritdoc />
-        protected override void CloseHandler(CloseReason closeReason)
-        {
-            Close(closeReason, true);
-        }
+        protected override void CloseHandler(CloseReason closeReason) => Close(closeReason, true);
 
         /// <inheritdoc />
         protected override void CloseSocket()
