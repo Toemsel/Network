@@ -109,6 +109,13 @@ namespace Network.RSA
         public RSACryptoServiceProvider DecryptionProvider { get; set; }
 
         /// <summary>
+        /// Gets whether OAE Padding is active. OAE Padding is only active,
+        /// if both communication partners do support OAE Padding.
+        /// </summary>
+        /// <value><c>true</c> if OAE Padding is enabled; otherwise, <c>false</c>.</value>
+        public bool IsOAEPaddingEnabled => IsRSACommunicationActive && RSAPair.EnableOAEPadding && CommunicationPartnerRSAPair.EnableOAEPadding;
+
+        /// <summary>
         /// Whether the RSA functionality is active. RSA functionality requires an additional initialization process, thus
         /// won't be available immediately after the connection has been established. It will never revert to <c>false</c>
         /// once set to <c>true</c>.
@@ -258,7 +265,7 @@ namespace Network.RSA
             for(int currentIndex = 0; currentIndex < bytes.Length / RSAPair.DecryptionByteSize; currentIndex++)
                 chunkData.Add(bytes.Skip(currentIndex * RSAPair.DecryptionByteSize).Take(RSAPair.DecryptionByteSize).ToArray());
 
-            return chunkData.SelectMany(data => DecryptionProvider.Decrypt(data, RSAPair.EnableOAEPadding)).ToArray();
+            return chunkData.SelectMany(data => DecryptionProvider.Decrypt(data, IsOAEPaddingEnabled)).ToArray();
         }
 
         /// <summary>
@@ -273,7 +280,7 @@ namespace Network.RSA
             for(int currentIndex = 0; currentIndex <= bytes.Length / remoteRSAKeyPair.EncryptionByteSize; currentIndex++)
                 chunkData.Add(bytes.Skip(currentIndex * remoteRSAKeyPair.EncryptionByteSize).Take(remoteRSAKeyPair.EncryptionByteSize).ToArray());
 
-            return chunkData.SelectMany(data => EncryptionProvider.Encrypt(data, remoteRSAKeyPair.EnableOAEPadding)).ToArray();
+            return chunkData.SelectMany(data => EncryptionProvider.Encrypt(data, IsOAEPaddingEnabled)).ToArray();
         }
 
         #endregion Methods

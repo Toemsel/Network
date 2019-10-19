@@ -3293,6 +3293,13 @@
             The <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/> to use for decryption.
             </summary>
         </member>
+        <member name="P:Network.RSA.RSAConnection.IsOAEPaddingEnabled">
+            <summary>
+            Gets whether OAE Padding is active. OAE Padding is only active,
+            if both communication partners do support OAE Padding.
+            </summary>
+            <value><c>true</c> if OAE Padding is enabled; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:Network.RSA.RSAConnection.IsRSACommunicationActive">
             <summary>
             Whether the RSA functionality is active. RSA functionality requires an additional initialization process, thus

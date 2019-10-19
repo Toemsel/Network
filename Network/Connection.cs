@@ -219,11 +219,21 @@ namespace Network
 
         #region Properties
 
+#if !DEBUG
         /// <summary>
         /// The timeout value in milliseconds. If the connection does not receive any packet within the specified timeout,
         /// the connection will timeout and shutdown.
         /// </summary>
         public int TIMEOUT { get; set; } = 2500;
+#endif
+
+#if DEBUG
+        /// <summary>
+        /// The timeout value in milliseconds. If the connection does not receive any packet within the specified timeout,
+        /// the connection will timeout and shutdown.
+        /// </summary>
+        public int TIMEOUT { get; set; } = int.MaxValue;
+#endif
 
         /// <summary>
         /// The amount of <see cref="Packets"/> that are pending handling that this <see cref="Connection"/> will buffer.
@@ -242,7 +252,7 @@ namespace Network
         /// </summary>
         public bool IsAlive { get { return readStreamThread.IsAlive && writeStreamThread.IsAlive && invokePacketThread.IsAlive; } }
 
-        #region Socket Properties
+#region Socket Properties
 
         /// <summary>
         /// The local <see cref="IPEndPoint"/> for this <see cref="Connection"/> instance.
@@ -300,7 +310,7 @@ namespace Network
         /// </summary>
         public abstract bool UseLoopback { get; set; }
 
-        #endregion Socket Properties
+#endregion Socket Properties
 
         /// <summary>
         /// Whether this <see cref="Connection"/> should send a keep alive packet to the <see cref="IPRemoteEndPoint"/> at
@@ -376,11 +386,11 @@ namespace Network
             remove { connectionEstablished -= value; }
         }
 
-        #endregion Properties
+#endregion Properties
 
-        #region Methods
+#region Methods
 
-        #region Implementation of IPacketHandler
+#region Implementation of IPacketHandler
 
         /// <inheritdoc />
         public void RegisterStaticPacketHandler<T>(PacketReceivedHandler<T> handler) where T : Packet
@@ -443,7 +453,7 @@ namespace Network
         /// </param>
         public void UnRegisterRawDataHandler(string key) => packetHandlerMap.UnRegisterStaticRawDataHandler(key);
 
-        #endregion Implementation of IPacketHandler
+#endregion Implementation of IPacketHandler
 
         /// <summary>
         /// Registers all <see cref="Packet"/> inheritors in the given <see cref="Assembly"/> with this <see cref="Connection"/>.
@@ -480,7 +490,7 @@ namespace Network
                 });
         }
 
-        #region Packet Handler Manipulation
+#region Packet Handler Manipulation
 
         /// <summary>
         /// Returns the current <see cref="PacketHandlerMap"/> instance, so that
@@ -507,7 +517,7 @@ namespace Network
             ObjectMapRefreshed();
         }
 
-        #endregion Packet Handler Manipulation
+#endregion Packet Handler Manipulation
 
         /// <summary>
         /// Configures the <see cref="nextPingStopWatch"/> timer.
@@ -523,7 +533,7 @@ namespace Network
 #endif
         }
 
-        #region Sending Packets
+#region Sending Packets
 
         /// <summary>
         /// Sends a <see cref="PingRequest"/>, if a <see cref="PingResponse"/> is not currently being awaited.
@@ -576,9 +586,9 @@ namespace Network
             dataAvailableEvent.Set();
         }
 
-        #endregion Sending Packets
+#endregion Sending Packets
 
-        #region Threads
+#region Threads
 
         /// <summary>
         /// Reads bytes from the network.
@@ -751,9 +761,9 @@ namespace Network
             CloseHandler(CloseReason.WritePacketThreadException);
         }
 
-        #endregion Threads
+#endregion Threads
 
-        #region Handling Packets
+#region Handling Packets
 
         /// <summary>
         /// Handles all default <see cref="Packet"/>s that are in the library.
@@ -900,9 +910,9 @@ namespace Network
             }
         }
 
-        #endregion Handling Packets
+#endregion Handling Packets
 
-        #region Closing The Connection
+#region Closing The Connection
 
         /// <summary>
         /// Handles a <see cref="Connection"/> closure, with the given <see cref="CloseReason"/>.
@@ -961,7 +971,7 @@ namespace Network
             CloseSocket();
         }
 
-        #endregion Closing The Connection
+#endregion Closing The Connection
 
         /// <summary>
         /// Unlocks the connection and allows for data to be sent and received.
@@ -992,7 +1002,7 @@ namespace Network
         protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock) =>
             new UdpConnection(new UdpClient(localEndPoint), remoteEndPoint, writeLock);
 
-        #endregion Methods
+#endregion Methods
 
         /// <summary>
         /// Returns The unique hashcode of this <see cref="Connection"/> instance.
