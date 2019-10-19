@@ -4021,6 +4021,11 @@
             The local endpoint for the <see cref="F:Network.UdpConnection.client"/>.
             </summary>
         </member>
+        <member name="F:Network.UdpConnection.remoteEndPoint">
+            <summary>
+            The remote endpoint for the <see cref="F:Network.UdpConnection.client" />
+            </summary>
+        </member>
         <member name="F:Network.UdpConnection.rttStopWatch">
             <summary>
             Stopwatch to measure the RTT for ping packets.

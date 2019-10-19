@@ -33,6 +33,11 @@ namespace Network
         private IPEndPoint localEndPoint;
 
         /// <summary>
+        /// The remote endpoint for the <see cref="client" />
+        /// </summary>
+        private IPEndPoint remoteEndPoint;
+
+        /// <summary>
         /// Stopwatch to measure the RTT for ping packets.
         /// </summary>
         private readonly Stopwatch rttStopWatch = new Stopwatch();
@@ -56,6 +61,8 @@ namespace Network
         internal UdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, bool writeLock = false, bool skipInitializationProcess = false)
             : base()
         {
+            this.remoteEndPoint = remoteEndPoint;
+
             client = udpClient;
             AcknowledgePending = writeLock;
             socket = client.Client;
@@ -82,7 +89,7 @@ namespace Network
         #region Properties
 
         /// <inheritdoc />
-        public override IPEndPoint IPLocalEndPoint { get { return (IPEndPoint)client?.Client?.LocalEndPoint; } }
+        public override IPEndPoint IPLocalEndPoint { get { return localEndPoint; } }
 
         /// <summary>
         /// The local <see cref="EndPoint"/> for the <see cref="socket"/>.
@@ -90,12 +97,12 @@ namespace Network
         public EndPoint LocalEndPoint { get { return socket.LocalEndPoint; } }
 
         /// <inheritdoc />
-        public override IPEndPoint IPRemoteEndPoint { get { return (IPEndPoint)client?.Client?.RemoteEndPoint; } }
+        public override IPEndPoint IPRemoteEndPoint { get { return localEndPoint; } }
 
         /// <summary>
         /// The remote <see cref="EndPoint"/> for the <see cref="socket"/>.
         /// </summary>
-        public EndPoint RemoteEndPoint { get { return socket.RemoteEndPoint; } }
+        public EndPoint RemoteEndPoint { get { return remoteEndPoint; } }
 
         /// <inheritdoc />
         public override bool DualMode { get { return socket.DualMode; } set { socket.DualMode = value; } }
@@ -186,6 +193,9 @@ namespace Network
         /// <inheritdoc />
         protected override byte[] ReadBytes(int amount)
         {
+            while (AcknowledgePending && IsAlive)
+                Thread.Sleep(IntPerformance);
+
             if (amount == 0) return new byte[0];
             while (receivedBytes.Count < amount)
             {
@@ -204,6 +214,7 @@ namespace Network
         {
             while (AcknowledgePending && IsAlive)
                 Thread.Sleep(IntPerformance);
+
             client.Send(bytes, bytes.Length);
         }
 
