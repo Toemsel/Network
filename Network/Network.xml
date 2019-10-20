@@ -2943,7 +2943,7 @@
             <param name="packetObj">The <see cref="T:Network.Packets.Packet"/> object.</param>
             <param name="direction">The direction that the packet is traveling across the network.</param>
         </member>
-        <member name="M:Network.Logging.NetworkLog.BuildConsoleTable(System.Byte[],Network.Packets.Packet,System.String)">
+        <member name="M:Network.Logging.NetworkLog.BuildConsoleTable(System.Byte[],Network.Packets.Packet,Network.Logging.PacketDirection)">
             <summary>
             Builds a <see cref="T:ConsoleTables.ConsoleTable"/> with the given parameters and returns it.
             </summary>

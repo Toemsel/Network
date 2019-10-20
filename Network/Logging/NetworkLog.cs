@@ -1,6 +1,7 @@
 ﻿using ConsoleTables;
 using Network.Enums;
 using Network.Packets;
+using Network.RSA;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -190,7 +191,7 @@ namespace Network.Logging
             if (!EnableLogging)
                 return;
 
-            ConsoleTable tableOutPut = BuildConsoleTable(packet, packetObj, direction.ToString());
+            ConsoleTable tableOutPut = BuildConsoleTable(packet, packetObj, direction);
 
             LogToAllOutputs(tableOutPut.ToStringAlternative());
         }
@@ -202,10 +203,14 @@ namespace Network.Logging
         /// <param name="packetObj">The <see cref="Packet"/> object.</param>
         /// <param name="direction"> The direction that the packet is traveling across the network.</param>
         /// <returns>The built <see cref="ConsoleTable"/>.</returns>
-        private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, string direction)
+        private ConsoleTable BuildConsoleTable(byte[] packet, Packet packetObj, PacketDirection direction)
         {
+            string localEndPoint = monitoredConnection.IPLocalEndPoint?.ToString();
+            string remoteEndPoint = monitoredConnection.IPRemoteEndPoint?.ToString();
+            
             object type = monitoredConnection.GetType().Name;
-            object local = monitoredConnection.IPLocalEndPoint?.ToString();
+            object route = string.Format("{0} -> {1}", direction == PacketDirection.Incoming ? remoteEndPoint : localEndPoint,
+                direction == PacketDirection.Incoming ? localEndPoint : remoteEndPoint);
             object ascii = Encoding.ASCII.GetString(packet, 0, packet.Length).Replace("\0", "").Replace("\n", "").Replace("\r", "");
             object packetName = packetObj.GetType().Name;
 
@@ -213,13 +218,13 @@ namespace Network.Logging
 
             if (string.IsNullOrWhiteSpace((string)ascii))
             {
-                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "Packet");
-                tableOutPut.AddRow(direction, type, local, packetName);
+                tableOutPut = new ConsoleTable("Direction", "Type", "Route", "Packet");
+                tableOutPut.AddRow(direction, type, route, packetName);
             }
             else
             {
-                tableOutPut = new ConsoleTable("Direction", "Type", "Local", "ASCII", "Packet");
-                tableOutPut.AddRow(direction, type, local, ascii, packetName);
+                tableOutPut = new ConsoleTable("Direction", "Type", "Route", "Packet", "ASCII");
+                tableOutPut.AddRow(direction, type, route, packetName, ascii);
             }
 
             return tableOutPut;

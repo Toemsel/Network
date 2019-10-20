@@ -795,7 +795,7 @@ namespace Network
             else if (packet.GetType().Equals(typeof(EstablishUdpRequest)))
             {
                 EstablishUdpRequest establishUdpRequest = (EstablishUdpRequest)packet;
-                IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
+                IPEndPoint udpEndPoint = new IPEndPoint(IPLocalEndPoint.Address, GetFreePort());
                 Send(new EstablishUdpResponse(udpEndPoint.Port, establishUdpRequest));
                 UdpConnection udpConnection = CreateUdpConnection(udpEndPoint,
                     new IPEndPoint(IPRemoteEndPoint.Address, establishUdpRequest.UdpPort), true);

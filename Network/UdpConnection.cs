@@ -97,7 +97,7 @@ namespace Network
         public EndPoint LocalEndPoint => localEndPoint;
 
         /// <inheritdoc />
-        public override IPEndPoint IPRemoteEndPoint => localEndPoint;
+        public override IPEndPoint IPRemoteEndPoint => remoteEndPoint;
 
         /// <summary>
         /// The remote <see cref="EndPoint"/> for the <see cref="socket"/>.
@@ -199,7 +199,11 @@ namespace Network
             if (amount == 0) return new byte[0];
             while (receivedBytes.Count < amount)
             {
-                receivedBytes.AddRange(client.Receive(ref localEndPoint).GetEnumerator().ToList<byte>());
+                // https://referencesource.microsoft.com/#System/net/System/Net/Sockets/UDPClient.cs,57ff640dfcb1cbf0
+                // UdpClient.cs (695) 20.10.2019
+                // the reference does fuck up our localEndPoint. Hence, we need to create a buffer...
+                IPEndPoint buffer = new IPEndPoint(localEndPoint.Address, localEndPoint.Port);
+                receivedBytes.AddRange(client.Receive(ref buffer).GetEnumerator().ToList<byte>());
                 Thread.Sleep(IntPerformance);
             }
 
