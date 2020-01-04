@@ -201,7 +201,7 @@ namespace Network
                 {
                     TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
                     TcpConnection tcpConnection = CreateTcpConnection(tcpClient);
-                    tcpConnection.ConnectionClosed += connectionClosed;
+                    tcpConnection.NetworkConnectionClosed += connectionClosed;
                     tcpConnection.ConnectionEstablished += udpConnectionReceived;
                     connections.GetOrAdd(tcpConnection, new List<UdpConnection>());
 
@@ -234,7 +234,7 @@ namespace Network
             {
                 BluetoothClient bluetoothClient = await Task.Factory.FromAsync(bluetoothListener.BeginAcceptBluetoothClient, bluetoothListener.EndAcceptBluetoothClient, TaskCreationOptions.PreferFairness);
                 BluetoothConnection bluetoothConnection = ConnectionFactory.CreateBluetoothConnection(bluetoothClient);
-                bluetoothConnection.ConnectionClosed += connectionClosed;
+                bluetoothConnection.NetworkConnectionClosed += connectionClosed;
 
                 //Inform all subscribers.
                 if (connectionEstablished != null &&
@@ -260,7 +260,7 @@ namespace Network
             }
 
             this[tcpConnection].Add(udpConnection);
-            udpConnection.ConnectionClosed += connectionClosed;
+            udpConnection.NetworkConnectionClosed += connectionClosed;
             KnownTypes.ForEach(udpConnection.AddExternalPackets);
 
             //Inform all subscribers.
@@ -283,12 +283,15 @@ namespace Network
                 while (!connections.TryRemove(tcpConnection, out udpConnections))
                     Thread.Sleep(new Random().Next(0, 8)); //If we could not remove the tcpConnection, try it again.
                 udpConnections.ForEach(u => u.ExternalClose(closeReason));
+
+                // cleanup the event handler for the TCP connection.
+                connection.ConnectionEstablished -= udpConnectionReceived;
             }
             else if (connection.GetType().Equals(typeof(UdpConnection)))
             {
                 TcpConnection tcpConnection = this[(UdpConnection)connection];
-                if (tcpConnection == null) return; //UDP connection already removed
-                //because the TCP connection is already dead.
+                //UDP connection already removed because the TCP connection is already dead.
+                if (tcpConnection == null) return;
                 connections[tcpConnection].Remove((UdpConnection)connection);
             }
 #if NET46
@@ -312,6 +315,9 @@ namespace Network
                 connection.GetType().Equals(typeof(BluetoothConnection)))
                 connectionLost(connection, ConnectionType.Bluetooth, closeReason);
 #endif
+
+            // remove the connection lost event handler to enable GC.
+            connection.NetworkConnectionClosed -= connectionClosed;
         }
 
 #if NET46

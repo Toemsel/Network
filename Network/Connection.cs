@@ -50,6 +50,11 @@ namespace Network
         /// <summary>
         /// A handler which will be invoked if this connection is dead.
         /// </summary>
+        private event Action<CloseReason, Connection> networkConnectionClosed;
+
+        /// <summary>
+        /// A handler which will be invoked if this connection is dead.
+        /// </summary>
         private event Action<CloseReason, Connection> connectionClosed;
 
         /// <summary>
@@ -369,6 +374,16 @@ namespace Network
 
         /// <summary>
         /// Event signifying that a connection was closed between this <see cref="Connection"/> instance and another <see cref="Connection"/>.
+        /// This event is only visible for the network library itself. It garantuees, that the lib itself is capable of receiving connection state changes.
+        /// </summary>
+        internal event Action<CloseReason, Connection> NetworkConnectionClosed
+        {
+            add { networkConnectionClosed += value; }
+            remove { networkConnectionClosed -= value; }
+        }
+
+        /// <summary>
+        /// Event signifying that a connection was closed between this <see cref="Connection"/> instance and another <see cref="Connection"/>.
         /// </summary>
         public event Action<CloseReason, Connection> ConnectionClosed
         {
@@ -380,7 +395,7 @@ namespace Network
         /// Event signifying that this <see cref="Connection"/> instance established a new connection with either a <see cref="TcpConnection"/>
         /// or <see cref="UdpConnection"/> instance.
         /// </summary>
-        public event Action<TcpConnection, UdpConnection> ConnectionEstablished
+        internal event Action<TcpConnection, UdpConnection> ConnectionEstablished
         {
             add { connectionEstablished += value; }
             remove { connectionEstablished -= value; }
@@ -933,7 +948,10 @@ namespace Network
         {
             writeStreamThread.AbortSave();
             readStreamThread.AbortSave();
+
+            networkConnectionClosed?.Invoke(closeReason, this);
             connectionClosed?.Invoke(closeReason, this);
+            
             invokePacketThread.AbortSave();
             CloseSocket();
         }
@@ -961,6 +979,9 @@ namespace Network
             {
                 Logger.Log($"Couldn't send a close-message '{closeReason.ToString()}' to the endpoint.", exception, LogLevel.Warning);
             }
+
+            // always inform the internal network lib about the lost connection.
+            networkConnectionClosed?.Invoke(closeReason, this);
 
             if (callCloseEvent)
                 connectionClosed?.Invoke(closeReason, this);

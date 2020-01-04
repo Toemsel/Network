@@ -198,7 +198,7 @@ namespace Network
         /// optionally calling the <see cref="Connection.ConnectionClosed"/> event.
         /// </summary>
         /// <param name="closeReason">The reason for connection closure.</param>
-        /// <param name="callCloseEvent">Whether to call the <see cref="Connection.ConnectionClosed"/> event.</param>
+        /// <param name="callCloseEvent">Whether to call the <see cref="Connection.ConnectionClosed"/> event. <c>True</c> the <see cref="ClientConnectionContainer" /> tries to reconnect to it's endpoint afterwards again; Plus, calles the <see cref="Connection.ConnectionClosed" /> event. Otherwise <c>False</c></param>
         public void Shutdown(CloseReason closeReason, bool callCloseEvent = false)
         {
             if (IsAlive_TCP) tcpConnection.Close(closeReason, callCloseEvent);

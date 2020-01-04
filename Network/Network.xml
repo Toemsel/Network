@@ -387,7 +387,7 @@
             optionally calling the <see cref="E:Network.Connection.ConnectionClosed"/> event.
             </summary>
             <param name="closeReason">The reason for connection closure.</param>
-            <param name="callCloseEvent">Whether to call the <see cref="E:Network.Connection.ConnectionClosed"/> event.</param>
+            <param name="callCloseEvent">Whether to call the <see cref="E:Network.Connection.ConnectionClosed"/> event. <c>True</c> the <see cref="T:Network.ClientConnectionContainer" /> tries to reconnect to it's endpoint afterwards again; Plus, calles the <see cref="E:Network.Connection.ConnectionClosed" /> event. Otherwise <c>False</c></param>
         </member>
         <member name="M:Network.ClientConnectionContainer.TCP_RegisterStaticPacketHandler``1(Network.Interfaces.PacketReceivedHandler{``0})">
             <inheritdoc cref="M:Network.Interfaces.IPacketHandler.RegisterStaticPacketHandler``1(Network.Interfaces.PacketReceivedHandler{``0})"/>
@@ -602,6 +602,11 @@
         <member name="F:Network.Connection.hashCode">
             <summary>
             A fixed hashcode that persists with the <see cref="T:Network.Connection"/> instance for its entire lifetime.
+            </summary>
+        </member>
+        <member name="E:Network.Connection.networkConnectionClosed">
+            <summary>
+            A handler which will be invoked if this connection is dead.
             </summary>
         </member>
         <member name="E:Network.Connection.connectionClosed">
@@ -850,6 +855,12 @@
             handle only a specific set of packets, a custom <see cref="T:Network.Converter.IPacketConverter"/> can allow more throughput (no slowdowns
             due to relatively slow reflection).
             </remarks>
+        </member>
+        <member name="E:Network.Connection.NetworkConnectionClosed">
+            <summary>
+            Event signifying that a connection was closed between this <see cref="T:Network.Connection"/> instance and another <see cref="T:Network.Connection"/>.
+            This event is only visible for the network library itself. It garantuees, that the lib itself is capable of receiving connection state changes.
+            </summary>
         </member>
         <member name="E:Network.Connection.ConnectionClosed">
             <summary>
