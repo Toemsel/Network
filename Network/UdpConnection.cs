@@ -238,7 +238,6 @@ namespace Network
             socket.Close();
             client.Close();
         }
-
         #endregion Methods
     }
 }

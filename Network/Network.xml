@@ -619,6 +619,11 @@
             A handler which will be invoked if a new connection is established.
             </summary>
         </member>
+        <member name="F:Network.Connection.threadCancellationTokenSource">
+            <summary>
+            A token source to singal all internal threads to terminate.
+            </summary>
+        </member>
         <member name="F:Network.Connection.keepAlive">
             <summary>
             Whether this instance should send out a keep alive packet at specific intervals, to ensure there is an alive remote connection.
@@ -636,16 +641,22 @@
             the remote <see cref="T:Network.Connection"/>.
             </summary>
         </member>
-        <member name="F:Network.Connection.readStreamThread">
-            <summary>
-            Reads packets from the network and places them into the <see cref="F:Network.Connection.receivedPackets"/> and
-            <see cref="F:Network.Connection.receivedUnknownPacketHandlerPackets"/> queues.
-            </summary>
-        </member>
         <member name="F:Network.Connection.packetAvailableEvent">
             <summary>
             An event set whenever a packet is received from the network. Used to save CPU time when waiting for a packet to be
             received.
+            </summary>
+        </member>
+        <member name="F:Network.Connection.dataAvailableEvent">
+            <summary>
+            An event set whenever a packet is available to be sent to the network. Used to save CPU time when waiting to
+            send a packet.
+            </summary>
+        </member>
+        <member name="F:Network.Connection.readStreamThread">
+            <summary>
+            Reads packets from the network and places them into the <see cref="F:Network.Connection.receivedPackets"/> and
+            <see cref="F:Network.Connection.receivedUnknownPacketHandlerPackets"/> queues.
             </summary>
         </member>
         <member name="F:Network.Connection.invokePacketThread">
@@ -656,12 +667,6 @@
         <member name="F:Network.Connection.writeStreamThread">
             <summary>
             Sends pending packets to the network from the <see cref="F:Network.Connection.sendPackets"/> queue.
-            </summary>
-        </member>
-        <member name="F:Network.Connection.dataAvailableEvent">
-            <summary>
-            An event set whenever a packet is available to be sent to the network. Used to save CPU time when waiting to
-            send a packet.
             </summary>
         </member>
         <member name="F:Network.Connection.packetConverter">
@@ -2706,18 +2711,6 @@
             </summary>
             <param name="rsaParameter">The <see cref="T:System.Security.Cryptography.RSAParameters"/> instance that the extension method affects.</param>
             <returns>The XML <see cref="T:System.String"/> with the public key.</returns>
-        </member>
-        <member name="T:Network.Extensions.ThreadExtensions">
-            <summary>
-            Provides additional functionality to the <see cref="T:System.Threading.Thread"/> class, that isn't available under .NET Standard 2.0.
-            </summary>
-        </member>
-        <member name="M:Network.Extensions.ThreadExtensions.AbortSave(System.Threading.Thread)">
-            <summary>
-            Allows for a <see cref="T:System.Threading.Thread"/> object to be aborted in a program running under the .NET Standard C# implementation.
-            </summary>
-            <param name="thread">The <see cref="T:System.Threading.Thread"/> instance this extension method affects.</param>
-            <returns>Whether the <see cref="M:System.Threading.Thread.Abort(System.Object)"/> method raised an exception.</returns>
         </member>
         <member name="T:Network.Extensions.WaitHandleExtensions">
             <summary>
