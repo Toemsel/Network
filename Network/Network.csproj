@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.3.18</Version>
+     <Version>6.1.4.20</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -24,14 +24,12 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>Server and Client may have their own RSA key size configuration.
-Custom RSA key sizes won't lead to an exception anymore.
-Bugfix for the "Connection.Close" implementation for .NET Core.
-Higher detail packet logging, including ipAddresses.
-UdpConnection: IPRemote and IPLocalEndpoint bugfix.</PackageReleaseNotes>
+     <PackageReleaseNotes>ServerConnectionContainer Connection Count Bugfix
+RawData PacketHandler Bugfix
+State of the art thread cancellation</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.3.18</AssemblyVersion>
-     <FileVersion>6.1.3.18</FileVersion>
+     <AssemblyVersion>6.1.4.20</AssemblyVersion>
+     <FileVersion>6.1.4.20</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>
