@@ -43,7 +43,7 @@ namespace Network.Utilities
         /// </summary>
         /// <param name="key">The key for whose primitive type to get a handler delegate.</param>
         /// <returns>The handler delegate associated with the given key.</returns>
-        internal Delegate this[string key] => keyToDelegateMethodMap[key];
+        internal Delegate this[string key] => keyToDelegateMethodMap.ContainsKey(key) ? keyToDelegateMethodMap[key] : null;
 
         /// <summary>
         /// Gets the <see cref="Delegate"/> method which handles packets with the given ID.
