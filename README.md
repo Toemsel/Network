@@ -3,7 +3,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/as-seen-on-tv.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://forthebadge.com)
 
-Tutorials http://www.indie-dev.at/?cat=86 <br />
+Tutorials https://www.indie-dev.at/overview-en/ <br />
 Downloads http://www.indie-dev.at/?page_id=480 <br />
 Licence http://www.indie-dev.at/?page_id=525 <br />
 Documentation http://www.indie-dev.at/?page_id=476 <br />
