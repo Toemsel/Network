@@ -6,7 +6,6 @@
 Tutorials http://www.indie-dev.at/?cat=86 <br />
 Downloads http://www.indie-dev.at/?page_id=480 <br />
 Licence http://www.indie-dev.at/?page_id=525 <br />
-Forum http://www.indie-dev.at/?forum=c-network-library <br />
 Documentation http://www.indie-dev.at/?page_id=476 <br />
 NuGet https://www.nuget.org/packages/Network/ <br />
 Chat: https://discordapp.com/invite/tgAzGby <br />
