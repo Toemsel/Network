@@ -30,7 +30,7 @@ namespace Network.RSA
         /// <param name="udpConnection">The UDP connection to use.</param>
         /// <param name="rsaPair">The local RSA key-pair.</param>
         internal SecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, RSAPair rsaPair)
-            : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
+            : base(tcpConnection, udpConnection)
         {
             RSAPair = rsaPair;
         }
