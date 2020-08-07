@@ -142,9 +142,11 @@ namespace Network.Utilities
                 packetTypeToHandlerIdMap.Add(packetType, new Dictionary<object, int>());
             }
 
-            packetTypeToHandlerIdMap[packetType].Add(handlerInstance, UidGenerator.GenerateUid<int>());
+            var uid = UidGenerator.GenerateUid<int>();
+            
+            packetTypeToHandlerIdMap[packetType].Add(handlerInstance, uid);
 
-            packetIdToDelegateMethodMap.Add(UidGenerator.LastGeneratedUid<int>(), (handlerDelegate, handlerInstance));
+            packetIdToDelegateMethodMap.Add(uid, (handlerDelegate, handlerInstance));
         }
 
         /// <summary>
