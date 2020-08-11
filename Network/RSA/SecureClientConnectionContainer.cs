@@ -17,23 +17,7 @@ namespace Network.RSA
         /// <param name="ipAddress">The remote ip address.</param>
         /// <param name="port">The remote port.</param>
         /// <param name="rsaPair">The local RSA key-pair.</param>
-        internal SecureClientConnectionContainer(string ipAddress, int port, RSAPair rsaPair)
-            : base(ipAddress, port)
-        {
-            RSAPair = rsaPair;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConnectionContainer"/> class.
-        /// </summary>
-        /// <param name="tcpConnection">The TCP connection to use.</param>
-        /// <param name="udpConnection">The UDP connection to use.</param>
-        /// <param name="rsaPair">The local RSA key-pair.</param>
-        internal SecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, RSAPair rsaPair)
-            : base(tcpConnection.IPRemoteEndPoint.Address.ToString(), tcpConnection.IPRemoteEndPoint.Port)
-        {
-            RSAPair = rsaPair;
-        }
+        internal SecureClientConnectionContainer(string ipAddress, int port, RSAPair rsaPair) : base(ipAddress, port) => RSAPair = rsaPair;
 
         #endregion Constructors
 

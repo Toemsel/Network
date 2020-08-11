@@ -512,48 +512,6 @@ namespace Network
             return clientConnectionContainer;
         }
 
-        /// <summary>
-        /// Creates a <see cref="SecureClientConnectionContainer"/> with the given <see cref="TcpConnection"/> and <see cref="UdpConnection"/>.
-        /// </summary>
-        /// <param name="tcpConnection">The <see cref="TcpConnection"/> to use.</param>
-        /// <param name="udpConnection">The <see cref="UdpConnection"/> to use.</param>
-        /// <param name="keySize">The size of the RSA keys.</param>
-        /// <returns>The created <see cref="SecureClientConnectionContainer"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if the given <see cref="TcpConnection"/> is not connected.</exception>
-        public static ClientConnectionContainer CreateSecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, int keySize = 2048) =>
-            CreateSecureClientConnectionContainer(tcpConnection, udpConnection, RSAKeyGeneration.Generate(keySize));
-
-        /// <summary>
-        /// Creates a <see cref="SecureClientConnectionContainer"/> with the given <see cref="TcpConnection"/> and <see cref="UdpConnection"/>.
-        /// </summary>
-        /// <param name="tcpConnection">The <see cref="TcpConnection"/> to use.</param>
-        /// <param name="udpConnection">The <see cref="UdpConnection"/> to use.</param>
-        /// <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-        /// <param name="keySize">The size of the RSA keys.</param>
-        /// <returns>The created <see cref="SecureClientConnectionContainer"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if the given <see cref="TcpConnection"/> is not connected.</exception>
-        public static ClientConnectionContainer CreateSecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection,
-            string publicKey, string privateKey, int keySize = 2048) => CreateSecureClientConnectionContainer(tcpConnection, udpConnection, new RSAPair(publicKey, privateKey, keySize));
-
-        /// <summary>
-        /// Creates a <see cref="SecureClientConnectionContainer"/> with the given <see cref="TcpConnection"/> and <see cref="UdpConnection"/>.
-        /// </summary>
-        /// <param name="tcpConnection">The <see cref="TcpConnection"/> to use.</param>
-        /// <param name="udpConnection">The <see cref="UdpConnection"/> to use.</param>
-        /// <param name="rsaPair">The RSA key-pair to use.</param>
-        /// <returns>The created <see cref="SecureClientConnectionContainer"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if the given <see cref="TcpConnection"/> is not connected.</exception>
-        public static ClientConnectionContainer CreateSecureClientConnectionContainer(TcpConnection tcpConnection, UdpConnection udpConnection, RSAPair rsaPair)
-        {
-            if (tcpConnection == null || !tcpConnection.IsAlive)
-                throw new ArgumentException("TCP connection must be connected to an endpoint.");
-
-            var secureClientConnectionContainer = new SecureClientConnectionContainer(tcpConnection, udpConnection, rsaPair);
-            secureClientConnectionContainer.Initialize();
-            return secureClientConnectionContainer;
-        }
-
         #endregion Client Connection Container Factory
 
         #region Server Connection Container Factory

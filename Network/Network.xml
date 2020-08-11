@@ -1609,38 +1609,6 @@
             <returns>The created <see cref="T:Network.ClientConnectionContainer"/>.</returns>
             <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
         </member>
-        <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,System.Int32)">
-            <summary>
-            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
-            </summary>
-            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
-            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
-            <param name="keySize">The size of the RSA keys.</param>
-            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
-            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
-        </member>
-        <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,System.String,System.String,System.Int32)">
-            <summary>
-            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
-            </summary>
-            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
-            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
-            <param name="publicKey">The public RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="privateKey">The private RSA key in xml format. (https://superdry.apphb.com/tools/online-rsa-key-converter)</param>
-            <param name="keySize">The size of the RSA keys.</param>
-            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
-            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
-        </member>
-        <member name="M:Network.ConnectionFactory.CreateSecureClientConnectionContainer(Network.TcpConnection,Network.UdpConnection,Network.RSA.RSAPair)">
-            <summary>
-            Creates a <see cref="T:Network.RSA.SecureClientConnectionContainer"/> with the given <see cref="T:Network.TcpConnection"/> and <see cref="T:Network.UdpConnection"/>.
-            </summary>
-            <param name="tcpConnection">The <see cref="T:Network.TcpConnection"/> to use.</param>
-            <param name="udpConnection">The <see cref="T:Network.UdpConnection"/> to use.</param>
-            <param name="rsaPair">The RSA key-pair to use.</param>
-            <returns>The created <see cref="T:Network.RSA.SecureClientConnectionContainer"/>.</returns>
-            <exception cref="T:System.ArgumentException">Thrown if the given <see cref="T:Network.TcpConnection"/> is not connected.</exception>
-        </member>
         <member name="M:Network.ConnectionFactory.CreateServerConnectionContainer(System.Int32,System.Boolean)">
             <summary>
             Creates a <see cref="T:Network.ServerConnectionContainer"/> listening on the given port.
@@ -3503,14 +3471,6 @@
             </summary>
             <param name="ipAddress">The remote ip address.</param>
             <param name="port">The remote port.</param>
-            <param name="rsaPair">The local RSA key-pair.</param>
-        </member>
-        <member name="M:Network.RSA.SecureClientConnectionContainer.#ctor(Network.TcpConnection,Network.UdpConnection,Network.RSA.RSAPair)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Network.ClientConnectionContainer"/> class.
-            </summary>
-            <param name="tcpConnection">The TCP connection to use.</param>
-            <param name="udpConnection">The UDP connection to use.</param>
             <param name="rsaPair">The local RSA key-pair.</param>
         </member>
         <member name="M:Network.RSA.SecureClientConnectionContainer.CreateTcpConnection">
