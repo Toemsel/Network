@@ -6,7 +6,7 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.1.4.20</Version>
+     <Version>6.2.4.21</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
@@ -24,12 +24,11 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>ServerConnectionContainer Connection Count Bugfix
-RawData PacketHandler Bugfix
-State of the art thread cancellation</PackageReleaseNotes>
+     <PackageReleaseNotes>SecureClientConnectionContainer factory changes
+Concurrent Send/Receive Bugfix</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.1.4.20</AssemblyVersion>
-     <FileVersion>6.1.4.20</FileVersion>
+     <AssemblyVersion>6.2.4.21</AssemblyVersion>
+     <FileVersion>6.2.4.21</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>
