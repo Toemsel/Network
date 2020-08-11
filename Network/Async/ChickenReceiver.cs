@@ -31,6 +31,7 @@
 
 #endregion Licence - CLCPLv3
 
+using Network.Converter;
 using Network.Extensions;
 using Network.Packets;
 using System;
@@ -116,7 +117,7 @@ namespace Network.Async
             //No answer from the endPoint
             if (receivedAsyncPacket == null)
             {
-                R emptyPacket = Activator.CreateInstance<R>();
+                R emptyPacket = PacketConverterHelper.InstantiateGenericPacket<R>();
                 emptyPacket.State = Enums.PacketState.Timeout;
                 return emptyPacket;
             }

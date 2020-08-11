@@ -107,30 +107,21 @@ namespace Network.Converter
         /// </summary>
         /// <param name="packetType">The <see cref="Type"/> to instantiate.</param>
         /// <returns>The default instance of the given <see cref="Type"/>.</returns>
-        public static Packet InstantiatePacket(Type packetType)
-        {
-            return (Packet)InstantiateObject(packetType);
-        }
+        public static Packet InstantiatePacket(Type packetType) => (Packet)InstantiateObject(packetType);
 
         /// <summary>
         /// Instantiates and returns a default <see cref="object"/> of the given generic type.
         /// </summary>
         /// <typeparam name="O">The generic type of the object to instantiate.</typeparam>
         /// <returns>The default instance of the given generic type.</returns>
-        public static O InstantiateGenericObject<O>()
-        {
-            return (O)InstantiateObject(typeof(O));
-        }
+        public static O InstantiateGenericObject<O>() => (O)InstantiateObject(typeof(O));
 
         /// <summary>
         /// Instantiates and returns a default <see cref="object"/> of the given generic type.
         /// </summary>
         /// <typeparam name="P">The generic type of packet to instantiate.</typeparam>
         /// <returns>The default instance of the given generic type.</returns>
-        public static P InstantiateGenericPacket<P>() where P : Packet
-        {
-            return (P)InstantiateObject(typeof(P));
-        }
+        public static P InstantiateGenericPacket<P>() where P : Packet => (P)InstantiateObject(typeof(P));
 
         #endregion Type Instantiation
 
