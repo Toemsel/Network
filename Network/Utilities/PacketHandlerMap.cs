@@ -1,6 +1,7 @@
 ﻿using Network.Interfaces;
 using Network.Packets;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +21,7 @@ namespace Network.Utilities
         /// Maps each packet type to a dictionary containing registered objects which want to receive packets
         /// (i.e. Handlers) of the given type and their individual IDs.
         /// </summary>
-        private readonly Dictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap = new Dictionary<Type, Dictionary<object, int>>();
+        private readonly ConcurrentDictionary<Type, Dictionary<object, int>> packetTypeToHandlerIdMap = new ConcurrentDictionary<Type, Dictionary<object, int>>();
 
         /// <summary>
         /// Maps each packet id to a tuple, holding the packet handler method and the object on which the handler should be called.
@@ -105,8 +106,8 @@ namespace Network.Utilities
 
             foreach (Type currentExternalType in externalTypes)
             {
-                if (!packetTypeToHandlerIdMap.ContainsKey(currentExternalType))
-                    packetTypeToHandlerIdMap.Add(currentExternalType, map.packetTypeToHandlerIdMap[currentExternalType]);
+                while (!packetTypeToHandlerIdMap.ContainsKey(currentExternalType) &&
+                    !packetTypeToHandlerIdMap.TryAdd(currentExternalType, map.packetTypeToHandlerIdMap[currentExternalType])) { }
 
                 int[] externalIds = map.packetTypeToHandlerIdMap[currentExternalType].Values.ToArray();
 
@@ -139,7 +140,8 @@ namespace Network.Utilities
             else
             {
                 //We haven't seen this type before, so add it to the dict
-                packetTypeToHandlerIdMap.Add(packetType, new Dictionary<object, int>());
+                while(!packetTypeToHandlerIdMap.ContainsKey(packetType) &&
+                    !packetTypeToHandlerIdMap.TryAdd(packetType, new Dictionary<object, int>())) { }
             }
 
             var uid = UidGenerator.GenerateUid<int>();
@@ -218,10 +220,8 @@ namespace Network.Utilities
             int packetId = packetTypeToHandlerIdMap[packetType][handlerInstance];
             packetTypeToHandlerIdMap[packetType].Remove(handlerInstance);
 
-            if (packetTypeToHandlerIdMap[packetType].Count == 0)
-            {
-                packetTypeToHandlerIdMap.Remove(packetType);
-            }
+            while (packetTypeToHandlerIdMap[packetType].Count == 0 &&
+                !packetTypeToHandlerIdMap.TryRemove(packetType, out _)) { }
 
             packetIdToDelegateMethodMap.Remove(packetId);
         }
