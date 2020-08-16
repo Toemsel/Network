@@ -77,7 +77,7 @@ namespace Network
             : base(ipAddress, port)
         {
             if (start)
-                Start();
+                _ = Start();
         }
 
         /// <summary>
@@ -175,12 +175,12 @@ namespace Network
         /// <summary>
         /// Starts both a Bluetooth and TCP server, and listens for incoming connections.
         /// </summary>
-        public void Start()
+        public async Task Start()
         {
-            _ = StartTCPListener();
+            await StartTCPListener();
 
 #if NET46
-            _ = StartBluetoothListener();
+            await StartBluetoothListener();
 #endif
         }
 
