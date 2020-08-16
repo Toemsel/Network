@@ -177,17 +177,17 @@ namespace Network
         /// </summary>
         public void Start()
         {
-            StartTCPListener();
+            _ = StartTCPListener();
 
 #if NET46
-            StartBluetoothListener();
+            _ = StartBluetoothListener();
 #endif
         }
 
         /// <summary>
         /// Starts a TCP server and listens for incoming <see cref="TcpConnection"/>s.
         /// </summary>
-        public async void StartTCPListener()
+        public async Task StartTCPListener()
         {
             if (IsTCPOnline) return;
 
@@ -222,7 +222,7 @@ namespace Network
         /// <summary>
         /// Starts a Bluetooth server and listens for incoming <see cref="BluetoothConnection"/>s.
         /// </summary>
-        public async void StartBluetoothListener()
+        public async Task StartBluetoothListener()
         {
             if (IsBluetoothOnline || !AllowBluetoothConnections || !BluetoothConnection.IsBluetoothSupported) return;
 
