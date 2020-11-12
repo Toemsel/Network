@@ -32,7 +32,7 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 # Supported Frameworks
 
 - .NET Framework          >= 5.0
-- .NET Framework          4.6 - 4.8
+- .NET Framework          >= 4.6 && <= 4.8
 - .NET Core               >= 2.0
 - Mono                    >= 5.4
 - Xamarin.iOS             >= 10.14
