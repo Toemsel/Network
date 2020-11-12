@@ -31,21 +31,20 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Supported Frameworks
 
+- .NET Framework          >= 5.0
 - .NET Framework          >= 4.6
-- .NET Core*               >= 2.0
-- Mono*                    >= 5.4
-- Xamarin.iOS*             >= 10.14
-- Xamarin.MAC*             >= 3.8
-- Xamarin.Android*         >= 8.0
-- UWP*                     >= 10.0.16299
-
-'*' No Bluetooth support
+- .NET Core               >= 2.0
+- Mono                    >= 5.4
+- Xamarin.iOS             >= 10.14
+- Xamarin.MAC             >= 3.8
+- Xamarin.Android         >= 8.0
+- UWP                     >= 10.0.16299
 
 # Features in a nutshell
 
 - TCP communication
 - UDP communication
-- Bluetooth communication
+- Bluetooth communication *
 - Factories to ensure the most easy setup
 - Server and Client Wrappers (Auto-Reconnect, Auto-Join)
 - Object oriented. Don't worry about bits and bytes. **Send and receive objects**
@@ -57,6 +56,8 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 - Very fast and relieable (6-10ms RTT)
 - Highly customizable
 - OpenSource and Free to use
+
+'*' Bluetooth support only for .NET 4.6 - 4.8
 
 # Donations
 - LTC: LYSaNyRArm1jQdAxYXf7GDFSCuoGnVSVSf
