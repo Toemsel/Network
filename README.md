@@ -12,12 +12,14 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Continuous Integration
 
-| Build Configuration | Framework | Badge |
-| ------------------- | --------- | ----- |
-| Debug | .NET Framework | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Desktop)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
-| Release | .NET Framework | [![Build Status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Framework)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=11) |
-| Debug | .NET Core | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
-| Release | .NET Core | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) |
+| Build | Architecture | Framework Target | Badge |
+| ------------------- | ------------ | ---------------- | ----- |
+| Debug | x86 | NET50 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%2050)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=0) |
+| Release | x86 | NET50 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%2050)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=0) |
+| Debug | x86 | NET46 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Desktop)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
+| Release | x86 | NET46 | [![Build Status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Framework)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=11) |
+| Debug | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
+| Release | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) |
 
 # Badges
 
@@ -31,21 +33,20 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Supported Frameworks
 
-- .NET Framework          >= 4.6
-- .NET Core*               >= 2.0
-- Mono*                    >= 5.4
-- Xamarin.iOS*             >= 10.14
-- Xamarin.MAC*             >= 3.8
-- Xamarin.Android*         >= 8.0
-- UWP*                     >= 10.0.16299
-
-'*' No Bluetooth support
+- .NET Framework          >= 5.0
+- .NET Framework          >= 4.6 && <= 4.8
+- .NET Core               >= 2.0
+- Mono                    >= 5.4
+- Xamarin.iOS             >= 10.14
+- Xamarin.MAC             >= 3.8
+- Xamarin.Android         >= 8.0
+- UWP                     >= 10.0.16299
 
 # Features in a nutshell
 
 - TCP communication
 - UDP communication
-- Bluetooth communication
+- Bluetooth communication *
 - Factories to ensure the most easy setup
 - Server and Client Wrappers (Auto-Reconnect, Auto-Join)
 - Object oriented. Don't worry about bits and bytes. **Send and receive objects**
@@ -57,6 +58,8 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 - Very fast and relieable (6-10ms RTT)
 - Highly customizable
 - OpenSource and Free to use
+
+'*' Bluetooth support only for .NET 4.6 - 4.8
 
 # Donations
 - LTC: LYSaNyRArm1jQdAxYXf7GDFSCuoGnVSVSf
