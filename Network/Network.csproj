@@ -6,13 +6,16 @@
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-     <Version>6.2.4.22</Version>
+     <Version>6.2.5.22</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
      <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
 
 - .NET 4.6
-- .NET Standard 2.0 (No Bluetooth support)
+- .NET 5.0  *
+- .NET Standard 2.0 *
+
+*  No Bluetooth support
 
 Examples at: https://www.indie-dev.at/overview-en/
 Documentation at: https://www.indie-dev.at/NetworkLib/HelpFile_5.2.1.6/
@@ -24,12 +27,10 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
      <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
-     <PackageReleaseNotes>SecureClientConnectionContainer factory changes
-Concurrent Send/Receive Bugfix
-ServerConnectionContainer.Start Bugfix</PackageReleaseNotes>
+     <PackageReleaseNotes>.NET 5.0 support added</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
-     <AssemblyVersion>6.2.4.22</AssemblyVersion>
-     <FileVersion>6.2.4.22</FileVersion>
+     <AssemblyVersion>6.2.5.22</AssemblyVersion>
+     <FileVersion>6.2.5.22</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
     <DocumentationFile>.\.\Network.xml</DocumentationFile>
