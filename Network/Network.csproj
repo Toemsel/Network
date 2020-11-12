@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
-    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net46;netstandard2.0;net50</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -45,9 +45,9 @@ ServerConnectionContainer.Start Bugfix</PackageReleaseNotes>
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    <PackageReference Include="ConsoleTables" Version="2.3.0" />
+    <PackageReference Include="ConsoleTables" Version="2.4.2" />
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
@@ -61,6 +61,10 @@ ServerConnectionContainer.Start Bugfix</PackageReleaseNotes>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' ">
+
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net50' ">
 
   </ItemGroup>
 
