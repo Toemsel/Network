@@ -161,7 +161,7 @@ namespace Network
         /// </summary>
         public int Count { get { return connections.Count + bluetoothConnections.Count; } }
 
-#elif NETSTANDARD2_0
+#elif NETSTANDARD2_0 || NET5_0
         /// <summary>
         /// The amount of currently connected clients. Includes TCP and UDP clients.
         /// </summary>
@@ -450,7 +450,7 @@ namespace Network
             $"AllowBluetoothConnections {AllowBluetoothConnections}. " +
             $"Connected TCP connections {connections.Count}.";
 
-#elif NETSTANDARD2_0
+#elif NETSTANDARD2_0 || NET5_0
 
         /// <inheritdoc />
         public override string ToString() =>
@@ -511,7 +511,7 @@ namespace Network
         /// Signifies that a new <see cref="Connection"/> (i.e. <see cref="TcpConnection"/>, <see cref="UdpConnection"/>,
         /// or <see cref="BluetoothConnection"/>) has connected successfully to the server.
         /// </summary>
-#elif NETSTANDARD2_0
+#elif NETSTANDARD2_0 || NET5_0
         /// <summary>
         /// Signifies that a new <see cref="Connection"/> (i.e. <see cref="TcpConnection"/> or <see cref="UdpConnection"/>)
         /// has connected successfully to the server.

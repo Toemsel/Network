@@ -38,7 +38,7 @@ namespace Network
     /// Factory for instantiating <see cref="TcpConnection"/>s, <see cref="UdpConnection"/>s, and <see cref="BluetoothConnection"/>s
     /// as well as <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
     /// </summary>
-#elif NETSTANDARD2_0
+#elif NETSTANDARD2_0 || NET5_0
     /// <summary>
     /// Factory for instantiating <see cref="TcpConnection"/>s and <see cref="UdpConnection"/>s as well as
     /// <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
