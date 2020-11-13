@@ -811,10 +811,10 @@ namespace Network
             else if (packet.GetType().Equals(typeof(EstablishUdpRequest)))
             {
                 EstablishUdpRequest establishUdpRequest = (EstablishUdpRequest)packet;
-                IPEndPoint udpEndPoint = new IPEndPoint(IPLocalEndPoint.Address, GetFreePort());
+                IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
                 Send(new EstablishUdpResponse(udpEndPoint.Port, establishUdpRequest));
                 UdpConnection udpConnection = CreateUdpConnection(udpEndPoint,
-                    new IPEndPoint(IPRemoteEndPoint.Address, establishUdpRequest.UdpPort), true);
+                    new IPEndPoint(IPRemoteEndPoint.Address.MapToIPv4(), establishUdpRequest.UdpPort), true);
                 pendingUDPConnections.Enqueue(udpConnection);
                 connectionEstablished?.Invoke((TcpConnection)this, udpConnection);
                 return;
