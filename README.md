@@ -10,6 +10,10 @@ Documentation http://www.indie-dev.at/?page_id=476 <br />
 NuGet https://www.nuget.org/packages/Network/ <br />
 Chat: https://discordapp.com/invite/tgAzGby <br />
 
+# Donations
+
+[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
+
 # Continuous Integration
 
 | Build | Architecture | Framework Target | Badge |
@@ -60,10 +64,6 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 - OpenSource and Free to use
 
 '*' Bluetooth support only for .NET 4.6 - 4.8
-
-# Donations
-
-[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
 
 # Example Client
 ```c#
