@@ -62,11 +62,8 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 '*' Bluetooth support only for .NET 4.6 - 4.8
 
 # Donations
-- LTC: LYSaNyRArm1jQdAxYXf7GDFSCuoGnVSVSf
-- TRX: TVUiQD8LpKScXv2TMxYb7c2bKA2Xdn8ayn
-- ETH: 0xa1249ae140e775d75dd1e96b366cf605264c3f46
-- BTC: 15C8ats3mqKB9F86cZVcL6BcFGNfTLDpM6
-- XRP: rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh
+
+[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
 
 # Example Client
 ```c#
