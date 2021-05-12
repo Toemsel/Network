@@ -30,7 +30,7 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 | NuGet | Current Version | ![NuGet](https://img.shields.io/nuget/v/Network.svg) |
 | Discord | Chat-Room | [![Discord](https://img.shields.io/discord/502989126916898837.svg)](https://discord.gg/tgAzGby) |
 
-# Donations
+# Support
 
 [By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
 
