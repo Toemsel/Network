@@ -10,10 +10,6 @@ Documentation http://www.indie-dev.at/?page_id=476 <br />
 NuGet https://www.nuget.org/packages/Network/ <br />
 Chat: https://discordapp.com/invite/tgAzGby <br />
 
-# Donations
-
-[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
-
 # Continuous Integration
 
 | Build | Architecture | Framework Target | Badge |
@@ -34,6 +30,9 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 | NuGet | Current Version | ![NuGet](https://img.shields.io/nuget/v/Network.svg) |
 | Discord | Chat-Room | [![Discord](https://img.shields.io/discord/502989126916898837.svg)](https://discord.gg/tgAzGby) |
 
+# Donations
+
+[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
 
 # Supported Frameworks
 
