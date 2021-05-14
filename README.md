@@ -32,7 +32,7 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Support
 
-[By me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
+[Buy me a coffee ☕](https://www.buymeacoffee.com/yoghurt)
 
 # Supported Frameworks
 
