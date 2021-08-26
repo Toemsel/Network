@@ -1,14 +1,6 @@
-﻿#if NET46
-
-using InTheHand.Net.Sockets;
-using Network.Bluetooth;
-
-#endif
-
-using Network.RSA;
+﻿using Network.RSA;
 using System;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,18 +25,10 @@ namespace Network
         TCPConnectionNotAlive
     }
 
-#if NET46
-    /// <summary>
-    /// Factory for instantiating <see cref="TcpConnection"/>s, <see cref="UdpConnection"/>s, and <see cref="BluetoothConnection"/>s
-    /// as well as <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
-    /// </summary>
-#elif NETSTANDARD2_0 || NET5_0
     /// <summary>
     /// Factory for instantiating <see cref="TcpConnection"/>s and <see cref="UdpConnection"/>s as well as
     /// <see cref="ClientConnectionContainer"/>s and <see cref="ServerConnectionContainer"/>s (and their secure variants).
     /// </summary>
-#endif
-
     public static class ConnectionFactory
     {
         #region Variables
@@ -54,96 +38,9 @@ namespace Network
         /// </summary>
         public const int CONNECTION_TIMEOUT = 8000;
 
-#if NET46
-
-        /// <summary>
-        /// The GUID of this assembly, needed for bluetooth connections.
-        /// </summary>
-        internal static readonly Guid GUID;
-
-#endif
-
         #endregion Variables
 
-        #region Constructors
-
-#if NET46
-
-        /// <summary>
-        /// Initializes a new instance of the static <see cref="ConnectionFactory"/> class. Sets the <see cref="GUID"/>.
-        /// </summary>
-        static ConnectionFactory()
-        {
-            GUID = Assembly.GetAssembly(typeof(Connection)).GetType().GUID;
-        }
-
-#endif
-
-        #endregion Constructors
-
         #region Methods
-
-        #region Bluetooth Connection Factory
-
-#if NET46
-
-        /// <summary>
-        /// Finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
-        /// </summary>
-        /// <returns>All discoverable Bluetooth devices.</returns>
-        public static DeviceInfo[] GetBluetoothDevices() { return DeviceInfo.GenerateDeviceInfos(new BluetoothClient().DiscoverDevicesInRange()); }
-
-        /// <summary>
-        /// Asynchronously finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Task{T}"/> representing the asynchronous operation, with the promise of a <see cref="DeviceInfo"/> array on completion.
-        /// </returns>
-        public static async Task<DeviceInfo[]> GetBluetoothDevicesAsync()
-        {
-            return await Task.Factory.StartNew(() => DeviceInfo.GenerateDeviceInfos(new BluetoothClient().DiscoverDevices()));
-        }
-
-        /// <summary>
-        /// Creates a <see cref="BluetoothConnection"/> and connects it.
-        /// </summary>
-        /// <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
-        /// <returns>A tuple with the <see cref="ConnectionResult"/> and created <see cref="BluetoothConnection"/>.</returns>
-        public static Tuple<ConnectionResult, BluetoothConnection> CreateBluetoothConnection(DeviceInfo bluetoothDeviceInfo)
-        {
-            BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDeviceInfo);
-            ConnectionResult result = bluetoothConnection.TryConnect().Result;
-            return new Tuple<ConnectionResult, BluetoothConnection>(result, bluetoothConnection);
-        }
-
-        /// <summary>
-        /// Asynchronously creates a <see cref="BluetoothConnection"/> and connects it.
-        /// </summary>
-        /// <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
-        /// <returns>
-        /// A <see cref="Task{T}"/> representing the asynchronous operation, with the promise of a tuple with the
-        /// <see cref="ConnectionResult"/> and created <see cref="BluetoothConnection"/> on completion.
-        /// </returns>
-        public static async Task<Tuple<ConnectionResult, BluetoothConnection>> CreateBluetoothConnectionAsync(DeviceInfo bluetoothDeviceInfo)
-        {
-            BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDeviceInfo);
-            ConnectionResult result = await bluetoothConnection.TryConnect();
-            return new Tuple<ConnectionResult, BluetoothConnection>(result, bluetoothConnection);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="BluetoothConnection"/> with the given client.
-        /// </summary>
-        /// <param name="bluetoothClient">The client to create a connection with.</param>
-        /// <returns>The created <see cref="BluetoothConnection"/>.</returns>
-        internal static BluetoothConnection CreateBluetoothConnection(BluetoothClient bluetoothClient)
-        {
-            return new BluetoothConnection(bluetoothClient);
-        }
-
-#endif
-
-        #endregion Bluetooth Connection Factory
 
         #region TCP Connection Factory
 

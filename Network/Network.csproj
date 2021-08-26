@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
-    <TargetFrameworks>net46;netstandard2.0;net50</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
      <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -9,13 +9,7 @@
      <Version>6.2.5.22</Version>
      <Authors>Thomas Christof</Authors>
      <Company>Indie-Dev</Company>
-     <Description>Network library supporting: TCP, UDP, Bluetooth, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
-
-- .NET 4.6
-- .NET 5.0  *
-- .NET Standard 2.0 *
-
-*  No Bluetooth support
+     <Description>Network library supporting: TCP, UDP, RSA, events and objects. Fast and simple, with only 48bit overhead per packet. Send and receive packets with async operations.
 
 Examples at: https://www.indie-dev.at/overview-en/
 Documentation at: https://www.indie-dev.at/NetworkLib/HelpFile_5.2.1.6/
@@ -26,18 +20,17 @@ Fork me: https://github.com/Toemsel/Network</Description>
      <PackageIconUrl>http://indie-dev.at/NetworkLib/Public/Icons/network.ico</PackageIconUrl>
      <RepositoryUrl>https://github.com/Toemsel/Network</RepositoryUrl>
      <RepositoryType>GitHub</RepositoryType>
-     <PackageTags>TCP, UDP, Bluetooth, Network, Events, Async, RSA</PackageTags>
+     <PackageTags>TCP, UDP, Network, Events, Async, RSA</PackageTags>
      <PackageReleaseNotes>.NET 5.0 support added</PackageReleaseNotes>
      <NeutralLanguage>en-US</NeutralLanguage>
      <AssemblyVersion>6.2.5.22</AssemblyVersion>
      <FileVersion>6.2.5.22</FileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
-    <DocumentationFile>.\.\Network.xml</DocumentationFile>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>C:\Entwicklung\Network\Network\Network.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>.\.\Network.xml</DocumentationFile>
-  </PropertyGroup>
+    
   <ItemGroup>
     <Compile Remove="packages\**" />
     <EmbeddedResource Remove="packages\**" />
@@ -54,24 +47,5 @@ Fork me: https://github.com/Toemsel/Network</Description>
     <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
     <PackageReference Include="System.Threading" Version="4.3.0" /> 
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46' ">
-    <PackageReference Include="Network.Bluetooth" Version="4.0.1803.22" />
-    <PackageReference Include="32feet.NET" Version="3.5.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' ">
-
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net50' ">
-
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Network.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

@@ -101,170 +101,6 @@
             The ID to use for the decorated <see cref="T:Network.Packets.Packet"/>.
             </summary>
         </member>
-        <member name="T:Network.BluetoothConnection">
-            <summary>
-            Builds upon the <see cref="T:Network.Connection"/> class, implementing Bluetooth and allowing for messages to be conveniently
-            sent without a large serialisation header.
-            </summary>
-            <remarks>
-            This class is only available for .NET Framework 4.6 and above. This class is not compiled for .NET Standard, as a
-            key dependency is only available for the .NET Framework (looking at you, InTheHand).
-            </remarks>
-        </member>
-        <member name="F:Network.BluetoothConnection.stream">
-            <summary>
-            The <see cref="T:System.IO.Stream"/> for reading and writing data.
-            </summary>
-        </member>
-        <member name="M:Network.BluetoothConnection.#ctor(Network.Bluetooth.DeviceInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Network.BluetoothConnection"/> class.
-            </summary>
-            <param name="deviceInfo">The device Bluetooth information.</param>
-        </member>
-        <member name="M:Network.BluetoothConnection.#ctor(InTheHand.Net.Sockets.BluetoothClient)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Network.BluetoothConnection"/> class.
-            </summary>
-            <param name="bluetoothClient">The bluetooth client.</param>
-        </member>
-        <member name="M:Network.BluetoothConnection.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Network.BluetoothConnection"/> class.
-            </summary>
-        </member>
-        <member name="P:Network.BluetoothConnection.DeviceInfo">
-            <summary>
-            The device info of the connected device.
-            </summary>
-        </member>
-        <member name="P:Network.BluetoothConnection.Client">
-            <summary>
-            The bluetooth client that sends and receives data.
-            </summary>
-        </member>
-        <member name="P:Network.BluetoothConnection.SignalStrength">
-            <summary>
-            The signal strength of the paired device.
-            </summary>
-        </member>
-        <member name="P:Network.BluetoothConnection.IsBluetoothSupported">
-            <summary>
-            Whether Bluetooth is supported by the current device.
-            </summary>
-        </member>
-        <member name="P:Network.BluetoothConnection.IPLocalEndPoint">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.IPRemoteEndPoint">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.DualMode">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.Fragment">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.HopLimit">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.IsRoutingEnabled">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.NoDelay">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.TTL">
-            <inheritdoc />
-        </member>
-        <member name="P:Network.BluetoothConnection.UseLoopback">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.BluetoothConnection.TryConnect">
-            <summary>
-            Attempts to connect to the remote endpoint asynchronously.
-            </summary>
-            <returns>
-            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation, with the promise of a <see cref="T:Network.ConnectionResult"/> on completion.
-            </returns>
-        </member>
-        <member name="M:Network.BluetoothConnection.CloseHandler(Network.Enums.CloseReason)">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.BluetoothConnection.CloseSocket">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.BluetoothConnection.HandleUnknownPacket">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.BluetoothConnection.ReadBytes(System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="M:Network.BluetoothConnection.WriteBytes(System.Byte[])">
-            <inheritdoc />
-        </member>
-        <member name="T:Network.Bluetooth.DeviceInfo">
-            <summary>
-            Stores information about a Bluetooth device.
-            </summary>
-            <remarks>
-            This class is only applicable if the build is for the .NET Framework 4.6. It is only compiled if the 'NET46'
-            preprocessor variable is set.
-            </remarks>
-        </member>
-        <member name="M:Network.Bluetooth.DeviceInfo.#ctor(InTheHand.Net.Sockets.BluetoothDeviceInfo)">
-            <summary>
-            Constructs and returns a new instance of the <see cref="T:Network.Bluetooth.DeviceInfo"/>, mapping the given
-            <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> to the <see cref="T:Network.Bluetooth.DeviceInfo"/>.
-            </summary>
-            <param name="deviceInfo">
-            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> whose properties to use for the new
-            <see cref="T:Network.Bluetooth.DeviceInfo"/> instance.
-            </param>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.DeviceName">
-            <summary>
-            The name of the Bluetooth device.
-            </summary>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.IsKnown">
-            <summary>
-            Whether the device is already known.
-            </summary>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.SignalStrength">
-            <summary>
-            The signal strength of the Bluetooth connection.
-            </summary>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.LastSeen">
-            <summary>
-            The last time that the device was seen via Bluetooth.
-            </summary>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.LastUsed">
-            <summary>
-            The last time that the device was used.
-            </summary>
-        </member>
-        <member name="P:Network.Bluetooth.DeviceInfo.BluetoothDeviceInfo">
-            <summary>
-            The <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/> for the device.
-            </summary>
-        </member>
-        <member name="M:Network.Bluetooth.DeviceInfo.GenerateDeviceInfos(InTheHand.Net.Sockets.BluetoothDeviceInfo[])">
-            <summary>
-            For each of the given <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, generates a
-            <see cref="T:Network.Bluetooth.DeviceInfo"/> and returns the generated array.
-            </summary>
-            <param name="infos">
-            An array of <see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s, for each of which to generate the
-            corresponding <see cref="T:Network.Bluetooth.DeviceInfo"/>.
-            </param>
-            <returns>
-            An array of <see cref="T:Network.Bluetooth.DeviceInfo"/>s, one for each of the given<see cref="T:InTheHand.Net.Sockets.BluetoothDeviceInfo"/>s.
-            </returns>
-        </member>
         <member name="T:Network.ClientConnectionContainer">
             <summary>
             Provides convenient methods to reduce the number of code lines which are needed to manage all the connections.
@@ -1302,62 +1138,14 @@
         </member>
         <member name="T:Network.ConnectionFactory">
             <summary>
-            Factory for instantiating <see cref="T:Network.TcpConnection"/>s, <see cref="T:Network.UdpConnection"/>s, and <see cref="T:Network.BluetoothConnection"/>s
-            as well as <see cref="T:Network.ClientConnectionContainer"/>s and <see cref="T:Network.ServerConnectionContainer"/>s (and their secure variants).
+            Factory for instantiating <see cref="T:Network.TcpConnection"/>s and <see cref="T:Network.UdpConnection"/>s as well as
+            <see cref="T:Network.ClientConnectionContainer"/>s and <see cref="T:Network.ServerConnectionContainer"/>s (and their secure variants).
             </summary>
         </member>
         <member name="F:Network.ConnectionFactory.CONNECTION_TIMEOUT">
             <summary>
             Timeout interval in milliseconds.
             </summary>
-        </member>
-        <member name="F:Network.ConnectionFactory.GUID">
-            <summary>
-            The GUID of this assembly, needed for bluetooth connections.
-            </summary>
-        </member>
-        <member name="M:Network.ConnectionFactory.#cctor">
-            <summary>
-            Initializes a new instance of the static <see cref="T:Network.ConnectionFactory"/> class. Sets the <see cref="F:Network.ConnectionFactory.GUID"/>.
-            </summary>
-        </member>
-        <member name="M:Network.ConnectionFactory.GetBluetoothDevices">
-            <summary>
-            Finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
-            </summary>
-            <returns>All discoverable Bluetooth devices.</returns>
-        </member>
-        <member name="M:Network.ConnectionFactory.GetBluetoothDevicesAsync">
-            <summary>
-            Asynchronously finds and returns all Bluetooth devices that are within range of the current device, and are discoverable.
-            </summary>
-            <returns>
-            A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation, with the promise of a <see cref="T:Network.Bluetooth.DeviceInfo"/> array on completion.
-            </returns>
-        </member>
-        <member name="M:Network.ConnectionFactory.CreateBluetoothConnection(Network.Bluetooth.DeviceInfo)">
-            <summary>
-            Creates a <see cref="T:Network.BluetoothConnection"/> and connects it.
-            </summary>
-            <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
-            <returns>A tuple with the <see cref="T:Network.ConnectionResult"/> and created <see cref="T:Network.BluetoothConnection"/>.</returns>
-        </member>
-        <member name="M:Network.ConnectionFactory.CreateBluetoothConnectionAsync(Network.Bluetooth.DeviceInfo)">
-            <summary>
-            Asynchronously creates a <see cref="T:Network.BluetoothConnection"/> and connects it.
-            </summary>
-            <param name="bluetoothDeviceInfo">The device information for the remote Bluetooth device.</param>
-            <returns>
-            A <see cref="T:System.Threading.Tasks.Task`1"/> representing the asynchronous operation, with the promise of a tuple with the
-            <see cref="T:Network.ConnectionResult"/> and created <see cref="T:Network.BluetoothConnection"/> on completion.
-            </returns>
-        </member>
-        <member name="M:Network.ConnectionFactory.CreateBluetoothConnection(InTheHand.Net.Sockets.BluetoothClient)">
-            <summary>
-            Creates a new instance of the <see cref="T:Network.BluetoothConnection"/> with the given client.
-            </summary>
-            <param name="bluetoothClient">The client to create a connection with.</param>
-            <returns>The created <see cref="T:Network.BluetoothConnection"/>.</returns>
         </member>
         <member name="M:Network.ConnectionFactory.CreateTcpConnection(System.String,System.Int32,Network.ConnectionResult@)">
             <summary>
@@ -3661,16 +3449,6 @@
             they may own.
             </summary>
         </member>
-        <member name="F:Network.ServerConnectionContainer.bluetoothListener">
-            <summary>
-            Listens for Bluetooth clients.
-            </summary>
-        </member>
-        <member name="F:Network.ServerConnectionContainer.bluetoothConnections">
-            <summary>
-            List of all <see cref="T:Network.BluetoothConnection"/>s currently connected to the server.
-            </summary>
-        </member>
         <member name="M:Network.ServerConnectionContainer.#ctor(System.String,System.Int32,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.ServerConnectionContainer" /> class.
@@ -3710,21 +3488,6 @@
             will be closed.
             </remarks>
         </member>
-        <member name="P:Network.ServerConnectionContainer.IsBluetoothOnline">
-            <summary>
-            Whether the Bluetooth server is currently online.
-            </summary>
-        </member>
-        <member name="P:Network.ServerConnectionContainer.AllowBluetoothConnections">
-            <summary>
-            Whether the server will listen for Bluetooth clients. NOTE: Existing connections are unaffected by this value.
-            </summary>
-        </member>
-        <member name="P:Network.ServerConnectionContainer.MaxBluetoothPendingQueue">
-            <summary>
-            The maximum amount of pending bluetooth connections.
-            </summary>
-        </member>
         <member name="P:Network.ServerConnectionContainer.TCP_Connections">
             <summary>
             Lists all currently connected <see cref="T:Network.TcpConnection"/>s.
@@ -3735,14 +3498,9 @@
             Lists all currently connected <see cref="T:Network.UdpConnection"/>s.
             </summary>
         </member>
-        <member name="P:Network.ServerConnectionContainer.BLUETOOTH_Connections">
-            <summary>
-            Lists all currently connected <see cref="T:Network.BluetoothConnection"/>s.
-            </summary>
-        </member>
         <member name="P:Network.ServerConnectionContainer.Count">
             <summary>
-            The amount of currently connected clients. Includes Bluetooth, TCP, and UDP clients.
+            The amount of currently connected clients. Includes TCP and UDP clients.
             </summary>
         </member>
         <member name="M:Network.ServerConnectionContainer.Start">
@@ -3753,11 +3511,6 @@
         <member name="M:Network.ServerConnectionContainer.StartTCPListener">
             <summary>
             Starts a TCP server and listens for incoming <see cref="T:Network.TcpConnection"/>s.
-            </summary>
-        </member>
-        <member name="M:Network.ServerConnectionContainer.StartBluetoothListener">
-            <summary>
-            Starts a Bluetooth server and listens for incoming <see cref="T:Network.BluetoothConnection"/>s.
             </summary>
         </member>
         <member name="M:Network.ServerConnectionContainer.udpConnectionReceived(Network.TcpConnection,Network.UdpConnection)">
@@ -3773,11 +3526,6 @@
             </summary>
             <param name="closeReason">The reason for the <see cref="T:Network.Connection"/> being closed.</param>
             <param name="connection">The <see cref="T:Network.Connection"/> that closed.</param>
-        </member>
-        <member name="M:Network.ServerConnectionContainer.StopBluetoothListener">
-            <summary>
-            Stops the Bluetooth listener, so that no new <see cref="T:Network.BluetoothConnection"/>s can connect.
-            </summary>
         </member>
         <member name="M:Network.ServerConnectionContainer.StopTCPListener">
             <summary>
@@ -3807,12 +3555,6 @@
             </summary>
             <param name="reason">The reason for the connection closure.</param>
         </member>
-        <member name="M:Network.ServerConnectionContainer.CloseBluetoothConnections(Network.Enums.CloseReason)">
-            <summary>
-            Closes all currently connected <see cref="T:Network.BluetoothConnection"/>s.
-            </summary>
-            <param name="reason">The reason for the connection closure.</param>
-        </member>
         <member name="M:Network.ServerConnectionContainer.TCP_BroadCast(Network.Packets.Packet)">
             <summary>
             Sends the given <see cref="T:Network.Packets.Packet"/> to all currently connected <see cref="T:Network.TcpConnection"/>s.
@@ -3822,12 +3564,6 @@
         <member name="M:Network.ServerConnectionContainer.UDP_BroadCast(Network.Packets.Packet)">
             <summary>
             Sends the given <see cref="T:Network.Packets.Packet"/> to all currently connected <see cref="T:Network.UdpConnection"/>s.
-            </summary>
-            <param name="packet">The packet to send via broadcast.</param>
-        </member>
-        <member name="M:Network.ServerConnectionContainer.BLUETOOTH_BroadCast(Network.Packets.Packet)">
-            <summary>
-            Sends the given <see cref="T:Network.Packets.Packet"/> to all currently connected <see cref="T:Network.BluetoothConnection"/>s.
             </summary>
             <param name="packet">The packet to send via broadcast.</param>
         </member>
@@ -3866,8 +3602,8 @@
         </member>
         <member name="E:Network.ServerConnectionContainer.ConnectionEstablished">
             <summary>
-            Signifies that a new <see cref="T:Network.Connection"/> (i.e. <see cref="T:Network.TcpConnection"/>, <see cref="T:Network.UdpConnection"/>,
-            or <see cref="T:Network.BluetoothConnection"/>) has connected successfully to the server.
+            Signifies that a new <see cref="T:Network.Connection"/> (i.e. <see cref="T:Network.TcpConnection"/> or <see cref="T:Network.UdpConnection"/>)
+            has connected successfully to the server.
             </summary>
         </member>
         <member name="T:Network.TcpConnection">
