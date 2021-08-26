@@ -36,20 +36,21 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Supported Frameworks
 
-- .NET Framework          >= 5.0
-- .NET Framework          >= 4.6 && <= 4.8
+- .NET Standard           >= 2.0
 - .NET Core               >= 2.0
+- .NET Framework          >= 5.0
+- .NET Framework          >= 4.6.1
 - Mono                    >= 5.4
 - Xamarin.iOS             >= 10.14
 - Xamarin.MAC             >= 3.8
 - Xamarin.Android         >= 8.0
 - UWP                     >= 10.0.16299
+- Unity                   >= 2018.1
 
 # Features in a nutshell
 
 - TCP communication
 - UDP communication
-- Bluetooth communication *
 - Factories to ensure the most easy setup
 - Server and Client Wrappers (Auto-Reconnect, Auto-Join)
 - Object oriented. Don't worry about bits and bytes. **Send and receive objects**
@@ -61,8 +62,6 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 - Very fast and relieable (6-10ms RTT)
 - Highly customizable
 - OpenSource and Free to use
-
-'*' Bluetooth support only for .NET 4.6 - 4.8
 
 # Example Client
 ```c#
@@ -100,7 +99,6 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
             #region Optional settings
             serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             serverConnectionContainer.ConnectionEstablished += connectionEstablished;
-            serverConnectionContainer.AllowBluetoothConnections = true;
             serverConnectionContainer.AllowUDPConnections = true;
             serverConnectionContainer.UDPConnectionLimit = 2;
             #endregion Optional settings
@@ -188,23 +186,6 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
             };
         }
  ```
- 
-# Bluetooth Example
-  ```c#
-          public async void Demo()
-        {
-            //1. Get the clients in range.
-            DeviceInfo[] devicesInRange = await ConnectionFactory.GetBluetoothDevicesAsync();
-            if(devicesInRange.Length <= 0) return; //We need at least one bluetooth connection to deal with :)
-           //2. Create a new instance of the bluetoothConnection with the factory.
-            Tuple<ConnectionResult, BluetoothConnection> bluetoothConnection = await ConnectionFactory.CreateBluetoothConnectionAsync(devicesInRange[0]);
-            if(bluetoothConnection.Item1 != ConnectionResult.Connected) return; //We were not able to connect to the server.
-            //3. Register what happens if we receive a packet of type "CalculationResponse"
-            bluetoothConnection.Item2.RegisterPacketHandler<CalculationResponse>((response, con) => Console.WriteLine($"Answer received {response.Result}"), this);
-            //4. Send a calculation request.
-            bluetoothConnection.Item2.Send(new CalculationRequest(10, 10), this);
-        }
-   ```
    
 # RSA Example
    ```c#
