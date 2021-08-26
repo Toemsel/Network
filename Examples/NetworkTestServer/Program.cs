@@ -10,7 +10,6 @@ namespace NetworkTestServer
 
             Console.WriteLine("<1> Secure-Server example. (Requires selection <8> in the client)");
             Console.WriteLine("<2> UnSecure-Server example. (Working with every other example)");
-            Console.WriteLine("<3> Exit");
             Console.Write("> ");
 
             input = 0;

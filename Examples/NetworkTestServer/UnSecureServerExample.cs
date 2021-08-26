@@ -29,9 +29,6 @@ namespace NetworkTestServer
 
             serverConnectionContainer.ConnectionLost += (a, b, c) => Console.WriteLine($"{serverConnectionContainer.Count} {b.ToString()} Connection lost {a.IPRemoteEndPoint.Port}. Reason {c.ToString()}");
             serverConnectionContainer.ConnectionEstablished += connectionEstablished;
-#if NET46
-            serverConnectionContainer.AllowBluetoothConnections = true;
-#endif
             serverConnectionContainer.AllowUDPConnections = true;
             serverConnectionContainer.UDPConnectionLimit = 2;
 
