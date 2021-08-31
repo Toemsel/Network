@@ -14,8 +14,8 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 | Build | Architecture | Framework Target | Badge |
 | ------------------- | ------------ | ---------------- | ----- |
-| Debug | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=-1) |
-| Release | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Core)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) |
+| Debug | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/DEBUG%20%20.NET%20Standard%202.0)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=12) |
+| Release | x86 | standard2.0 | [![Build status](https://thomaschristof.visualstudio.com/Network/_apis/build/status/RELEASE%20.NET%20Standard%202.0)](https://thomaschristof.visualstudio.com/Network/_build/latest?definitionId=9) |
 
 # Badges
 
