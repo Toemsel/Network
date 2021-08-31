@@ -810,11 +810,11 @@ namespace Network
             }
             else if (packet.GetType().Equals(typeof(EstablishUdpRequest)))
             {
+                IPEndPoint localEndpoint = new IPEndPoint(IPAddress.IPv6Any, GetFreePort());
                 EstablishUdpRequest establishUdpRequest = (EstablishUdpRequest)packet;
-                IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
-                Send(new EstablishUdpResponse(udpEndPoint.Port, establishUdpRequest));
-                UdpConnection udpConnection = CreateUdpConnection(udpEndPoint,
-                    new IPEndPoint(IPRemoteEndPoint.Address.MapToIPv4(), establishUdpRequest.UdpPort), true);
+                Send(new EstablishUdpResponse(localEndpoint.Port, establishUdpRequest));
+                UdpConnection udpConnection = CreateUdpConnection(localEndpoint,
+                    new IPEndPoint(IPRemoteEndPoint.Address, establishUdpRequest.UdpPort), true);
                 pendingUDPConnections.Enqueue(udpConnection);
                 connectionEstablished?.Invoke((TcpConnection)this, udpConnection);
                 return;
@@ -1008,7 +1008,7 @@ namespace Network
         /// <returns>The port found.</returns>
         protected int GetFreePort()
         {
-            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 0);
+            TcpListener tcpListener = new TcpListener(IPAddress.IPv6Loopback, 0);
             tcpListener.Start();
             int port = ((IPEndPoint)tcpListener.LocalEndpoint).Port;
             tcpListener.Stop();
@@ -1018,12 +1018,11 @@ namespace Network
         /// <summary>
         /// Creates and returns a new <see cref="UdpConnection"/>, with the given local endpoint, remote endpoint, and write lock state.
         /// </summary>
-        /// <param name="localEndPoint">The local <see cref="IPEndPoint"/> that the <see cref="UdpConnection"/> binds to.</param>
         /// <param name="remoteEndPoint">The remote <see cref="IPEndPoint"/> that the <see cref="UdpConnection"/> talks to.</param>
         /// <param name="writeLock">Whether the <see cref="UdpConnection"/> has a write lock.</param>
         /// <returns>The instantiated <see cref="UdpConnection"/>.</returns>
         protected virtual UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock) =>
-            new UdpConnection(new UdpClient(localEndPoint), remoteEndPoint, writeLock);
+            new UdpConnection(localEndPoint, remoteEndPoint, writeLock);
 
 #endregion Methods
 

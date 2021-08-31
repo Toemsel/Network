@@ -928,7 +928,6 @@
             <summary>
             Creates and returns a new <see cref="T:Network.UdpConnection"/>, with the given local endpoint, remote endpoint, and write lock state.
             </summary>
-            <param name="localEndPoint">The local <see cref="T:System.Net.IPEndPoint"/> that the <see cref="T:Network.UdpConnection"/> binds to.</param>
             <param name="remoteEndPoint">The remote <see cref="T:System.Net.IPEndPoint"/> that the <see cref="T:Network.UdpConnection"/> talks to.</param>
             <param name="writeLock">Whether the <see cref="T:Network.UdpConnection"/> has a write lock.</param>
             <returns>The instantiated <see cref="T:Network.UdpConnection"/>.</returns>
@@ -3371,7 +3370,7 @@
             </summary>
             <seealso cref="T:Network.UdpConnection"/>
         </member>
-        <member name="M:Network.RSA.SecureUdpConnection.#ctor(System.Net.Sockets.UdpClient,System.Net.IPEndPoint,Network.RSA.RSAPair,System.Boolean)">
+        <member name="M:Network.RSA.SecureUdpConnection.#ctor(System.Net.IPEndPoint,System.Net.IPEndPoint,Network.RSA.RSAPair,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.RSA.SecureUdpConnection"/> class.
             </summary>
@@ -3736,11 +3735,11 @@
             Cache of all received bytes.
             </summary>
         </member>
-        <member name="M:Network.UdpConnection.#ctor(System.Net.Sockets.UdpClient,System.Net.IPEndPoint,System.Boolean,System.Boolean)">
+        <member name="M:Network.UdpConnection.#ctor(System.Net.IPEndPoint,System.Net.IPEndPoint,System.Boolean,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Network.UdpConnection"/> class.
             </summary>
-            <param name="udpClient">The UDP client to use.</param>
+            <param name="localEndPoint">The local end point.</param>
             <param name="remoteEndPoint">The remote end point.</param>
             <param name="writeLock">Whether the <see cref="T:Network.UdpConnection"/> will have a write lock.</param>
             <param name="skipInitializationProcess">Whether to skip the call to <see cref="M:Network.Connection.Init"/>.</param>

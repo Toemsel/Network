@@ -18,10 +18,11 @@ namespace NetworkTestClient
                 Console.WriteLine("<6> RawData example");
                 Console.WriteLine("<7> RSA example");
                 Console.WriteLine("<8> Stress-Test");
+                Console.WriteLine("<9> IPv6 example");
                 Console.Write("> ");
 
                 input = 0;
-                while (!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 9)
+                while (!int.TryParse(Console.ReadLine(), out input) || input < 1 || input > 10)
                     Console.Write("> ");
 
                 switch (input)
@@ -54,6 +55,9 @@ namespace NetworkTestClient
                         break;
                     case 8:
                         new StressTestExample().Demo();
+                        break;
+                    case 9:
+                        new IPv6Example().Demo();
                         break;
 
                     default:

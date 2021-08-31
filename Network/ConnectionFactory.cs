@@ -1,5 +1,6 @@
 ﻿using Network.RSA;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -116,9 +117,10 @@ namespace Network
         /// </returns>
         public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateTcpConnectionAsync(string ipAddress, int port)
         {
-            TcpClient tcpClient = new TcpClient();
+            TcpClient tcpClient = new TcpClient(AddressFamily.InterNetworkV6);
+            tcpClient.Client.DualMode = true;
             Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
-            Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
+            Task connectTask = tcpClient.ConnectAsync(ipAddress, port);
             if (await Task.WhenAny(timeoutTask, connectTask).ConfigureAwait(false) != timeoutTask && tcpClient.Connected)
                 return new Tuple<TcpConnection, ConnectionResult>(new TcpConnection(tcpClient), ConnectionResult.Connected);
 
@@ -165,9 +167,10 @@ namespace Network
         /// </returns>
         public static async Task<Tuple<TcpConnection, ConnectionResult>> CreateSecureTcpConnectionAsync(string ipAddress, int port, RSAPair rsaPair)
         {
-            TcpClient tcpClient = new TcpClient();
+            TcpClient tcpClient = new TcpClient(AddressFamily.InterNetworkV6);
+            tcpClient.Client.DualMode = true;
             Task timeoutTask = Task.Delay(CONNECTION_TIMEOUT);
-            Task connectTask = Task.Factory.StartNew(() => tcpClient.Connect(ipAddress, port));
+            Task connectTask = tcpClient.ConnectAsync(ipAddress, port);
             if (await Task.WhenAny(timeoutTask, connectTask).ConfigureAwait(false) != timeoutTask && tcpClient.Connected)
                 return new Tuple<TcpConnection, ConnectionResult>(new SecureTcpConnection(rsaPair, tcpClient), ConnectionResult.Connected);
 
@@ -281,7 +284,7 @@ namespace Network
             cancellationToken.CancelAfter(CONNECTION_TIMEOUT);
             if (tcpConnection == null || !tcpConnection.IsAlive)
                 return new Tuple<UdpConnection, ConnectionResult>(udpConnection, ConnectionResult.TCPConnectionNotAlive);
-            tcpConnection.EstablishUdpConnection((localEndPoint, RemoteEndPoint) => udpConnection = new UdpConnection(new UdpClient(localEndPoint), RemoteEndPoint));
+            tcpConnection.EstablishUdpConnection((localEndpoint, remoteEndpoint) => udpConnection = new UdpConnection(localEndpoint, remoteEndpoint));
             while (udpConnection == null && !cancellationToken.IsCancellationRequested) await Task.Delay(25);
             if (udpConnection == null && cancellationToken.IsCancellationRequested) connectionResult = ConnectionResult.Timeout;
             return new Tuple<UdpConnection, ConnectionResult>(udpConnection, connectionResult);
@@ -333,7 +336,7 @@ namespace Network
             cancellationToken.CancelAfter(CONNECTION_TIMEOUT);
             if (tcpConnection == null || !tcpConnection.IsAlive)
                 return new Tuple<UdpConnection, ConnectionResult>(udpConnection, ConnectionResult.TCPConnectionNotAlive);
-            tcpConnection.EstablishUdpConnection((localEndPoint, RemoteEndPoint) => udpConnection = new SecureUdpConnection(new UdpClient(localEndPoint), RemoteEndPoint, rsaPair));
+            tcpConnection.EstablishUdpConnection((localEndpoint, remoteEndpoint) => udpConnection = new SecureUdpConnection(localEndpoint, remoteEndpoint, rsaPair));
             while (udpConnection == null && !cancellationToken.IsCancellationRequested) await Task.Delay(25);
             if (udpConnection == null && cancellationToken.IsCancellationRequested) connectionResult = ConnectionResult.Timeout;
             return new Tuple<UdpConnection, ConnectionResult>(udpConnection, connectionResult);

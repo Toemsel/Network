@@ -30,7 +30,7 @@ namespace Network.RSA
         /// <param name="rsaPair">The local RSA key-pair.</param>
         /// <param name="start">Whether to automatically starts to listen to tcp/udp/bluetooth clients.</param>
         internal SecureServerConnectionContainer(int port, RSAPair rsaPair, bool start = true)
-            : this(System.Net.IPAddress.Any.ToString(), port, rsaPair, start) { }
+            : this(System.Net.IPAddress.IPv6Any.ToString(), port, rsaPair, start) { }
 
         #endregion Constructors
 

@@ -21,8 +21,8 @@ namespace Network.RSA
         /// <param name="remoteEndPoint">The remote end point to connect to.</param>
         /// <param name="rsaPair">The local RSA key-pair.</param>
         /// <param name="writeLock">Whether the connection has a write lock.</param>
-        internal SecureUdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
-            : base(udpClient, remoteEndPoint, writeLock, skipInitializationProcess: true)
+        internal SecureUdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, RSAPair rsaPair, bool writeLock = false)
+            : base(localEndPoint, remoteEndPoint, writeLock, skipInitializationProcess: true)
         {
             //Setup the RSAConnectionHelper object.
             RSAConnection = new RSAConnection(this, rsaPair);

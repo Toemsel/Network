@@ -54,23 +54,27 @@ namespace Network
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpConnection"/> class.
         /// </summary>
-        /// <param name="udpClient">The UDP client to use.</param>
+        /// <param name="localEndPoint">The local end point.</param>
         /// <param name="remoteEndPoint">The remote end point.</param>
         /// <param name="writeLock">Whether the <see cref="UdpConnection"/> will have a write lock.</param>
         /// <param name="skipInitializationProcess">Whether to skip the call to <see cref="Connection.Init()"/>.</param>
-        internal UdpConnection(UdpClient udpClient, IPEndPoint remoteEndPoint, bool writeLock = false, bool skipInitializationProcess = false)
+        internal UdpConnection(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, bool writeLock = false, bool skipInitializationProcess = false)
             : base()
         {
             this.remoteEndPoint = remoteEndPoint;
+            this.localEndPoint = localEndPoint;
 
-            client = udpClient;
+            client = new UdpClient(AddressFamily.InterNetworkV6);
+            client.Client.DualMode = true;
             AcknowledgePending = writeLock;
             socket = client.Client;
-            localEndPoint = (IPEndPoint)client.Client.LocalEndPoint;
+
+            client.Client.Bind(localEndPoint);
             client.Connect(remoteEndPoint);
+
             ObjectMapRefreshed();
 
-            KeepAlive = false;
+            KeepAlive = true;
             socket.SendTimeout = -1;
             socket.ReceiveTimeout = -1;
 

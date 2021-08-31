@@ -94,7 +94,7 @@ namespace Network.RSA
         /// <param name="writeLock">Whether the <see cref="SecureUdpConnection"/> has a write lock.</param>
         /// <returns>The created <see cref="SecureUdpConnection"/>.</returns>
         protected override UdpConnection CreateUdpConnection(IPEndPoint localEndPoint, IPEndPoint removeEndPoint, bool writeLock) =>
-            new SecureUdpConnection(new UdpClient(localEndPoint), removeEndPoint, RSAPair, writeLock);
+            new SecureUdpConnection(localEndPoint, removeEndPoint, RSAPair, writeLock);
 
         #endregion Methods
     }

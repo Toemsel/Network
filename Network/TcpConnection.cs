@@ -130,15 +130,16 @@ namespace Network
         /// <param name="connectionEstablished">The action to perform upon connection.</param>
         internal void EstablishUdpConnection(Action<IPEndPoint, IPEndPoint> connectionEstablished)
         {
-            IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, GetFreePort());
+            IPEndPoint localEndpoint = new IPEndPoint(IPAddress.IPv6Any, GetFreePort());
+
             RegisterPacketHandler<EstablishUdpResponse>((packet, connection) =>
             {
                 UnRegisterPacketHandler<EstablishUdpResponse>(this);
-                connectionEstablished.Invoke(udpEndPoint, new IPEndPoint(IPRemoteEndPoint.Address.MapToIPv4(), packet.UdpPort));
+                connectionEstablished.Invoke(localEndpoint, new IPEndPoint(IPRemoteEndPoint.Address, packet.UdpPort));
                 Send(new EstablishUdpResponseACK());
             }, this);
 
-            Send(new EstablishUdpRequest(udpEndPoint.Port), this);
+            Send(new EstablishUdpRequest(localEndpoint.Port), this);
         }
 
         /// <inheritdoc />

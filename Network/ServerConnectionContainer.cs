@@ -66,7 +66,7 @@ namespace Network
         /// <param name="port">The local port.</param>
         /// <param name="start">Whether to automatically start listening for clients after instantiation.</param>
         internal ServerConnectionContainer(int port, bool start = true)
-            : this(System.Net.IPAddress.Any.ToString(), port, start) { }
+            : this(System.Net.IPAddress.IPv6Any.ToString(), port, start) { }
 
         #endregion Constructors
 
@@ -128,6 +128,7 @@ namespace Network
             if (IsTCPOnline) return;
 
             tcpListener = new TcpListener(System.Net.IPAddress.Parse(IPAddress), Port);
+            tcpListener.Server.DualMode = true;
             IsTCPOnline = !IsTCPOnline;
             tcpListener.Start();
 
