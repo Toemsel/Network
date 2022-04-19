@@ -152,6 +152,7 @@ namespace Network
             }
             //The TCP-Listener has been shut down.
             catch(ObjectDisposedException) { }
+            catch(SocketException) { }
         }
 
         /// <summary>
