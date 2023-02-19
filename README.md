@@ -203,8 +203,8 @@ Chat: https://discordapp.com/invite/tgAzGby <br />
 
 # Logging
 
-<img src="http://www.indie-dev.at/wp-content/uploads/2016/11/Logging.gif" />
+<img src="https://www.indie-dev.at/resource/Logging.gif" />
 
 # Logging with RSA
 
-<img src="https://www.indie-dev.at/wp-content/uploads/2018/08/RSA.gif" />
+<img src="https://www.indie-dev.at/resource/RSA.gif" />
