@@ -166,6 +166,13 @@ namespace Network.Converter
             //We have a non-primitive type
             else if (!PacketConverterHelper.TypeIsPrimitive(propertyType))
             {
+                //If is an struct return so doesnt throw an exception
+                if (propertyType.IsValueType)
+                {
+                    binaryWriter.Write((byte)ObjectState.NotNull);
+                    SerialiseObjectToWriter(propertyValue, binaryWriter);
+                    return;
+                }
                 if (propertyValue != null) //Not null non-primitive type value
                 {
                     //There is a value to read from the network stream

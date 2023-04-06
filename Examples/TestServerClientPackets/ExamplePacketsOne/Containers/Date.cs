@@ -3,7 +3,7 @@ using System;
 
 namespace TestServerClientPackets.ExamplePacketsOne.Containers
 {
-    public class Date
+    public struct Date
     {
         public int Day { get; set; }
 
