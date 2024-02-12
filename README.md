@@ -116,8 +116,6 @@ Website: https://www.push-force.dev/
         }
 ```
 
-<img src="http://www.indie-dev.at/wp-content/uploads/2016/11/Demo.gif" />
-
 # Async Example
 ```c#
         public async void Demo()
@@ -201,8 +199,8 @@ Website: https://www.push-force.dev/
 
 # Logging
 
-<img src="https://www.indie-dev.at/resource/Logging.gif" />
+<img src="https://www.push-force.dev/resource/Logging.gif" />
 
 # Logging with RSA
 
-<img src="https://www.indie-dev.at/resource/RSA.gif" />
+<img src="https://www.push-force.dev/resource/RSA.gif" />
